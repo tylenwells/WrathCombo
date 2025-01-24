@@ -1,5 +1,6 @@
 ﻿using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.ClientState.JobGauge.Types;
+using ECommons.DalamudServices;
 using ECommons.GameHelpers;
 using System;
 using System.Collections.Generic;
@@ -134,11 +135,12 @@ internal partial class RDM
         }
     }
 
-    private static bool TryOGCDs(uint actionID, in bool SingleTarget, out uint newActionID, bool AdvMode = false)
+    private static bool TryOGCDs(uint actionID, in bool SingleTarget, ref uint newActionID, bool AdvMode = false)
     {
-        float distance = GetTargetDistance();
+        newActionID = 0;
+        if (!CanSpellWeave()) return false;
 
-        uint placeOGCD = 0;
+        float distance = GetTargetDistance();
 
         //Simple Settings
         bool fleche = true;
@@ -167,81 +169,74 @@ internal partial class RDM
 
         //Grabs an oGCD to return based on radio options
 
-        if (placeOGCD == 0
+        if (newActionID == 0
+            && prefulg
+            && TraitLevelChecked(Traits.EnhancedManaficationIII)
+            && HasEffect(Buffs.PrefulugenceReady))
+            newActionID = Prefulgence;
+
+        if (newActionID == 0
             && fleche
             && ActionReady(Fleche))
-            placeOGCD = Fleche;
+            newActionID = Fleche;
 
-        if (placeOGCD == 0
+        if (newActionID == 0
             && contre
             && ActionReady(ContreSixte))
-            placeOGCD = ContreSixte;
+            newActionID = ContreSixte;
 
-        if (placeOGCD == 0
+        if (newActionID == 0
             && engagement
             && (GetRemainingCharges(Engagement) > engagementPool
                 || (GetRemainingCharges(Engagement) == 1 && GetCooldownRemainingTime(Engagement) < 3))
             && LevelChecked(Engagement)
+            && !JustUsed(Engagement, 2f) //try not to double use, wait for next GCD
             && distance <= 3)
-            placeOGCD = Engagement;
+            newActionID = Engagement;
 
-        if (placeOGCD == 0
+        if (newActionID == 0
             && corpacorps
             && (GetRemainingCharges(Corpsacorps) > corpsacorpsPool
                 || (GetRemainingCharges(Corpsacorps) == 1 && GetCooldownRemainingTime(Corpsacorps) < 3))
-            && ((GetRemainingCharges(Corpsacorps) >= GetRemainingCharges(Engagement)) || !LevelChecked(Engagement)) // Try to alternate between Corps-a-corps and Engagement
             && LevelChecked(Corpsacorps)
+            && !JustUsed(Corpsacorps, 2f) //try not to double use, wait for next GCD
             && distance <= corpacorpsRange)
-            placeOGCD = Corpsacorps;
+            newActionID = Corpsacorps;
 
-        if (placeOGCD == 0
+        if (newActionID == 0
             && vice
             && TraitLevelChecked(Traits.EnhancedEmbolden)
-            && HasEffect(Buffs.ThornedFlourish))
-            placeOGCD = ViceOfThorns;
+            && HasEffect(Buffs.ThornedFlourish)
+            && !JustUsed(Embolden, 2f)) //try not to double use, wait for next GCD
+            newActionID = ViceOfThorns;
 
-        if (placeOGCD == 0
-            && prefulg
-            && TraitLevelChecked(Traits.EnhancedManaficationIII)
-            && HasEffect(Buffs.PrefulugenceReady))
-            placeOGCD = Prefulgence;
+        if (newActionID != 0) return true;
 
-        if (CanSpellWeave() && placeOGCD != 0)
+        if (actionID is Fleche && newActionID == 0) // All actions are on cooldown, determine the lowest CD to display on Fleche.
         {
-            newActionID = placeOGCD;
-            return true;
-        }
-
-        if (actionID is Fleche && placeOGCD == 0) // All actions are on cooldown, determine the lowest CD to display on Fleche.
-        {
-            placeOGCD = Fleche;
+            newActionID = Fleche;
             if (contre
                 && LevelChecked(ContreSixte)
-                && GetCooldownRemainingTime(placeOGCD) > GetCooldownRemainingTime(ContreSixte))
-                placeOGCD = ContreSixte;
+                && GetCooldownRemainingTime(newActionID) > GetCooldownRemainingTime(ContreSixte))
+                newActionID = ContreSixte;
             if (corpacorps
                 && LevelChecked(Corpsacorps)
                 && !HasCharges(Corpsacorps)
-                && GetCooldownRemainingTime(placeOGCD) > GetCooldownRemainingTime(Corpsacorps))
-                placeOGCD = Corpsacorps;
+                && GetCooldownRemainingTime(newActionID) > GetCooldownRemainingTime(Corpsacorps))
+                newActionID = Corpsacorps;
             if (engagement
                 && LevelChecked(Engagement)
                 && GetCooldownRemainingTime(Engagement) == 0
-                && GetCooldownRemainingTime(placeOGCD) > GetCooldownRemainingTime(Engagement))
-                placeOGCD = Engagement;
+                && GetCooldownRemainingTime(newActionID) > GetCooldownRemainingTime(Engagement))
+                newActionID = Engagement;
         }
-        if (actionID is Fleche)
-        {
-            newActionID = placeOGCD;
-            return true;
-        }
+        if (actionID is Fleche) return true;
 
-        newActionID = 0;
         return false;
     }
 
-    private static bool TryLucidDreaming(uint actionID, int MPThreshold, uint ComboAction) =>
-        All.CanUseLucid(actionID, MPThreshold)
+    private static bool TryLucidDreaming(int MPThreshold, uint ComboAction) =>
+        All.CanUseLucid(MPThreshold)
         && InCombat()
         && !HasEffect(Buffs.Dualcast)
         && ComboAction != EnchantedRiposte
@@ -253,7 +248,7 @@ internal partial class RDM
 
     private class MeleeCombo
     {
-        internal static bool TrySTManaEmbolden(uint actionID, out uint newActionID,                 //Simple Mode Values
+        internal static bool TrySTManaEmbolden(ref uint newActionID,                 //Simple Mode Values
             bool ManaEmbolden = true, bool GapCloser = true, bool DoubleCombo = true, bool UnBalanceMana = true)
         {
             //RDM_ST_MANAFICATIONEMBOLDEN
@@ -372,11 +367,10 @@ internal partial class RDM
                     return true;
                 }
             } //END_RDM_ST_MANAFICATIONEMBOLDEN
-            newActionID = actionID;
             return false;
         }
 
-        internal static bool TrySTMeleeCombo(uint actionID, out uint newActionID,
+        internal static bool TrySTMeleeCombo(ref uint newActionID,
             bool MeleeEnforced = true)
         {
             //Normal Combo
@@ -398,11 +392,10 @@ internal partial class RDM
                     return true;
                 }
             }
-            newActionID = actionID;
             return false;
         }
 
-        internal static bool TrySTMeleeStart(uint actionID, out uint newActionID,                 //Simple Mode Values
+        internal static bool TrySTMeleeStart(ref uint newActionID,                 //Simple Mode Values
             bool GapCloser = false, bool UnbalanceMana = true)
         {
             if (((RDMMana.Min >= 50 && LevelChecked(Redoublement))
@@ -457,11 +450,10 @@ internal partial class RDM
                 }
             }
 
-            newActionID = actionID;
             return false;
         }
 
-        internal static bool TryAoEManaEmbolden(uint actionID, out uint newActionID,                 //Simple Mode Values
+        internal static bool TryAoEManaEmbolden(ref uint newActionID,                 //Simple Mode Values
             int MoulinetRange = 6)//idk just making this up
         {
             if (InCombat()
@@ -525,11 +517,11 @@ internal partial class RDM
                 }
             }
 
-            newActionID = actionID;
+            //Else
             return false;
         }
 
-        internal static bool TryAoEMeleeCombo(uint actionID, out uint newActionID,                 //Simple Mode Values
+        internal static bool TryAoEMeleeCombo(ref uint newActionID,                 //Simple Mode Values
             int MoulinetRange = 6, bool GapCloser = false,
             bool MeleeEnforced = true)
         {
@@ -567,11 +559,11 @@ internal partial class RDM
                 }
             }
 
-            newActionID = actionID;
+            //Else
             return false;
         }
 
-        internal static bool TryMeleeFinisher(out uint actionID)
+        internal static bool TryMeleeFinisher(ref uint newActionID)
         {
             if (RDMMana.ManaStacks >= 3)
             {
@@ -582,10 +574,10 @@ internal partial class RDM
                         && HasEffect(Buffs.VerstoneReady) && GetBuffRemainingTime(Buffs.VerstoneReady) >= 10
                         && (RDMMana.Black - RDMMana.White <= 18))
                     {
-                        actionID = Verflare;
+                        newActionID = Verflare;
                         return true;
                     }
-                    actionID = Verholy;
+                    newActionID = Verholy;
                     return true;
                 }
                 else if (LevelChecked(Verflare))
@@ -596,35 +588,35 @@ internal partial class RDM
                         && LevelChecked(Verholy)
                         && (RDMMana.White - RDMMana.Black <= 18))
                     {
-                        actionID = Verholy;
+                        newActionID = Verholy;
                         return true;
                     }
-                    actionID = Verflare;
+                    newActionID = Verflare;
                     return true;
                 }
             }
             if ((ComboAction is Verflare or Verholy)
                 && LevelChecked(Scorch))
             {
-                actionID = Scorch;
+                newActionID = Scorch;
                 return true;
             }
 
             if (ComboAction is Scorch
                 && LevelChecked(Resolution))
             {
-                actionID = Resolution;
+                newActionID = Resolution;
                 return true;
             }
 
-            actionID = 0;
+            //Else
             return false;
         }
     }
 
     private class SpellCombo
     {
-        private static bool TryGrandImpact(uint actionID, out uint newActionID)
+        private static bool TryGrandImpact(ref uint newActionID)
         {
             if (TraitLevelChecked(Traits.EnhancedAccelerationII)
                 && HasEffect(Buffs.GrandImpactReady)
@@ -634,10 +626,9 @@ internal partial class RDM
                 return true;
             }
 
-            newActionID = actionID;
             return false;
         }
-        internal static bool TryAcceleration(uint actionID, out uint newActionID, bool swiftcast = true, bool AoEWeave = false)
+        internal static bool TryAcceleration(ref uint newActionID, bool swiftcast = true, bool AoEWeave = false)
         {
             //RDM_ST_ACCELERATION
             if (InCombat()
@@ -669,14 +660,12 @@ internal partial class RDM
                 }
             }
             //Else
-            newActionID = actionID;
             return false;
         }
-        internal static bool TrySTSpellRotation(uint actionID, out uint newActionID, bool FireStone = true, bool ThunderAero = true)
+        internal static bool TrySTSpellRotation(ref uint newActionID, bool FireStone = true, bool ThunderAero = true)
         {
-            if (TryGrandImpact(actionID, out uint GrandID))
+            if (TryGrandImpact(ref newActionID))
             {
-                newActionID = GrandID;
                 return true;
             }
 
@@ -719,16 +708,12 @@ internal partial class RDM
                     return true;
                 }
             }
-            newActionID = actionID;
+            //Else
             return false;
         }
-        internal static bool TryAoESpellRotation(uint actionID, out uint newActionID)
+        internal static bool TryAoESpellRotation(ref uint newActionID)
         {
-            if (TryGrandImpact(actionID, out uint GrandID))
-            {
-                newActionID = GrandID;
-                return true;
-            }
+            if (TryGrandImpact(ref newActionID)) return true;
 
             //SHUT UP ITS FINE
 #pragma warning disable IDE0042
@@ -746,7 +731,6 @@ internal partial class RDM
                 return true;
             }
 
-            newActionID = actionID;
             return false;
         }
         internal static (bool useFire, bool useStone, bool useThunder, bool useAero, bool useThunder2, bool useAero2) GetSpells()
