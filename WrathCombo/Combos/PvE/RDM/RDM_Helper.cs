@@ -1,6 +1,5 @@
 ﻿using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.ClientState.JobGauge.Types;
-using ECommons.DalamudServices;
 using ECommons.GameHelpers;
 using System;
 using System.Collections.Generic;
@@ -137,7 +136,7 @@ internal partial class RDM
 
     private static bool TryOGCDs(uint actionID, in bool SingleTarget, ref uint newActionID, bool AdvMode = false)
     {
-        newActionID = 0;
+        newActionID = 0; //reset just incase
         if (!CanSpellWeave()) return false;
 
         float distance = GetTargetDistance();
@@ -251,6 +250,8 @@ internal partial class RDM
         internal static bool TrySTManaEmbolden(ref uint newActionID,                 //Simple Mode Values
             bool ManaEmbolden = true, bool GapCloser = true, bool DoubleCombo = true, bool UnBalanceMana = true)
         {
+            if (!CanSpellWeave()) return false;
+
             //RDM_ST_MANAFICATIONEMBOLDEN
             if (ManaEmbolden
                 && LevelChecked(Embolden)
@@ -420,6 +421,7 @@ internal partial class RDM
                     if (HasEffect(Buffs.Acceleration) || WasLastAction(Buffs.Acceleration))
                     {
                         //Run the Mana Balance Computer
+                        //SHUT UP ITS FINE
 #pragma warning disable IDE0042
                         (bool useFire, bool useStone, bool useThunder, bool useAero, bool useThunder2, bool useAero2) actions = SpellCombo.GetSpells();
 #pragma warning restore IDE0042
@@ -437,7 +439,7 @@ internal partial class RDM
                         }
                     }
 
-                    if (HasCharges(Acceleration))
+                    if (HasCharges(Acceleration) && CanSpellWeave())
                     {
                         newActionID = Acceleration;
                         return true;
@@ -456,6 +458,8 @@ internal partial class RDM
         internal static bool TryAoEManaEmbolden(ref uint newActionID,                 //Simple Mode Values
             int MoulinetRange = 6)//idk just making this up
         {
+            if (!CanSpellWeave()) return false;
+
             if (InCombat()
                 && !HasEffect(Buffs.Dualcast)
                 && !HasEffect(All.Buffs.Swiftcast)
@@ -630,6 +634,8 @@ internal partial class RDM
         }
         internal static bool TryAcceleration(ref uint newActionID, bool swiftcast = true, bool AoEWeave = false)
         {
+            if (!CanSpellWeave()) return false;
+
             //RDM_ST_ACCELERATION
             if (InCombat()
                 && LocalPlayer.IsCasting == false
@@ -665,9 +671,7 @@ internal partial class RDM
         internal static bool TrySTSpellRotation(ref uint newActionID, bool FireStone = true, bool ThunderAero = true)
         {
             if (TryGrandImpact(ref newActionID))
-            {
                 return true;
-            }
 
             //SHUT UP ITS FINE
 #pragma warning disable IDE0042
