@@ -19,7 +19,7 @@ internal partial class MCH
                 IsEnabled(Variant.VariantCure) &&
                 PlayerHealthPercentageHp() <= Config.MCH_VariantCure)
                 return Variant.VariantCure;
-            
+
             //Reassemble to start before combat
             if (!HasEffect(Buffs.Reassembled) && ActionReady(Reassemble) &&
                 !InCombat() && TargetIsHostile())
@@ -36,7 +36,7 @@ internal partial class MCH
                     IsEnabled(Variant.VariantRampart) &&
                     IsOffCooldown(Variant.VariantRampart))
                     return Variant.VariantRampart;
-                
+
                 if (!ActionWatching.HasDoubleWeaved())
                 {
                     // Wildfire
@@ -161,7 +161,7 @@ internal partial class MCH
                 IsEnabled(Variant.VariantCure) &&
                 PlayerHealthPercentageHp() <= Config.MCH_VariantCure)
                 return Variant.VariantCure;
-            
+
             // Opener
             if (IsEnabled(CustomComboPreset.MCH_ST_Adv_Opener) && TargetIsHostile())
                 if (Opener().FullOpener(ref actionID))
@@ -185,7 +185,7 @@ internal partial class MCH
                     IsEnabled(Variant.VariantRampart) &&
                     IsOffCooldown(Variant.VariantRampart))
                     return Variant.VariantRampart;
-                
+
                 if (!ActionWatching.HasDoubleWeaved())
                 {
                     if (IsEnabled(CustomComboPreset.MCH_ST_Adv_QueenOverdrive) &&
