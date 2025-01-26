@@ -67,7 +67,7 @@ internal partial class MCH
                             // Only Hypercharge when tools are on cooldown
                             if (DrillCD && AnchorCD && SawCD &&
                                 (LevelChecked(Wildfire) &&
-                                 (!InBossEncounter() ||
+                                 (!InBossEncounter() && IsOffCooldown(Wildfire) ||
                                   InBossEncounter() && GetCooldownRemainingTime(Wildfire) > 40) ||
                                  !LevelChecked(Wildfire)))
                                 return Hypercharge;
@@ -227,11 +227,10 @@ internal partial class MCH
 
                             // Only Hypercharge when tools are on cooldown
                             if (DrillCD && AnchorCD && SawCD &&
-                                (LevelChecked(Wildfire) &&
-                                 (!InBossEncounter() ||
+                                (LevelChecked(Wildfire) && 
+                                 (!InBossEncounter() && IsOffCooldown(Wildfire) ||
                                   (Config.MCH_ST_Adv_Wildfire_SubOption == 0 ||
-                                   Config.MCH_ST_Adv_Wildfire_SubOption == 1 && InBossEncounter()) &&
-                                  GetCooldownRemainingTime(Wildfire) > 40) ||
+                                   Config.MCH_ST_Adv_Wildfire_SubOption == 1 && InBossEncounter()) && GetCooldownRemainingTime(Wildfire) > 40) ||
                                  !LevelChecked(Wildfire)))
                                 return Hypercharge;
                         }
