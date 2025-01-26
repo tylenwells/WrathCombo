@@ -19,13 +19,7 @@ internal partial class MCH
                 IsEnabled(Variant.VariantCure) &&
                 PlayerHealthPercentageHp() <= Config.MCH_VariantCure)
                 return Variant.VariantCure;
-
-            if (IsEnabled(CustomComboPreset.MCH_Variant_Rampart) &&
-                IsEnabled(Variant.VariantRampart) &&
-                IsOffCooldown(Variant.VariantRampart) &&
-                CanWeave())
-                return Variant.VariantRampart;
-
+            
             //Reassemble to start before combat
             if (!HasEffect(Buffs.Reassembled) && ActionReady(Reassemble) &&
                 !InCombat() && TargetIsHostile())
@@ -38,11 +32,17 @@ internal partial class MCH
             // All weaves
             if (CanWeave())
             {
+                if (IsEnabled(CustomComboPreset.MCH_Variant_Rampart) &&
+                    IsEnabled(Variant.VariantRampart) &&
+                    IsOffCooldown(Variant.VariantRampart))
+                    return Variant.VariantRampart;
+                
                 if (!ActionWatching.HasDoubleWeaved())
                 {
                     // Wildfire
                     if (JustUsed(Hypercharge) &&
                         ActionReady(Wildfire) &&
+                        !HasEffect(Buffs.Wildfire) &&
                         InBossEncounter())
                         return Wildfire;
 
@@ -66,7 +66,9 @@ internal partial class MCH
 
                             // Only Hypercharge when tools are on cooldown
                             if (DrillCD && AnchorCD && SawCD &&
-                                (GetCooldownRemainingTime(Wildfire) > 40 && LevelChecked(Wildfire) ||
+                                (LevelChecked(Wildfire) &&
+                                 (!InBossEncounter() ||
+                                  InBossEncounter() && GetCooldownRemainingTime(Wildfire) > 40) ||
                                  !LevelChecked(Wildfire)))
                                 return Hypercharge;
                         }
@@ -159,13 +161,7 @@ internal partial class MCH
                 IsEnabled(Variant.VariantCure) &&
                 PlayerHealthPercentageHp() <= Config.MCH_VariantCure)
                 return Variant.VariantCure;
-
-            if (IsEnabled(CustomComboPreset.MCH_Variant_Rampart) &&
-                IsEnabled(Variant.VariantRampart) &&
-                IsOffCooldown(Variant.VariantRampart) &&
-                CanWeave())
-                return Variant.VariantRampart;
-
+            
             // Opener
             if (IsEnabled(CustomComboPreset.MCH_ST_Adv_Opener) && TargetIsHostile())
                 if (Opener().FullOpener(ref actionID))
@@ -185,6 +181,11 @@ internal partial class MCH
             // All weaves
             if (CanWeave())
             {
+                if (IsEnabled(CustomComboPreset.MCH_Variant_Rampart) &&
+                    IsEnabled(Variant.VariantRampart) &&
+                    IsOffCooldown(Variant.VariantRampart))
+                    return Variant.VariantRampart;
+                
                 if (!ActionWatching.HasDoubleWeaved())
                 {
                     if (IsEnabled(CustomComboPreset.MCH_ST_Adv_QueenOverdrive) &&
@@ -196,7 +197,7 @@ internal partial class MCH
                     if (IsEnabled(CustomComboPreset.MCH_ST_Adv_WildFire) &&
                         (Config.MCH_ST_Adv_Wildfire_SubOption == 0 ||
                          Config.MCH_ST_Adv_Wildfire_SubOption == 1 && InBossEncounter()) &&
-                        JustUsed(Hypercharge) && ActionReady(Wildfire) &&
+                        JustUsed(Hypercharge) && ActionReady(Wildfire) && !HasEffect(Buffs.Wildfire) &&
                         GetTargetHPPercent() >= Config.MCH_ST_WildfireHP)
                         return Wildfire;
 
@@ -226,7 +227,11 @@ internal partial class MCH
 
                             // Only Hypercharge when tools are on cooldown
                             if (DrillCD && AnchorCD && SawCD &&
-                                (GetCooldownRemainingTime(Wildfire) > 40 && LevelChecked(Wildfire) ||
+                                (LevelChecked(Wildfire) &&
+                                 (!InBossEncounter() ||
+                                  (Config.MCH_ST_Adv_Wildfire_SubOption == 0 ||
+                                   Config.MCH_ST_Adv_Wildfire_SubOption == 1 && InBossEncounter()) &&
+                                  GetCooldownRemainingTime(Wildfire) > 40) ||
                                  !LevelChecked(Wildfire)))
                                 return Hypercharge;
                         }
@@ -336,12 +341,6 @@ internal partial class MCH
             if (HasEffect(Buffs.Flamethrower) || JustUsed(Flamethrower, 10f))
                 return OriginalHook(11);
 
-            if (IsEnabled(CustomComboPreset.MCH_Variant_Rampart) &&
-                IsEnabled(Variant.VariantRampart) &&
-                IsOffCooldown(Variant.VariantRampart) &&
-                CanWeave())
-                return Variant.VariantRampart;
-
             // Interrupt
             if (InterruptReady)
                 return All.HeadGraze;
@@ -349,6 +348,11 @@ internal partial class MCH
             // All weaves
             if (CanWeave())
             {
+                if (IsEnabled(CustomComboPreset.MCH_Variant_Rampart) &&
+                    IsEnabled(Variant.VariantRampart) &&
+                    IsOffCooldown(Variant.VariantRampart))
+                    return Variant.VariantRampart;
+
                 if (!ActionWatching.HasDoubleWeaved() && !Gauge.IsOverheated)
                 {
                     // BarrelStabilizer
@@ -472,19 +476,19 @@ internal partial class MCH
             if (HasEffect(Buffs.Flamethrower) || JustUsed(Flamethrower, 10f))
                 return OriginalHook(11);
 
-            if (IsEnabled(CustomComboPreset.MCH_Variant_Rampart) &&
-                IsEnabled(Variant.VariantRampart) &&
-                IsOffCooldown(Variant.VariantRampart) &&
-                CanWeave())
-                return Variant.VariantRampart;
-
             // Interrupt
-            if (IsEnabled(CustomComboPreset.MCH_AoE_Adv_Interrupt) && InterruptReady)
+            if (IsEnabled(CustomComboPreset.MCH_AoE_Adv_Interrupt) &&
+                InterruptReady)
                 return All.HeadGraze;
 
             // All weaves
             if (CanWeave())
             {
+                if (IsEnabled(CustomComboPreset.MCH_Variant_Rampart) &&
+                    IsEnabled(Variant.VariantRampart) &&
+                    IsOffCooldown(Variant.VariantRampart))
+                    return Variant.VariantRampart;
+
                 if (!ActionWatching.HasDoubleWeaved() && !Gauge.IsOverheated)
                 {
                     // BarrelStabilizer
@@ -531,8 +535,7 @@ internal partial class MCH
                     }
 
                     if (IsEnabled(CustomComboPreset.MCH_AoE_Adv_SecondWind) &&
-                        PlayerHealthPercentageHp() <= Config.MCH_AoE_SecondWindThreshold &&
-                        ActionReady(All.SecondWind))
+                        PlayerHealthPercentageHp() <= Config.MCH_AoE_SecondWindThreshold && ActionReady(All.SecondWind))
                         return All.SecondWind;
                 }
 
