@@ -87,10 +87,6 @@ namespace WrathCombo.Combos.PvP
                             }
                         }
 
-                        // If overheated, BlazingShot is the next action
-                        if (IsEnabled(CustomComboPreset.MCHPvP_BurstMode_BlazingShot) && overheated)
-                            return OriginalHook(BlazingShot);
-
                         // Check if primed buffs and analysis conditions are met
                         bool hasPrimedBuffs = HasEffect(Buffs.DrillPrimed) ||
                                               (HasEffect(Buffs.ChainSawPrimed) && !IsEnabled(CustomComboPreset.MCHPvP_BurstMode_AltAnalysis)) ||
