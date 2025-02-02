@@ -103,7 +103,8 @@ internal partial class SAM
                                         MeikyoUsed % 7 is 3 && SenCount is 2 ||
                                         MeikyoUsed % 7 is 5 && SenCount is 1):
                     //Even windows
-                    case <= 2.08f when GetCooldownRemainingTime(Ikishoten) > 80 && SenCount is 3:
+                    case <= 2.08f when (GetCooldownRemainingTime(Ikishoten) > 80 || GetCooldownRemainingTime(Ikishoten) < GCD * 2 ||
+                                        IsOffCooldown(Ikishoten) || JustUsed(Ikishoten, 5f)) && SenCount is 3:
 
                     //Odd windows
                     case <= 2.08f when GetCooldownRemainingTime(Ikishoten) is > 35 and < 71 && SenCount is 3:
