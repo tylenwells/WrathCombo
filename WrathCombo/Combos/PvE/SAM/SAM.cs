@@ -682,7 +682,7 @@ internal partial class SAM
                         //Dumps Kenki in preparation for Ikishoten
                         case > 50 when GetCooldownRemainingTime(Ikishoten) < 10:
                             return Kyuten;
-                        
+
                         case <= 50 when IsOffCooldown(Ikishoten):
                             return Ikishoten;
                     }
