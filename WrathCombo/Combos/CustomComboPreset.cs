@@ -1429,7 +1429,7 @@ public enum CustomComboPreset
     DRK_ST_CD_Bringer = 5007,
 
     [ParentCombo(DRK_ST_CD_Bringer)]
-    [CustomComboInfo("Shadowbringer Burst Option", "Pools Shadowbringer to use during even minute window bursts.",
+    [CustomComboInfo("Shadowbringer Burst Option", "Pools Shadowbringer to use during even minute window bursts (after Disesteem).",
         DRK.JobID)]
     DRK_ST_CD_BringerBurst = 5008,
 
