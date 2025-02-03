@@ -367,9 +367,9 @@ internal partial class DRK
 
             if ((flags.HasFlag(Combo.Simple) ||
                  ((flags.HasFlag(Combo.ST) &&
-                   IsEnabled(Preset.DRK_ST_Delirium_Chain)) ||
+                   IsEnabled(Preset.DRK_ST_Sp_ScarletChain)) ||
                   flags.HasFlag(Combo.AoE) &&
-                  IsEnabled(Preset.DRK_AoE_Delirium_Chain))) &&
+                  IsEnabled(Preset.DRK_AoE_SP_ImpalementChain))) &&
                 HasEffect(Buffs.EnhancedDelirium))
                 if (flags.HasFlag(Combo.ST))
                     return (action = OriginalHook(Bloodspiller)) != 0;
@@ -381,8 +381,10 @@ internal partial class DRK
             #region Blood Spending during Delirium (Lower Levels)
 
             if ((flags.HasFlag(Combo.Simple) ||
-                 flags.HasFlag(Combo.AoE) ||
-                 IsEnabled(Preset.DRK_ST_Bloodspiller)) &&
+                 (flags.HasFlag(Combo.AoE) &&
+                  IsEnabled(Preset.DRK_AoE_Sp_Quietus)) ||
+                 (flags.HasFlag(Combo.ST) &&
+                  IsEnabled(Preset.DRK_ST_Sp_Bloodspiller))) &&
                 GetBuffStacks(Buffs.Delirium) > 0)
                 if (flags.HasFlag(Combo.ST))
                     return (action = Bloodspiller) != 0;
@@ -406,8 +408,10 @@ internal partial class DRK
             #region Blood Spending after Delirium Chain
 
             if ((flags.HasFlag(Combo.Simple) ||
-                 flags.HasFlag(Combo.AoE) ||
-                 IsEnabled(Preset.DRK_ST_Bloodspiller)) &&
+                 (flags.HasFlag(Combo.AoE) &&
+                  IsEnabled(Preset.DRK_AoE_Sp_Quietus)) ||
+                 (flags.HasFlag(Combo.ST) &&
+                  IsEnabled(Preset.DRK_ST_Sp_Bloodspiller))) &&
                 LevelChecked(Bloodspiller) &&
                 Gauge.Blood >= 50 &&
                 GetCooldownRemainingTime(Delirium) > 37)
@@ -432,9 +436,9 @@ internal partial class DRK
 
             if ((flags.HasFlag(Combo.Simple) ||
                  ((flags.HasFlag(Combo.ST) &&
-                   IsEnabled(Preset.DRK_ST_BloodOvercap)) ||
+                   IsEnabled(Preset.DRK_ST_Sp_BloodOvercap)) ||
                   flags.HasFlag(Combo.AoE) &&
-                  IsEnabled(Preset.DRK_AoE_BloodOvercap))) &&
+                  IsEnabled(Preset.DRK_AoE_SP_BloodOvercap))) &&
                 LevelChecked(Bloodspiller) &&
                 Gauge.Blood >= overcapThreshold)
                 if (flags.HasFlag(Combo.ST))
@@ -604,7 +608,7 @@ internal partial class DRK
 
             if ((flags.HasFlag(Combo.Simple) ||
                  ((flags.HasFlag(Combo.ST) &&
-                   IsEnabled(Preset.DRK_ST_Interrupt)) ||
+                   IsEnabled(Preset.DRK_ST_CD_Interrupt)) ||
                   flags.HasFlag(Combo.AoE) &&
                   IsEnabled(Preset.DRK_AoE_Interrupt))) &&
                 ActionReady(All.Interject) &&

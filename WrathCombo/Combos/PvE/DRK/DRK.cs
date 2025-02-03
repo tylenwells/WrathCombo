@@ -76,42 +76,38 @@ internal partial class DRK
             if (CanWeave() || CanDelayedWeave())
             {
                 // Mana Spenders
-                if (IsEnabled(CustomComboPreset.DRK_ST_ManaOvercap)
-                    && CombatEngageDuration().TotalSeconds >= 5)
+                if (CombatEngageDuration().TotalSeconds >= 5)
                 {
                     // Spend mana to limit when not near even minute burst windows
-                    if (IsEnabled(CustomComboPreset.DRK_ST_ManaSpenderPooling)
+                    if (IsEnabled(CustomComboPreset.DRK_ST_Sp_Edge)
                         && GetCooldownRemainingTime(LivingShadow) >= 45
                         && LocalPlayer.CurrentMp > (mpRemaining + 3000)
-                        && LevelChecked(EdgeOfDarkness))
+                        && ActionReady(EdgeOfDarkness))
                         return OriginalHook(EdgeOfDarkness);
 
                     // Keep Darkside up
-                    if (LocalPlayer.CurrentMp > 8500
-                        || (Gauge.DarksideTimeRemaining < 10000 &&
-                            LocalPlayer.CurrentMp > (mpRemaining + 3000)))
-                    {
-                        // Return Edge of Darkness if available
-                        if (LevelChecked(EdgeOfDarkness))
-                            return OriginalHook(EdgeOfDarkness);
-                        if (LevelChecked(FloodOfDarkness)
-                            && !LevelChecked(EdgeOfDarkness))
-                            return FloodOfDarkness;
-                    }
+                    if (ActionReady(EdgeOfDarkness) &&
+                        (IsEnabled(CustomComboPreset.DRK_ST_Sp_ManaOvercap) &&
+                         LocalPlayer.CurrentMp > 8500) ||
+                        (IsEnabled(CustomComboPreset.DRK_ST_Sp_EdgeDarkside) &&
+                         Gauge.DarksideTimeRemaining < 10000 &&
+                         LocalPlayer.CurrentMp > (mpRemaining + 3000)))
+                        return OriginalHook(EdgeOfDarkness);
 
                     // Spend Dark Arts
                     if (Gauge.HasDarkArts
-                        && LevelChecked(EdgeOfDarkness)
+                        && ActionReady(EdgeOfDarkness)
                         && CombatEngageDuration().TotalSeconds >= 10
-                        && (Gauge.ShadowTimeRemaining > 0 // In Burst
-                            || (IsEnabled(CustomComboPreset
-                                    .DRK_ST_DarkArtsDropPrevention)
-                                && HasOwnTBN))) // TBN
+                        && ((IsEnabled(CustomComboPreset.DRK_ST_Sp_Edge) &&
+                             Gauge.ShadowTimeRemaining > 0) || // In Burst
+                            (IsEnabled(CustomComboPreset.DRK_ST_Sp_DarkArts)
+                             && HasOwnTBN))) // TBN
                         return OriginalHook(EdgeOfDarkness);
                 }
             }
 
-            if (TryGetAction<Spender>(comboFlags, ref newAction))
+            if (IsEnabled(CustomComboPreset.DRK_ST_Spenders) &&
+                TryGetAction<Spender>(comboFlags, ref newAction))
                 return newAction;
 
             if (TryGetAction<Core>(comboFlags, ref newAction))
@@ -197,16 +193,21 @@ internal partial class DRK
             if (CanWeave() || CanDelayedWeave())
             {
                 // Mana Features
-                if (IsEnabled(CustomComboPreset.DRK_AoE_ManaOvercap)
+                if (IsEnabled(CustomComboPreset.DRK_AoE_Flood)
                     && LevelChecked(FloodOfDarkness)
-                    && (LocalPlayer.CurrentMp > 8500 ||
-                        (Gauge.DarksideTimeRemaining < 10 &&
-                         LocalPlayer.CurrentMp >= 3000)))
+                    && Gauge.DarksideTimeRemaining < 10
+                    && LocalPlayer.CurrentMp >= 3000)
                     return OriginalHook(FloodOfDarkness);
 
                 // Spend Dark Arts
-                if (IsEnabled(CustomComboPreset.DRK_AoE_ManaOvercap)
+                if (IsEnabled(CustomComboPreset.DRK_AoE_Flood)
                     && Gauge.HasDarkArts
+                    && LevelChecked(FloodOfDarkness))
+                    return OriginalHook(FloodOfDarkness);
+
+                // Overcap
+                if (IsEnabled(CustomComboPreset.DRK_AoE_ManaOvercap)
+                    && LocalPlayer.CurrentMp > 8500
                     && LevelChecked(FloodOfDarkness))
                     return OriginalHook(FloodOfDarkness);
             }

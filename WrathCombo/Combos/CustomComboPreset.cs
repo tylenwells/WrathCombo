@@ -1333,8 +1333,6 @@ public enum CustomComboPreset
 
     #region DARK KNIGHT
 
-    // Last value = 5067
-
     #region Simple Mode
 
     [AutoAction(false, false)]
@@ -1342,15 +1340,16 @@ public enum CustomComboPreset
     [ConflictingCombos(DRK_ST_Advanced)]
     [CustomComboInfo("Simple Mode - Single Target",
         "Replaces Hard Slash with a full one-button single target rotation.", DRK.JobID)]
-    DRK_ST_Simple = 5064,
+    DRK_ST_Simple = 5001,
 
     [AutoAction(true, false)]
     [ReplaceSkill(DRK.Unleash)]
     [ConflictingCombos(DRK_AoE_Advanced)]
     [CustomComboInfo("Simple Mode - AoE", "Replaces Unleash with a full one-button AoE rotation.", DRK.JobID)]
-    DRK_AoE_Simple = 5065,
+    DRK_AoE_Simple = 5002,
 
     #endregion
+    // Last value = 5002
 
     #region Advanced Single Target Combo
 
@@ -1359,7 +1358,7 @@ public enum CustomComboPreset
     [CustomComboInfo("Advanced Mode - Single Target",
         "Replaces Hard Slash with a full one-button single target rotation.\nThese features are ideal if you want to customize the rotation.",
         DRK.JobID)]
-    DRK_ST_Advanced = 5001,
+    DRK_ST_Advanced = 5010,
 
     [ParentCombo(DRK_ST_Advanced)]
     [CustomComboInfo("Balance Opener (Level 100)",
@@ -1374,102 +1373,116 @@ public enum CustomComboPreset
         "\n(will skip the 2nd Edge if you have not popped a TBN)" +
         "\n(does support TBN'ing during use or pre-pull)",
         DRK.JobID)]
-    DRK_ST_BalanceOpener = 5041,
-
-    [ParentCombo(DRK_ST_Advanced)]
-    [CustomComboInfo("Interrupt Option", "Adds Interject to the rotation when your target's cast is interruptible.", DRK.JobID)]
-    DRK_ST_Interrupt = 5053,
+    DRK_ST_BalanceOpener = 5011,
 
     [ParentCombo(DRK_ST_Advanced)]
     [CustomComboInfo("Unmend Uptime Option", "Adds Unmend to the rotation when you are out of range.", DRK.JobID)]
-    DRK_ST_RangedUptime = 5015,
-
-    [ParentCombo(DRK_ST_Advanced)]
-    [CustomComboInfo("Blood Gauge Overcap Option",
-        "Adds Bloodspiller to the rotation when at 90 blood gauge or higher.", DRK.JobID)]
-    DRK_ST_BloodOvercap = 5014,
-
-    [ParentCombo(DRK_ST_Advanced)]
-    [CustomComboInfo("Bloodspiller Option", "Adds Bloodspiller to the rotation when Delirium is active.", DRK.JobID)]
-    DRK_ST_Bloodspiller = 5013,
-
-    [ParentCombo(DRK_ST_Advanced)]
-    [CustomComboInfo("Scarlet Delirium Combo Option",
-        "Adds the Scarlet Delirium combo chain to the rotation when Delirium is activated.", DRK.JobID)]
-    DRK_ST_Delirium_Chain = 5003,
+    DRK_ST_RangedUptime = 5012,
 
     #region Cooldowns
 
     [ParentCombo(DRK_ST_Advanced)]
     [ConflictingCombos(DRK_oGCD)]
-    [CustomComboInfo("Cooldowns Options", "Collection of cooldowns to add to the rotation.", DRK.JobID)]
-    DRK_ST_CDs = 5004,
+    [CustomComboInfo("Cooldown Options", "Collection of cooldowns to add to the rotation.", DRK.JobID)]
+    DRK_ST_CDs = 5013,
 
-    #region Living Shadow Options
-
-    [ParentCombo(DRK_ST_CDs)]
-    [CustomComboInfo("Living Shadow Option", "Adds Living Shadow to the rotation when Darkside is up.", DRK.JobID)]
-    DRK_ST_CD_Shadow = 5005,
-
-    [ParentCombo(DRK_ST_CDs)]
-    [CustomComboInfo("Disesteem Option", "Adds Disesteem to the rotation when available.", DRK.JobID)]
-    DRK_ST_CD_Disesteem = 5006,
-
-    #endregion
+    [ParentCombo(DRK_ST_Advanced)]
+    [CustomComboInfo("Interrupt Option", "Adds Interject to the rotation when your target's cast is interruptible.", DRK.JobID)]
+    DRK_ST_CD_Interrupt = 5014,
 
     [ParentCombo(DRK_ST_CDs)]
     [CustomComboInfo("Delirium on Cooldown",
         "Adds Delirium (or Blood Weapon at lower levels) to the rotation on cooldown and when Darkside is up.\n Will also spend 50 blood gauge if Delirium is nearly ready to protect from overcap.",
         DRK.JobID)]
-    DRK_ST_CD_Delirium = 5002,
+    DRK_ST_CD_Delirium = 5015,
+
+    #region Living Shadow Options
+
+    [ParentCombo(DRK_ST_CDs)]
+    [CustomComboInfo("Living Shadow Option", "Adds Living Shadow to the rotation when Darkside is up.", DRK.JobID)]
+    DRK_ST_CD_Shadow = 5016,
+
+    [ParentCombo(DRK_ST_CDs)]
+    [CustomComboInfo("Disesteem Option", "Adds Disesteem to the rotation when available.", DRK.JobID)]
+    DRK_ST_CD_Disesteem = 5017,
+
+    #endregion
 
     #region Shadowbringer Options
 
     [ParentCombo(DRK_ST_CDs)]
     [CustomComboInfo("Shadowbringer Option",
         "Adds Shadowbringer to the rotation while Darkside is up. Will use all stacks on cooldown.", DRK.JobID)]
-    DRK_ST_CD_Bringer = 5007,
+    DRK_ST_CD_Bringer = 5018,
 
     [ParentCombo(DRK_ST_CD_Bringer)]
     [CustomComboInfo("Shadowbringer Burst Option", "Pools Shadowbringer to use during even minute window bursts (after Disesteem).",
         DRK.JobID)]
-    DRK_ST_CD_BringerBurst = 5008,
+    DRK_ST_CD_BringerBurst = 5019,
+
+    #endregion
+
+    #region Salt Options
+
+    [ParentCombo(DRK_ST_CDs)]
+    [CustomComboInfo("Salted Earth Option",
+        "Adds Salted Earth to the rotation while Darkside is up, will use Salt and Darkness if unlocked.", DRK.JobID)]
+    DRK_ST_CD_Salt = 5020,
+
+    [ParentCombo(DRK_ST_CDs)]
+    [CustomComboInfo("Salt and Darkness Option", "Adds Salt and Darkness to the rotation in the latter half of its duration.", DRK.JobID)]
+    DRK_ST_CD_Darkness = 5021,
 
     #endregion
 
     [ParentCombo(DRK_ST_CDs)]
     [CustomComboInfo("Carve and Spit Option", "Adds Carve and Spit to the rotation while Darkside is up.", DRK.JobID)]
-    DRK_ST_CD_Spit = 5009,
-
-    [ParentCombo(DRK_ST_CDs)]
-    [CustomComboInfo("Salted Earth Option",
-        "Adds Salted Earth to the rotation while Darkside is up, will use Salt and Darkness if unlocked.", DRK.JobID)]
-    DRK_ST_CD_Salt = 5010,
-
-    [ParentCombo(DRK_ST_CDs)]
-    [CustomComboInfo("Salt and Darkness Option", "Adds Salt and Darkness to the rotation in the latter half of its duration.", DRK.JobID)]
-    DRK_ST_CD_Darkness = 5066,
+    DRK_ST_CD_Spit = 5022,
 
     #endregion
 
-    #region Mana Overcap Options
+    #region Spenders
 
     [ParentCombo(DRK_ST_Advanced)]
-    [CustomComboInfo("Edge of Shadow Overcap Option",
-        "Uses Edge of Shadow if you are above 8,500 mana, Darkside is about to expire (<10s), or if you have Dark Arts in Burst.",
-        DRK.JobID)]
-    DRK_ST_ManaOvercap = 5011,
+    [CustomComboInfo("Spender Options", "Collection of spenders (mana and blood) to add to the rotation.", DRK.JobID)]
+    DRK_ST_Spenders = 5023,
 
-    [ParentCombo(DRK_ST_ManaOvercap)]
-    [CustomComboInfo("Edge of Shadow Burst Option",
-        "Pools Edge of Shadow for even minute burst windows, and then uses them until chosen MP limit is reached.",
-        DRK.JobID)]
-    DRK_ST_ManaSpenderPooling = 5012,
+    [ParentCombo(DRK_ST_Spenders)]
+    [CustomComboInfo("Scarlet Delirium Combo Option", "Adds the Scarlet Delirium combo chain to the rotation when Delirium is activated.", DRK.JobID)]
+    DRK_ST_Sp_ScarletChain = 5024,
 
-    [ParentCombo(DRK_ST_ManaOvercap)]
-    [CustomComboInfo("Dark Arts Drop Prevention",
-        "Will spend Dark Arts if your own The Blackest Night shield is active on you", DRK.JobID)]
-    DRK_ST_DarkArtsDropPrevention = 5032,
+    #region Blood
+
+    [ParentCombo(DRK_ST_Spenders)]
+    [CustomComboInfo("Bloodspiller Option", "Adds Bloodspiller to the rotation when Delirium is active or well outside of burst.", DRK.JobID)]
+    DRK_ST_Sp_Bloodspiller = 5025,
+
+    [ParentCombo(DRK_ST_Spenders)]
+    [CustomComboInfo("Blood Gauge Overcap Option",
+        "Adds Bloodspiller to the rotation when above a threshold.", DRK.JobID)]
+    DRK_ST_Sp_BloodOvercap = 5026,
+
+    #endregion
+
+    #region Mana
+
+    [ParentCombo(DRK_ST_Spenders)]
+    [CustomComboInfo("Edge of Darkness Option", "Uses Edge of Darkness in burst windows, and outside of that will spend to chosen MP limit.", DRK.JobID)]
+    DRK_ST_Sp_Edge = 5027,
+
+    [ParentCombo(DRK_ST_Spenders)]
+    [CustomComboInfo("Dark Arts Drop Prevention", "Will spend Dark Arts if your own The Blackest Night shield is active on you.", DRK.JobID)]
+    DRK_ST_Sp_DarkArts = 5028,
+
+    [ParentCombo(DRK_ST_Spenders)]
+    [CustomComboInfo("Darkside Maintenance Option", "Uses Edge of Darkness if Darkside is about to expire (<10s).", DRK.JobID)]
+    DRK_ST_Sp_EdgeDarkside = 5029,
+
+    [ParentCombo(DRK_ST_Spenders)]
+    [CustomComboInfo("Mana Overcap Option", "Uses Edge of Darkness if you are above 8,500 mana.", DRK.JobID)]
+    DRK_ST_Sp_ManaOvercap = 5030,
+
+    #endregion
 
     #endregion
 
@@ -1477,37 +1490,38 @@ public enum CustomComboPreset
 
     [ParentCombo(DRK_ST_Advanced)]
     [CustomComboInfo("Mitigation Options", "Collection of Mitigations to add to the rotation.", DRK.JobID)]
-    DRK_ST_Mitigation = 5033,
+    DRK_ST_Mitigation = 5031,
 
     [ParentCombo(DRK_ST_Mitigation)]
     [CustomComboInfo("The Blackest Night Option",
         "Uses The Blackest Night based on Health Remaining.\n" +
         "(Note: makes no attempt to ensure shield will break)", DRK.JobID)]
-    DRK_ST_TBN = 5034,
+    DRK_ST_TBN = 5032,
 
     [ParentCombo(DRK_ST_Mitigation)]
     [CustomComboInfo("Oblation Option", "Uses Oblation based on Health Remaining.", DRK.JobID)]
-    DRK_ST_Oblation = 5056,
+    DRK_ST_Oblation = 5033,
 
     [ParentCombo(DRK_ST_Mitigation)]
     [CustomComboInfo("Reprisal Option", "Uses Reprisal when a raidwide is in the process of casting.", DRK.JobID)]
-    DRK_ST_Reprisal = 5058,
+    DRK_ST_Reprisal = 5034,
 
     [ParentCombo(DRK_ST_Mitigation)]
     [CustomComboInfo("Dark Missionary Option", "Uses Dark Missionary when a raidwide is in the process of casting.", DRK.JobID)]
-    DRK_ST_Missionary = 5060,
+    DRK_ST_Missionary = 5035,
 
     [ParentCombo(DRK_ST_Mitigation)]
     [CustomComboInfo("Shadowed Vigil Option", "Uses Shadowed Vigil based on Health Remaining.", DRK.JobID)]
-    DRK_ST_Vigil = 5035,
+    DRK_ST_Vigil = 5036,
 
     [ParentCombo(DRK_ST_Mitigation)]
     [CustomComboInfo("Living Dead Option", "Uses Living Dead based on Health Remaining.", DRK.JobID)]
-    DRK_ST_LivingDead = 5036,
+    DRK_ST_LivingDead = 5037,
 
     #endregion
 
     #endregion
+    // Last value = 5037
 
     #region Advanced Multi Target Combo
 
@@ -1516,184 +1530,216 @@ public enum CustomComboPreset
     [CustomComboInfo("Advanced Mode - AoE",
         "Replaces Unleash with a full one-button AoE rotation.\nThese features are ideal if you want to customize the rotation.",
         DRK.JobID)]
-    DRK_AoE_Advanced = 5016,
-
-    [ParentCombo(DRK_AoE_Advanced)]
-    [CustomComboInfo("Interrupt Option", "Adds Interject to the rotation when your target's cast is interruptible.", DRK.JobID)]
-    DRK_AoE_Interrupt = 5054,
-
-    [ParentCombo(DRK_AoE_Advanced)]
-    [CustomComboInfo("Interrupt with Stun Option", "Adds Low Blow to the rotation when your target is casting, interruptible or not.", DRK.JobID)]
-    DRK_AoE_Stun = 5055,
-
-    [ParentCombo(DRK_AoE_Advanced)]
-    [CustomComboInfo("Blood Gauge Overcap Option", "Adds Quietus to the rotation when at 90 blood gauge or higher.",
-        DRK.JobID)]
-    DRK_AoE_BloodOvercap = 5026,
-
-    [ParentCombo(DRK_AoE_Advanced)]
-    [CustomComboInfo("Impalement Option", "Adds Impalement to the rotation when Delirium is activated.", DRK.JobID)]
-    DRK_AoE_Delirium_Chain = 5018,
+    DRK_AoE_Advanced = 5050,
 
     #region Cooldowns
 
     [ParentCombo(DRK_AoE_Advanced)]
     [CustomComboInfo("Cooldowns Options", "Collection of cooldowns to add to the rotation.", DRK.JobID)]
-    DRK_AoE_CDs = 5019,
+    DRK_AoE_CDs = 5051,
+
+    [ParentCombo(DRK_AoE_Advanced)]
+    [CustomComboInfo("Interrupt Option", "Adds Interject to the rotation when your target's cast is interruptible.", DRK.JobID)]
+    DRK_AoE_Interrupt = 5052,
+
+    [ParentCombo(DRK_AoE_Advanced)]
+    [CustomComboInfo("Interrupt with Stun Option", "Adds Low Blow to the rotation when your target is casting, interruptible or not.", DRK.JobID)]
+    DRK_AoE_Stun = 5053,
 
     [ParentCombo(DRK_AoE_CDs)]
-    [CustomComboInfo("AoE Shadowbringer Option", "Adds Shadowbringer to the rotation.", DRK.JobID)]
-    DRK_AoE_CD_Bringer = 5020,
+    [CustomComboInfo("Delirium Option",
+        "Adds Delirium (or Blood Weapon at lower levels) to the rotation on cooldown and when Darkside is up.",
+        DRK.JobID)]
+    DRK_AoE_CD_Delirium = 5054,
 
     #region Living Shadow Options
 
     [ParentCombo(DRK_AoE_CDs)]
     [CustomComboInfo("Living Shadow Option", "Adds Living Shadow to the rotation on cooldown and when Darkside is up.",
         DRK.JobID)]
-    DRK_AoE_CD_Shadow = 5021,
+    DRK_AoE_CD_Shadow = 5055,
 
     [ParentCombo(DRK_AoE_CDs)]
     [CustomComboInfo("Disesteem Option", "Adds Disesteem to the rotation when available.", DRK.JobID)]
-    DRK_AoE_CD_Disesteem = 5022,
+    DRK_AoE_CD_Disesteem = 5056,
 
     #endregion
 
     [ParentCombo(DRK_AoE_CDs)]
-    [CustomComboInfo("Delirium Option",
-        "Adds Delirium (or Blood Weapon at lower levels) to the rotation on cooldown and when Darkside is up.",
-        DRK.JobID)]
-    DRK_AoE_CD_Delirium = 5017,
+    [CustomComboInfo("AoE Shadowbringer Option", "Adds Shadowbringer to the rotation.", DRK.JobID)]
+    DRK_AoE_CD_Bringer = 5057,
 
-    [ParentCombo(DRK_AoE_CDs)]
-    [CustomComboInfo("Abyssal Drain Option", "Adds Abyssal Drain to the rotation when you fall below 60 percent hp.",
-        DRK.JobID)]
-    DRK_AoE_CD_Drain = 5023,
+    #region Salt Options
 
     [ParentCombo(DRK_AoE_CDs)]
     [CustomComboInfo("Salted Earth Option",
         "Adds Salted Earth and Salt and Darkness to the rotation on cooldown and when Darkside is up.", DRK.JobID)]
-    DRK_AoE_CD_Salt = 5024,
+    DRK_AoE_CD_Salt = 5058,
 
     [ParentCombo(DRK_AoE_CDs)]
     [CustomComboInfo("Salt After Pull Option",
         "Requires to be at a stand-still and for combat to have been going on for >7 seconds to use Salted Earth, to try to make it be placed after you finish your pull.", DRK.JobID)]
-    DRK_AoE_CD_SaltStill = 5063,
+    DRK_AoE_CD_SaltStill = 5059,
 
     #endregion
 
-    [ParentCombo(DRK_AoE_Advanced)]
-    [CustomComboInfo("Flood of Shadow Overcap Option",
-        "Uses Flood of Shadow if you are above 8,500 mana, Darkside is about to expire (<10s), or if you have Dark Arts.",
+    [ParentCombo(DRK_AoE_CDs)]
+    [CustomComboInfo("Abyssal Drain Option", "Adds Abyssal Drain to the rotation when you fall below 60 percent hp.",
         DRK.JobID)]
-    DRK_AoE_ManaOvercap = 5025,
+    DRK_AoE_CD_Drain = 5060,
+
+    #endregion
+
+    #region Spenders
+
+    [ParentCombo(DRK_AoE_Advanced)]
+    [CustomComboInfo("Spender Options", "Collection of spenders (mana and blood) to add to the rotation.", DRK.JobID)]
+    DRK_AoE_Spenders = 5061,
+
+    [ParentCombo(DRK_AoE_Spenders)]
+    [CustomComboInfo("Impalement Option", "Adds Impalement to the rotation when Delirium is active.", DRK.JobID)]
+    DRK_AoE_SP_ImpalementChain = 5062,
+
+    #region Blood
+
+    [ParentCombo(DRK_AoE_Spenders)]
+    [CustomComboInfo("Quietus Option", "Adds Quietus to the rotation when Delirium is active or well outside of burst.", DRK.JobID)]
+    DRK_AoE_Sp_Quietus = 5063,
+
+    [ParentCombo(DRK_AoE_Spenders)]
+    [CustomComboInfo("Blood Gauge Overcap Option", "Adds Quietus to the rotation when at 90 blood gauge or higher.", DRK.JobID)]
+    DRK_AoE_SP_BloodOvercap = 5064,
+
+    #endregion
+
+    #region Mana
+
+    [ParentCombo(DRK_AoE_Spenders)]
+    [CustomComboInfo("Flood of Shadow Option", "Uses Flood of Shadow in burst, if Darkside is about to expire (<10s), or if you have Dark Arts.", DRK.JobID)]
+    DRK_AoE_Flood = 5065,
+
+    [ParentCombo(DRK_AoE_Spenders)]
+    [CustomComboInfo("Mana Overcap Option", "Uses Flood of Shadow if you are above 8,500 mana.", DRK.JobID)]
+    DRK_AoE_ManaOvercap = 5066,
+
+    #endregion
+
+    #endregion
 
     #region Mitigation Options
 
     [ParentCombo(DRK_AoE_Advanced)]
     [CustomComboInfo("Mitigation Options", "Collection of Mitigations to add to the rotation.", DRK.JobID)]
-    DRK_AoE_Mitigation = 5037,
+    DRK_AoE_Mitigation = 5067,
 
     [ParentCombo(DRK_AoE_Mitigation)]
     [CustomComboInfo("The Blackest Night Option", "Adds The Blackest Night to the rotation.", DRK.JobID)]
-    DRK_AoE_TBN = 5038,
+    DRK_AoE_TBN = 5068,
 
     [ParentCombo(DRK_AoE_Mitigation)]
     [CustomComboInfo("Oblation Option", "Uses Oblation based on Health Remaining.", DRK.JobID)]
-    DRK_AoE_Oblation = 5057,
+    DRK_AoE_Oblation = 5069,
 
     [ParentCombo(DRK_AoE_Mitigation)]
     [CustomComboInfo("Reprisal Option", "Adds Reprisal to the rotation.", DRK.JobID)]
-    DRK_AoE_Reprisal = 5059,
+    DRK_AoE_Reprisal = 5070,
 
     [ParentCombo(DRK_AoE_Mitigation)]
     [CustomComboInfo("Rampart Option", "Adds Rampart to the rotation.", DRK.JobID)]
-    DRK_AoE_Rampart = 5061,
+    DRK_AoE_Rampart = 5071,
 
     [ParentCombo(DRK_AoE_Mitigation)]
     [CustomComboInfo("Arm's Length Option", "Adds Arm's Length to the rotation.", DRK.JobID)]
-    DRK_AoE_ArmsLength = 5062,
+    DRK_AoE_ArmsLength = 5072,
 
     [ParentCombo(DRK_AoE_Mitigation)]
     [CustomComboInfo("Shadowed Vigil Option", "Uses Shadowed Vigil based on Health Remaining.", DRK.JobID)]
-    DRK_AoE_Vigil = 5039,
+    DRK_AoE_Vigil = 5073,
 
     [ParentCombo(DRK_AoE_Mitigation)]
-    [CustomComboInfo("Living Dead Option", "Uses Living Dead based on your and your enemy's Remaining Health.",
-        DRK.JobID)]
-    DRK_AoE_LivingDead = 5040,
+    [CustomComboInfo("Living Dead Option", "Uses Living Dead based on your and your enemy's Remaining Health.", DRK.JobID)]
+    DRK_AoE_LivingDead = 5074,
 
     #endregion
 
     #endregion
+    // Last value = 5074
+
+    #region Multibutton Features
 
     #region One-Button Mitigation
 
     [ReplaceSkill(DRK.DarkMind)]
     [CustomComboInfo("One-Button Mitigation Feature", "Replaces Dark Mind with an all-in-one mitigation button.", DRK.JobID)]
-    DRK_Mit_OneButton = 5042,
+    DRK_Mit_OneButton = 5090,
 
     [ParentCombo(DRK_Mit_OneButton)]
     [CustomComboInfo("Living Dead Emergency Option", "Gives max priority to Living Dead when the Health percentage threshold is met.", DRK.JobID)]
-    DRK_Mit_LivingDead_Max = 5043,
+    DRK_Mit_LivingDead_Max = 5091,
 
     [ParentCombo(DRK_Mit_OneButton)]
     [CustomComboInfo("The Blackest Night Option", "Adds The Blackest Night to the one-button mitigation.", DRK.JobID)]
-    DRK_Mit_TheBlackestNight = 5044,
+    DRK_Mit_TheBlackestNight = 5092,
 
     [ParentCombo(DRK_Mit_OneButton)]
     [CustomComboInfo("Oblation Option", "Adds Oblation to the one-button mitigation.", DRK.JobID)]
-    DRK_Mit_Oblation = 5045,
+    DRK_Mit_Oblation = 5093,
 
     [ParentCombo(DRK_Mit_OneButton)]
     [CustomComboInfo("Reprisal Option",
         "Adds Reprisal to the one-button mitigation." +
         "\nNOTE: Will not use unless there is a target within range to prevent waste.", DRK.JobID)]
-    DRK_Mit_Reprisal = 5046,
+    DRK_Mit_Reprisal = 5094,
 
     [ParentCombo(DRK_Mit_OneButton)]
     [CustomComboInfo("Dark Missionary Option", "Adds Dark Missionary to the one-button mitigation.", DRK.JobID)]
-    DRK_Mit_DarkMissionary = 5047,
+    DRK_Mit_DarkMissionary = 5095,
 
     [ParentCombo(DRK_Mit_OneButton)]
     [CustomComboInfo("Rampart Option", "Adds Rampart to the one-button mitigation.", DRK.JobID)]
-    DRK_Mit_Rampart = 5048,
+    DRK_Mit_Rampart = 5096,
 
     [ParentCombo(DRK_Mit_OneButton)]
     [CustomComboInfo("Dark Mind Option",
         "Adds Dark Mind to the one-button mitigation." +
         "\nNOTE: even if disabled, will still try to use Dark Mind as the lowest priority.", DRK.JobID)]
-    DRK_Mit_DarkMind = 5049,
+    DRK_Mit_DarkMind = 5097,
 
     [ParentCombo(DRK_Mit_OneButton)]
     [CustomComboInfo("Arm's Length Option", "Adds Arm's Length to the one-button mitigation.", DRK.JobID)]
-    DRK_Mit_ArmsLength = 5050,
+    DRK_Mit_ArmsLength = 5098,
 
     [ParentCombo(DRK_Mit_OneButton)]
     [CustomComboInfo("Shadow Wall / Vigil Option", "Adds Shadow Wall / Vigil to the one-button mitigation.", DRK.JobID)]
-    DRK_Mit_ShadowWall = 5051,
+    DRK_Mit_ShadowWall = 5099,
 
     #endregion
+    // Last value = 5099
 
     #region oGCD Feature
 
     [ReplaceSkill(DRK.CarveAndSpit, DRK.AbyssalDrain)]
     [ConflictingCombos(DRK_ST_CDs)]
     [CustomComboInfo("oGCD Feature", "Adds Living Shadow > Disesteem > Salted Earth > Salt And Darkness to Carve And Spit and Abyssal Drain.", DRK.JobID)]
-    DRK_oGCD = 5027,
+    DRK_oGCD = 5120,
 
     [ParentCombo(DRK_oGCD)]
     [CustomComboInfo("Interrupt Option", "Adds Interject to the beginning of the feature when your target's cast is interruptible.", DRK.JobID)]
-    DRK_oGCD_Interrupt = 5068,
+    DRK_oGCD_Interrupt = 5121,
 
     [ParentCombo(DRK_oGCD)]
     [CustomComboInfo("Delirium Option", "Adds Blood Weapon or Delirium to the Feature.", DRK.JobID)]
-    DRK_oGCD_Delirium = 5067,
+    DRK_oGCD_Delirium = 5122,
 
     [ParentCombo(DRK_oGCD)]
     [CustomComboInfo("Shadowbringer Option", "Adds Shadowbringer to the Feature.", DRK.JobID)]
-    DRK_oGCD_Shadowbringer = 5028,
+    DRK_oGCD_Shadowbringer = 5123,
 
     #endregion
+    // Last value = 5123
+
+    #endregion
+    // Last value = 5123
 
     #region Variant
 
@@ -1701,19 +1747,20 @@ public enum CustomComboPreset
     [VariantParent(DRK_ST_Advanced, DRK_AoE_Advanced)]
     [CustomComboInfo("Spirit Dart Option",
         "Use Variant Spirit Dart whenever the debuff is not present or less than 3s.", DRK.JobID)]
-    DRK_Var_Dart = 5029,
+    DRK_Var_Dart = 5140,
 
     [Variant]
     [VariantParent(DRK_ST_Advanced, DRK_AoE_Advanced)]
     [CustomComboInfo("Cure Option", "Use Variant Cure when HP is below set threshold.", DRK.JobID)]
-    DRK_Var_Cure = 5030,
+    DRK_Var_Cure = 5141,
 
     [Variant]
     [VariantParent(DRK_ST_Advanced, DRK_AoE_Advanced)]
     [CustomComboInfo("Ultimatum Option", "Use Variant Ultimatum on cooldown.", DRK.JobID)]
-    DRK_Var_Ulti = 5031,
+    DRK_Var_Ulti = 5142,
 
     #endregion
+    // Last value = 5142
 
     #endregion
 

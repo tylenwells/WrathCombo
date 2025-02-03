@@ -65,7 +65,7 @@ internal partial class DRK
                     UserConfig.DrawBossOnlyChoice(DRK_ST_OpenerDifficulty);
                     break;
 
-                case CustomComboPreset.DRK_ST_BloodOvercap:
+                case CustomComboPreset.DRK_ST_Sp_BloodOvercap:
                     UserConfig.DrawSliderInt(50, 100, DRK_ST_BloodOvercapThreshold,
                         startUsingAboveDescription,
                         itemWidth: medium, sliderIncrement: SliderIncrements.Fives);
@@ -93,7 +93,7 @@ internal partial class DRK
 
                     break;
 
-                case CustomComboPreset.DRK_ST_ManaSpenderPooling:
+                case CustomComboPreset.DRK_ST_Sp_Edge:
                     UserConfig.DrawSliderInt(0, 3000, DRK_ST_ManaSpenderPooling,
                         "Mana to save for TBN (0 = Use All)",
                         itemWidth: biggest,
@@ -170,7 +170,7 @@ internal partial class DRK
 
                 #region Adv AoE
 
-                case CustomComboPreset.DRK_AoE_BloodOvercap:
+                case CustomComboPreset.DRK_AoE_SP_BloodOvercap:
                     UserConfig.DrawSliderInt(50, 100, DRK_AoE_BloodOvercapThreshold,
                         startUsingAboveDescription,
                         itemWidth: medium, sliderIncrement: SliderIncrements.Fives);
@@ -483,7 +483,7 @@ internal partial class DRK
         ///     <b>Range</b>: 50 - 100 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Fives" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.DRK_ST_BloodOvercap" />
+        /// <seealso cref="CustomComboPreset.DRK_ST_Sp_BloodOvercap" />
         public static readonly UserInt DRK_ST_BloodOvercapThreshold =
             new("DRK_ST_BloodOvercapThreshold", 90);
 
@@ -560,7 +560,7 @@ internal partial class DRK
         ///     <b>Range</b>: 0 - 3000 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Thousands" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.DRK_ST_ManaSpenderPooling" />
+        /// <seealso cref="CustomComboPreset.DRK_ST_Sp_Edge" />
         public static readonly UserInt DRK_ST_ManaSpenderPooling =
             new("DRK_ST_ManaSpenderPooling", 3000);
 
@@ -704,7 +704,7 @@ internal partial class DRK
         ///     <b>Range</b>: 50 - 100 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Fives" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.DRK_AoE_BloodOvercap" />
+        /// <seealso cref="CustomComboPreset.DRK_AoE_SP_BloodOvercap" />
         public static readonly UserInt DRK_AoE_BloodOvercapThreshold =
             new("DRK_AoE_BloodOvercapThreshold", 90);
 
