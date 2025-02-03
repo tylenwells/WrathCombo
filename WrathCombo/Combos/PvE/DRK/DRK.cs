@@ -118,49 +118,12 @@ internal partial class DRK
             if (TryGetAction<Core>(comboFlags, ref newAction))
                 return newAction;
 
-            // Delirium Chain
-            if (LevelChecked(Delirium)
-                && LevelChecked(ScarletDelirium)
-                && IsEnabled(CustomComboPreset.DRK_ST_Delirium_Chain)
-                && HasEffect(Buffs.EnhancedDelirium)
-                && Gauge.DarksideTimeRemaining > 0)
-                return OriginalHook(Bloodspiller);
-
-            //Delirium Features
-            if (LevelChecked(Delirium)
-                && IsEnabled(CustomComboPreset.DRK_ST_Bloodspiller))
-            {
-                //Bloodspiller under Delirium
-                var deliriumBuff = TraitLevelChecked(Traits.EnhancedDelirium)
-                    ? Buffs.EnhancedDelirium
-                    : Buffs.Delirium;
-                if (GetBuffStacks(deliriumBuff) > 0)
-                    return Bloodspiller;
-
-                //Blood management outside of Delirium
-                if (IsEnabled(CustomComboPreset.DRK_ST_CD_Delirium)
-                    && ((Gauge.Blood >= 60 &&
-                         GetCooldownRemainingTime(Delirium) is > 0 and
-                             < 3) // Prep for Delirium
-                        || (Gauge.Blood >= 50 &&
-                            GetCooldownRemainingTime(Delirium) >
-                            37))) // Regular Bloodspiller
-                    return Bloodspiller;
-            }
-
             // 1-2-3 combo
             if (!(ComboTimer > 0)) return HardSlash;
             if (ComboAction == HardSlash && LevelChecked(SyphonStrike))
                 return SyphonStrike;
             if (ComboAction == SyphonStrike && LevelChecked(Souleater))
-            {
-                // Blood management
-                if (IsEnabled(CustomComboPreset.DRK_ST_BloodOvercap)
-                    && LevelChecked(Bloodspiller) && Gauge.Blood >= 90)
-                    return Bloodspiller;
-
                 return Souleater;
-            }
 
             return HardSlash;
         }
@@ -267,24 +230,10 @@ internal partial class DRK
             if (TryGetAction<Core>(comboFlags, ref newAction))
                 return newAction;
 
-            // Delirium Chain
-            if (LevelChecked(Delirium)
-                && LevelChecked(Impalement)
-                && IsEnabled(CustomComboPreset.DRK_AoE_Delirium_Chain)
-                && HasEffect(Buffs.EnhancedDelirium)
-                && Gauge.DarksideTimeRemaining > 1)
-                return OriginalHook(Quietus);
-
             // 1-2-3 combo
             if (!(ComboTimer > 0)) return Unleash;
             if (ComboAction == Unleash && LevelChecked(StalwartSoul))
-            {
-                if (IsEnabled(CustomComboPreset.DRK_AoE_BloodOvercap)
-                    && Gauge.Blood >= 90
-                    && LevelChecked(Quietus))
-                    return Quietus;
                 return StalwartSoul;
-            }
 
             return Unleash;
         }

@@ -348,7 +348,7 @@ internal partial class DRK
     ///     Actions in this Provider:
     ///     <list type="bullet">
     ///         <item>
-    ///             <term>Variant Cure</term>
+    ///             <term>Bloodspiller</term>
     ///         </item>
     ///     </list>
     /// </remarks>
@@ -356,6 +356,98 @@ internal partial class DRK
     {
         public bool TryGetAction(Combo flags, ref uint action)
         {
+
+            #region Delirium Chain
+
+            if ((flags.HasFlag(Combo.Simple) ||
+                 ((flags.HasFlag(Combo.ST) &&
+                   IsEnabled(Preset.DRK_ST_Delirium_Chain)) ||
+                  flags.HasFlag(Combo.AoE) &&
+                  IsEnabled(Preset.DRK_AoE_Delirium_Chain))) &&
+                HasEffect(Buffs.EnhancedDelirium))
+                if (flags.HasFlag(Combo.ST))
+                    return (action = OriginalHook(Bloodspiller)) != 0;
+                else if (flags.HasFlag(Combo.AoE))
+                    return (action = OriginalHook(Quietus)) != 0;
+
+            #endregion
+
+            #region Blood Spending during Delirium
+
+            #region Variables
+
+            var deliriumBuff = TraitLevelChecked(Traits.EnhancedDelirium)
+                ? Buffs.EnhancedDelirium
+                : Buffs.Delirium;
+
+            #endregion
+
+            if ((flags.HasFlag(Combo.Simple) ||
+                 flags.HasFlag(Combo.AoE) ||
+                 IsEnabled(Preset.DRK_ST_Bloodspiller)) &&
+                GetBuffStacks(deliriumBuff) > 0)
+                if (flags.HasFlag(Combo.ST))
+                    return (action = Bloodspiller) != 0;
+                else if (flags.HasFlag(Combo.AoE))
+                    return (action = Quietus) != 0;
+
+            #endregion
+
+            #region Blood Spending prior to Delirium (ST only)
+
+            if (flags.HasFlag(Combo.ST) &&
+                (flags.HasFlag(Combo.Simple) ||
+                 (flags.HasFlag(Combo.Adv) && IsEnabled(Preset.DRK_ST_CD_Delirium))) &&
+                LevelChecked(Delirium) &&
+                Gauge.Blood >= 60 &&
+                GetCooldownRemainingTime(Delirium) is > 0 and < 7)
+                return (action = Bloodspiller) != 0;
+
+            #endregion
+
+            #region Blood Spending after Delirium Chain
+
+            if ((flags.HasFlag(Combo.Simple) ||
+                 flags.HasFlag(Combo.AoE) ||
+                 IsEnabled(Preset.DRK_ST_Bloodspiller)) &&
+                LevelChecked(Bloodspiller) &&
+                Gauge.Blood >= 50 &&
+                GetCooldownRemainingTime(Delirium) > 37)
+                if (flags.HasFlag(Combo.ST))
+                    return (action = Bloodspiller) != 0;
+                else if (flags.HasFlag(Combo.AoE) && LevelChecked(Quietus))
+                    return (action = Quietus) != 0;
+
+            #endregion
+
+            #region Blood Overcap
+
+            #region Variables
+
+            var overcapThreshold = flags.HasFlag(Combo.Adv) ?
+                flags.HasFlag(Combo.ST)
+                    ? Config.DRK_ST_BloodOvercapThreshold
+                    : Config.DRK_AoE_BloodOvercapThreshold :
+                90;
+
+            #endregion
+
+            if ((flags.HasFlag(Combo.Simple) ||
+                 ((flags.HasFlag(Combo.ST) &&
+                   IsEnabled(Preset.DRK_ST_BloodOvercap)) ||
+                  flags.HasFlag(Combo.AoE) &&
+                  IsEnabled(Preset.DRK_AoE_BloodOvercap))) &&
+                LevelChecked(Bloodspiller) &&
+                Gauge.Blood >= overcapThreshold)
+                if (flags.HasFlag(Combo.ST))
+                    return (action = Bloodspiller) != 0;
+                else if (flags.HasFlag(Combo.AoE) && LevelChecked(Quietus))
+                    return (action = Quietus) != 0;
+
+            #endregion
+
+            if (!CanWeave()) return false;
+
             return false;
         }
     }

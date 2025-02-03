@@ -65,6 +65,12 @@ internal partial class DRK
                     UserConfig.DrawBossOnlyChoice(DRK_ST_OpenerDifficulty);
                     break;
 
+                case CustomComboPreset.DRK_ST_BloodOvercap:
+                    UserConfig.DrawSliderInt(50, 100, DRK_ST_BloodOvercapThreshold,
+                        startUsingAboveDescription,
+                        itemWidth: medium, sliderIncrement: SliderIncrements.Fives);
+                    break;
+
                 case CustomComboPreset.DRK_ST_CD_Delirium:
                     UserConfig.DrawSliderInt(0, 25, DRK_ST_DeliriumThreshold,
                         stopUsingAtDescription,
@@ -163,6 +169,12 @@ internal partial class DRK
                 #endregion
 
                 #region Adv AoE
+
+                case CustomComboPreset.DRK_AoE_BloodOvercap:
+                    UserConfig.DrawSliderInt(50, 100, DRK_AoE_BloodOvercapThreshold,
+                        startUsingAboveDescription,
+                        itemWidth: medium, sliderIncrement: SliderIncrements.Fives);
+                    break;
 
                 case CustomComboPreset.DRK_AoE_CD_Delirium:
                     UserConfig.DrawSliderInt(0, 60, DRK_AoE_DeliriumThreshold,
@@ -383,6 +395,10 @@ internal partial class DRK
         private const string startUsingAtDescription =
             "HP% to use at or below";
 
+        /// Bar Description for HP% to start using (above)
+        private const string startUsingAboveDescription =
+            "HP% to use at or above";
+
         private const string chargesToKeepDescription =
             "# charges to keep (0 = Use All)";
 
@@ -458,6 +474,18 @@ internal partial class DRK
         /// <seealso cref="CustomComboPreset.DRK_ST_BalanceOpener" />
         public static readonly UserBoolArray DRK_ST_OpenerDifficulty =
             new("DRK_ST_OpenerDifficulty", [false, true]);
+
+        /// <summary>
+        ///     Target HP% to use Blood Overcap above for Single Target.
+        /// </summary>
+        /// <value>
+        ///     <b>Default</b>: 90<br />
+        ///     <b>Range</b>: 50 - 100 <br />
+        ///     <b>Step</b>: <see cref="SliderIncrements.Fives" />
+        /// </value>
+        /// <seealso cref="CustomComboPreset.DRK_ST_BloodOvercap" />
+        public static readonly UserInt DRK_ST_BloodOvercapThreshold =
+            new("DRK_ST_BloodOvercapThreshold", 90);
 
         /// <summary>
         ///     Target HP% to use Delirium above for Single Target.
@@ -557,17 +585,7 @@ internal partial class DRK
             DRK_ST_ManaSpenderPoolingDifficultyListSet =
                 ContentCheck.ListSet.Halved;
 
-        /// <summary>
-        ///     Self HP% to use TBN below for Single Target.
-        /// </summary>
-        /// <value>
-        ///     <b>Default</b>: 25 <br />
-        ///     <b>Range</b>: 5 - 40 <br />
-        ///     <b>Step</b>: <see cref="SliderIncrements.Fives" />
-        /// </value>
-        /// <seealso cref="CustomComboPreset.DRK_ST_TBN" />
-        public static readonly UserInt DRK_ST_TBNThreshold =
-            new("DRK_ST_TBNThreshold", 25);
+        #region In-Rotation Mitigation
 
         /// <summary>
         ///     Difficulty of Mitigation for Single Target.
@@ -589,6 +607,18 @@ internal partial class DRK
         public static readonly ContentCheck.ListSet
             DRK_ST_MitDifficultyListSet =
                 ContentCheck.ListSet.Halved;
+
+        /// <summary>
+        ///     Self HP% to use TBN below for Single Target.
+        /// </summary>
+        /// <value>
+        ///     <b>Default</b>: 25 <br />
+        ///     <b>Range</b>: 5 - 40 <br />
+        ///     <b>Step</b>: <see cref="SliderIncrements.Fives" />
+        /// </value>
+        /// <seealso cref="CustomComboPreset.DRK_ST_TBN" />
+        public static readonly UserInt DRK_ST_TBNThreshold =
+            new("DRK_ST_TBNThreshold", 25);
 
         /// <summary>
         ///     TBN Boss Restriction for Single Target.
@@ -662,7 +692,21 @@ internal partial class DRK
 
         #endregion
 
+        #endregion
+
         #region Adv AoE
+
+        /// <summary>
+        ///     Target HP% to use Blood Overcap above for AoE.
+        /// </summary>
+        /// <value>
+        ///     <b>Default</b>: 90<br />
+        ///     <b>Range</b>: 50 - 100 <br />
+        ///     <b>Step</b>: <see cref="SliderIncrements.Fives" />
+        /// </value>
+        /// <seealso cref="CustomComboPreset.DRK_AoE_BloodOvercap" />
+        public static readonly UserInt DRK_AoE_BloodOvercapThreshold =
+            new("DRK_AoE_BloodOvercapThreshold", 90);
 
         /// <summary>
         ///     Target HP% to use Delirium above for AoE.
