@@ -1446,6 +1446,10 @@ public enum CustomComboPreset
         "Adds Salted Earth to the rotation while Darkside is up, will use Salt and Darkness if unlocked.", DRK.JobID)]
     DRK_ST_CD_Salt = 5010,
 
+    [ParentCombo(DRK_ST_CDs)]
+    [CustomComboInfo("Salt and Darkness Option", "Adds Salt and Darkness to the rotation in the latter half of its duration.", DRK.JobID)]
+    DRK_ST_CD_Darkness = 5066,
+
     #endregion
 
     // Last value = 5010

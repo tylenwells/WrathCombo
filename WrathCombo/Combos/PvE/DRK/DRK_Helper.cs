@@ -524,6 +524,9 @@ internal partial class DRK
     ///             <term>Salted Earth</term>
     ///         </item>
     ///         <item>
+    ///             <term>Salt and Darkness</term>
+    ///         </item>
+    ///         <item>
     ///             <term>Shadowbringer</term>
     ///         </item>
     ///         <item>
@@ -621,7 +624,7 @@ internal partial class DRK
 
             #endregion
 
-            #region Salted Earth (and Salt and Darkness)
+            #region Salted Earth
 
             #region Variables
 
@@ -637,15 +640,23 @@ internal partial class DRK
                  ((flags.HasFlag(Combo.ST) && IsEnabled(Preset.DRK_ST_CD_Salt)) ||
                   flags.HasFlag(Combo.AoE) && IsEnabled(Preset.DRK_AoE_CD_Salt))) &&
                 LevelChecked(SaltedEarth) &&
+                IsOffCooldown(SaltedEarth) &&
+                !HasEffect(Buffs.SaltedEarth) &&
                 saltStill)
-                if (!HasEffect(Buffs.SaltedEarth) &&
-                    IsOffCooldown(SaltedEarth))
-                    return (action = SaltedEarth) != 0;
-                else if (IsOffCooldown(SaltAndDarkness) &&
-                         LevelChecked(SaltAndDarkness) &&
-                         HasEffect(Buffs.SaltedEarth) &&
-                         GetBuffRemainingTime(Buffs.SaltedEarth) < 7)
-                    return (action = OriginalHook(SaltAndDarkness)) != 0;
+                return (action = SaltedEarth) != 0;
+
+            #endregion
+
+            #region Salt and Darkness
+
+            if ((flags.HasFlag(Combo.Simple) ||
+                 flags.HasFlag(Combo.AoE) ||
+                 IsEnabled(Preset.DRK_ST_CD_Darkness)) &&
+                LevelChecked(SaltAndDarkness) &&
+                IsOffCooldown(SaltAndDarkness) &&
+                HasEffect(Buffs.SaltedEarth) &&
+                GetBuffRemainingTime(Buffs.SaltedEarth) < 7)
+                return (action = OriginalHook(SaltAndDarkness)) != 0;
 
             #endregion
 
