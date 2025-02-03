@@ -62,23 +62,19 @@ internal partial class DRK
                 TryGetAction<Cooldown>(comboFlags, ref newAction))
                 return newAction;
 
+            var inMitigationContent =
+                ContentCheck.IsInConfiguredContent(
+                    Config.DRK_ST_MitDifficulty,
+                    Config.DRK_ST_MitDifficultyListSet
+                );
+            if (IsEnabled(CustomComboPreset.DRK_ST_Mitigation) &&
+                inMitigationContent &&
+                TryGetAction<Mitigation>(comboFlags, ref newAction))
+                return newAction;
+
             // oGCDs
             if (CanWeave() || CanDelayedWeave())
             {
-                // Mitigation first
-                var inMitigationContent =
-                    ContentCheck.IsInConfiguredContent(
-                        Config.DRK_ST_MitDifficulty,
-                        Config.DRK_ST_MitDifficultyListSet
-                    );
-                if (IsEnabled(CustomComboPreset.DRK_ST_Mitigation) &&
-                    inMitigationContent &&
-                    TryGetAction<Mitigation>(comboFlags, ref newAction))
-                    return newAction;
-
-                if (TryGetAction<Spender>(comboFlags, ref newAction))
-                    return newAction;
-
                 // Mana Spenders
                 if (IsEnabled(CustomComboPreset.DRK_ST_ManaOvercap)
                     && CombatEngageDuration().TotalSeconds >= 5)
@@ -115,15 +111,11 @@ internal partial class DRK
                 }
             }
 
-            if (TryGetAction<Core>(comboFlags, ref newAction))
+            if (TryGetAction<Spender>(comboFlags, ref newAction))
                 return newAction;
 
-            // 1-2-3 combo
-            if (!(ComboTimer > 0)) return HardSlash;
-            if (ComboAction == HardSlash && LevelChecked(SyphonStrike))
-                return SyphonStrike;
-            if (ComboAction == SyphonStrike && LevelChecked(Souleater))
-                return Souleater;
+            if (TryGetAction<Core>(comboFlags, ref newAction))
+                return newAction;
 
             return HardSlash;
         }
@@ -157,15 +149,11 @@ internal partial class DRK
             if (TryGetAction<Cooldown>(comboFlags, ref newAction))
                 return newAction;
 
-            // oGCDs
-            if (CanWeave())
-            {
-                if (TryGetAction<Mitigation>(comboFlags, ref newAction))
+            if (TryGetAction<Mitigation>(comboFlags, ref newAction))
                     return newAction;
 
-                if (TryGetAction<Spender>(comboFlags, ref newAction))
-                    return newAction;
-            }
+            if (TryGetAction<Spender>(comboFlags, ref newAction))
+                return newAction;
 
             if (TryGetAction<Core>(comboFlags, ref newAction))
                 return newAction;
@@ -201,17 +189,13 @@ internal partial class DRK
                 TryGetAction<Cooldown>(comboFlags, ref newAction))
                 return newAction;
 
+            if (IsEnabled(CustomComboPreset.DRK_AoE_Mitigation) &&
+                TryGetAction<Mitigation>(comboFlags, ref newAction))
+                return newAction;
+
             // oGCDs
             if (CanWeave() || CanDelayedWeave())
             {
-                // Mitigation first
-                if (IsEnabled(CustomComboPreset.DRK_AoE_Mitigation) &&
-                    TryGetAction<Mitigation>(comboFlags, ref newAction))
-                    return newAction;
-
-                if (TryGetAction<Spender>(comboFlags, ref newAction))
-                    return newAction;
-
                 // Mana Features
                 if (IsEnabled(CustomComboPreset.DRK_AoE_ManaOvercap)
                     && LevelChecked(FloodOfDarkness)
@@ -227,13 +211,11 @@ internal partial class DRK
                     return OriginalHook(FloodOfDarkness);
             }
 
-            if (TryGetAction<Core>(comboFlags, ref newAction))
+            if (TryGetAction<Spender>(comboFlags, ref newAction))
                 return newAction;
 
-            // 1-2-3 combo
-            if (!(ComboTimer > 0)) return Unleash;
-            if (ComboAction == Unleash && LevelChecked(StalwartSoul))
-                return StalwartSoul;
+            if (TryGetAction<Core>(comboFlags, ref newAction))
+                return newAction;
 
             return Unleash;
         }
@@ -261,15 +243,11 @@ internal partial class DRK
             if (TryGetAction<Cooldown>(comboFlags, ref newAction))
                 return newAction;
 
-            // oGCDs
-            if (CanWeave())
-            {
-                if (TryGetAction<Mitigation>(comboFlags, ref newAction))
-                    return newAction;
+            if (TryGetAction<Mitigation>(comboFlags, ref newAction))
+                return newAction;
 
-                if (TryGetAction<Spender>(comboFlags, ref newAction))
-                    return newAction;
-            }
+            if (TryGetAction<Spender>(comboFlags, ref newAction))
+                return newAction;
 
             if (TryGetAction<Core>(comboFlags, ref newAction))
                 return newAction;

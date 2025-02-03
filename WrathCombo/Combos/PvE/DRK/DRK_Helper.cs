@@ -90,6 +90,7 @@ internal partial class DRK
 
             #endregion
 
+            // Bail if we can't weave any other mitigations
             if (!CanWeave()) return false;
 
             #region Aggro + Stun
@@ -219,6 +220,9 @@ internal partial class DRK
                 return (action = LivingDead) != 0;
 
             #endregion
+
+            // Bail if we can't weave any other mitigations
+            if (!CanWeave()) return false;
 
             #region TBN
 
@@ -350,13 +354,15 @@ internal partial class DRK
     ///         <item>
     ///             <term>Bloodspiller</term>
     ///         </item>
+    ///         <item>
+    ///             <term>Quietus</term>
+    ///         </item>
     ///     </list>
     /// </remarks>
     private class Spender : IActionProvider
     {
         public bool TryGetAction(Combo flags, ref uint action)
         {
-
             #region Delirium Chain
 
             if ((flags.HasFlag(Combo.Simple) ||
@@ -372,20 +378,12 @@ internal partial class DRK
 
             #endregion
 
-            #region Blood Spending during Delirium
-
-            #region Variables
-
-            var deliriumBuff = TraitLevelChecked(Traits.EnhancedDelirium)
-                ? Buffs.EnhancedDelirium
-                : Buffs.Delirium;
-
-            #endregion
+            #region Blood Spending during Delirium (Lower Levels)
 
             if ((flags.HasFlag(Combo.Simple) ||
                  flags.HasFlag(Combo.AoE) ||
                  IsEnabled(Preset.DRK_ST_Bloodspiller)) &&
-                GetBuffStacks(deliriumBuff) > 0)
+                GetBuffStacks(Buffs.Delirium) > 0)
                 if (flags.HasFlag(Combo.ST))
                     return (action = Bloodspiller) != 0;
                 else if (flags.HasFlag(Combo.AoE))
@@ -446,6 +444,7 @@ internal partial class DRK
 
             #endregion
 
+            // Bail if we can't weave any other mitigations
             if (!CanWeave()) return false;
 
             return false;
@@ -453,10 +452,23 @@ internal partial class DRK
     }
 
     /// <remarks>
+    ///     Will almost always return <c>true</c>.<br/>
     ///     Actions in this Provider:
     ///     <list type="bullet">
     ///         <item>
-    ///             <term>Variant Cure</term>
+    ///             <term>Hard Slash</term>
+    ///         </item>
+    ///         <item>
+    ///             <term>Syphon Strike</term>
+    ///         </item>
+    ///         <item>
+    ///             <term>Souleater</term>
+    ///         </item>
+    ///         <item>
+    ///             <term>Unleash</term>
+    ///         </item>
+    ///         <item>
+    ///             <term>Stalwart Soul</term>
     ///         </item>
     ///     </list>
     /// </remarks>
@@ -464,6 +476,34 @@ internal partial class DRK
     {
         public bool TryGetAction(Combo flags, ref uint action)
         {
+            var comboRunning = ComboTimer > 0;
+            var lastComboAction = ComboAction;
+
+            #region Single-Target 1-2-3 Combo
+
+            if (flags.HasFlag(Combo.ST))
+                if (!comboRunning)
+                    return (action = HardSlash) != 0;
+                else if (lastComboAction == HardSlash &&
+                         LevelChecked(SyphonStrike))
+                    return (action = SyphonStrike) != 0;
+                else if (lastComboAction == SyphonStrike &&
+                         LevelChecked(Souleater))
+                    return (action = Souleater) != 0;
+
+            #endregion
+
+            #region AoE 1-2 Combo
+
+            if (flags.HasFlag(Combo.AoE))
+                if (!comboRunning)
+                    return (action = Unleash) != 0;
+                else if (lastComboAction == Unleash &&
+                         LevelChecked(StalwartSoul))
+                    return (action = StalwartSoul) != 0;
+
+            #endregion
+
             return false;
         }
     }
