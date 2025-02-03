@@ -1333,6 +1333,8 @@ public enum CustomComboPreset
 
     #region DARK KNIGHT
 
+    // Last value = 5067
+
     #region Simple Mode
 
     [AutoAction(false, false)]
@@ -1375,6 +1377,10 @@ public enum CustomComboPreset
     DRK_ST_BalanceOpener = 5041,
 
     [ParentCombo(DRK_ST_Advanced)]
+    [CustomComboInfo("Interrupt Option", "Adds Interject to the rotation when your target's cast is interruptible.", DRK.JobID)]
+    DRK_ST_Interrupt = 5053,
+
+    [ParentCombo(DRK_ST_Advanced)]
     [CustomComboInfo("Unmend Uptime Option", "Adds Unmend to the rotation when you are out of range.", DRK.JobID)]
     DRK_ST_RangedUptime = 5015,
 
@@ -1391,8 +1397,6 @@ public enum CustomComboPreset
     [CustomComboInfo("Scarlet Delirium Combo Option",
         "Adds the Scarlet Delirium combo chain to the rotation when Delirium is activated.", DRK.JobID)]
     DRK_ST_Delirium_Chain = 5003,
-
-    // Last value = 5003
 
     #region Cooldowns
 
@@ -1412,8 +1416,6 @@ public enum CustomComboPreset
     DRK_ST_CD_Disesteem = 5006,
 
     #endregion
-
-    // Last value = 5006
 
     [ParentCombo(DRK_ST_CDs)]
     [CustomComboInfo("Delirium on Cooldown",
@@ -1435,8 +1437,6 @@ public enum CustomComboPreset
 
     #endregion
 
-    // Last value = 5008
-
     [ParentCombo(DRK_ST_CDs)]
     [CustomComboInfo("Carve and Spit Option", "Adds Carve and Spit to the rotation while Darkside is up.", DRK.JobID)]
     DRK_ST_CD_Spit = 5009,
@@ -1451,8 +1451,6 @@ public enum CustomComboPreset
     DRK_ST_CD_Darkness = 5066,
 
     #endregion
-
-    // Last value = 5010
 
     #region Mana Overcap Options
 
@@ -1474,8 +1472,6 @@ public enum CustomComboPreset
     DRK_ST_DarkArtsDropPrevention = 5032,
 
     #endregion
-
-    // Last value = 5032
 
     #region Mitigation Options
 
@@ -1511,11 +1507,7 @@ public enum CustomComboPreset
 
     #endregion
 
-    // Last value = 5036
-
     #endregion
-
-    // Last value = 5015
 
     #region Advanced Multi Target Combo
 
@@ -1527,6 +1519,14 @@ public enum CustomComboPreset
     DRK_AoE_Advanced = 5016,
 
     [ParentCombo(DRK_AoE_Advanced)]
+    [CustomComboInfo("Interrupt Option", "Adds Interject to the rotation when your target's cast is interruptible.", DRK.JobID)]
+    DRK_AoE_Interrupt = 5054,
+
+    [ParentCombo(DRK_AoE_Advanced)]
+    [CustomComboInfo("Interrupt with Stun Option", "Adds Low Blow to the rotation when your target is casting, interruptible or not.", DRK.JobID)]
+    DRK_AoE_Stun = 5055,
+
+    [ParentCombo(DRK_AoE_Advanced)]
     [CustomComboInfo("Blood Gauge Overcap Option", "Adds Quietus to the rotation when at 90 blood gauge or higher.",
         DRK.JobID)]
     DRK_AoE_BloodOvercap = 5026,
@@ -1534,8 +1534,6 @@ public enum CustomComboPreset
     [ParentCombo(DRK_AoE_Advanced)]
     [CustomComboInfo("Impalement Option", "Adds Impalement to the rotation when Delirium is activated.", DRK.JobID)]
     DRK_AoE_Delirium_Chain = 5018,
-
-    // Last value = 5018
 
     #region Cooldowns
 
@@ -1560,8 +1558,6 @@ public enum CustomComboPreset
 
     #endregion
 
-    // Last value = 5022
-
     [ParentCombo(DRK_AoE_CDs)]
     [CustomComboInfo("Delirium Option",
         "Adds Delirium (or Blood Weapon at lower levels) to the rotation on cooldown and when Darkside is up.",
@@ -1584,8 +1580,6 @@ public enum CustomComboPreset
     DRK_AoE_CD_SaltStill = 5063,
 
     #endregion
-
-    // Last value = 5024
 
     [ParentCombo(DRK_AoE_Advanced)]
     [CustomComboInfo("Flood of Shadow Overcap Option",
@@ -1630,11 +1624,7 @@ public enum CustomComboPreset
 
     #endregion
 
-    // Last value = 5040
-
     #endregion
-
-    // Last value = 5038
 
     #region One-Button Mitigation
 
@@ -1684,8 +1674,6 @@ public enum CustomComboPreset
 
     #endregion
 
-    // Last value = 5052
-
     #region oGCD Feature
 
     [ReplaceSkill(DRK.CarveAndSpit, DRK.AbyssalDrain)]
@@ -1694,7 +1682,11 @@ public enum CustomComboPreset
     DRK_oGCD = 5027,
 
     [ParentCombo(DRK_oGCD)]
-    [CustomComboInfo("Delirium Option", "Adds Blood Weapon or Delirium to the beginning of the Feature.", DRK.JobID)]
+    [CustomComboInfo("Interrupt Option", "Adds Interject to the beginning of the feature when your target's cast is interruptible.", DRK.JobID)]
+    DRK_oGCD_Interrupt = 5068,
+
+    [ParentCombo(DRK_oGCD)]
+    [CustomComboInfo("Delirium Option", "Adds Blood Weapon or Delirium to the Feature.", DRK.JobID)]
     DRK_oGCD_Delirium = 5067,
 
     [ParentCombo(DRK_oGCD)]
@@ -1702,8 +1694,6 @@ public enum CustomComboPreset
     DRK_oGCD_Shadowbringer = 5028,
 
     #endregion
-
-    // Last value = 5028
 
     #region Variant
 
@@ -1724,8 +1714,6 @@ public enum CustomComboPreset
     DRK_Var_Ulti = 5031,
 
     #endregion
-
-    // Last value = 5031
 
     #endregion
 

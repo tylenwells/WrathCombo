@@ -267,6 +267,11 @@ internal partial class DRK
         {
             if (actionID is not (CarveAndSpit or AbyssalDrain)) return actionID;
 
+            if (IsEnabled(CustomComboPreset.DRK_oGCD_Interrupt) &&
+                ActionReady(All.Interject) &&
+                CanInterruptEnemy())
+                return All.Interject;
+
             if (IsEnabled(CustomComboPreset.DRK_oGCD_Delirium) &&
                 ActionReady(BloodWeapon))
                 return OriginalHook(Delirium);

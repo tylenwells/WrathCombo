@@ -518,6 +518,12 @@ internal partial class DRK
     ///             <term>Living Shadow</term>
     ///         </item>
     ///         <item>
+    ///             <term>Interject</term>
+    ///         </item>
+    ///         <item>
+    ///             <term>Low Blow</term>
+    ///         </item>
+    ///         <item>
     ///             <term>Delirium / Blood Weapon</term>
     ///         </item>
     ///         <item>
@@ -593,6 +599,26 @@ internal partial class DRK
             #endregion
 
             if (CombatEngageDuration().TotalSeconds <= 5) return false;
+
+            #region Interrupting
+
+            if ((flags.HasFlag(Combo.Simple) ||
+                 ((flags.HasFlag(Combo.ST) &&
+                   IsEnabled(Preset.DRK_ST_Interrupt)) ||
+                  flags.HasFlag(Combo.AoE) &&
+                  IsEnabled(Preset.DRK_AoE_Interrupt))) &&
+                ActionReady(All.Interject) &&
+                CanInterruptEnemy())
+                return (action = All.Interject) != 0;
+
+            if (flags.HasFlag(Combo.AoE) &&
+                (flags.HasFlag(Combo.Simple) ||
+                 IsEnabled(Preset.DRK_AoE_Stun)) &&
+                ActionReady(All.LowBlow) &&
+                TargetIsCasting())
+                return (action = All.LowBlow) != 0;
+
+            #endregion
 
             #region Delirium (/Blood Weapon)
 
