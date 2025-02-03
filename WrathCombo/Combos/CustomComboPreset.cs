@@ -1690,13 +1690,16 @@ public enum CustomComboPreset
 
     [ReplaceSkill(DRK.CarveAndSpit, DRK.AbyssalDrain)]
     [ConflictingCombos(DRK_ST_CDs)]
-    [CustomComboInfo("oGCD Feature",
-        "Adds Living Shadow > Salted Earth > Salt And Darkness to Carve And Spit and Abyssal Drain", DRK.JobID)]
+    [CustomComboInfo("oGCD Feature", "Adds Living Shadow > Disesteem > Salted Earth > Salt And Darkness to Carve And Spit and Abyssal Drain.", DRK.JobID)]
     DRK_oGCD = 5027,
 
     [ParentCombo(DRK_oGCD)]
-    [CustomComboInfo("Shadowbringer oGCD Feature", "Adds Shadowbringer to oGCD Feature ", DRK.JobID)]
-    DRK_Shadowbringer_oGCD = 5028,
+    [CustomComboInfo("Delirium Option", "Adds Blood Weapon or Delirium to the beginning of the Feature.", DRK.JobID)]
+    DRK_oGCD_Delirium = 5067,
+
+    [ParentCombo(DRK_oGCD)]
+    [CustomComboInfo("Shadowbringer Option", "Adds Shadowbringer to the Feature.", DRK.JobID)]
+    DRK_oGCD_Shadowbringer = 5028,
 
     #endregion
 

@@ -258,7 +258,7 @@ internal partial class DRK
 
     #region Multi-Button Combos
 
-    internal class DRK_oGCD : CustomCombo
+    internal class DRK_oGCDs : CustomCombo
     {
         protected internal override CustomComboPreset Preset { get; } =
             CustomComboPreset.DRK_oGCD;
@@ -267,12 +267,21 @@ internal partial class DRK
         {
             if (actionID is not (CarveAndSpit or AbyssalDrain)) return actionID;
 
+            if (IsEnabled(CustomComboPreset.DRK_oGCD_Delirium) &&
+                ActionReady(BloodWeapon))
+                return OriginalHook(Delirium);
+
             if (IsOffCooldown(LivingShadow)
                 && LevelChecked(LivingShadow))
                 return LivingShadow;
 
+            if (IsOffCooldown(Disesteem)
+                && LevelChecked(Disesteem))
+                return Disesteem;
+
             if (IsOffCooldown(SaltedEarth)
-                && LevelChecked(SaltedEarth))
+                && LevelChecked(SaltedEarth) &&
+                !HasEffect(Buffs.SaltedEarth))
                 return SaltedEarth;
 
             if (IsOffCooldown(CarveAndSpit)
@@ -284,7 +293,7 @@ internal partial class DRK
                 && LevelChecked(SaltAndDarkness))
                 return SaltAndDarkness;
 
-            if (IsEnabled(CustomComboPreset.DRK_Shadowbringer_oGCD)
+            if (IsEnabled(CustomComboPreset.DRK_oGCD_Shadowbringer)
                 && GetCooldownRemainingTime(Shadowbringer) < 60
                 && LevelChecked(Shadowbringer)
                 && Gauge.DarksideTimeRemaining > 0)
