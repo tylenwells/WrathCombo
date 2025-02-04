@@ -278,11 +278,14 @@ public partial class WrathCombo
     {
     }
 
-    private void HandleOpenCommand(string[]? argument = null, OpenWindow? tab = null)
+    private void HandleOpenCommand
+        (string[]? argument = null, OpenWindow? tab = null, bool? forceOpen = null)
     {
         argument ??= [""];
 
         ConfigWindow.IsOpen = !ConfigWindow.IsOpen;
+        if (forceOpen.HasValue)
+            ConfigWindow.IsOpen = forceOpen.Value;
 
         if (tab is not null)
         {

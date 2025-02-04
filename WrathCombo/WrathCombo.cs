@@ -368,9 +368,11 @@ public sealed partial class WrathCombo : IDalamudPlugin
         P = null;
     }
 
-    private void OnOpenMainUi() => HandleOpenCommand(tab: OpenWindow.PvE);
+    private void OnOpenMainUi() =>
+        HandleOpenCommand(tab: OpenWindow.PvE, forceOpen: true);
 
-    private void OnOpenConfigUi() => HandleOpenCommand(tab: OpenWindow.Settings);
+    private void OnOpenConfigUi() =>
+        HandleOpenCommand(tab: OpenWindow.Settings, forceOpen: true);
 
     private void oldOnCommand(string command, string arguments)
     {
