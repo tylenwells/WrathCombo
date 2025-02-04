@@ -105,7 +105,7 @@ internal partial class DRK
 
             #endregion
 
-            // Bail if we can't weave any other mitigations
+            // Bail if we can't weave anything
             if (!CanWeave) return false;
 
             #region Aggro + Stun
@@ -610,7 +610,7 @@ internal partial class DRK
                  ((flags.HasFlag(Combo.ST) &&
                    IsEnabled(Preset.DRK_ST_Sp_ScarletChain)) ||
                   flags.HasFlag(Combo.AoE) &&
-                  IsEnabled(Preset.DRK_AoE_SP_ImpalementChain))) &&
+                  IsEnabled(Preset.DRK_AoE_Sp_ImpalementChain))) &&
                 HasEffect(Buffs.EnhancedDelirium))
                 if (flags.HasFlag(Combo.ST))
                     return (action = OriginalHook(Bloodspiller)) != 0;
@@ -618,6 +618,8 @@ internal partial class DRK
                     return (action = OriginalHook(Quietus)) != 0;
 
             #endregion
+
+            // Blood
 
             #region Blood Spending during Delirium (Lower Levels)
 
@@ -680,7 +682,7 @@ internal partial class DRK
                  ((flags.HasFlag(Combo.ST) &&
                    IsEnabled(Preset.DRK_ST_Sp_BloodOvercap)) ||
                   flags.HasFlag(Combo.AoE) &&
-                  IsEnabled(Preset.DRK_AoE_SP_BloodOvercap))) &&
+                  IsEnabled(Preset.DRK_AoE_Sp_BloodOvercap))) &&
                 LevelChecked(Bloodspiller) &&
                 Gauge.Blood >= overcapThreshold)
                 if (flags.HasFlag(Combo.ST))
@@ -690,8 +692,115 @@ internal partial class DRK
 
             #endregion
 
-            // Bail if we can't weave any other mitigations
+            // Mana
+
+            #region Variables and some Mana bails
+
+            // Bail if it is too early into the fight
+            if (CombatEngageDuration().TotalSeconds <= 5) return false;
+            // Bail if we can't weave anything else
             if (!CanWeave) return false;
+            // Bail if mana spending is not available
+            if (!ActionReady(FloodOfDarkness)) return false;
+
+            var mana = (int)LocalPlayer.CurrentMp;
+            var manaPooling =
+                ContentCheck.IsInConfiguredContent(
+                    Config.DRK_ST_ManaSpenderPoolingDifficulty,
+                    Config.DRK_ST_ManaSpenderPoolingDifficultyListSet);
+            var manaPool =
+                flags.HasFlag(Combo.Adv) && flags.HasFlag(Combo.ST) && manaPooling
+                    ? ((int)Config.DRK_ST_ManaSpenderPooling)
+                    : 0;
+            var hasEnoughMana = mana >= (manaPool + 3000);
+            var manaEvenBurstSoon =
+                GetCooldownRemainingTime(LivingShadow) is > 0 and < 30;
+            var manaBursting =
+                GetCooldownRemainingTime(LivingShadow) >= 90;
+            var manaDarksideDropping =
+                Gauge.DarksideTimeRemaining / 1000 < 10;
+
+            // Bail if we don't have enough mana
+            if (!hasEnoughMana) return false;
+
+            #endregion
+
+            #region Mana Burst
+
+            if ((flags.HasFlag(Combo.Simple) ||
+                 ((flags.HasFlag(Combo.ST) && IsEnabled(Preset.DRK_ST_Sp_Edge)) ||
+                  flags.HasFlag(Combo.AoE) && IsEnabled(Preset.DRK_AoE_Sp_Flood))) &&
+                manaBursting)
+                if (flags.HasFlag(Combo.ST) && LevelChecked(EdgeOfDarkness))
+                    return (action = OriginalHook(EdgeOfDarkness)) != 0;
+                else
+                    return (action = OriginalHook(FloodOfDarkness)) != 0;
+
+            #endregion
+
+            // Bail if we're trying to save Dark Arts for burst
+            if (Gauge.HasDarkArts && manaEvenBurstSoon) return false;
+
+            #region Mana Spend to Limit
+
+            if ((flags.HasFlag(Combo.Simple) ||
+                 ((flags.HasFlag(Combo.ST) && IsEnabled(Preset.DRK_ST_Sp_Edge)) ||
+                  flags.HasFlag(Combo.AoE) && IsEnabled(Preset.DRK_AoE_Sp_Flood))) &&
+                manaDarksideDropping)
+                if (flags.HasFlag(Combo.ST) && LevelChecked(EdgeOfDarkness))
+                    return (action = OriginalHook(EdgeOfDarkness)) != 0;
+                else
+                    return (action = OriginalHook(FloodOfDarkness)) != 0;
+
+            #endregion
+
+            #region Mana Darkside Maintenance
+
+            if (flags.HasFlag(Combo.Simple) ||
+                 flags.HasFlag(Combo.AoE) ||
+                 (flags.HasFlag(Combo.ST) &&
+                  IsEnabled(Preset.DRK_ST_Sp_EdgeDarkside)))
+                if (flags.HasFlag(Combo.ST) && LevelChecked(EdgeOfDarkness))
+                    return (action = OriginalHook(EdgeOfDarkness)) != 0;
+                else
+                    return (action = OriginalHook(FloodOfDarkness)) != 0;
+
+            #endregion
+
+            // Bail if it is too early into the fight
+            if (CombatEngageDuration().TotalSeconds <= 10) return false;
+
+            #region Mana Dark Arts Drop Prevention
+
+            if ((flags.HasFlag(Combo.Simple) ||
+                 flags.HasFlag(Combo.AoE) ||
+                 (flags.HasFlag(Combo.ST) &&
+                  IsEnabled(Preset.DRK_ST_Sp_DarkArts))) &&
+                Gauge.HasDarkArts &&
+                (manaBursting ||
+                 (!manaEvenBurstSoon && HasOwnTBN)))
+                if (flags.HasFlag(Combo.ST) && LevelChecked(EdgeOfDarkness))
+                    return (action = OriginalHook(EdgeOfDarkness)) != 0;
+                else
+                    return (action = OriginalHook(FloodOfDarkness)) != 0;
+
+            #endregion
+
+            #region Mana Overcap
+
+            if ((flags.HasFlag(Combo.Simple) ||
+                 ((flags.HasFlag(Combo.ST) &&
+                   IsEnabled(Preset.DRK_ST_Sp_ManaOvercap)) ||
+                  flags.HasFlag(Combo.AoE) &&
+                  IsEnabled(Preset.DRK_AoE_Sp_ManaOvercap))) &&
+                mana >= 8500 &&
+                !manaEvenBurstSoon)
+                if (flags.HasFlag(Combo.ST) && LevelChecked(EdgeOfDarkness))
+                    return (action = OriginalHook(EdgeOfDarkness)) != 0;
+                else
+                    return (action = OriginalHook(FloodOfDarkness)) != 0;
+
+            #endregion
 
             return false;
         }

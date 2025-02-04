@@ -1463,7 +1463,7 @@ public enum CustomComboPreset
 
     [ParentCombo(DRK_ST_Spenders)]
     [CustomComboInfo("Blood Gauge Overcap Option",
-        "Adds Bloodspiller to the rotation when above a threshold.", DRK.JobID)]
+        "Adds Bloodspiller to the rotation when the blood gauge is above a threshold.", DRK.JobID)]
     DRK_ST_Sp_BloodOvercap = 5026,
 
     #endregion
@@ -1602,7 +1602,7 @@ public enum CustomComboPreset
 
     [ParentCombo(DRK_AoE_Spenders)]
     [CustomComboInfo("Impalement Option", "Adds Impalement to the rotation when Delirium is active.", DRK.JobID)]
-    DRK_AoE_SP_ImpalementChain = 5062,
+    DRK_AoE_Sp_ImpalementChain = 5062,
 
     #region Blood
 
@@ -1611,8 +1611,8 @@ public enum CustomComboPreset
     DRK_AoE_Sp_Quietus = 5063,
 
     [ParentCombo(DRK_AoE_Spenders)]
-    [CustomComboInfo("Blood Gauge Overcap Option", "Adds Quietus to the rotation when at 90 blood gauge or higher.", DRK.JobID)]
-    DRK_AoE_SP_BloodOvercap = 5064,
+    [CustomComboInfo("Blood Gauge Overcap Option", "Adds Quietus to the rotation when the blood gauge is above a threshold.", DRK.JobID)]
+    DRK_AoE_Sp_BloodOvercap = 5064,
 
     #endregion
 
@@ -1620,11 +1620,11 @@ public enum CustomComboPreset
 
     [ParentCombo(DRK_AoE_Spenders)]
     [CustomComboInfo("Flood of Shadow Option", "Uses Flood of Shadow in burst, if Darkside is about to expire (<10s), or if you have Dark Arts.", DRK.JobID)]
-    DRK_AoE_Flood = 5065,
+    DRK_AoE_Sp_Flood = 5065,
 
     [ParentCombo(DRK_AoE_Spenders)]
     [CustomComboInfo("Mana Overcap Option", "Uses Flood of Shadow if you are above 8,500 mana.", DRK.JobID)]
-    DRK_AoE_ManaOvercap = 5066,
+    DRK_AoE_Sp_ManaOvercap = 5066,
 
     #endregion
 

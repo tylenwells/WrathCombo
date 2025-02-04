@@ -25,20 +25,8 @@ internal partial class DRK
             // Bail if not looking at the replaced action
             if (actionID is not HardSlash) return actionID;
 
-            #region Variables
-
             const Combo comboFlags = Combo.ST | Combo.Adv;
             var newAction = HardSlash;
-            var inManaPoolingContent =
-                ContentCheck.IsInConfiguredContent(
-                    Config.DRK_ST_ManaSpenderPoolingDifficulty,
-                    Config.DRK_ST_ManaSpenderPoolingDifficultyListSet
-                );
-            var mpRemaining = inManaPoolingContent
-                ? Config.DRK_ST_ManaSpenderPooling
-                : 0;
-
-            #endregion
 
             // Unmend Option
             if (IsEnabled(CustomComboPreset.DRK_ST_RangedUptime)
@@ -71,40 +59,6 @@ internal partial class DRK
                 inMitigationContent &&
                 TryGetAction<Mitigation>(comboFlags, ref newAction))
                 return newAction;
-
-            // oGCDs
-            if (CanWeave() || CanDelayedWeave())
-            {
-                // Mana Spenders
-                if (CombatEngageDuration().TotalSeconds >= 5)
-                {
-                    // Spend mana to limit when not near even minute burst windows
-                    if (IsEnabled(CustomComboPreset.DRK_ST_Sp_Edge)
-                        && GetCooldownRemainingTime(LivingShadow) >= 45
-                        && LocalPlayer.CurrentMp > (mpRemaining + 3000)
-                        && ActionReady(EdgeOfDarkness))
-                        return OriginalHook(EdgeOfDarkness);
-
-                    // Keep Darkside up
-                    if (ActionReady(EdgeOfDarkness) &&
-                        (IsEnabled(CustomComboPreset.DRK_ST_Sp_ManaOvercap) &&
-                         LocalPlayer.CurrentMp > 8500) ||
-                        (IsEnabled(CustomComboPreset.DRK_ST_Sp_EdgeDarkside) &&
-                         Gauge.DarksideTimeRemaining < 10000 &&
-                         LocalPlayer.CurrentMp > (mpRemaining + 3000)))
-                        return OriginalHook(EdgeOfDarkness);
-
-                    // Spend Dark Arts
-                    if (Gauge.HasDarkArts
-                        && ActionReady(EdgeOfDarkness)
-                        && CombatEngageDuration().TotalSeconds >= 10
-                        && ((IsEnabled(CustomComboPreset.DRK_ST_Sp_Edge) &&
-                             Gauge.ShadowTimeRemaining > 0) || // In Burst
-                            (IsEnabled(CustomComboPreset.DRK_ST_Sp_DarkArts)
-                             && HasOwnTBN))) // TBN
-                        return OriginalHook(EdgeOfDarkness);
-                }
-            }
 
             if (IsEnabled(CustomComboPreset.DRK_ST_Spenders) &&
                 TryGetAction<Spender>(comboFlags, ref newAction))
@@ -168,12 +122,8 @@ internal partial class DRK
             // Bail if not looking at the replaced action
             if (actionID is not Unleash) return actionID;
 
-            #region Variables
-
             const Combo comboFlags = Combo.AoE | Combo.Adv;
             var newAction = Unleash;
-
-            #endregion
 
             // Bail if not in combat
             if (!InCombat()) return Unleash;
@@ -189,30 +139,8 @@ internal partial class DRK
                 TryGetAction<Mitigation>(comboFlags, ref newAction))
                 return newAction;
 
-            // oGCDs
-            if (CanWeave() || CanDelayedWeave())
-            {
-                // Mana Features
-                if (IsEnabled(CustomComboPreset.DRK_AoE_Flood)
-                    && LevelChecked(FloodOfDarkness)
-                    && Gauge.DarksideTimeRemaining < 10
-                    && LocalPlayer.CurrentMp >= 3000)
-                    return OriginalHook(FloodOfDarkness);
-
-                // Spend Dark Arts
-                if (IsEnabled(CustomComboPreset.DRK_AoE_Flood)
-                    && Gauge.HasDarkArts
-                    && LevelChecked(FloodOfDarkness))
-                    return OriginalHook(FloodOfDarkness);
-
-                // Overcap
-                if (IsEnabled(CustomComboPreset.DRK_AoE_ManaOvercap)
-                    && LocalPlayer.CurrentMp > 8500
-                    && LevelChecked(FloodOfDarkness))
-                    return OriginalHook(FloodOfDarkness);
-            }
-
-            if (TryGetAction<Spender>(comboFlags, ref newAction))
+            if (IsEnabled(CustomComboPreset.DRK_AoE_Spenders) &&
+                TryGetAction<Spender>(comboFlags, ref newAction))
                 return newAction;
 
             if (TryGetAction<Core>(comboFlags, ref newAction))

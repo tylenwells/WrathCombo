@@ -170,7 +170,7 @@ internal partial class DRK
 
                 #region Adv AoE
 
-                case CustomComboPreset.DRK_AoE_SP_BloodOvercap:
+                case CustomComboPreset.DRK_AoE_Sp_BloodOvercap:
                     UserConfig.DrawSliderInt(50, 100, DRK_AoE_BloodOvercapThreshold,
                         startUsingAboveDescription,
                         itemWidth: medium, sliderIncrement: SliderIncrements.Fives);
@@ -395,9 +395,9 @@ internal partial class DRK
         private const string startUsingAtDescription =
             "HP% to use at or below";
 
-        /// Bar Description for HP% to start using (above)
+        /// Bar Description for # to start using (above)
         private const string startUsingAboveDescription =
-            "HP% to use at or above";
+            "# to use at or above";
 
         private const string chargesToKeepDescription =
             "# charges to keep (0 = Use All)";
@@ -704,7 +704,7 @@ internal partial class DRK
         ///     <b>Range</b>: 50 - 100 <br />
         ///     <b>Step</b>: <see cref="SliderIncrements.Fives" />
         /// </value>
-        /// <seealso cref="CustomComboPreset.DRK_AoE_SP_BloodOvercap" />
+        /// <seealso cref="CustomComboPreset.DRK_AoE_Sp_BloodOvercap" />
         public static readonly UserInt DRK_AoE_BloodOvercapThreshold =
             new("DRK_AoE_BloodOvercapThreshold", 90);
 
