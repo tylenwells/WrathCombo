@@ -278,8 +278,10 @@ public partial class WrathCombo
     {
     }
 
-    private void HandleOpenCommand(string[] argument)
+    private void HandleOpenCommand(string[]? argument = null)
     {
+        argument ??= [""];
+
         ConfigWindow.IsOpen = !ConfigWindow.IsOpen;
 
         if (Service.Configuration.OpenToCurrentJob && Player.Available)

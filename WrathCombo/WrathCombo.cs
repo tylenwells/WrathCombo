@@ -367,15 +367,7 @@ public sealed partial class WrathCombo : IDalamudPlugin
         P = null;
     }
 
-    private void OnOpenConfigUi() {
-        if (Service.Configuration.OpenToCurrentJob && Player.Available)
-            PvEFeatures.OpenJob = ConfigWindow.groupedPresets
-                .FirstOrDefault(x =>
-                    x.Value.Any(y => y.Info.JobShorthand == Player.Job.ToString()))
-                .Key;
-
-        ConfigWindow.IsOpen = !ConfigWindow.IsOpen;
-    }
+    private void OnOpenConfigUi() => HandleOpenCommand();
 
     private void oldOnCommand(string command, string arguments)
     {
