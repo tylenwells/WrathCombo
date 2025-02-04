@@ -44,8 +44,6 @@ namespace WrathCombo;
 /// <summary> Main plugin implementation. </summary>
 public sealed partial class WrathCombo : IDalamudPlugin
 {
-    private const string Command = "/wrath";
-
     private static TaskManager? TM;
     private readonly ConfigWindow ConfigWindow;
     private readonly SettingChangeWindow SettingChangeWindow;
@@ -159,11 +157,7 @@ public sealed partial class WrathCombo : IDalamudPlugin
         Svc.PluginInterface.UiBuilder.Draw += ws.Draw;
         Svc.PluginInterface.UiBuilder.OpenConfigUi += OnOpenConfigUi;
 
-        EzCmd.Add(Command, OnCommand, "Open a window to edit custom combo settings.\n" +
-            "/wrath auto → Toggle Auto-rotation on/off.\n" +
-            "/wrath debug → Dumps a debug log onto your desktop for developers.\n" +
-            "/scombo - Old alias from XIVSlothCombo, still works!");
-        EzCmd.Add("/scombo", OnCommand);
+        RegisterCommands();
 
         DtrBarEntry ??= Svc.DtrBar.Get("Wrath Combo");
         DtrBarEntry.OnClick = () =>
@@ -377,126 +371,12 @@ public sealed partial class WrathCombo : IDalamudPlugin
 
     private void OnOpenConfigUi() => ConfigWindow.IsOpen = !ConfigWindow.IsOpen;
 
-    private void OnCommand(string command, string arguments)
+    private void oldOnCommand(string command, string arguments)
     {
         string[]? argumentsParts = arguments.Split();
 
         switch (argumentsParts[0].ToLower())
         {
-            case "unsetall": // unset all features
-                {
-                    Service.Configuration.EnabledActions.Clear();
-                    DuoLog.Information("All UNSET");
-                    Service.Configuration.Save();
-                    break;
-                }
-
-            case "set": // set a feature
-                {
-                    string? targetPreset = argumentsParts[1].ToLowerInvariant();
-                    if (int.TryParse(targetPreset, out int number))
-                    {
-                        PresetStorage.EnablePreset(number, true);
-                    }
-                    else
-                    {
-                        PresetStorage.EnablePreset(targetPreset, true);
-                    }
-                    Service.Configuration.Save();
-                    break;
-                }
-
-            case "toggle": // toggle a feature
-                {
-                    string? targetPreset = argumentsParts[1].ToLowerInvariant();
-                    if (int.TryParse(targetPreset, out int number))
-                    {
-                        PresetStorage.TogglePreset(number, true);
-                    }
-                    else
-                    {
-                        PresetStorage.TogglePreset(targetPreset, true);
-                    }
-                    Service.Configuration.Save();
-                    break;
-                }
-
-            case "unset": // unset a feature
-                {
-                    string? targetPreset = argumentsParts[1].ToLowerInvariant();
-                    if (int.TryParse(targetPreset, out int number))
-                    {
-                        PresetStorage.DisablePreset(number, true);
-                    }
-                    else
-                    {
-                        PresetStorage.DisablePreset(targetPreset, true);
-                    }
-                    Service.Configuration.Save();
-                    break;
-                }
-
-            case "list": // list features
-                {
-                    string? filter = argumentsParts.Length > 1
-                        ? argumentsParts[1].ToLowerInvariant()
-                        : "all";
-
-                    if (filter == "set") // list set features
-                    {
-                        foreach (CustomComboPreset preset in Enum.GetValues<CustomComboPreset>().Where(preset => IPC.GetComboState(preset.ToString())!.First().Value))
-                        {
-                            var controlled =
-                                P.UIHelper.PresetControlled(preset) is not null;
-                            var ctrlText = controlled ? " " + OptionControlledByIPC : "";
-                            DuoLog.Information($"{(int)preset} - {preset}{ctrlText}");
-                        }
-                    }
-
-                    else if (filter == "unset") // list unset features
-                    {
-                        foreach (CustomComboPreset preset in Enum.GetValues<CustomComboPreset>().Where(preset => !IPC.GetComboState(preset.ToString())!.First().Value))
-                        {
-                            var controlled =
-                                P.UIHelper.PresetControlled(preset) is not null;
-                            var ctrlText = controlled ? " " + OptionControlledByIPC : "";
-                            DuoLog.Information($"{(int)preset} - {preset}{ctrlText}");
-                        }
-                    }
-
-                    else if (filter == "all") // list all features
-                    {
-                        foreach (CustomComboPreset preset in Enum.GetValues<CustomComboPreset>())
-                        {
-                            var controlled =
-                                P.UIHelper.PresetControlled(preset) is not null;
-                            var ctrlText = controlled ? " " + OptionControlledByIPC : "";
-                            DuoLog.Information($"{(int)preset} - {preset}{ctrlText}");
-                        }
-                    }
-
-                    else
-                    {
-                        DuoLog.Error("Available list filters: set, unset, all");
-                    }
-
-                    break;
-                }
-
-            case "enabled": // list all currently enabled features
-                {
-                    foreach (CustomComboPreset preset in Service.Configuration.EnabledActions.OrderBy(x => x))
-                    {
-                        if (int.TryParse(preset.ToString(), out int pres)) continue;
-                        var controlled =
-                            P.UIHelper.PresetControlled(preset) is not null;
-                        var ctrlText = controlled ? " " + OptionControlledByIPC : "";
-                        DuoLog.Information($"{(int)preset} - {preset}{ctrlText}");
-                    }
-
-                    break;
-                }
-
             case "debug": // debug logging
                 {
                     try
@@ -706,64 +586,6 @@ public sealed partial class WrathCombo : IDalamudPlugin
                         break;
                     }
                 }
-            case "auto":
-                {
-                    bool newVal = argumentsParts.Length > 1 ? argumentsParts[1].ToLower() == "on" : !Service.Configuration.RotationConfig.Enabled;
-
-                    if (newVal != Service.Configuration.RotationConfig.Enabled)
-                    {
-                        ToggleAutorot(newVal);
-                    }
-
-                    break;
-                }
-            case "combo":
-                {
-                    if (argumentsParts.Length < 2) break;
-
-                    switch (argumentsParts[1])
-                    {
-                        case "on":
-                            if (!Service.IconReplacer.getIconHook.IsEnabled) Service.IconReplacer.getIconHook.Enable();
-                            break;
-                        case "off":
-                            if (Service.IconReplacer.getIconHook.IsEnabled) Service.IconReplacer.getIconHook.Disable();
-                            break;
-                        case "toggle":
-                            if (Service.IconReplacer.getIconHook.IsEnabled) Service.IconReplacer.getIconHook.Disable(); else Service.IconReplacer.getIconHook.Enable();
-                            break;
-                    }
-
-                    break;
-                }
-            case "ignore":
-                {
-                    var tar = Svc.Targets.Target;
-                    if (Service.Configuration.IgnoredNPCs.Any(x => x.Key == tar?.DataId))
-                    {
-                        DuoLog.Error($"{tar.Name} (ID: {tar.DataId}) is already on the ignored list.");
-                        return;
-                    }
-
-                    if (tar != null && tar.IsHostile() && !Service.Configuration.IgnoredNPCs.Any(x => x.Key == tar.DataId))
-                    {
-                        Service.Configuration.IgnoredNPCs.Add(tar.DataId, tar.GetNameId());
-                        Service.Configuration.Save();
-
-                        DuoLog.Information($"Successfully added {tar.Name} (ID: {tar.DataId}) to ignored list.");
-                    }
-                    break;
-                }
-            default:
-                ConfigWindow.IsOpen = !ConfigWindow.IsOpen;
-                PvEFeatures.HasToOpenJob = true;
-                if (argumentsParts[0].Length > 0)
-                {
-                    var jobname = ConfigWindow.groupedPresets.Where(x => x.Value.Any(y => y.Info.JobShorthand.Equals(argumentsParts[0].ToLower(), StringComparison.CurrentCultureIgnoreCase))).FirstOrDefault().Key;
-                    var header = $"{jobname} - {argumentsParts[0].ToUpper()}";
-                    PvEFeatures.HeaderToOpen = header;
-                }
-                break;
         }
 
         Service.Configuration.Save();
