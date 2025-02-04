@@ -148,7 +148,6 @@ public static class DebugFile
         AddLine($"Job ID: {job.RowId}");
         AddLine($"Level: {player.Level}");
         AddLine();
-        AddLine($"Object ID: {player.GameObjectId}");
         AddLine($"Current Zone: {currentZone}");
         AddLine($"Current Party Size: {GetPartyMembers().Count}");
         AddLine("END PLAYER INFO");
@@ -334,6 +333,7 @@ public static class DebugFile
 
     private static void AddStatusEffects()
     {
+        var playerID = Svc.ClientState.LocalPlayer.GameObjectId;
         var statusEffects = Svc.ClientState.LocalPlayer.StatusList;
 
         AddLine($"Status Effects found: {statusEffects.Count()}");
@@ -345,7 +345,8 @@ public static class DebugFile
             AddLine(
                 $"ID: {effect.StatusId}, " +
                 $"STACKS: {effect.StackCount}, " +
-                $"SOURCE: {effect.SourceId}, " +
+                $"SOURCE: {(effect.SourceId == playerID ? "self" : effect
+                .SourceId)}, " +
                 $"NAME: {ActionWatching.GetStatusName(effect.StatusId)}");
         AddLine("END STATUS EFFECTS");
     }
