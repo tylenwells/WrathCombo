@@ -7,8 +7,10 @@ using ECommons.DalamudServices;
 using ECommons.GameFunctions;
 using ECommons.GameHelpers;
 using ECommons.Logging;
+using Lumina.Excel.Sheets;
 using WrathCombo.Combos;
 using WrathCombo.Core;
+using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Extensions;
 using WrathCombo.Services;
 using WrathCombo.Window;
@@ -81,7 +83,6 @@ public partial class WrathCombo
         string? action = null;
         string? target = null;
 
-        bool presetCanNumber;
         CustomComboPreset? preset = null;
 
         #endregion
@@ -114,7 +115,7 @@ public partial class WrathCombo
         target ??= argument[1];
         if (target != all)
         {
-            presetCanNumber = int.TryParse(target, out var targetNumber);
+            var presetCanNumber = int.TryParse(target, out var targetNumber);
             preset = presetCanNumber
                 ? (CustomComboPreset)targetNumber
                 : Enum.Parse<CustomComboPreset>(target, true);
@@ -261,21 +262,73 @@ public partial class WrathCombo
 
         if (Service.Configuration.IgnoredNPCs.Any(x => x.Key == target.DataId))
         {
-            DuoLog.Error($"{target.Name} (ID: {target.DataId}) is already on the ignored list.");
+            DuoLog.Error($"{target.Name} (ID: {target.DataId}) is already on the ignored list");
             return;
         }
 
         if (Service.Configuration.IgnoredNPCs.All(x => x.Key != target.DataId))
         {
             Service.Configuration.IgnoredNPCs.Add(target.DataId, target.GetNameId());
-            Service.Configuration.Save();
 
-            DuoLog.Information($"Successfully added {target.Name} (ID: {target.DataId}) to ignored list.");
+            DuoLog.Information($"Successfully added {target.Name} (ID: {target.DataId}) to ignored list");
         }
     }
 
     private void HandleDebugCommands(string[] argument)
     {
+        try
+        {
+            ClassJob? job = null;
+
+            // Handle an entered job abbreviation
+            if (argument.Length > 1)
+            {
+                if (argument[1].Length != 3)
+                {
+                    DuoLog.Error("Invalid job abbreviation");
+                    return;
+                }
+
+                var jobName = argument[1].ToUpperInvariant();
+                try {
+                    // Look up the entered job
+                    var jobSearch = Svc.Data.Excel.GetSheet<ClassJob>()
+                        .First(j => j.Abbreviation == jobName);
+                    var jobId = jobSearch.RowId;
+                    // Switch class to job, if necessary
+                    if (jobSearch.ClassJobParent.RowId != jobSearch.RowId)
+                        jobId =
+                            CustomComboFunctions.JobIDs.ClassToJob(jobSearch.RowId);
+                    job = Svc.Data.Excel.GetSheet<ClassJob>().GetRow(jobId);
+                }
+                // the .first() failed
+                catch (InvalidOperationException) {
+                    DuoLog.Error($"Invalid job abbreviation, '{jobName}'");
+                    return;
+                }
+                // unknown
+                catch (Exception ex) {
+                    DuoLog.Error($"Error looking up job abbreviation, '{jobName}'");
+                    Svc.Log.Error(ex, "Debug Log");
+                    return;
+                }
+
+                if (job.Value.RowId != Svc.ClientState.LocalPlayer.ClassJob.Value.RowId)
+                {
+                    DuoLog.Information($"Please switch your job to {job.Value.Name}");
+                    return;
+                }
+            }
+
+            // Request a debug file, with null, or the entered Job
+            // (if converted successfully)
+            DebugFile.MakeDebugFile(job);
+        }
+        catch (Exception ex)
+        {
+            Svc.Log.Error(ex, "Debug Log");
+            DuoLog.Error("Unable to write Debug log");
+        }
     }
 
     private void HandleOpenCommand

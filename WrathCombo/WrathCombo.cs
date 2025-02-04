@@ -11,21 +11,15 @@ using ECommons.Automation.LegacyTaskManager;
 using ECommons.DalamudServices;
 using ECommons.GameHelpers;
 using ECommons.Logging;
-using Lumina.Excel.Sheets;
-using Newtonsoft.Json;
 using PunishLib;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Net.Http;
-using System.Reflection;
 using System.Threading.Tasks;
 using WrathCombo.Attributes;
 using WrathCombo.AutoRotation;
-using WrathCombo.Combos;
 using WrathCombo.Combos.PvE;
-using WrathCombo.Combos.PvP;
 using WrathCombo.Core;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
@@ -33,7 +27,6 @@ using WrathCombo.Data;
 using WrathCombo.Services;
 using WrathCombo.Services.IPC;
 using WrathCombo.Window;
-using Status = Dalamud.Game.ClientState.Statuses.Status;
 
 namespace WrathCombo;
 
@@ -368,244 +361,4 @@ public sealed partial class WrathCombo : IDalamudPlugin
 
     private void OnOpenConfigUi() =>
         HandleOpenCommand(tab: OpenWindow.Settings, forceOpen: true);
-
-    private void oldOnCommand(string command, string arguments)
-    {
-        string[]? argumentsParts = arguments.Split();
-
-        switch (argumentsParts[0].ToLower())
-        {
-            case "debug": // debug logging
-                {
-                    try
-                    {
-                        string? specificJob = argumentsParts.Length == 2 ? argumentsParts[1].ToLower() : "";
-
-                        string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-
-                        string[]? conflictingPlugins = ConflictingPluginsCheck.TryGetConflictingPlugins();
-                        int conflictingPluginsCount = conflictingPlugins?.Length ?? 0;
-
-                        int leaseesCount = P.UIHelper.ShowNumberOfLeasees();
-                        (string pluginName, int configurationsCount)[] leasees = P.UIHelper.ShowLeasees();
-
-                        string repoURL = RepoCheckFunctions.FetchCurrentRepo()?.InstalledFromUrl ?? "Unknown";
-                        string currentZone = Svc.Data.GetExcelSheet<TerritoryType>()?
-                            .FirstOrDefault(x => x.RowId == Svc.ClientState.TerritoryType)
-                            .PlaceName.Value.Name.ToString() ?? "Unknown";
-
-                        using StreamWriter file = new($"{desktopPath}/WrathDebug.txt", append: false);  // Output path
-
-                        file.WriteLine("START DEBUG LOG");
-                        file.WriteLine("");
-                        file.WriteLine($"Plugin Version: {GetType().Assembly.GetName().Version}");                   // Plugin version
-                        file.WriteLine($"Installation Repo: {repoURL}");                                             // Installation Repo
-                        file.WriteLine("");
-                        file.WriteLine($"Plugins controlling via IPC: {leaseesCount}");                               // IPC Leasees
-                        if (leaseesCount > 0)
-                        {
-                            foreach (var leasee in leasees)
-                                file.WriteLine($"- {leasee.pluginName} ({leasee.configurationsCount} configurations)");
-                            file.WriteLine("");
-                        }
-                        file.WriteLine($"Conflicting Plugins: {conflictingPluginsCount}");                           // Conflicting Plugins
-                        if (conflictingPlugins != null)
-                        {
-                            foreach (var plugin in conflictingPlugins)
-                                file.WriteLine($"- {plugin}");                                                       // Listing Conflicting Plugin
-                            file.WriteLine("");
-                        }
-                        file.WriteLine($"Current Job: " +                                                            // Current Job
-                            $"{Svc.ClientState.LocalPlayer.ClassJob.Value.Name} / " +                                // - Client Name
-                            $"{Svc.ClientState.LocalPlayer.ClassJob.Value.NameEnglish} / " +                         // - EN Name
-                            $"{Svc.ClientState.LocalPlayer.ClassJob.Value.Abbreviation}");                           // - Abbreviation
-                        file.WriteLine($"Current Job Index: {Svc.ClientState.LocalPlayer.ClassJob.RowId}");          // Job Index
-                        file.WriteLine($"Current Job Level: {Svc.ClientState.LocalPlayer.Level}");                   // Job Level
-                        file.WriteLine("");
-                        file.WriteLine($"Current Zone: {currentZone}");                                              // Current zone location
-                        file.WriteLine($"Current Party Size: {CustomComboFunctions.GetPartyMembers().Count}");                                   // Current party size
-                        file.WriteLine("");
-                        file.WriteLine($"START ENABLED FEATURES");
-
-                        int i = 0;
-                        if (string.IsNullOrEmpty(specificJob))
-                        {
-                            foreach (CustomComboPreset preset in Service.Configuration.EnabledActions.OrderBy(x => x))
-                            {
-                                if (int.TryParse(preset.ToString(), out _)) { i++; continue; }
-
-                                file.Write($"{(int)preset} - {preset}");
-                                if (leaseesCount > 0)
-                                    if (P.UIHelper.PresetControlled(preset) is not null)
-                                        file.Write(" (IPC)");
-                                file.WriteLine();
-                            }
-                        }
-
-                        else
-                        {
-                            foreach (CustomComboPreset preset in Service.Configuration.EnabledActions.OrderBy(x => x))
-                            {
-                                if (int.TryParse(preset.ToString(), out _)) { i++; continue; }
-
-                                if (preset.ToString()[..3].Equals(specificJob, StringComparison.CurrentCultureIgnoreCase) ||  // Job identifier
-                                    preset.ToString()[..3].Equals("all", StringComparison.CurrentCultureIgnoreCase) ||        // Adds in Globals
-                                    preset.ToString()[..3].Equals("pvp", StringComparison.CurrentCultureIgnoreCase))          // Adds in PvP Globals
-                                {
-                                    file.Write($"{(int)preset} - {preset}");
-                                    if (leaseesCount > 0)
-                                        if (P.UIHelper.PresetControlled(preset) is not null)
-                                            file.Write(" (IPC)");
-                                    file.WriteLine();
-                                }
-                            }
-                        }
-
-
-                        file.WriteLine($"END ENABLED FEATURES");
-                        file.WriteLine("");
-
-                        file.WriteLine("START CONFIG SETTINGS");
-                        if (string.IsNullOrEmpty(specificJob))
-                        {
-                            file.WriteLine("---INT VALUES---");
-                            foreach (var item in PluginConfiguration.CustomIntValues.OrderBy(x => x.Key))
-                            {
-                                file.WriteLine($"{item.Key.Trim()} - {item.Value}");
-                            }
-                            file.WriteLine("");
-                            file.WriteLine("---FLOAT VALUES---");
-                            foreach (var item in PluginConfiguration.CustomFloatValues.OrderBy(x => x.Key))
-                            {
-                                file.WriteLine($"{item.Key.Trim()} - {item.Value}");
-                            }
-                            file.WriteLine("");
-                            file.WriteLine("---BOOL VALUES---");
-                            foreach (var item in PluginConfiguration.CustomBoolValues.OrderBy(x => x.Key))
-                            {
-                                file.WriteLine($"{item.Key.Trim()} - {item.Value}");
-                            }
-                            file.WriteLine("");
-                            file.WriteLine("---BOOL ARRAY VALUES---");
-                            foreach (var item in PluginConfiguration.CustomBoolArrayValues.OrderBy(x => x.Key))
-                            {
-                                file.WriteLine($"{item.Key.Trim()} - {string.Join(", ", item.Value)}");
-                            }
-                        }
-                        else
-                        {
-                            var jobname = ConfigWindow.groupedPresets.Where(x => x.Value.Any(y => y.Info.JobShorthand.Equals(specificJob.ToLower(), StringComparison.CurrentCultureIgnoreCase))).FirstOrDefault().Key;
-                            var jobID = Svc.Data.GetExcelSheet<ClassJob>()?
-                                .Where(x => x.Name.ToString().Equals(jobname, StringComparison.CurrentCultureIgnoreCase))
-                                .First()
-                                .RowId;
-
-                            var whichConfig = jobID switch
-                            {
-                                1 or 19 => typeof(PLD.Config),
-                                2 or 20 => typeof(MNK.Config),
-                                3 or 21 => typeof(WAR.Config),
-                                4 or 22 => typeof(DRG.Config),
-                                5 or 23 => typeof(BRD.Config),
-                                6 or 24 => typeof(WHM.Config),
-                                7 or 25 => typeof(BLM.Config),
-                                26 or 27 => typeof(SMN.Config),
-                                28 => typeof(SCH.Config),
-                                29 or 30 => typeof(NIN.Config),
-                                31 => typeof(MCH.Config),
-                                32 => typeof(DRK.Config),
-                                33 => typeof(AST.Config),
-                                34 => typeof(SAM.Config),
-                                35 => typeof(RDM.Config),
-                                //36 => typeof(BLU.Config),
-                                37 => typeof(GNB.Config),
-                                38 => typeof(DNC.Config),
-                                39 => typeof(RPR.Config),
-                                40 => typeof(SGE.Config),
-                                41 => typeof(VPR.Config),
-                                42 => typeof(PCT.Config),
-                                _ => throw new NotImplementedException(),
-                            };
-
-                            foreach (var config in whichConfig.GetMembers().Where(x => x.MemberType == MemberTypes.Field || x.MemberType == MemberTypes.Property))
-                            {
-                                PrintConfig(file, config);
-                            }
-
-                            foreach (var config in typeof(PvPCommon.Config).GetMembers().Where(x => x.MemberType == MemberTypes.Field || x.MemberType == MemberTypes.Property))
-                            {
-                                PrintConfig(file, config);
-                            }
-                        }
-
-
-                        file.WriteLine("END CONFIG SETTINGS");
-                        file.WriteLine("");
-                        file.WriteLine($"Redundant IDs found: {i}");
-
-                        if (i > 0)
-                        {
-                            file.WriteLine($"START REDUNDANT IDs");
-                            foreach (CustomComboPreset preset in Service.Configuration.EnabledActions.Where(x => int.TryParse(x.ToString(), out _)).OrderBy(x => x))
-                            {
-                                file.WriteLine($"{(int)preset}");
-                            }
-
-                            file.WriteLine($"END REDUNDANT IDs");
-                            file.WriteLine("");
-                        }
-
-                        file.WriteLine($"Status Effect Count: {Svc.ClientState.LocalPlayer.StatusList.Count(x => x != null)}");
-
-                        if (Svc.ClientState.LocalPlayer.StatusList.Length > 0)
-                        {
-                            file.WriteLine($"START STATUS EFFECTS");
-                            foreach (Status? status in Svc.ClientState.LocalPlayer.StatusList)
-                            {
-                                file.WriteLine($"ID: {status.StatusId}, COUNT: {status.StackCount}, SOURCE: {status.SourceId} NAME: {ActionWatching.GetStatusName(status.StatusId)}");
-                            }
-
-                            file.WriteLine($"END STATUS EFFECTS");
-                        }
-
-                        var b64 = System.Text.Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(Service.Configuration));
-                        file.WriteLine(Convert.ToBase64String(b64));
-
-                        file.WriteLine("END DEBUG LOG");
-                        DuoLog.Information("Please check your desktop for WrathDebug.txt and upload this file where requested.");
-
-                        break;
-                    }
-
-                    catch (Exception ex)
-                    {
-                        Svc.Log.Error(ex, "Debug Log");
-                        DuoLog.Error("Unable to write Debug log.");
-                        break;
-                    }
-                }
-        }
-
-        Service.Configuration.Save();
-    }
-
-    private static void PrintConfig(StreamWriter file, MemberInfo? config)
-    {
-        string key = config.Name!;
-
-        var field = config.ReflectedType.GetField(key);
-        var val1 = field.GetValue(null);
-        if (val1.GetType().BaseType == typeof(UserData))
-        {
-            key = val1.GetType().BaseType.GetField("pName").GetValue(val1).ToString()!;
-        }
-
-        if (PluginConfiguration.CustomIntValues.TryGetValue(key, out int intvalue)) { file.WriteLine($"{config.Name} - {intvalue}"); return; }
-        if (PluginConfiguration.CustomFloatValues.TryGetValue(key, out float floatvalue)) { file.WriteLine($"{config.Name} - {floatvalue}"); return; }
-        if (PluginConfiguration.CustomBoolValues.TryGetValue(key, out bool boolvalue)) { file.WriteLine($"{config.Name} - {boolvalue}"); return; }
-        if (PluginConfiguration.CustomBoolArrayValues.TryGetValue(key, out bool[]? boolarrayvalue)) { file.WriteLine($"{config.Name} - {string.Join(", ", boolarrayvalue)}"); return; }
-        if (PluginConfiguration.CustomIntArrayValues.TryGetValue(key, out int[]? intaraayvalue)) { file.WriteLine($"{config.Name} - {string.Join(", ", intaraayvalue)}"); return; }
-
-        file.WriteLine($"{key} - NOT SET");
-    }
 }
