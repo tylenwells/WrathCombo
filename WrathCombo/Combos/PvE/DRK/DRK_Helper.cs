@@ -47,8 +47,8 @@ internal partial class DRK
      * The following methods all return `false` at the end, the only usual indicator
      * that the `action` has not been changed.
      * The only other return of `false` is when a piece of logic would apply to
-     * multiple following actions; Other cases of this, i.e. where such logic would
-     * apply to all such actions, is often done before the method call.
+     * multiple following actions; Other cases of this - i.e. where such logic would
+     * apply to all such actions - is often done before the method call.
      *
      * All should be passed a `newAction` reference to overwrite when the return is
      * true. If the return is false, the `newAction` should be ignored.
