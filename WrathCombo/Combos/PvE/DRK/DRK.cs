@@ -18,7 +18,7 @@ internal partial class DRK
     internal class DRK_ST_Advanced : CustomCombo
     {
         protected internal override CustomComboPreset Preset { get; } =
-            CustomComboPreset.DRK_ST_Advanced;
+            CustomComboPreset.DRK_ST_Combo;
 
         protected override uint Invoke(uint actionID)
         {
@@ -100,7 +100,7 @@ internal partial class DRK
                 return newAction;
 
             if (TryGetAction<Mitigation>(comboFlags, ref newAction))
-                    return newAction;
+                return newAction;
 
             if (TryGetAction<Spender>(comboFlags, ref newAction))
                 return newAction;
@@ -115,7 +115,7 @@ internal partial class DRK
     internal class DRK_AoE_Advanced : CustomCombo
     {
         protected internal override CustomComboPreset Preset { get; } =
-            CustomComboPreset.DRK_AoE_Advanced;
+            CustomComboPreset.DRK_AoE_Combo;
 
         protected override uint Invoke(uint actionID)
         {
