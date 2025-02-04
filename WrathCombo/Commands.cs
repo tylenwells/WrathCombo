@@ -29,7 +29,7 @@ public partial class WrathCombo
             "Open a window to edit custom combo settings.\n" +
             $"{Command} auto → Toggle Auto-rotation on/off.\n" +
             $"{Command} debug → Dumps a debug log onto your desktop for developers.\n" +
-            $"{OldCommand} - Old alias from XIVSlothCombo, still works!");
+            $"{OldCommand} → Old alias from XIVSlothCombo, still works!");
         EzCmd.Add(OldCommand, OnCommand);
     }
 
