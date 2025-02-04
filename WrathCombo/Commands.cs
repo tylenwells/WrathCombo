@@ -288,7 +288,6 @@ public partial class WrathCombo
             .FirstOrDefault(x =>
                 x.Value.Any(y => y.Info.JobShorthand == argument[0].ToUpperInvariant()))
             .Key;
-        var header = $"{jobName} - {argument[0].ToUpper()}";
-        PvEFeatures.HeaderToOpen = header;
+        PvEFeatures.OpenJob = jobName;
     }
 }
