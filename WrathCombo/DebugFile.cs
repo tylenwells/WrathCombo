@@ -32,12 +32,12 @@ public static class DebugFile
     /// <summary>
     ///     The number of redundant IDs found.
     /// </summary>
-    private static int redundantIDCount = 0;
+    private static int _redundantIDCount;
 
     /// <summary>
     ///     The redundant IDs found.
     /// </summary>
-    private static int[] redundantIDs = [];
+    private static int[] _redundantIDs = [];
 
     /// <summary>
     ///     Shortcut method to add a line to the debug file.
@@ -58,7 +58,7 @@ public static class DebugFile
     /// </param>
     public static void MakeDebugFile(ClassJob? job = null)
     {
-        redundantIDCount = 0;
+        _redundantIDCount = 0;
         using (_file = new StreamWriter(
                    $"{DesktopPath}/WrathDebug.txt", append: false))
         {
@@ -139,9 +139,17 @@ public static class DebugFile
     {
         var player = Svc.ClientState.LocalPlayer;
         var job = player.ClassJob.Value;
-        string currentZone = Svc.Data.GetExcelSheet<TerritoryType>()?
-            .FirstOrDefault(x => x.RowId == Svc.ClientState.TerritoryType)
-            .PlaceName.Value.Name.ToString() ?? "Unknown";
+        var currentZone = "Unknown";
+        try
+        {
+            currentZone = Svc.Data.GetExcelSheet<TerritoryType>()
+                .FirstOrDefault(x => x.RowId == Svc.ClientState.TerritoryType)
+                .PlaceName.Value.Name.ToString();
+        }
+        catch
+        {
+            // ignored
+        }
 
         AddLine("START PLAYER INFO");
         AddLine($"Job: {job.Abbreviation} / {job.Name} / {job.NameEnglish}");
@@ -166,8 +174,8 @@ public static class DebugFile
             {
                 if (int.TryParse(preset.ToString(), out _))
                 {
-                    redundantIDCount++;
-                    redundantIDs = redundantIDs.Append((int)preset).ToArray();
+                    _redundantIDCount++;
+                    _redundantIDs = _redundantIDs.Append((int)preset).ToArray();
                     continue;
                 }
 
@@ -184,8 +192,8 @@ public static class DebugFile
             {
                 if (int.TryParse(preset.ToString(), out _))
                 {
-                    redundantIDCount++;
-                    redundantIDs = redundantIDs.Append((int)preset).ToArray();
+                    _redundantIDCount++;
+                    _redundantIDs = _redundantIDs.Append((int)preset).ToArray();
                     continue;
                 }
 
@@ -244,7 +252,7 @@ public static class DebugFile
         {
             void PrintConfig(MemberInfo? config)
             {
-                var key = config.Name!;
+                var key = config.Name;
 
                 var field = config.ReflectedType.GetField(key);
                 var val1 = field.GetValue(null);
@@ -353,12 +361,12 @@ public static class DebugFile
 
     private static void AddRedundantIDs()
     {
-        AddLine($"Redundant IDs found: {redundantIDCount}");
+        AddLine($"Redundant IDs found: {_redundantIDCount}");
 
-        if (redundantIDCount <= 0) return;
+        if (_redundantIDCount <= 0) return;
 
         AddLine("START REDUNDANT IDS");
-        foreach (var id in redundantIDs)
+        foreach (var id in _redundantIDs)
             AddLine(id.ToString());
         AddLine("END REDUNDANT IDS");
     }
