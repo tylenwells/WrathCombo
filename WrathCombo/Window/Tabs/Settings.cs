@@ -51,9 +51,14 @@ namespace WrathCombo.Window.Tabs
 
                 #endregion
 
-                #region Melee Offset
-                float offset = (float)Service.Configuration.MeleeOffset;
-                ImGui.PushItemWidth(75);
+                #region Open to Current Job
+
+                if (ImGui.Checkbox("Open UI to current Job", ref Service.Configuration.OpenToCurrentJob))
+                    Service.Configuration.Save();
+
+                ImGuiComponents.HelpMarker("When you open Wrath's UI, it will automatically open to the job you are currently playing.");
+
+                #endregion
 
                 #region Shorten DTR bar text
 
