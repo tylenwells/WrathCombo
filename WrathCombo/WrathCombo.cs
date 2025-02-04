@@ -155,6 +155,7 @@ public sealed partial class WrathCombo : IDalamudPlugin
         ws.AddWindow(TargetHelper);
 
         Svc.PluginInterface.UiBuilder.Draw += ws.Draw;
+        Svc.PluginInterface.UiBuilder.OpenMainUi += OnOpenMainUi;
         Svc.PluginInterface.UiBuilder.OpenConfigUi += OnOpenConfigUi;
 
         RegisterCommands();
@@ -367,7 +368,9 @@ public sealed partial class WrathCombo : IDalamudPlugin
         P = null;
     }
 
-    private void OnOpenConfigUi() => HandleOpenCommand();
+    private void OnOpenMainUi() => HandleOpenCommand(tab: OpenWindow.PvE);
+
+    private void OnOpenConfigUi() => HandleOpenCommand(tab: OpenWindow.Settings);
 
     private void oldOnCommand(string command, string arguments)
     {

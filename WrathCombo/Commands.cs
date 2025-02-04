@@ -278,11 +278,17 @@ public partial class WrathCombo
     {
     }
 
-    private void HandleOpenCommand(string[]? argument = null)
+    private void HandleOpenCommand(string[]? argument = null, OpenWindow? tab = null)
     {
         argument ??= [""];
 
         ConfigWindow.IsOpen = !ConfigWindow.IsOpen;
+
+        if (tab is not null)
+        {
+            ConfigWindow.OpenWindow = tab.Value;
+            return;
+        }
 
         if (Service.Configuration.OpenToCurrentJob && Player.Available)
             PvEFeatures.OpenJob = ConfigWindow.groupedPresets
