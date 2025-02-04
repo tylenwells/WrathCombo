@@ -5,6 +5,7 @@ using System.Linq;
 using ECommons;
 using ECommons.DalamudServices;
 using ECommons.GameFunctions;
+using ECommons.GameHelpers;
 using ECommons.Logging;
 using WrathCombo.Combos;
 using WrathCombo.Core;
@@ -280,7 +281,12 @@ public partial class WrathCombo
     private void HandleOpenCommand(string[] argument)
     {
         ConfigWindow.IsOpen = !ConfigWindow.IsOpen;
-        PvEFeatures.HasToOpenJob = true;
+
+        if (Service.Configuration.OpenToCurrentJob && Player.Available)
+            PvEFeatures.OpenJob = ConfigWindow.groupedPresets
+                .FirstOrDefault(x =>
+                    x.Value.Any(y => y.Info.JobShorthand == Player.Job.ToString()))
+                .Key;
 
         if (argument[0].Length <= 0) return;
 

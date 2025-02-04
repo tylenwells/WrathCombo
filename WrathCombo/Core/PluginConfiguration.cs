@@ -58,6 +58,8 @@ namespace WrathCombo.Core
 
         public bool PerformanceMode = false;
 
+        public bool OpenToCurrentJob = false;
+
         #endregion
 
         #region AutoAction Settings

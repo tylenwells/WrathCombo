@@ -178,7 +178,6 @@ public sealed partial class WrathCombo : IDalamudPlugin
         HandleConflictedCombos();
         CustomComboFunctions.TimerSetup();
 
-
 #if DEBUG
         ConfigWindow.IsOpen = true;
 #endif
@@ -368,8 +367,15 @@ public sealed partial class WrathCombo : IDalamudPlugin
         P = null;
     }
 
+    private void OnOpenConfigUi() {
+        if (Service.Configuration.OpenToCurrentJob && Player.Available)
+            PvEFeatures.OpenJob = ConfigWindow.groupedPresets
+                .FirstOrDefault(x =>
+                    x.Value.Any(y => y.Info.JobShorthand == Player.Job.ToString()))
+                .Key;
 
-    private void OnOpenConfigUi() => ConfigWindow.IsOpen = !ConfigWindow.IsOpen;
+        ConfigWindow.IsOpen = !ConfigWindow.IsOpen;
+    }
 
     private void oldOnCommand(string command, string arguments)
     {
