@@ -10,7 +10,6 @@ using ECommons;
 using ECommons.Automation.LegacyTaskManager;
 using ECommons.DalamudServices;
 using ECommons.GameHelpers;
-using ECommons.Logging;
 using PunishLib;
 using System;
 using System.Collections.Generic;
@@ -37,10 +36,10 @@ public sealed partial class WrathCombo : IDalamudPlugin
     private readonly ConfigWindow ConfigWindow;
     private readonly SettingChangeWindow SettingChangeWindow;
     private readonly TargetHelper TargetHelper;
-    internal static WrathCombo? P = null!;
-    internal WindowSystem ws;
+    internal static WrathCombo? P;
+    private readonly WindowSystem ws;
     private readonly HttpClient httpClient = new();
-    private IDtrBarEntry DtrBarEntry;
+    private readonly IDtrBarEntry DtrBarEntry;
     internal Provider IPC;
     internal Search IPCSearch = null!;
     internal UIHelper UIHelper = null!;
@@ -151,7 +150,7 @@ public sealed partial class WrathCombo : IDalamudPlugin
         DtrBarEntry ??= Svc.DtrBar.Get("Wrath Combo");
         DtrBarEntry.OnClick = () =>
         {
-            ToggleAutorot(!Service.Configuration.RotationConfig.Enabled);
+            ToggleAutoRotation(!Service.Configuration.RotationConfig.Enabled);
         };
         DtrBarEntry.Tooltip = new SeString(
         new TextPayload("Click to toggle Wrath Combo's Auto-Rotation.\n"),
@@ -179,21 +178,6 @@ public sealed partial class WrathCombo : IDalamudPlugin
 
     public const string OptionControlledByIPC =
         "(being overwritten by another plugin, check the setting in /wrath)";
-
-    private void ToggleAutorot(bool value)
-    {
-        Service.Configuration.RotationConfig.Enabled = value;
-        Service.Configuration.Save();
-
-        var stateControlled =
-            P.UIHelper.AutoRotationStateControlled() is not null;
-
-        DuoLog.Information(
-            "Auto-Rotation set to "
-            + (Service.Configuration.RotationConfig.Enabled ? "ON" : "OFF")
-            + (stateControlled ? " " + OptionControlledByIPC : "")
-        );
-    }
 
     private static void HandleConflictedCombos()
     {
@@ -284,21 +268,23 @@ public sealed partial class WrathCombo : IDalamudPlugin
 
     private void PrintLoginMessage()
     {
-        Task.Delay(TimeSpan.FromSeconds(5)).ContinueWith(task => ResetFeatures());
+        Task.Delay(TimeSpan.FromSeconds(5)).ContinueWith(_ => ResetFeatures());
 
         if (!Service.Configuration.HideMessageOfTheDay)
-            Task.Delay(TimeSpan.FromSeconds(3)).ContinueWith(task => PrintMotD());
+            Task.Delay(TimeSpan.FromSeconds(3)).ContinueWith(_ => PrintMotD());
     }
 
     private void PrintMotD()
     {
         try
         {
-            string basicMessage = $"Welcome to WrathCombo v{this.GetType().Assembly.GetName().Version}!";
-            using HttpResponseMessage? motd = httpClient.GetAsync("https://raw.githubusercontent.com/PunishXIV/WrathCombo/main/res/motd.txt").Result;
+            var basicMessage = $"Welcome to WrathCombo v{this.GetType().Assembly
+                .GetName().Version}!";
+            using var motd =
+                httpClient.GetAsync("https://raw.githubusercontent.com/PunishXIV/WrathCombo/main/res/motd.txt").Result;
             motd.EnsureSuccessStatusCode();
-            string? data = motd.Content.ReadAsStringAsync().Result;
-            List<Payload>? payloads =
+            var data = motd.Content.ReadAsStringAsync().Result;
+            List<Payload> payloads =
             [
                 starterMotd,
                 EmphasisItalicPayload.ItalicsOn,
@@ -319,14 +305,13 @@ public sealed partial class WrathCombo : IDalamudPlugin
         }
     }
 
-    /// <inheritdoc/>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "Used for non-static only window initialization")]
     public string Name => "Wrath Combo";
 
     /// <inheritdoc/>
     public void Dispose()
     {
-        ConfigWindow?.Dispose();
+        ConfigWindow.Dispose();
 
         // Try to force a config save if there are some pending
         if (PluginConfiguration.SaveQueue.Count > 0)
@@ -344,8 +329,8 @@ public sealed partial class WrathCombo : IDalamudPlugin
         Svc.PluginInterface.UiBuilder.OpenConfigUi -= OnOpenConfigUi;
         Svc.PluginInterface.UiBuilder.Draw -= DrawUI;
 
-        Service.IconReplacer?.Dispose();
-        Service.ComboCache?.Dispose();
+        Service.IconReplacer.Dispose();
+        Service.ComboCache.Dispose();
         ActionWatching.Dispose();
         AST.DisposeCheckCards();
         CustomComboFunctions.TimerDispose();

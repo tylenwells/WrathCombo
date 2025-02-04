@@ -1,7 +1,10 @@
+#region
+
 using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using ECommons.DalamudServices;
 using ECommons.Logging;
 using Lumina.Excel.Sheets;
@@ -10,9 +13,11 @@ using WrathCombo.Combos.PvE;
 using WrathCombo.Combos.PvP;
 using WrathCombo.Core;
 using WrathCombo.CustomComboNS.Functions;
-using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
 using WrathCombo.Data;
 using WrathCombo.Services;
+using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
+
+#endregion
 
 namespace WrathCombo;
 
@@ -43,7 +48,7 @@ public static class DebugFile
     ///     Shortcut method to add a line to the debug file.
     /// </summary>
     /// <param name="line">
-    ///     The text of the line to be added.<br/>
+    ///     The text of the line to be added.<br />
     ///     Defaults to an empty string.
     /// </param>
     private static void AddLine(string line = "") => _file.WriteLine(line);
@@ -52,9 +57,9 @@ public static class DebugFile
     ///     Makes a debug file on the desktop.
     /// </summary>
     /// <param name="job">
-    ///     The job to filter the debug file by, or none.<br/>
-    ///     Must match the player's current job, if specified.<br/>
-    ///     Defaults to <see langword="null"/>.
+    ///     The job to filter the debug file by, or none.<br />
+    ///     Must match the player's current job, if specified.<br />
+    ///     Defaults to <see langword="null" />.
     /// </param>
     public static void MakeDebugFile(ClassJob? job = null)
     {
@@ -97,7 +102,7 @@ public static class DebugFile
     private static void AddPluginInfo()
     {
         var repo = RepoCheckFunctions.FetchCurrentRepo()?.InstalledFromUrl
-                   ??  "Unknown";
+                   ?? "Unknown";
 
         AddLine($"Plugin Version: {Svc.PluginInterface.Manifest.AssemblyVersion}");
         AddLine($"Installation Repo: {repo}");
@@ -210,6 +215,7 @@ public static class DebugFile
                 AddLine(line);
             }
         }
+
         AddLine("END ENABLED FEATURES");
 
         AddLine();
@@ -268,24 +274,28 @@ public static class DebugFile
                     AddLine($"{key}: {intVal}");
                     return;
                 }
+
                 if (PluginConfiguration.CustomFloatValues
                     .TryGetValue(key, out var floatVal))
                 {
                     AddLine($"{key}: {floatVal}");
                     return;
                 }
+
                 if (PluginConfiguration.CustomBoolValues
                     .TryGetValue(key, out var boolVal))
                 {
                     AddLine($"{key}: {boolVal}");
                     return;
                 }
+
                 if (PluginConfiguration.CustomBoolArrayValues
                     .TryGetValue(key, out var boolArrVal))
                 {
                     AddLine($"{key}: {string.Join(", ", boolArrVal)}");
                     return;
                 }
+
                 if (PluginConfiguration.CustomIntArrayValues
                     .TryGetValue(key, out var intArrVal))
                 {
@@ -354,7 +364,7 @@ public static class DebugFile
                 $"ID: {effect.StatusId}, " +
                 $"STACKS: {effect.StackCount}, " +
                 $"SOURCE: {(effect.SourceId == playerID ? "self" : effect
-                .SourceId)}, " +
+                    .SourceId)}, " +
                 $"NAME: {ActionWatching.GetStatusName(effect.StatusId)}");
         AddLine("END STATUS EFFECTS");
     }
@@ -374,7 +384,7 @@ public static class DebugFile
     private static void AddDebugCode()
     {
         AddLine("START DEBUG CODE");
-        var b64 = System.Text.Encoding.UTF8
+        var b64 = Encoding.UTF8
             .GetBytes(JsonConvert.SerializeObject(Service.Configuration));
         AddLine(Convert.ToBase64String(b64));
         AddLine("END DEBUG CODE");
