@@ -120,6 +120,232 @@ internal partial class DRK
         }
     }
 
+    /// <remarks>
+    ///     Actions in this method:
+    ///     <list type="bullet">
+    ///         <item>
+    ///             <term>Disesteem</term>
+    ///         </item>
+    ///         <item>
+    ///             <term>Living Shadow</term>
+    ///         </item>
+    ///         <item>
+    ///             <term>Interject</term>
+    ///         </item>
+    ///         <item>
+    ///             <term>Low Blow</term>
+    ///         </item>
+    ///         <item>
+    ///             <term>Delirium / Blood Weapon</term>
+    ///         </item>
+    ///         <item>
+    ///             <term>Salted Earth</term>
+    ///         </item>
+    ///         <item>
+    ///             <term>Salt and Darkness</term>
+    ///         </item>
+    ///         <item>
+    ///             <term>Shadowbringer</term>
+    ///         </item>
+    ///         <item>
+    ///             <term>Carve and Spit</term>
+    ///             <description>(ST only)</description>
+    ///         </item>
+    ///         <item>
+    ///             <term>Abyssal Drain</term>
+    ///             <description>(AoE only)</description>
+    ///         </item>
+    ///     </list>
+    /// </remarks>
+    private class Cooldown : IActionProvider
+    {
+        public bool TryGetAction(Combo flags, ref uint action)
+        {
+            #region Disesteem
+
+            if ((flags.HasFlag(Combo.Simple) ||
+                 ((flags.HasFlag(Combo.ST) &&
+                   IsEnabled(Preset.DRK_ST_CD_Disesteem)) ||
+                  flags.HasFlag(Combo.AoE) &&
+                  IsEnabled(Preset.DRK_AoE_CD_Disesteem))) &&
+                ActionReady(Disesteem) &&
+                TraitLevelChecked(Traits.EnhancedShadowIII) &&
+                HasEffect(Buffs.Scorn) &&
+                ((Gauge.DarksideTimeRemaining > 0 &&
+                  GetBuffRemainingTime(Buffs.Scorn) < 24) ||
+                 GetBuffRemainingTime(Buffs.Scorn) < 14))
+                return (action = OriginalHook(Disesteem)) != 0;
+
+            #endregion
+
+            if (!CanWeave() || Gauge.DarksideTimeRemaining <= 1) return false;
+
+            #region Living Shadow
+
+            #region Variables
+
+            var shadowContentHPThreshold = flags.HasFlag(Combo.ST)
+                ? Config.DRK_ST_LivingShadowThresholdDifficulty
+                : Config.DRK_AoE_LivingShadowThresholdDifficulty;
+            var shadowInHPContent =
+                flags.HasFlag(Combo.Adv) && ContentCheck.IsInConfiguredContent(
+                    shadowContentHPThreshold, ContentCheck.ListSet.Halved);
+            var shadowHPThreshold = flags.HasFlag(Combo.ST)
+                ? Config.DRK_ST_LivingShadowThreshold
+                : Config.DRK_AoE_LivingShadowThreshold;
+            var shadowHPMatchesThreshold =
+                flags.HasFlag(Combo.Simple) ||
+                (shadowInHPContent && GetTargetHPPercent() > shadowHPThreshold);
+
+            #endregion
+
+            if ((flags.HasFlag(Combo.Simple) ||
+                 ((flags.HasFlag(Combo.ST) && IsEnabled(Preset.DRK_ST_CD_Shadow)) ||
+                  flags.HasFlag(Combo.AoE) &&
+                  IsEnabled(Preset.DRK_AoE_CD_Shadow))) &&
+                IsOffCooldown(LivingShadow) &&
+                LevelChecked(LivingShadow) &&
+                shadowHPMatchesThreshold)
+                return (action = LivingShadow) != 0;
+
+            #endregion
+
+            if (CombatEngageDuration().TotalSeconds <= 5) return false;
+
+            #region Interrupting
+
+            if ((flags.HasFlag(Combo.Simple) ||
+                 ((flags.HasFlag(Combo.ST) &&
+                   IsEnabled(Preset.DRK_ST_CD_Interrupt)) ||
+                  flags.HasFlag(Combo.AoE) &&
+                  IsEnabled(Preset.DRK_AoE_Interrupt))) &&
+                ActionReady(All.Interject) &&
+                CanInterruptEnemy())
+                return (action = All.Interject) != 0;
+
+            if (flags.HasFlag(Combo.AoE) &&
+                (flags.HasFlag(Combo.Simple) ||
+                 IsEnabled(Preset.DRK_AoE_Stun)) &&
+                ActionReady(All.LowBlow) &&
+                TargetIsCasting())
+                return (action = All.LowBlow) != 0;
+
+            #endregion
+
+            #region Delirium (/Blood Weapon)
+
+            #region Variables
+
+            var deliriumContentHPThreshold = flags.HasFlag(Combo.ST)
+                ? Config.DRK_ST_DeliriumThresholdDifficulty
+                : Config.DRK_AoE_DeliriumThresholdDifficulty;
+            var deliriumInHPContent =
+                flags.HasFlag(Combo.Adv) && ContentCheck.IsInConfiguredContent(
+                    deliriumContentHPThreshold, ContentCheck.ListSet.Halved);
+            var deliriumHPThreshold = flags.HasFlag(Combo.ST)
+                ? Config.DRK_ST_DeliriumThreshold
+                : Config.DRK_AoE_DeliriumThreshold;
+            var deliriumHPMatchesThreshold =
+                flags.HasFlag(Combo.Simple) ||
+                (deliriumInHPContent && GetTargetHPPercent() > deliriumHPThreshold);
+
+            #endregion
+
+            if ((flags.HasFlag(Combo.Simple) ||
+                 ((flags.HasFlag(Combo.ST) &&
+                   IsEnabled(Preset.DRK_ST_CD_Delirium)) ||
+                  flags.HasFlag(Combo.AoE) &&
+                  IsEnabled(Preset.DRK_AoE_CD_Delirium))) &&
+                ActionReady(BloodWeapon) &&
+                deliriumHPMatchesThreshold)
+                return (action = OriginalHook(Delirium)) != 0;
+
+            #endregion
+
+            #region Salted Earth
+
+            #region Variables
+
+            var saltStill =
+                flags.HasFlag(Combo.Simple) ||
+                (flags.HasFlag(Combo.Adv) && flags.HasFlag(Combo.AoE) &&
+                 IsEnabled(Preset.DRK_AoE_CD_SaltStill) && !IsMoving() &&
+                 CombatEngageDuration().TotalSeconds >= 7);
+
+            #endregion
+
+            if ((flags.HasFlag(Combo.Simple) ||
+                 ((flags.HasFlag(Combo.ST) && IsEnabled(Preset.DRK_ST_CD_Salt)) ||
+                  flags.HasFlag(Combo.AoE) && IsEnabled(Preset.DRK_AoE_CD_Salt))) &&
+                LevelChecked(SaltedEarth) &&
+                IsOffCooldown(SaltedEarth) &&
+                !HasEffect(Buffs.SaltedEarth) &&
+                saltStill)
+                return (action = SaltedEarth) != 0;
+
+            #endregion
+
+            #region Salt and Darkness
+
+            if ((flags.HasFlag(Combo.Simple) ||
+                 flags.HasFlag(Combo.AoE) ||
+                 IsEnabled(Preset.DRK_ST_CD_Darkness)) &&
+                LevelChecked(SaltAndDarkness) &&
+                IsOffCooldown(SaltAndDarkness) &&
+                HasEffect(Buffs.SaltedEarth) &&
+                GetBuffRemainingTime(Buffs.SaltedEarth) < 7)
+                return (action = OriginalHook(SaltAndDarkness)) != 0;
+
+            #endregion
+
+            #region Shadowbringer
+
+            #region Variables
+
+            var bringerInBurst =
+                flags.HasFlag(Combo.Simple) || flags.HasFlag(Combo.AoE) ||
+                (flags.HasFlag(Combo.Adv) && flags.HasFlag(Combo.ST) &&
+                 !IsEnabled(Preset.DRK_ST_CD_BringerBurst)) ||
+                (flags.HasFlag(Combo.Adv) && flags.HasFlag(Combo.ST) &&
+                 IsEnabled(Preset.DRK_ST_CD_BringerBurst) &&
+                 IsOnCooldown(LivingShadow) && !HasEffect(Buffs.Scorn));
+
+            #endregion
+
+            if ((flags.HasFlag(Combo.Simple) ||
+                 ((flags.HasFlag(Combo.ST) && IsEnabled(Preset.DRK_ST_CD_Bringer)) ||
+                  flags.HasFlag(Combo.AoE) &&
+                  IsEnabled(Preset.DRK_AoE_CD_Bringer))) &&
+                ActionReady(Shadowbringer) &&
+                bringerInBurst)
+                return (action = Shadowbringer) != 0;
+
+            #endregion
+
+            #region Carve and Spit (ST only)
+
+            if (flags.HasFlag(Combo.ST) &&
+                (flags.HasFlag(Combo.Simple) ||
+                 IsEnabled(Preset.DRK_ST_CD_Spit)) &&
+                ActionReady(CarveAndSpit))
+                return (action = CarveAndSpit) != 0;
+
+            #endregion
+
+            #region Abyssal Drain (AoE only)
+
+            if (flags.HasFlag(Combo.AoE) &&
+                (flags.HasFlag(Combo.Simple) ||
+                 IsEnabled(Preset.DRK_AoE_CD_Drain)) &&
+                ActionReady(AbyssalDrain))
+                return (action = AbyssalDrain) != 0;
+
+            #endregion
+
+            return false;
+        }
+    }
+
     #region JustUsedMit
 
     /// <summary>
@@ -397,7 +623,8 @@ internal partial class DRK
 
             if (flags.HasFlag(Combo.ST) &&
                 (flags.HasFlag(Combo.Simple) ||
-                 (flags.HasFlag(Combo.Adv) && IsEnabled(Preset.DRK_ST_CD_Delirium))) &&
+                 (flags.HasFlag(Combo.Adv) &&
+                  IsEnabled(Preset.DRK_ST_CD_Delirium))) &&
                 LevelChecked(Delirium) &&
                 Gauge.Blood >= 60 &&
                 GetCooldownRemainingTime(Delirium) is > 0 and < 7)
@@ -426,11 +653,11 @@ internal partial class DRK
 
             #region Variables
 
-            var overcapThreshold = flags.HasFlag(Combo.Adv) ?
-                flags.HasFlag(Combo.ST)
+            var overcapThreshold = flags.HasFlag(Combo.Adv)
+                ? flags.HasFlag(Combo.ST)
                     ? Config.DRK_ST_BloodOvercapThreshold
-                    : Config.DRK_AoE_BloodOvercapThreshold :
-                90;
+                    : Config.DRK_AoE_BloodOvercapThreshold
+                : 90;
 
             #endregion
 
@@ -456,7 +683,7 @@ internal partial class DRK
     }
 
     /// <remarks>
-    ///     Will almost always return <c>true</c>.<br/>
+    ///     Will almost always return <c>true</c>.<br />
     ///     Actions in this Provider:
     ///     <list type="bullet">
     ///         <item>
@@ -505,232 +732,6 @@ internal partial class DRK
                 else if (lastComboAction == Unleash &&
                          LevelChecked(StalwartSoul))
                     return (action = StalwartSoul) != 0;
-
-            #endregion
-
-            return false;
-        }
-    }
-
-    /// <remarks>
-    ///     Actions in this method:
-    ///     <list type="bullet">
-    ///         <item>
-    ///             <term>Disesteem</term>
-    ///         </item>
-    ///         <item>
-    ///             <term>Living Shadow</term>
-    ///         </item>
-    ///         <item>
-    ///             <term>Interject</term>
-    ///         </item>
-    ///         <item>
-    ///             <term>Low Blow</term>
-    ///         </item>
-    ///         <item>
-    ///             <term>Delirium / Blood Weapon</term>
-    ///         </item>
-    ///         <item>
-    ///             <term>Salted Earth</term>
-    ///         </item>
-    ///         <item>
-    ///             <term>Salt and Darkness</term>
-    ///         </item>
-    ///         <item>
-    ///             <term>Shadowbringer</term>
-    ///         </item>
-    ///         <item>
-    ///             <term>Carve and Spit</term>
-    ///             <description>(ST only)</description>
-    ///         </item>
-    ///         <item>
-    ///             <term>Abyssal Drain</term>
-    ///             <description>(AoE only)</description>
-    ///         </item>
-    ///     </list>
-    /// </remarks>
-    private class Cooldown : IActionProvider
-    {
-        public bool TryGetAction(Combo flags, ref uint action)
-        {
-            #region Disesteem
-
-            if ((flags.HasFlag(Combo.Simple) ||
-                 ((flags.HasFlag(Combo.ST) &&
-                   IsEnabled(Preset.DRK_ST_CD_Disesteem)) ||
-                  flags.HasFlag(Combo.AoE) &&
-                  IsEnabled(Preset.DRK_AoE_CD_Disesteem))) &&
-                ActionReady(Disesteem) &&
-                TraitLevelChecked(Traits.EnhancedShadowIII) &&
-                HasEffect(Buffs.Scorn) &&
-                ((Gauge.DarksideTimeRemaining > 0 &&
-                  GetBuffRemainingTime(Buffs.Scorn) < 24) ||
-                 GetBuffRemainingTime(Buffs.Scorn) < 14))
-                return (action = OriginalHook(Disesteem)) != 0;
-
-            #endregion
-
-            if (!CanWeave() || Gauge.DarksideTimeRemaining <= 1) return false;
-
-            #region Living Shadow
-
-            #region Variables
-
-            var shadowContentHPThreshold = flags.HasFlag(Combo.ST)
-                ? Config.DRK_ST_LivingShadowThresholdDifficulty
-                : Config.DRK_AoE_LivingShadowThresholdDifficulty;
-            var shadowInHPContent =
-                flags.HasFlag(Combo.Adv) && ContentCheck.IsInConfiguredContent(
-                    shadowContentHPThreshold, ContentCheck.ListSet.Halved);
-            var shadowHPThreshold = flags.HasFlag(Combo.ST)
-                ? Config.DRK_ST_LivingShadowThreshold
-                : Config.DRK_AoE_LivingShadowThreshold;
-            var shadowHPMatchesThreshold =
-                flags.HasFlag(Combo.Simple) ||
-                (shadowInHPContent && GetTargetHPPercent() > shadowHPThreshold);
-
-            #endregion
-
-            if ((flags.HasFlag(Combo.Simple) ||
-                 ((flags.HasFlag(Combo.ST) && IsEnabled(Preset.DRK_ST_CD_Shadow)) ||
-                  flags.HasFlag(Combo.AoE) &&
-                  IsEnabled(Preset.DRK_AoE_CD_Shadow))) &&
-                IsOffCooldown(LivingShadow) &&
-                LevelChecked(LivingShadow) &&
-                shadowHPMatchesThreshold)
-                return (action = LivingShadow) != 0;
-
-            #endregion
-
-            if (CombatEngageDuration().TotalSeconds <= 5) return false;
-
-            #region Interrupting
-
-            if ((flags.HasFlag(Combo.Simple) ||
-                 ((flags.HasFlag(Combo.ST) &&
-                   IsEnabled(Preset.DRK_ST_CD_Interrupt)) ||
-                  flags.HasFlag(Combo.AoE) &&
-                  IsEnabled(Preset.DRK_AoE_Interrupt))) &&
-                ActionReady(All.Interject) &&
-                CanInterruptEnemy())
-                return (action = All.Interject) != 0;
-
-            if (flags.HasFlag(Combo.AoE) &&
-                (flags.HasFlag(Combo.Simple) ||
-                 IsEnabled(Preset.DRK_AoE_Stun)) &&
-                ActionReady(All.LowBlow) &&
-                TargetIsCasting())
-                return (action = All.LowBlow) != 0;
-
-            #endregion
-
-            #region Delirium (/Blood Weapon)
-
-            #region Variables
-
-            var deliriumContentHPThreshold = flags.HasFlag(Combo.ST)
-                ? Config.DRK_ST_DeliriumThresholdDifficulty
-                : Config.DRK_AoE_DeliriumThresholdDifficulty;
-            var deliriumInHPContent =
-                flags.HasFlag(Combo.Adv) && ContentCheck.IsInConfiguredContent(
-                    deliriumContentHPThreshold, ContentCheck.ListSet.Halved);
-            var deliriumHPThreshold = flags.HasFlag(Combo.ST)
-                ? Config.DRK_ST_DeliriumThreshold
-                : Config.DRK_AoE_DeliriumThreshold;
-            var deliriumHPMatchesThreshold =
-                flags.HasFlag(Combo.Simple) ||
-                (deliriumInHPContent && GetTargetHPPercent() > deliriumHPThreshold);
-
-            #endregion
-
-            if ((flags.HasFlag(Combo.Simple) ||
-                 ((flags.HasFlag(Combo.ST) &&
-                   IsEnabled(Preset.DRK_ST_CD_Delirium)) ||
-                  flags.HasFlag(Combo.AoE) &&
-                  IsEnabled(Preset.DRK_AoE_CD_Delirium))) &&
-                ActionReady(BloodWeapon) &&
-                deliriumHPMatchesThreshold)
-                return (action = OriginalHook(Delirium)) != 0;
-
-            #endregion
-
-            #region Salted Earth
-
-            #region Variables
-
-            var saltStill =
-                flags.HasFlag(Combo.Simple) ||
-                (flags.HasFlag(Combo.Adv) && flags.HasFlag(Combo.AoE) &&
-                 IsEnabled(Preset.DRK_AoE_CD_SaltStill) && !IsMoving() &&
-                 CombatEngageDuration().TotalSeconds >= 7);
-
-            #endregion
-
-            if ((flags.HasFlag(Combo.Simple) ||
-                 ((flags.HasFlag(Combo.ST) && IsEnabled(Preset.DRK_ST_CD_Salt)) ||
-                  flags.HasFlag(Combo.AoE) && IsEnabled(Preset.DRK_AoE_CD_Salt))) &&
-                LevelChecked(SaltedEarth) &&
-                IsOffCooldown(SaltedEarth) &&
-                !HasEffect(Buffs.SaltedEarth) &&
-                saltStill)
-                return (action = SaltedEarth) != 0;
-
-            #endregion
-
-            #region Salt and Darkness
-
-            if ((flags.HasFlag(Combo.Simple) ||
-                 flags.HasFlag(Combo.AoE) ||
-                 IsEnabled(Preset.DRK_ST_CD_Darkness)) &&
-                LevelChecked(SaltAndDarkness) &&
-                IsOffCooldown(SaltAndDarkness) &&
-                HasEffect(Buffs.SaltedEarth) &&
-                GetBuffRemainingTime(Buffs.SaltedEarth) < 7)
-                return (action = OriginalHook(SaltAndDarkness)) != 0;
-
-            #endregion
-
-            #region Shadowbringer
-
-            #region Variables
-
-            var bringerInBurst =
-                flags.HasFlag(Combo.Simple) || flags.HasFlag(Combo.AoE) ||
-                (flags.HasFlag(Combo.Adv) && flags.HasFlag(Combo.ST) &&
-                 !IsEnabled(Preset.DRK_ST_CD_BringerBurst)) ||
-                (flags.HasFlag(Combo.Adv) && flags.HasFlag(Combo.ST) &&
-                 IsEnabled(Preset.DRK_ST_CD_BringerBurst) &&
-                 IsOnCooldown(LivingShadow) && !HasEffect(Buffs.Scorn));
-
-            #endregion
-
-            if ((flags.HasFlag(Combo.Simple) ||
-                 ((flags.HasFlag(Combo.ST) && IsEnabled(Preset.DRK_ST_CD_Bringer)) ||
-                  flags.HasFlag(Combo.AoE) &&
-                  IsEnabled(Preset.DRK_AoE_CD_Bringer))) &&
-                ActionReady(Shadowbringer) &&
-                bringerInBurst)
-                return (action = Shadowbringer) != 0;
-
-            #endregion
-
-            #region Carve and Spit (ST only)
-
-            if (flags.HasFlag(Combo.ST) &&
-                (flags.HasFlag(Combo.Simple) ||
-                 IsEnabled(Preset.DRK_ST_CD_Spit)) &&
-                ActionReady(CarveAndSpit))
-                return (action = CarveAndSpit) != 0;
-
-            #endregion
-
-            #region Abyssal Drain (AoE only)
-
-            if (flags.HasFlag(Combo.AoE) &&
-                (flags.HasFlag(Combo.Simple) ||
-                 IsEnabled(Preset.DRK_AoE_CD_Drain)) &&
-                ActionReady(AbyssalDrain))
-                return (action = AbyssalDrain) != 0;
 
             #endregion
 
