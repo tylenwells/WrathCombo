@@ -112,7 +112,6 @@ public sealed partial class WrathCombo : IDalamudPlugin
 
             Service.IconReplacer.UpdateFilteredCombos();
             AST.QuickTargetCards.SelectedRandomMember = null;
-            PvEFeatures.HasToOpenJob = true;
             WrathOpener.SelectOpener();
             P.IPCSearch.UpdateActiveJobPresets();
             if (Service.Configuration.RotationConfig.EnableInInstance && Content.InstanceContentRow?.RowId > 0)

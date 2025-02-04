@@ -14,7 +14,6 @@ namespace WrathCombo.Window.Tabs
     {
         internal new static void Draw()
         {
-            PvEFeatures.HasToOpenJob = true;
             using (ImRaii.Child("main", new Vector2(0, 0), true))
             {
                 ImGui.Text("This tab allows you to customise your options for Wrath Combo.");
