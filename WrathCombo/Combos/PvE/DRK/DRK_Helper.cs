@@ -25,6 +25,21 @@ namespace WrathCombo.Combos.PvE;
 internal partial class DRK
 {
     /// <summary>
+    ///     Checking if there is space to weave an oGCD, with consideration for
+    ///     whether triple weaves should be avoided or not.
+    /// </summary>
+    /// <seealso cref="CustomComboFunctions.CanWeave(double)" />
+    /// <seealso cref="CanDelayedWeave(double,double)" />
+    private static bool CanWeave =>
+        (IsEnabled(Preset.DRK_ST_Combo) &&
+         IsEnabled(Preset.DRK_PreventTripleWeaves) &&
+         CanWeave() &&
+         !ActionWatching.HasDoubleWeaved()) ||
+        ((IsNotEnabled(Preset.DRK_ST_Combo) ||
+          IsNotEnabled(Preset.DRK_PreventTripleWeaves)) &&
+         (CanWeave() || CanDelayedWeave()));
+
+    /// <summary>
     ///     DRK's job gauge.
     /// </summary>
     private static DRKGauge Gauge => GetJobGauge<DRKGauge>();
@@ -91,7 +106,7 @@ internal partial class DRK
             #endregion
 
             // Bail if we can't weave any other mitigations
-            if (!CanWeave()) return false;
+            if (!CanWeave) return false;
 
             #region Aggro + Stun
 
@@ -178,7 +193,7 @@ internal partial class DRK
 
             #endregion
 
-            if (!CanWeave() || Gauge.DarksideTimeRemaining <= 1) return false;
+            if (!CanWeave || Gauge.DarksideTimeRemaining <= 1) return false;
 
             #region Living Shadow
 
@@ -448,7 +463,7 @@ internal partial class DRK
             #endregion
 
             // Bail if we can't weave any other mitigations
-            if (!CanWeave()) return false;
+            if (!CanWeave) return false;
 
             #region TBN
 
@@ -676,7 +691,7 @@ internal partial class DRK
             #endregion
 
             // Bail if we can't weave any other mitigations
-            if (!CanWeave()) return false;
+            if (!CanWeave) return false;
 
             return false;
         }

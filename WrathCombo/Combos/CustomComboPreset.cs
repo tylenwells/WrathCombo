@@ -1361,6 +1361,10 @@ public enum CustomComboPreset
     DRK_ST_Advanced = 5010,
 
     [ParentCombo(DRK_ST_Advanced)]
+    [ParentCombo(DRK_ST_Combo)]
+    [CustomComboInfo("Prevent Triple Weaves Option", "Tries to prevent any triple-weaving (even when it probably wouldn't clip).", DRK.JobID)]
+    DRK_PreventTripleWeaves = 5038,
+
     [CustomComboInfo("Balance Opener (Level 100)",
         "Adds the Balance opener at level 100." +
         "\nRequirements:" +
@@ -1521,7 +1525,7 @@ public enum CustomComboPreset
     #endregion
 
     #endregion
-    // Last value = 5037
+    // Last value = 5038
 
     #region Advanced Multi Target Combo
 
