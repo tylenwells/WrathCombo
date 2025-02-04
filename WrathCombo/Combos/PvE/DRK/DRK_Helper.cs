@@ -209,7 +209,7 @@ internal partial class DRK
                 ? Config.DRK_ST_LivingShadowThreshold
                 : Config.DRK_AoE_LivingShadowThreshold;
             var shadowHPMatchesThreshold =
-                flags.HasFlag(Combo.Simple) ||
+                flags.HasFlag(Combo.Simple) || !shadowInHPContent ||
                 (shadowInHPContent && GetTargetHPPercent() > shadowHPThreshold);
 
             #endregion
@@ -242,7 +242,7 @@ internal partial class DRK
                 (flags.HasFlag(Combo.Simple) ||
                  IsEnabled(Preset.DRK_AoE_Stun)) &&
                 ActionReady(All.LowBlow) &&
-                TargetIsCasting())
+                CanInterruptEnemy())
                 return (action = All.LowBlow) != 0;
 
             #endregion
@@ -261,7 +261,7 @@ internal partial class DRK
                 ? Config.DRK_ST_DeliriumThreshold
                 : Config.DRK_AoE_DeliriumThreshold;
             var deliriumHPMatchesThreshold =
-                flags.HasFlag(Combo.Simple) ||
+                flags.HasFlag(Combo.Simple) || !deliriumInHPContent ||
                 (deliriumInHPContent && GetTargetHPPercent() > deliriumHPThreshold);
 
             #endregion
@@ -282,7 +282,9 @@ internal partial class DRK
             #region Variables
 
             var saltStill =
-                flags.HasFlag(Combo.Simple) ||
+                flags.HasFlag(Combo.Simple) || flags.HasFlag(Combo.ST) ||
+                (flags.HasFlag(Combo.Adv) && flags.HasFlag(Combo.AoE) &&
+                 IsNotEnabled(Preset.DRK_AoE_CD_SaltStill)) ||
                 (flags.HasFlag(Combo.Adv) && flags.HasFlag(Combo.AoE) &&
                  IsEnabled(Preset.DRK_AoE_CD_SaltStill) && !IsMoving() &&
                  CombatEngageDuration().TotalSeconds >= 7);
