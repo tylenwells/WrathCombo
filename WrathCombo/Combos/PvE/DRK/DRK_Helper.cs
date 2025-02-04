@@ -600,6 +600,27 @@ internal partial class DRK
     ///         <item>
     ///             <term>Quietus</term>
     ///         </item>
+    ///         <item>
+    ///             <term>Scarlet Delirium</term>
+    ///         </item>
+    ///         <item>
+    ///             <term>Comeuppance</term>
+    ///         </item>
+    ///         <item>
+    ///             <term>Torcleaver</term>
+    ///         </item>
+    ///         <item>
+    ///             <term>Edge of Darkness</term>
+    ///         </item>
+    ///         <item>
+    ///             <term>Edge of Shadow</term>
+    ///         </item>
+    ///         <item>
+    ///             <term>Flood of Darkness</term>
+    ///         </item>
+    ///         <item>
+    ///             <term>Flood of Shadow</term>
+    ///         </item>
     ///     </list>
     /// </remarks>
     private class Spender : IActionProvider
