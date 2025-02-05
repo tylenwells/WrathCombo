@@ -472,7 +472,5 @@ public static class DebugFile
             .GetBytes(JsonConvert.SerializeObject(Service.Configuration));
         AddLine(Convert.ToBase64String(b64));
         AddLine("END DEBUG CODE");
-
-        AddLine();
     }
 }
