@@ -16,6 +16,7 @@ using WrathCombo.Combos.PvP;
 using WrathCombo.Core;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Data;
+using WrathCombo.Extensions;
 using WrathCombo.Services;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
 
@@ -222,7 +223,7 @@ public static class DebugFile
                                     null
                                 : P.UIHelper.AutoRotationConfigControlled(
                                     property.Name) is not null;
-                        var ctrlText = controlled ? " (via IPC)" : "";
+                        var ctrlText = controlled ? " (IPC)" : "";
                         AddLine($"{prefix}{property.Name}: {value} {ctrlText}");
                     }
                     catch
@@ -255,6 +256,15 @@ public static class DebugFile
                 if (leaseesCount > 0)
                     if (P.UIHelper.PresetControlled(preset) is not null)
                         line += " (IPC)";
+                if (preset.Attributes().AutoAction is not null)
+                {
+                    line += "  AUTO-MODE: ";
+                    line += P.IPCSearch.AutoActions[preset] ? "ON" : "OFF";
+                    if (leaseesCount > 0)
+                        if (Service.Configuration.AutoActions[preset] !=
+                            P.IPCSearch.AutoActions[preset])
+                            line += " (IPC)";
+                }
                 AddLine(line);
             }
         }
@@ -278,6 +288,14 @@ public static class DebugFile
                 if (leaseesCount > 0)
                     if (P.UIHelper.PresetControlled(preset) is not null)
                         line += " (IPC)";
+                if (preset.Attributes().AutoAction is not null)
+                {
+                    line += "      AUTO-MODE: ";
+                    line += P.IPCSearch.AutoActions[preset] ? "ON" : "OFF";
+                    if (leaseesCount > 0)
+                        if (P.UIHelper.PresetControlled(preset) is not null)
+                            line += " (IPC)";
+                }
                 AddLine(line);
             }
         }
