@@ -91,8 +91,6 @@ public static class DebugFile
             AddConflictingInfo();
             AddLine();
 
-            AddLine();
-
             AddPlayerInfo();
 
             AddFeatures(job);
@@ -109,8 +107,9 @@ public static class DebugFile
             AddLine("END DEBUG LOG");
 
             DuoLog.Information(
-                "Please check your desktop for WrathDebug.txt " +
-                "and upload this file where requested");
+                "WrathDebug.txt created on your desktop, for " +
+                (job is null ? "all jobs" : job.Value.Abbreviation.ToString()) +
+                ". Upload this file where requested.");
         }
     }
 

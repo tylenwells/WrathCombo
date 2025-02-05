@@ -371,24 +371,29 @@ public partial class WrathCombo
     {
         argument ??= [""];
 
+        // Toggle the window state
         ConfigWindow.IsOpen = !ConfigWindow.IsOpen;
-        if (forceOpen.HasValue)
+
+        // Force open (UI buttons)
+        if (forceOpen is not null)
             ConfigWindow.IsOpen = forceOpen.Value;
 
+        // Open to specific tab
         if (tab is not null)
         {
             ConfigWindow.OpenWindow = tab.Value;
             return;
         }
 
+        // Open to current job setting
         if (Service.Configuration.OpenToCurrentJob && Player.Available)
             PvEFeatures.OpenJob = ConfigWindow.groupedPresets
                 .FirstOrDefault(x =>
                     x.Value.Any(y => y.Info.JobShorthand == Player.Job.ToString()))
                 .Key;
 
+        // Open to specified job
         if (argument[0].Length <= 0) return;
-
         var jobName = ConfigWindow.groupedPresets
             .FirstOrDefault(x =>
                 x.Value.Any(y =>
