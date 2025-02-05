@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using ECommons.DalamudServices;
+using ECommons.GameHelpers;
 using ECommons.Logging;
 using Lumina.Excel.Sheets;
 using Newtonsoft.Json;
@@ -56,9 +57,28 @@ public static class DebugFile
     ///     Must match the player's current job, if specified.<br />
     ///     Defaults to <see langword="null" />.
     /// </param>
-    public static void MakeDebugFile(ClassJob? job = null)
+    /// <param name="allJobs">
+    ///     Whether the debug file should be targeted at all jobs, not a specific
+    ///     one.<br/>
+    ///     Overrides the <paramref name="job"/> parameter if set to
+    ///     <see langword="true" />.<br/>
+    ///     Defaults to <see langword="false" />.
+    /// </param>
+    public static void MakeDebugFile(ClassJob? job = null, bool? allJobs = false)
     {
         _redundantIDs = [];
+
+        if (allJobs == true)
+        {
+            if (!Player.Available)
+            {
+                DuoLog.Error("Player data not currently available");
+                throw new InvalidOperationException();
+            }
+
+            job = Svc.ClientState.LocalPlayer.ClassJob.Value;
+        }
+
         using (_file = new StreamWriter(
                    $"{DesktopPath}/WrathDebug.txt", append: false))
         {

@@ -318,6 +318,12 @@ public partial class WrathCombo
                 if (argument[1].Length != 3)
                 {
                     DuoLog.Error("Invalid job abbreviation");
+                    throw new ArgumentException("Invalid job abbreviation");
+                }
+
+                if (argument[1] == "all")
+                {
+                    DebugFile.MakeDebugFile(allJobs: true);
                     return;
                 }
 
@@ -338,23 +344,19 @@ public partial class WrathCombo
                 catch (InvalidOperationException)
                 {
                     DuoLog.Error($"Invalid job abbreviation, '{jobName}'");
-                    return;
+                    throw;
                 }
                 // unknown
                 catch (Exception ex)
                 {
                     DuoLog.Error($"Error looking up job abbreviation, '{jobName}'");
                     Svc.Log.Error(ex, "Debug Log");
-                    return;
+                    throw;
                 }
 
                 if (job.Value.RowId !=
                     Svc.ClientState.LocalPlayer.ClassJob.Value.RowId)
-                {
-                    DuoLog.Information(
-                        $"Please switch your job to {job.Value.Name}");
-                    return;
-                }
+                    DuoLog.Warning($"You are not on {job.Value.Name}");
             }
 
             // Request a debug file, with null, or the entered Job
