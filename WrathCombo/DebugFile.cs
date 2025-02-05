@@ -70,6 +70,8 @@ public static class DebugFile
         _redundantIDs = [];
 
         if (allJobs == true)
+            job = null;
+        else if (job is null)
         {
             if (!Player.Available)
             {
@@ -77,10 +79,6 @@ public static class DebugFile
                 throw new InvalidOperationException();
             }
 
-            job = null;
-        }
-        else if (job is null)
-        {
             job = Svc.ClientState.LocalPlayer.ClassJob.Value;
         }
 
