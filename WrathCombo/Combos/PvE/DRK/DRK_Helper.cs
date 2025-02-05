@@ -808,7 +808,7 @@ internal partial class DRK
             if ((flags.HasFlag(Combo.Simple) ||
                  ((flags.HasFlag(Combo.ST) && IsEnabled(Preset.DRK_ST_Sp_Edge)) ||
                   flags.HasFlag(Combo.AoE) && IsEnabled(Preset.DRK_AoE_Sp_Flood))) &&
-                manaDarksideDropping)
+                !manaEvenBurstSoon)
                 if (flags.HasFlag(Combo.ST) && LevelChecked(EdgeOfDarkness))
                     return (action = OriginalHook(EdgeOfDarkness)) != 0;
                 else
@@ -821,7 +821,8 @@ internal partial class DRK
             if (flags.HasFlag(Combo.Simple) ||
                  flags.HasFlag(Combo.AoE) ||
                  (flags.HasFlag(Combo.ST) &&
-                  IsEnabled(Preset.DRK_ST_Sp_EdgeDarkside)))
+                  IsEnabled(Preset.DRK_ST_Sp_EdgeDarkside)) &&
+                 manaDarksideDropping)
                 if (flags.HasFlag(Combo.ST) && LevelChecked(EdgeOfDarkness))
                     return (action = OriginalHook(EdgeOfDarkness)) != 0;
                 else
