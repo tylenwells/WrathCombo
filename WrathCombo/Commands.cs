@@ -248,9 +248,12 @@ public partial class WrathCombo
 
     private void HandleAutoCommands(string[] argument)
     {
+        var toggledVal = !Service.Configuration.RotationConfig.Enabled;
         var newVal = argument.Length > 1
-            ? argument[1] == "on"
-            : !Service.Configuration.RotationConfig.Enabled;
+            ? argument[1] == "toggle"
+                ? toggledVal
+                : argument[1] == "on"
+            : toggledVal;
 
         if (newVal != Service.Configuration.RotationConfig.Enabled)
             ToggleAutoRotation(newVal);
