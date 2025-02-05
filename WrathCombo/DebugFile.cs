@@ -65,11 +65,11 @@ public static class DebugFile
     ///     <see langword="true" />.<br/>
     ///     Defaults to <see langword="false" />.
     /// </param>
-    public static void MakeDebugFile(ClassJob? job = null, bool? allJobs = false)
+    public static void MakeDebugFile(ClassJob? job = null, bool allJobs = false)
     {
         _redundantIDs = [];
 
-        if (allJobs == true)
+        if (allJobs)
             job = null;
         else if (job is null)
         {
