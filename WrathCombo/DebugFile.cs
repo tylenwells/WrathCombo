@@ -35,11 +35,6 @@ public static class DebugFile
     private static StreamWriter _file = null!;
 
     /// <summary>
-    ///     The number of redundant IDs found.
-    /// </summary>
-    private static int _redundantIDCount;
-
-    /// <summary>
     ///     The redundant IDs found.
     /// </summary>
     private static int[] _redundantIDs = [];
@@ -63,7 +58,7 @@ public static class DebugFile
     /// </param>
     public static void MakeDebugFile(ClassJob? job = null)
     {
-        _redundantIDCount = 0;
+        _redundantIDs = [];
         using (_file = new StreamWriter(
                    $"{DesktopPath}/WrathDebug.txt", append: false))
         {
@@ -179,7 +174,6 @@ public static class DebugFile
             {
                 if (int.TryParse(preset.ToString(), out _))
                 {
-                    _redundantIDCount++;
                     _redundantIDs = _redundantIDs.Append((int)preset).ToArray();
                     continue;
                 }
@@ -197,7 +191,6 @@ public static class DebugFile
             {
                 if (int.TryParse(preset.ToString(), out _))
                 {
-                    _redundantIDCount++;
                     _redundantIDs = _redundantIDs.Append((int)preset).ToArray();
                     continue;
                 }
@@ -371,9 +364,9 @@ public static class DebugFile
 
     private static void AddRedundantIDs()
     {
-        AddLine($"Redundant IDs found: {_redundantIDCount}");
+        AddLine($"Redundant IDs found: {_redundantIDs.Length}");
 
-        if (_redundantIDCount <= 0) return;
+        if (_redundantIDs.Length <= 0) return;
 
         AddLine("START REDUNDANT IDS");
         foreach (var id in _redundantIDs)
