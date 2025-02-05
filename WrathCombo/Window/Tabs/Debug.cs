@@ -4,6 +4,7 @@ using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Interface.Colors;
 using Dalamud.Interface.Utility.Raii;
 using Dalamud.Utility;
+using ECommons;
 using ECommons.DalamudServices;
 using ECommons.ExcelServices;
 using ECommons.GameFunctions;
@@ -14,10 +15,13 @@ using FFXIVClientStructs.FFXIV.Client.Game.Object;
 using FFXIVClientStructs.FFXIV.Client.Game.UI;
 using ImGuiNET;
 using Lumina.Excel.Sheets;
+using Newtonsoft.Json;
 using System;
 using System.Linq;
 using System.Numerics;
+using System.Text;
 using WrathCombo.AutoRotation;
+using WrathCombo.Core;
 using WrathCombo.CustomComboNS;
 using WrathCombo.Data;
 using WrathCombo.Extensions;
@@ -34,10 +38,46 @@ namespace WrathCombo.Window.Tabs
     {
         public static int debugNum = 0;
         public static Guid? WrathLease;
+        public static bool DebugConfig = false;
+        static string _debugConfig = string.Empty;
 
         internal static Action? debugSpell;
         internal unsafe static new void Draw()
         {
+            if (DebugConfig)
+            {
+                ImGuiEx.Text(ImGuiColors.HealerGreen, "You are now in config debug mode.");
+            }
+
+
+            if (ImGui.InputText("Debug Config", ref _debugConfig, 200000))
+            {
+                var decomp = Convert.FromBase64String(_debugConfig);
+                var decode = Encoding.UTF8.GetString(decomp);
+                try
+                {
+                    var config = JsonConvert.DeserializeObject<Core.PluginConfiguration>(decode);
+                    if (config != null)
+                    {
+                        DebugConfig = true;
+                        Service.Configuration = config;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ex.Log();
+                }
+            }
+
+            if (DebugConfig)
+            {
+                if (ImGui.Button("Disable Debug Config Mode"))
+                {
+                    DebugConfig = false;
+                    Service.Configuration = Svc.PluginInterface.GetPluginConfig() as PluginConfiguration ?? new PluginConfiguration();
+                }
+            }
+
             IPlayerCharacter? LocalPlayer = Svc.ClientState.LocalPlayer;
             uint[] statusBlacklist = { 360, 361, 362, 363, 364, 365, 366, 367, 368 }; // Duration will not be displayed for these status effects
             var target = Svc.Targets.Target;
