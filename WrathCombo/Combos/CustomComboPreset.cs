@@ -1361,7 +1361,7 @@ public enum CustomComboPreset
     DRK_ST_Combo = 5010,
 
     [ParentCombo(DRK_ST_Combo)]
-    [CustomComboInfo("Prevent Triple Weaves Option", "Tries to prevent any triple-weaving (even when it probably wouldn't clip).", DRK.JobID)]
+    [CustomComboInfo("Prevent Triple Weaves Option", "Tries to prevent any triple-weaving (even when it may not clip).", DRK.JobID)]
     DRK_PreventTripleWeaves = 5038,
 
     [ParentCombo(DRK_ST_Combo)]
@@ -1374,8 +1374,7 @@ public enum CustomComboPreset
         "\n- Delirium off cooldown" +
         "\n- Carve and Spit off cooldown" +
         "\n- Salted Earth off cooldown" +
-        "\n(will skip the 2nd Edge if you have not popped a TBN)" +
-        "\n(does support TBN'ing during use or pre-pull)",
+        "\n(supports TBN'ing during use or pre-pull)",
         DRK.JobID)]
     DRK_ST_BalanceOpener = 5011,
 
@@ -1386,7 +1385,6 @@ public enum CustomComboPreset
     #region Cooldowns
 
     [ParentCombo(DRK_ST_Combo)]
-    [ConflictingCombos(DRK_oGCD)]
     [CustomComboInfo("Cooldown Options", "Collection of cooldowns to add to the rotation.", DRK.JobID)]
     DRK_ST_CDs = 5013,
 
@@ -1500,32 +1498,36 @@ public enum CustomComboPreset
     [CustomComboInfo("The Blackest Night Option",
         "Uses The Blackest Night based on Health Remaining.\n" +
         "(Note: makes no attempt to ensure shield will break)", DRK.JobID)]
-    DRK_ST_TBN = 5032,
+    DRK_ST_Mit_TBN = 5032,
 
     [ParentCombo(DRK_ST_Mitigation)]
     [CustomComboInfo("Oblation Option", "Uses Oblation based on Health Remaining.", DRK.JobID)]
-    DRK_ST_Oblation = 5033,
+    DRK_ST_Mit_Oblation = 5033,
 
     [ParentCombo(DRK_ST_Mitigation)]
     [CustomComboInfo("Reprisal Option", "Uses Reprisal when a raidwide is in the process of casting.", DRK.JobID)]
-    DRK_ST_Reprisal = 5034,
+    DRK_ST_Mit_Reprisal = 5034,
 
     [ParentCombo(DRK_ST_Mitigation)]
     [CustomComboInfo("Dark Missionary Option", "Uses Dark Missionary when a raidwide is in the process of casting.", DRK.JobID)]
-    DRK_ST_Missionary = 5035,
+    DRK_ST_Mit_Missionary = 5035,
+
+    [ParentCombo(DRK_ST_Mit_Missionary)]
+    [CustomComboInfo("Avoid Doubling up on Group Mit", "Won't use Dark Missionary if your own Reprisal is on the target.", DRK.JobID)]
+    DRK_ST_Mit_MissionaryAvoid = 5039,
 
     [ParentCombo(DRK_ST_Mitigation)]
     [CustomComboInfo("Shadowed Vigil Option", "Uses Shadowed Vigil based on Health Remaining.", DRK.JobID)]
-    DRK_ST_Vigil = 5036,
+    DRK_ST_Mit_Vigil = 5036,
 
     [ParentCombo(DRK_ST_Mitigation)]
     [CustomComboInfo("Living Dead Option", "Uses Living Dead based on Health Remaining.", DRK.JobID)]
-    DRK_ST_LivingDead = 5037,
+    DRK_ST_Mit_LivingDead = 5037,
 
     #endregion
 
     #endregion
-    // Last value = 5038
+    // Last value = 5039
 
     #region Advanced Multi Target Combo
 
@@ -1638,31 +1640,31 @@ public enum CustomComboPreset
 
     [ParentCombo(DRK_AoE_Mitigation)]
     [CustomComboInfo("The Blackest Night Option", "Adds The Blackest Night to the rotation.", DRK.JobID)]
-    DRK_AoE_TBN = 5068,
+    DRK_AoE_Mit_TBN = 5068,
 
     [ParentCombo(DRK_AoE_Mitigation)]
     [CustomComboInfo("Oblation Option", "Uses Oblation based on Health Remaining.", DRK.JobID)]
-    DRK_AoE_Oblation = 5069,
+    DRK_AoE_Mit_Oblation = 5069,
 
     [ParentCombo(DRK_AoE_Mitigation)]
     [CustomComboInfo("Reprisal Option", "Adds Reprisal to the rotation.", DRK.JobID)]
-    DRK_AoE_Reprisal = 5070,
+    DRK_AoE_Mit_Reprisal = 5070,
 
     [ParentCombo(DRK_AoE_Mitigation)]
     [CustomComboInfo("Rampart Option", "Adds Rampart to the rotation.", DRK.JobID)]
-    DRK_AoE_Rampart = 5071,
+    DRK_AoE_Mit_Rampart = 5071,
 
     [ParentCombo(DRK_AoE_Mitigation)]
     [CustomComboInfo("Arm's Length Option", "Adds Arm's Length to the rotation.", DRK.JobID)]
-    DRK_AoE_ArmsLength = 5072,
+    DRK_AoE_Mit_ArmsLength = 5072,
 
     [ParentCombo(DRK_AoE_Mitigation)]
     [CustomComboInfo("Shadowed Vigil Option", "Uses Shadowed Vigil based on Health Remaining.", DRK.JobID)]
-    DRK_AoE_Vigil = 5073,
+    DRK_AoE_Mit_Vigil = 5073,
 
     [ParentCombo(DRK_AoE_Mitigation)]
     [CustomComboInfo("Living Dead Option", "Uses Living Dead based on your and your enemy's Remaining Health.", DRK.JobID)]
-    DRK_AoE_LivingDead = 5074,
+    DRK_AoE_Mit_LivingDead = 5074,
 
     #endregion
 
@@ -1723,7 +1725,6 @@ public enum CustomComboPreset
     #region oGCD Feature
 
     [ReplaceSkill(DRK.CarveAndSpit, DRK.AbyssalDrain)]
-    [ConflictingCombos(DRK_ST_CDs)]
     [CustomComboInfo("oGCD Feature", "Adds Living Shadow > Disesteem > Salted Earth > Salt And Darkness to Carve And Spit and Abyssal Drain.", DRK.JobID)]
     DRK_oGCD = 5120,
 

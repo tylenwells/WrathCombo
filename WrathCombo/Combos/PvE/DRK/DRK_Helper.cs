@@ -450,9 +450,9 @@ internal partial class DRK
             #endregion
 
             if ((flags.HasFlag(Combo.Simple) ||
-                 ((flags.HasFlag(Combo.ST) && IsEnabled(Preset.DRK_ST_LivingDead)) ||
+                 ((flags.HasFlag(Combo.ST) && IsEnabled(Preset.DRK_ST_Mit_LivingDead)) ||
                   flags.HasFlag(Combo.AoE) &&
-                  IsEnabled(Preset.DRK_AoE_LivingDead))) &&
+                  IsEnabled(Preset.DRK_AoE_Mit_LivingDead))) &&
                 ActionReady(LivingDead) &&
                 PlayerHealthPercentageHp() <= livingDeadSelfThreshold &&
                 GetTargetHPPercent() >= livingDeadTargetThreshold &&
@@ -470,8 +470,8 @@ internal partial class DRK
             #region TBN
 
             if ((flags.HasFlag(Combo.Simple) ||
-                 ((flags.HasFlag(Combo.ST) && IsEnabled(Preset.DRK_ST_TBN)) ||
-                  flags.HasFlag(Combo.AoE) && IsEnabled(Preset.DRK_AoE_TBN))) &&
+                 ((flags.HasFlag(Combo.ST) && IsEnabled(Preset.DRK_ST_Mit_TBN)) ||
+                  flags.HasFlag(Combo.AoE) && IsEnabled(Preset.DRK_AoE_Mit_TBN))) &&
                 ActionReady(BlackestNight) &&
                 LocalPlayer.CurrentMp >= 3000 &&
                 ShouldTBNSelf(flags.HasFlag(Combo.AoE)))
@@ -483,18 +483,26 @@ internal partial class DRK
 
             #region Variables
 
-            var oblationCharges = flags.HasFlag(Combo.Adv) && flags.HasFlag(Combo.ST)
-                ? Config.DRK_ST_OblationCharges
+            var oblationCharges = flags.HasFlag(Combo.Adv) ?
+                flags.HasFlag(Combo.ST)
+                    ? Config.DRK_ST_OblationCharges
+                    : Config.DRK_AoE_OblationCharges
                 : 0;
+            var oblationThreshold = flags.HasFlag(Combo.Adv) ?
+                flags.HasFlag(Combo.ST)
+                    ? Config.DRK_ST_Mit_OblationThreshold
+                    : Config.DRK_AoE_Mit_OblationThreshold
+                : 90;
 
             #endregion
 
             if ((flags.HasFlag(Combo.Simple) ||
-                 ((flags.HasFlag(Combo.ST) && IsEnabled(Preset.DRK_ST_Oblation)) ||
-                  flags.HasFlag(Combo.AoE) && IsEnabled(Preset.DRK_AoE_Oblation))) &&
+                 ((flags.HasFlag(Combo.ST) && IsEnabled(Preset.DRK_ST_Mit_Oblation)) ||
+                  flags.HasFlag(Combo.AoE) && IsEnabled(Preset.DRK_AoE_Mit_Oblation))) &&
                 ActionReady(Oblation) &&
                 !HasEffectAny(Buffs.Oblation) &&
-                GetRemainingCharges(Oblation) > oblationCharges)
+                GetRemainingCharges(Oblation) > oblationCharges &&
+                PlayerHealthPercentageHp() <= oblationThreshold)
                 return (action = Oblation) != 0;
 
             #endregion
@@ -503,6 +511,10 @@ internal partial class DRK
 
             #region Variables
 
+            var reprisalThreshold =
+                flags.HasFlag(Combo.Adv) && flags.HasFlag(Combo.AoE)
+                    ? Config.DRK_AoE_Mit_ReprisalThreshold
+                    : 100;
             var reprisalTargetCount =
                 flags.HasFlag(Combo.Adv) && flags.HasFlag(Combo.AoE)
                     ? Config.DRK_AoE_ReprisalEnemyCount
@@ -516,33 +528,60 @@ internal partial class DRK
             #endregion
 
             if ((flags.HasFlag(Combo.Simple) ||
-                 ((flags.HasFlag(Combo.ST) && IsEnabled(Preset.DRK_ST_Reprisal)) ||
-                  flags.HasFlag(Combo.AoE) && IsEnabled(Preset.DRK_AoE_Reprisal))) &&
+                 ((flags.HasFlag(Combo.ST) && IsEnabled(Preset.DRK_ST_Mit_Reprisal)) ||
+                  flags.HasFlag(Combo.AoE) && IsEnabled(Preset.DRK_AoE_Mit_Reprisal))) &&
                 ActionReady(All.Reprisal) &&
                 reprisalTargetHasNoDebuff &&
                 reprisalUseForRaidwides &&
-                CanCircleAoe(5) >= reprisalTargetCount)
+                CanCircleAoe(5) >= reprisalTargetCount &&
+                PlayerHealthPercentageHp() <= reprisalThreshold)
                 return (action = All.Reprisal) != 0;
 
             #endregion
 
             #region Dark Missionary (ST only)
 
+            #region Variables
+
+            var missionaryThreshold =
+                flags.HasFlag(Combo.Adv) && flags.HasFlag(Combo.ST)
+                    ? Config.DRK_ST_Mit_MissionaryThreshold
+                    : 100;
+            var missionaryAvoidanceSatisfied =
+                flags.HasFlag(Combo.AoE) ||
+                flags.HasFlag(Combo.Simple) ||
+                IsNotEnabled(Preset.DRK_ST_Mit_MissionaryAvoid) ||
+                !TargetHasEffectAny(All.Debuffs.Reprisal);
+
+            #endregion
+
             if (flags.HasFlag(Combo.ST) &&
                 (flags.HasFlag(Combo.Simple) ||
-                 IsEnabled(Preset.DRK_ST_Missionary)) &&
+                 IsEnabled(Preset.DRK_ST_Mit_Missionary)) &&
                 ActionReady(DarkMissionary) &&
-                RaidWideCasting())
+                RaidWideCasting() &&
+                missionaryAvoidanceSatisfied &&
+                PlayerHealthPercentageHp() <= missionaryThreshold)
                 return (action = DarkMissionary) != 0;
 
             #endregion
 
             #region Rampart (AoE only)
 
+            #region Variables
+
+            var rampartThreshold =
+                flags.HasFlag(Combo.Adv) && flags.HasFlag(Combo.AoE)
+                    ? Config.DRK_AoE_Mit_RampartThreshold
+                    : 100;
+
+            #endregion
+
             if (flags.HasFlag(Combo.AoE) &&
                 (flags.HasFlag(Combo.Simple) ||
-                 IsEnabled(Preset.DRK_AoE_Rampart)) &&
-                ActionReady(All.Rampart))
+                 IsEnabled(Preset.DRK_AoE_Mit_Rampart)) &&
+                ActionReady(All.Rampart) &&
+                PlayerHealthPercentageHp() <= rampartThreshold)
                 return (action = All.Rampart) != 0;
 
             #endregion
@@ -559,7 +598,7 @@ internal partial class DRK
 
             if (flags.HasFlag(Combo.AoE) &&
                 (flags.HasFlag(Combo.Simple) ||
-                 IsEnabled(Preset.DRK_AoE_ArmsLength)) &&
+                 IsEnabled(Preset.DRK_AoE_Mit_ArmsLength)) &&
                 ActionReady(All.ArmsLength) &&
                 CanCircleAoe(7) >= armsLengthEnemyCount)
                 return (action = All.ArmsLength) != 0;
@@ -579,8 +618,8 @@ internal partial class DRK
             #endregion
 
             if ((flags.HasFlag(Combo.Simple) ||
-                 ((flags.HasFlag(Combo.ST) && IsEnabled(Preset.DRK_ST_Vigil)) ||
-                  flags.HasFlag(Combo.AoE) && IsEnabled(Preset.DRK_AoE_Vigil))) &&
+                 ((flags.HasFlag(Combo.ST) && IsEnabled(Preset.DRK_ST_Mit_Vigil)) ||
+                  flags.HasFlag(Combo.AoE) && IsEnabled(Preset.DRK_AoE_Mit_Vigil))) &&
                 ActionReady(ShadowedVigil) &&
                 PlayerHealthPercentageHp() <= vigilHealthThreshold)
                 return (action = OriginalHook(ShadowWall)) != 0;
@@ -932,10 +971,10 @@ internal partial class DRK
     /// <returns>Whether TBN should be used on self.</returns>
     /// <seealso cref="BlackestNight" />
     /// <seealso cref="Buffs.BlackestNightShield" />
-    /// <seealso cref="CustomComboPreset.DRK_ST_TBN" />
+    /// <seealso cref="CustomComboPreset.DRK_ST_Mit_TBN" />
     /// <seealso cref="Config.DRK_ST_TBNThreshold" />
     /// <seealso cref="Config.DRK_ST_TBNBossRestriction" />
-    /// <seealso cref="CustomComboPreset.DRK_AoE_TBN" />
+    /// <seealso cref="CustomComboPreset.DRK_AoE_Mit_TBN" />
     private static bool ShouldTBNSelf(bool aoe = false)
     {
         // Bail if we're dead or unloaded
@@ -945,10 +984,10 @@ internal partial class DRK
         // Bail if TBN is disabled
         if ((!aoe
              && (!IsEnabled(Preset.DRK_ST_Mitigation)
-                 || !IsEnabled(Preset.DRK_ST_TBN)))
+                 || !IsEnabled(Preset.DRK_ST_Mit_TBN)))
             || (aoe
                 && (!IsEnabled(Preset.DRK_AoE_Mitigation)
-                    || !IsEnabled(Preset.DRK_AoE_TBN))))
+                    || !IsEnabled(Preset.DRK_AoE_Mit_TBN))))
             return false;
 
         // Bail if we already have TBN
