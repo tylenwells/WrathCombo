@@ -87,6 +87,12 @@ public partial class WrathCombo
 
         #endregion
 
+        if (Player.Available && CustomComboFunctions.InCombat())
+        {
+            DuoLog.Error("Cannot use this command in combat");
+            return;
+        }
+
         // Parse the action
         switch (argument[0])
         {
