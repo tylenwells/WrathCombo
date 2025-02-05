@@ -48,7 +48,7 @@ public partial class WrathCombo
 
             case "list":
             case "enabled":
-            case "disabled":
+            case "disabled": // unlisted
                 HandleListCommands(argumentParts); break;
 
             case "combo":
@@ -159,17 +159,14 @@ public partial class WrathCombo
 
     private void HandleListCommands(string[] argument)
     {
-        var filter = argument.Length > 1 ? argument[1].ToLowerInvariant() :
-            argument[0].ToLowerInvariant() == "enabled" ? "enabled" : "all";
+        var filter = argument.Length > 1 ? argument[1] : argument[0];
 
         switch (filter)
         {
             case "enabled":
             case "set":
                 foreach (var preset in Enum.GetValues<CustomComboPreset>()
-                             .Where(preset =>
-                                 IPC.GetComboState(preset.ToString())!.First()
-                                     .Value))
+                             .Where(preset => IPC.GetComboState(preset.ToString())!.First().Value))
                 {
                     var controlled =
                         P.UIHelper.PresetControlled(preset) is not null;
@@ -179,11 +176,10 @@ public partial class WrathCombo
 
                 break;
 
+            case "disabled":
             case "unset":
                 foreach (var preset in Enum.GetValues<CustomComboPreset>()
-                             .Where(preset =>
-                                 !IPC.GetComboState(preset.ToString())!.First()
-                                     .Value))
+                             .Where(preset => !IPC.GetComboState(preset.ToString())!.First().Value))
                 {
                     var controlled =
                         P.UIHelper.PresetControlled(preset) is not null;
@@ -205,7 +201,7 @@ public partial class WrathCombo
                 break;
 
             default:
-                DuoLog.Error("Available list filters: set, enabled, unset, all");
+                DuoLog.Error("Available list filters: set, unset, all");
                 break;
         }
     }
