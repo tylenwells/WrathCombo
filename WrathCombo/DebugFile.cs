@@ -10,6 +10,7 @@ using ECommons.GameHelpers;
 using ECommons.Logging;
 using Lumina.Excel.Sheets;
 using Newtonsoft.Json;
+using WrathCombo.AutoRotation;
 using WrathCombo.Combos.PvE;
 using WrathCombo.Combos.PvP;
 using WrathCombo.Core;
@@ -54,7 +55,6 @@ public static class DebugFile
     /// </summary>
     /// <param name="job">
     ///     The job to filter the debug file by, or none.<br />
-    ///     Must match the player's current job, if specified.<br />
     ///     Defaults to <see langword="null" />.
     /// </param>
     /// <param name="allJobs">
@@ -76,6 +76,10 @@ public static class DebugFile
                 throw new InvalidOperationException();
             }
 
+            job = null;
+        }
+        else if (job is null)
+        {
             job = Svc.ClientState.LocalPlayer.ClassJob.Value;
         }
 
@@ -92,6 +96,8 @@ public static class DebugFile
             AddLine();
 
             AddPlayerInfo();
+
+            AddAutoRotationInfo();
 
             AddFeatures(job);
             AddConfigs(job);
@@ -180,6 +186,54 @@ public static class DebugFile
         AddLine("END PLAYER INFO");
 
         AddLine();
+    }
+
+    private static void AddAutoRotationInfo()
+    {
+        var config = new
+            AutoRotationConfigIPCWrapper(Service.Configuration.RotationConfig);
+
+        AddLine("START AUTO ROTATION INFO");
+        AddLine($"Auto Rotation Enabled: {P.IPC.GetAutoRotationState()}");
+        PrintConfigProperties(config);
+        AddLine("END AUTO ROTATION INFO");
+
+        AddLine();
+
+        return;
+
+        void PrintConfigProperties(object obj, string prefix = "")
+        {
+            foreach (var property in obj.GetType()
+                         .GetProperties(BindingFlags.Public | BindingFlags.Instance))
+            {
+                var value = property.GetValue(obj);
+                if (value != null && (value.GetType().IsClass && value.GetType() != typeof(string)))
+                {
+                    PrintConfigProperties(value, $"{prefix}{property.Name}.");
+                }
+                else
+                {
+                    try
+                    {
+                        var controlled =
+                            property.Name == "Enabled"
+                                ? P.UIHelper.AutoRotationStateControlled() is not
+                                    null
+                                : P.UIHelper.AutoRotationConfigControlled(
+                                    property.Name) is not null;
+                        var ctrlText = controlled ? " (via IPC)" : "";
+                        AddLine($"{prefix}{property.Name}: {value} {ctrlText}");
+                    }
+                    catch
+                    {
+                        PluginLog.Debug(
+                            $"Error printing AutoRotation property: {property.Name}");
+                        AddLine($"{prefix}{property.Name}: {value}");
+                    }
+                }
+            }
+        }
     }
 
     private static void AddFeatures(ClassJob? job = null)
