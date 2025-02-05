@@ -4,7 +4,6 @@ using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Interface.Colors;
 using Dalamud.Interface.Utility.Raii;
 using Dalamud.Utility;
-using ECommons;
 using ECommons.DalamudServices;
 using ECommons.ExcelServices;
 using ECommons.GameFunctions;
@@ -70,8 +69,8 @@ namespace WrathCombo.Window.Tabs
             {
                 try
                 {
-                    var decomp = Convert.FromBase64String(_debugConfig);
-                    var decode = Encoding.UTF8.GetString(decomp);
+                    var base64 = Convert.FromBase64String(_debugConfig);
+                    var decode = Encoding.UTF8.GetString(base64);
                     var config = JsonConvert.DeserializeObject<PluginConfiguration>(decode);
                     if (config != null)
                     {
@@ -155,7 +154,7 @@ namespace WrathCombo.Window.Tabs
                     CustomStyleText("Job:",
                         $"{LocalPlayer.ClassJob.Value.NameEnglish} (ID: {LocalPlayer.ClassJob.RowId})");
                     CustomStyleText("Zone:",
-                        $"{Svc.Data.GetExcelSheet<TerritoryType>()?.FirstOrDefault(x => x.RowId == Svc.ClientState.TerritoryType).PlaceName.Value.Name} (ID: {Svc.ClientState.TerritoryType})");
+                        $"{Svc.Data.GetExcelSheet<TerritoryType>().FirstOrDefault(x => x.RowId == Svc.ClientState.TerritoryType).PlaceName.Value.Name} (ID: {Svc.ClientState.TerritoryType})");
                     CustomStyleText("In PvP:", InPvP());
                     CustomStyleText("In Combat:", InCombat());
                     CustomStyleText("In Boss:", InBossEncounter());
@@ -309,7 +308,7 @@ namespace WrathCombo.Window.Tabs
                         (AngleToTarget() is 1 or 3) ? "Flank" :
                         AngleToTarget() is 4 ? "Front" : "");
                     CustomStyleText("Health:",
-                        $"{EnemyHealthCurrentHp().ToString("N0")} / {EnemyHealthMaxHp().ToString("N0")} ({Math.Round(GetTargetHPPercent(), 2)}%)");
+                        $"{EnemyHealthCurrentHp():N0} / {EnemyHealthMaxHp():N0} ({Math.Round(GetTargetHPPercent(), 2)}%)");
                     CustomStyleText("Shield:",
                         (GetHealTarget() as ICharacter).ShieldPercentage);
                     CustomStyleText("Health Percent (+ Shield):",
@@ -323,8 +322,8 @@ namespace WrathCombo.Window.Tabs
                         ImGuiEx.TextUnderlined("Enemies");
                         var enemies = Svc.Objects
                             .Where(x =>
-                                x != null && x.ObjectKind == ObjectKind.BattleNpc &&
-                                x.IsTargetable && !x.IsDead).Cast<IBattleNpc>()
+                                x.ObjectKind == ObjectKind.BattleNpc &&
+                                x is { IsTargetable: true, IsDead: false }).Cast<IBattleNpc>()
                             .Where(x => x.BattleNpcKind is BattleNpcSubKind.Enemy
                                 or BattleNpcSubKind.BattleNpcPart).ToList();
                         foreach (var enemy in enemies)
@@ -380,7 +379,7 @@ namespace WrathCombo.Window.Tabs
 
                 #region Actions
 
-                var actions = Svc.Data.GetExcelSheet<Action>()!.Where(x => x.ClassJobLevel > 0 && x.ClassJobCategory.RowId != 1 && x.ClassJobCategory.Value.IsJobInCategory(Player.Job)).OrderBy(x => x.ClassJobLevel);
+                var actions = Svc.Data.GetExcelSheet<Action>().Where(x => x.ClassJobLevel > 0 && x.ClassJobCategory.RowId != 1 && x.ClassJobCategory.Value.IsJobInCategory(Player.Job)).OrderBy(x => x.ClassJobLevel);
                 if (ImGui.CollapsingHeader("Individual Action Info"))
                 {
                     string prev = _debugSpell == null ? "Select Action" : $"({_debugSpell.Value.RowId}) Lv.{_debugSpell.Value.ClassJobLevel}. {_debugSpell.Value.Name} - {(_debugSpell.Value.IsPvP ? "PvP" : "Normal")}";
@@ -393,10 +392,6 @@ namespace WrathCombo.Window.Tabs
                             {
                                 _debugSpell = null;
                             }
-
-                            var classId = JobIDs.JobToClass(JobID!.Value);
-                            var cjc = Svc.Data.Excel.GetRawSheet("ClassJobCategory");
-                            var cjcColumIdx = cjc.Columns[(int)JobID.Value];
 
                             foreach (var act in actions)
                             {
@@ -513,33 +508,32 @@ namespace WrathCombo.Window.Tabs
                     if (ImGui.CollapsingHeader("Active Blue Mage Spells"))
                     {
                         ImGui.TextUnformatted(
-                            $"{string.Join("\n", Service.Configuration.ActiveBLUSpells.Select(x => ActionWatching.GetActionName(x)).OrderBy(x => x))}");
+                            $"{string.Join("\n", Service.Configuration.ActiveBLUSpells.Select(ActionWatching.GetActionName).OrderBy(x => x))}");
                     }
 
                     if (WrathOpener.CurrentOpener is not null)
                     {
-                        CustomStyleText($"Current Opener",
-                            WrathOpener.CurrentOpener?.GetType());
+                        CustomStyleText("Current Opener",
+                            WrathOpener.CurrentOpener.GetType());
                         CustomStyleText("Opener State:",
-                            WrathOpener.CurrentOpener?.CurrentState);
+                            WrathOpener.CurrentOpener.CurrentState);
                         CustomStyleText("Current Opener Action:",
-                            WrathOpener.CurrentOpener?.CurrentOpenerAction
+                            WrathOpener.CurrentOpener.CurrentOpenerAction
                                 .ActionName());
                         CustomStyleText("Current Opener Step:",
-                            WrathOpener.CurrentOpener?.OpenerStep);
+                            WrathOpener.CurrentOpener.OpenerStep);
                         if (WrathOpener.CurrentOpener.OpenerActions.Count > 0 &&
-                            WrathOpener.CurrentOpener.OpenerStep < WrathOpener
-                                .CurrentOpener.OpenerActions.Count)
+                            WrathOpener.CurrentOpener.OpenerStep <
+                            WrathOpener.CurrentOpener.OpenerActions.Count)
                         {
                             CustomStyleText("Next Action:",
                                 WrathOpener.CurrentOpener
-                                    ?.OpenerActions[
-                                        WrathOpener.CurrentOpener.OpenerStep]
+                                    .OpenerActions[WrathOpener.CurrentOpener.OpenerStep]
                                     .ActionName());
                             CustomStyleText("Is Delayed Weave:",
-                                WrathOpener.CurrentOpener?.DelayedWeaveSteps.Any(x =>
-                                    x == WrathOpener.CurrentOpener?.OpenerStep));
-                            CustomStyleText($"Can Delayed Weave:",
+                                WrathOpener.CurrentOpener.DelayedWeaveSteps
+                                    .Any(x => x == WrathOpener.CurrentOpener.OpenerStep));
+                            CustomStyleText("Can Delayed Weave:",
                                 CanDelayedWeave(end: 0.1));
                         }
                     }
@@ -573,7 +567,7 @@ namespace WrathCombo.Window.Tabs
                     {
                         CustomStyleText("Lease GUID", $"{_wrathLease}");
                         CustomStyleText("Configurations: ",
-                            $"{P.IPC.Leasing.Registrations[_wrathLease.Value].SetsLeased}");
+                            $"{P.IPC.Leasing.Registrations[_wrathLease!.Value].SetsLeased}");
 
                         ImGui.Dummy(new Vector2(10f));
 
