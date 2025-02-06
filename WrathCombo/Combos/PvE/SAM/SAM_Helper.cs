@@ -76,6 +76,7 @@ internal partial class SAM
         float gcd = ActionManager.GetAdjustedRecastTime(ActionType.Action, Hakaze) / 100f;
 
         if (ActionReady(MeikyoShisui) &&
+            (CanWeave() || CanDelayedWeave()) &&
             (WasLastWeaponskill(Gekko) || WasLastWeaponskill(Kasha) || WasLastWeaponskill(Yukikaze)) &&
             (!HasEffect(Buffs.Tendo) || !LevelChecked(TendoSetsugekka)))
         {
@@ -92,27 +93,20 @@ internal partial class SAM
                 switch (gcd)
                 {
                     //Even windows
-                    case >= 2.09f when (GetCooldownRemainingTime(Ikishoten) > 80 ||
-                                        GetCooldownRemainingTime(Ikishoten) < GCD * 2 ||
-                                        IsOffCooldown(Ikishoten) ||
-                                        JustUsed(Ikishoten, 5f)) &&
+                    case >= 2.09f when GetCooldownRemainingTime(Ikishoten) > 60 &&
                                        (MeikyoUsed % 7 is 2 && SenCount is 3 ||
                                         MeikyoUsed % 7 is 4 && SenCount is 2 ||
                                         MeikyoUsed % 7 is 6 && SenCount is 1):
                     //Odd windows
-                    case >= 2.09f when GetCooldownRemainingTime(Ikishoten) is > 35 and < 71 &&
+                    case >= 2.09f when GetCooldownRemainingTime(Ikishoten) is <= 60 &&
                                        (MeikyoUsed % 7 is 1 && SenCount is 3 ||
                                         MeikyoUsed % 7 is 3 && SenCount is 2 ||
                                         MeikyoUsed % 7 is 5 && SenCount is 1):
                     //Even windows
-                    case <= 2.08f when (GetCooldownRemainingTime(Ikishoten) > 80 ||
-                                        GetCooldownRemainingTime(Ikishoten) < GCD * 2 ||
-                                        IsOffCooldown(Ikishoten) ||
-                                        JustUsed(Ikishoten, 5f)) &&
-                                       SenCount is 3:
+                    case <= 2.08f when GetCooldownRemainingTime(Ikishoten) > 60 && SenCount is 3:
 
                     //Odd windows
-                    case <= 2.08f when GetCooldownRemainingTime(Ikishoten) is > 35 and < 71 && SenCount is 3:
+                    case <= 2.08f when GetCooldownRemainingTime(Ikishoten) is <= 60 && SenCount is 3:
                         return true;
                 }
             }
@@ -120,9 +114,9 @@ internal partial class SAM
             // reset meikyo
             if (gcd >= 2.09f && MeikyoUsed % 7 is 0 && !HasEffect(Buffs.MeikyoShisui) && WasLastWeaponskill(Yukikaze))
                 return true;
-
-            //Pre double meikyo
-            if (!TraitLevelChecked(Traits.EnhancedMeikyoShishui))
+            
+            //Pre double meikyo / Overcap protection
+            if (GetRemainingCharges(MeikyoShisui) == GetMaxCharges(MeikyoShisui) && !HasEffect(Buffs.TsubameReady))
                 return true;
         }
 
