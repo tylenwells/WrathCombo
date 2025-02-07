@@ -36,13 +36,16 @@ public static class YourCode
         {
             var lease = (Guid)WrathIPC.CurrentLease!;
             WrathIPC.SetAutoRotationState(lease, true);
-            WrathIPC.SetCurrentJobAutoRotationReady(lease);
+            var setJobReady = WrathIPC.SetCurrentJobAutoRotationReady(lease);
             WrathIPC.SetAutoRotationConfigState(lease,
                 WrathIPC.AutoRotationConfigOption.InCombatOnly, false);
             WrathIPC.SetAutoRotationConfigState(lease,
                 WrathIPC.AutoRotationConfigOption.AutoRez, true);
             WrathIPC.SetAutoRotationConfigState(lease,
                 WrathIPC.AutoRotationConfigOption.SingleTargetHPP, 60);
+
+            if (setJobReady == 0 || setJobReady == 1)
+                PluginLog.Information("Job has been made ready for Auto-Rotation.");
         }
         catch (Exception e)
         {
@@ -80,9 +83,9 @@ internal static class WrathIPC
     [EzIPC] internal static readonly Func<string, string, Guid?> RegisterForLease;
     [EzIPC] internal static readonly Func<string, string, string?, Guid?>
         RegisterForLeaseWithCallback;
-    [EzIPC] internal static readonly Action<Guid, bool> SetAutoRotationState;
-    [EzIPC] internal static readonly Action<Guid> SetCurrentJobAutoRotationReady;
-    [EzIPC] internal static readonly Action<Guid, AutoRotationConfigOption, object>
+    [EzIPC] internal static readonly Func<Guid, bool, int> SetAutoRotationState;
+    [EzIPC] internal static readonly Func<Guid, int> SetCurrentJobAutoRotationReady;
+    [EzIPC] internal static readonly Func<Guid, AutoRotationConfigOption, object, int>
         SetAutoRotationConfigState;
     [EzIPC] internal static readonly Action<Guid> ReleaseControl;
 
