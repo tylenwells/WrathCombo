@@ -17,7 +17,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using WrathCombo.Data;
-using WrathCombo.Extensions;
 using WrathCombo.Services;
 using ObjectKind = Dalamud.Game.ClientState.Objects.Enums.ObjectKind;
 
@@ -545,7 +544,7 @@ namespace WrathCombo.CustomComboNS.Functions
                     $"P = {P}\n" +
                     $"Q = {Q}\n" +
                     $"P2 = {P2}\n" +
-                    $"Ptrans = {Ptrans}\n"+
+                    $"Ptrans = {Ptrans}\n" +
                     $"Pcorner{Pcorner}\n" +
                     $"R = {R}, R * R = {R * R}\n" +
                     $"PcornerSquared = {Pcorner.LengthSquared()}\n" +
@@ -591,6 +590,7 @@ namespace WrathCombo.CustomComboNS.Functions
             return Svc.Objects.Count(o => o.ObjectKind == ObjectKind.BattleNpc &&
                                                                  o.IsHostile() &&
                                                                  o.IsTargetable &&
+                                                                 !TargetIsInvincible(o) &&
                                                                  (checkIgnoredList ? !Service.Configuration.IgnoredNPCs.Any(x => x.Key == o.DataId) : true) &&
                                                                  PointInCircle(o.Position - LocalPlayer.Position, effectRange + o.HitboxRadius));
         }
@@ -602,6 +602,7 @@ namespace WrathCombo.CustomComboNS.Functions
             return Svc.Objects.Count(o => o.ObjectKind == ObjectKind.BattleNpc &&
                                                                  o.IsHostile() &&
                                                                  o.IsTargetable &&
+                                                                 !TargetIsInvincible(o) &&
                                                                  (checkIgnoredList ? !Service.Configuration.IgnoredNPCs.Any(x => x.Key == o.DataId) : true) &&
                                                                  PointInCircle(o.Position - target.Position, effectRange + o.HitboxRadius));
         }
@@ -614,6 +615,7 @@ namespace WrathCombo.CustomComboNS.Functions
             return Svc.Objects.Count(o => o.ObjectKind == ObjectKind.BattleNpc &&
                                                                  o.IsHostile() &&
                                                                  o.IsTargetable &&
+                                                                 !TargetIsInvincible(o) &&
                                                                  GetTargetDistance(o) <= range &&
                                                                  (checkIgnoredList ? !Service.Configuration.IgnoredNPCs.Any(x => x.Key == o.DataId) : true) &&
                                                                  PointInCone(o.Position - LocalPlayer.Position, dir, 45f));
@@ -627,6 +629,7 @@ namespace WrathCombo.CustomComboNS.Functions
             return Svc.Objects.Count(o => o.ObjectKind == ObjectKind.BattleNpc &&
                                                                  o.IsHostile() &&
                                                                  o.IsTargetable &&
+                                                                 !TargetIsInvincible(o) &&
                                                                  GetTargetDistance(o) <= range &&
                                                                  (checkIgnoredList ? !Service.Configuration.IgnoredNPCs.Any(x => x.Key == o.DataId) : true) &&
                                                                  HitboxInRect(o, dir, range, effectRange / 2));
@@ -667,6 +670,6 @@ namespace WrathCombo.CustomComboNS.Functions
 
         internal static bool TargetIsHostile() => HasTarget() && CurrentTarget.IsHostile();
 
-        internal static IEnumerable<IBattleChara> NearbyBosses =>  Svc.Objects.Where(x => x.ObjectKind == ObjectKind.BattleNpc && IsBoss(x)).Cast<IBattleChara>();
+        internal static IEnumerable<IBattleChara> NearbyBosses => Svc.Objects.Where(x => x.ObjectKind == ObjectKind.BattleNpc && IsBoss(x)).Cast<IBattleChara>();
     }
 }
