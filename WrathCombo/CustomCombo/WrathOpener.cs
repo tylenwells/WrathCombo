@@ -123,8 +123,8 @@ namespace WrathCombo.CustomComboNS
         public uint CurrentOpenerAction { get; 
             set 
             {
-                if (value != 11)
-                field = value;
+                if (value != All.SavageBlade)
+                    field = value;
             } 
         }
         public uint PreviousOpenerAction { get; set; }
