@@ -168,7 +168,7 @@ comments on each method.
     should be setup
 - `bool GetAutoRotationState()`
   - Checks if Auto-Rotation is enabled, whether by the user or another plugin
-- `int SetAutoRotationState(Guid, bool)`
+- `SetResult SetAutoRotationState(Guid, bool)`
   - Requires a lease
   - Sets Auto-Rotation to be enabled or disabled
   - Locks the state away from the user
@@ -176,7 +176,7 @@ comments on each method.
 - `bool IsCurrentJobAutoRotationReady()`
   - Checks if the current job is ready for Auto-Rotation, whether by the user or 
     another plugin
-- `int SetCurrentJobAutoRotationReady(Guid)`
+- `SetResult SetCurrentJobAutoRotationReady(Guid)`
   - Requires a lease
   - Sets the current job to be ready for Auto-Rotation
     - If the job is ready: it will lock all the user's Simple/Advanced settings, and 
@@ -207,13 +207,13 @@ comments on each method.
 - `Dictionary? GetComboState(string)`
   - Gets the state and Auto-Mode state of a combo, whether by the user or another 
     plugin
-- `int SetComboState(Guid, string, bool)`
+- `SetResult SetComboState(Guid, string, bool)`
   - Sets the state and Auto-Mode state of a combo
   - Locks the state away from the user
   - Counts towards the lease's configuration limit
 - `Dictionary? GetComboOptionState(string)`
   - Gets the state of a combo option, whether by the user or another plugin
-- `int SetComboOptionState(Guid, string, bool)`
+- `SetResult SetComboOptionState(Guid, string, bool)`
   - Sets the state of a combo option
   - Locks the state away from the user
   - Counts towards the lease's configuration limit
@@ -226,7 +226,7 @@ comments on each method.
     - You can safely pass in enum values that are not yet released; they will 
       just provide a warning you can ignore.
   - The `object` returned is of the type specified in the enum for the option
-- `int SetAutoRotationConfigState(Guid, AutoRotationConfigOption, object)`
+- `SetResult SetAutoRotationConfigState(Guid, AutoRotationConfigOption, object)`
   - The `object` must be of the type specified in the enum for the option
   - Sets the state of an Auto-Rotation configuration option
   - Locks the state away from the user
@@ -367,12 +367,11 @@ if (WrathIPC.IsEnabled)
     WrathIPC.SetAutoRotationState(WrathIPC.CurrentLease, true);
     var setJobReady = WrathIPC.SetCurrentJobAutoRotationReady(WrathIPC.CurrentLease);
     
-    if (setJobReady == 0 || setJobReady == 1)
+    if (setJobReady == SetResult.Okay || setJobReady == SetResult.OkayWorking)
         PluginLog.Information("Job has been made ready for Auto-Rotation.");
 }
 ```
-Here it is simply compared as the actual `int` return value, but this can be cast to
-your own copy of the [`SetResult` enum here](https://github.com/PunishXIV/WrathCombo/blob/main/WrathCombo/Services/IPC/Enums.cs#L139).
+This does require you to copy over the [`SetResult` enum](https://github.com/PunishXIV/WrathCombo/blob/main/WrathCombo/Services/IPC/Enums.cs#L139).
 
 Or you can make it more advanced, making sure Auto-Rotation settings are as you want
 them to be.
@@ -423,9 +422,9 @@ resources below, or the first several sections of this guide.
 
 ## Changelog
 
-- PunishXIV/WrathCombo#319 - All `Set` methods now return a status code; returned is
-  the `int` cast of the new [`SetResult` enum](https://github.com/PunishXIV/WrathCombo/blob/main/WrathCombo/Services/IPC/Enums.cs#L139)
-  (`0` is "okay", `1` is "okay, but async") `1.0.0.11`.
+- PunishXIV/WrathCombo#319 - All `Set` methods now return a status code from the new 
+  [`SetResult` enum](https://github.com/PunishXIV/WrathCombo/blob/main/WrathCombo/Services/IPC/Enums.cs#L139),
+  `1.0.0.11`.
 - PunishXIV/WrathCombo#293 - `Get` and `SetAutoRotationConfigState` will now safely
   warn (instead of error out) for unknown enum values (i.e. not-yet-released ones),
   `1.0.0.10`.

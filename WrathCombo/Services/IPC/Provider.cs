@@ -268,8 +268,8 @@ public partial class Provider : IDisposable
     ///     Only used to disable Auto-Rotation, as enabling it is the default.
     /// </param>
     /// <returns>
-    ///     The <c>int</c> value of the <see cref="SetResult" /> status code
-    ///     indicating the result of the operation.
+    ///     The <see cref="SetResult" /> status code indicating the result of the
+    ///     operation.
     /// </returns>
     /// <seealso cref="GetAutoRotationState" />
     /// <remarks>
@@ -277,13 +277,13 @@ public partial class Provider : IDisposable
     ///     enabled in Auto-Mode.
     /// </remarks>
     [EzIPC]
-    public int SetAutoRotationState(Guid lease, bool enabled = true)
+    public SetResult SetAutoRotationState(Guid lease, bool enabled = true)
     {
         // Bail for standard conditions
         if (Helper.CheckForBailConditionsAtSetTime(out var result, lease))
-            return (int)result;
+            return result;
 
-        return (int)Leasing.AddRegistrationForAutoRotation(lease, enabled);
+        return Leasing.AddRegistrationForAutoRotation(lease, enabled);
     }
 
     /// <summary>
@@ -317,21 +317,21 @@ public partial class Provider : IDisposable
     ///     <see cref="RegisterForLease(string,string)" />
     /// </param>
     /// <returns>
-    ///     The <c>int</c> value of the <see cref="SetResult" /> status code
-    ///     indicating the result of the operation.
+    ///     The <see cref="SetResult" /> status code indicating the result of the
+    ///     operation.
     /// </returns>
     /// <remarks>
     ///     This will do the actual <c>set</c>ting asynchronously, and will take a
     ///     several seconds to complete.
     /// </remarks>
     [EzIPC]
-    public int SetCurrentJobAutoRotationReady(Guid lease)
+    public SetResult SetCurrentJobAutoRotationReady(Guid lease)
     {
         // Bail for standard conditions
         if (Helper.CheckForBailConditionsAtSetTime(out var result, lease))
-            return (int)result;
+            return result;
 
-        return (int)Leasing.AddRegistrationForCurrentJob(lease);
+        return Leasing.AddRegistrationForCurrentJob(lease);
     }
 
     /// <summary>
@@ -511,19 +511,23 @@ public partial class Provider : IDisposable
     ///     default.
     /// </param>
     /// <returns>
-    ///     The <c>int</c> value of the <see cref="SetResult" /> status code
-    ///     indicating the result of the operation.
+    ///     The <see cref="SetResult" /> status code indicating the result of the
+    ///     operation.
+    /// </returns>
+    /// <returns>
+    ///     The <see cref="SetResult" /> status code indicating the result of the
+    ///     operation.
     /// </returns>
     [EzIPC]
-    public int SetComboState
+    public SetResult SetComboState
     (Guid lease, string comboInternalName,
         bool comboState = true, bool autoState = true)
     {
         // Bail for standard conditions
         if (Helper.CheckForBailConditionsAtSetTime(out var result, lease))
-            return (int)result;
+            return result;
 
-        return (int)Leasing.AddRegistrationForCombo(
+        return Leasing.AddRegistrationForCombo(
             lease, comboInternalName, comboState, autoState);
     }
 
@@ -561,17 +565,18 @@ public partial class Provider : IDisposable
     ///     Only used to disable the combo option, as enabling it is the default.
     /// </param>
     /// <returns>
-    ///     The <c>int</c> value of the <see cref="SetResult" /> status code
-    ///     indicating the result of the operation.
+    ///     The <see cref="SetResult" /> status code indicating the result of the
+    ///     operation.
     /// </returns>
     [EzIPC]
-    public int SetComboOptionState(Guid lease, string optionName, bool state = true)
+    public SetResult SetComboOptionState
+        (Guid lease, string optionName, bool state = true)
     {
         // Bail for standard conditions
         if (Helper.CheckForBailConditionsAtSetTime(out var result, lease))
-            return (int)result;
+            return result;
 
-        return (int)Leasing.AddRegistrationForOption(lease, optionName, state);
+        return Leasing.AddRegistrationForOption(lease, optionName, state);
     }
 
     #endregion

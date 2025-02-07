@@ -44,7 +44,7 @@ public static class YourCode
             WrathIPC.SetAutoRotationConfigState(lease,
                 WrathIPC.AutoRotationConfigOption.SingleTargetHPP, 60);
 
-            if (setJobReady == 0 || setJobReady == 1)
+            if (setJobReady == SetResult.Okay || setJobReady == SetResult.OkayWorking)
                 PluginLog.Information("Job has been made ready for Auto-Rotation.");
         }
         catch (Exception e)
@@ -83,26 +83,45 @@ internal static class WrathIPC
     [EzIPC] internal static readonly Func<string, string, Guid?> RegisterForLease;
     [EzIPC] internal static readonly Func<string, string, string?, Guid?>
         RegisterForLeaseWithCallback;
-    [EzIPC] internal static readonly Func<Guid, bool, int> SetAutoRotationState;
-    [EzIPC] internal static readonly Func<Guid, int> SetCurrentJobAutoRotationReady;
-    [EzIPC] internal static readonly Func<Guid, AutoRotationConfigOption, object, int>
+    [EzIPC] internal static readonly Func<Guid, bool, SetResult>
+        SetAutoRotationState;
+    [EzIPC] internal static readonly Func<Guid, SetResult>
+        SetCurrentJobAutoRotationReady;
+    [EzIPC] internal static readonly
+        Func<Guid, AutoRotationConfigOption, object, SetResult>
         SetAutoRotationConfigState;
     [EzIPC] internal static readonly Action<Guid> ReleaseControl;
 
+    public enum SetResult
+    {
+        Okay = 0,
+        OkayWorking = 1,
+
+        IPCDisabled = 10,
+        InvalidLease = 11,
+        BlacklistedLease = 12,
+        Duplicate = 13,
+        PlayerNotAvailable = 14,
+        InvalidConfiguration = 15,
+        InvalidValue = 16,
+    }
+
     public enum AutoRotationConfigOption
     {
-        InCombatOnly, //bool
-        DPSRotationMode,
-        HealerRotationMode,
-        FATEPriority, //bool
-        QuestPriority,//bool
-        SingleTargetHPP,//int
-        AoETargetHPP,//int
-        SingleTargetRegenHPP,//int
-        ManageKardia,//bool
-        AutoRez,//bool
-        AutoRezDPSJobs,//bool
-        AutoCleanse,//bool
+        InCombatOnly = 0, // bool
+        DPSRotationMode = 1, // enum
+        HealerRotationMode = 2, // enum
+        FATEPriority = 3, // bool
+        QuestPriority = 4, // bool
+        SingleTargetHPP = 5, // int
+        AoETargetHPP = 6, // int
+        SingleTargetRegenHPP = 7, // int
+        ManageKardia = 8, // bool
+        AutoRez = 9, // bool
+        AutoRezDPSJobs = 10, // bool
+        AutoCleanse = 11, // bool
+        IncludeNPCs = 12, // bool
+        OnlyAttackInCombat = 13, //bool
     }
 }
 
