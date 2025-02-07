@@ -169,7 +169,7 @@ internal class All
 
         protected override uint Invoke(uint actionID) =>
             actionID is Reprisal && TargetHasEffectAny(Debuffs.Reprisal) && IsOffCooldown(Reprisal)
-                ? OriginalHook(11)
+                ? SavageBlade
                 : actionID;
     }
 
@@ -208,7 +208,7 @@ internal class All
 
         protected override uint Invoke(uint actionID) =>
             actionID is Addle && TargetHasEffectAny(Debuffs.Addle) && IsOffCooldown(Addle)
-                ? OriginalHook(11)
+                ? SavageBlade
                 : actionID;
     }
 
@@ -248,7 +248,7 @@ internal class All
 
         protected override uint Invoke(uint actionID) =>
             actionID is Feint && TargetHasEffectAny(Debuffs.Feint) && IsOffCooldown(Feint)
-                ? OriginalHook(11)
+                ? SavageBlade
                 : actionID;
     }
 
@@ -258,7 +258,7 @@ internal class All
 
         protected override uint Invoke(uint actionID) =>
             actionID is TrueNorth && HasEffect(Buffs.TrueNorth)
-                ? OriginalHook(11)
+                ? SavageBlade
                 : actionID;
     }
 
@@ -272,7 +272,7 @@ internal class All
             (HasEffectAny(BRD.Buffs.Troubadour) || HasEffectAny(MCH.Buffs.Tactician) ||
              HasEffectAny(DNC.Buffs.ShieldSamba)) &&
             IsOffCooldown(actionID)
-                ? OriginalHook(11)
+                ? SavageBlade
                 : actionID;
     }
 

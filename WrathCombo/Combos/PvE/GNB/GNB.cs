@@ -2413,7 +2413,7 @@ internal partial class GNB
                 return actionID;
             if ((HasFriendlyTarget() && TargetHasEffectAny(Buffs.Aurora)) ||
                 (!HasFriendlyTarget() && HasEffectAny(Buffs.Aurora)))
-                return OriginalHook(11);
+                return All.SavageBlade;
             return actionID;
         }
     }

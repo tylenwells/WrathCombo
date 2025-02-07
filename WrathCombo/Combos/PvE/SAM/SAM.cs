@@ -941,7 +941,7 @@ internal partial class SAM
 
         protected override uint Invoke(uint actionID) =>
             actionID is MeikyoShisui && HasEffect(Buffs.MeikyoShisui) && LevelChecked(MeikyoShisui)
-                ? OriginalHook(11)
+                ? All.SavageBlade
                 : actionID;
     }
 }

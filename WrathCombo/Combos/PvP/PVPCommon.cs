@@ -1,5 +1,6 @@
 ﻿using Dalamud.Game.ClientState.Objects.Types;
 using System.Collections.Generic;
+using WrathCombo.Combos.PvE;
 using WrathCombo.Core;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
@@ -76,7 +77,7 @@ namespace WrathCombo.Combos.PvP
                 if ((HasEffect(Buffs.Guard) || JustUsed(Guard)) && IsEnabled(CustomComboPreset.PvP_MashCancel))
                 {
                     if (actionID == Guard) return Guard;
-                    else return OriginalHook(11);
+                    return All.SavageBlade;
                 }
 
                 if (Execute() &&
@@ -121,14 +122,14 @@ namespace WrathCombo.Combos.PvP
                             return Recuperate;
                         return Guard;
                     }
-                    return OriginalHook(11);
+                    return All.SavageBlade;
                 }
 
                 if (Execute() &&
                     InPvP() &&
                     !GlobalSkills.Contains(actionID) &&
                     !MovmentSkills.Contains(actionID))
-                    return OriginalHook(Guard);
+                    return All.SavageBlade;
 
                 return actionID;
             }
@@ -160,7 +161,7 @@ namespace WrathCombo.Combos.PvP
                 if ((HasEffect(Buffs.Guard) || JustUsed(Guard)) && IsEnabled(CustomComboPreset.PvP_MashCancel))
                 {
                     if (actionID == Guard) return Guard;
-                    else return OriginalHook(11);
+                    return All.SavageBlade;
                 }
 
                 if (Execute() &&

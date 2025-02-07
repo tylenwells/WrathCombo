@@ -334,7 +334,7 @@ internal partial class MCH
                 return Variant.VariantCure;
 
             if (HasEffect(Buffs.Flamethrower) || JustUsed(Flamethrower, 10f))
-                return OriginalHook(11);
+                return All.SavageBlade;
 
             if (IsEnabled(CustomComboPreset.MCH_Variant_Rampart) &&
                 IsEnabled(Variant.VariantRampart) &&
@@ -470,7 +470,7 @@ internal partial class MCH
                 return Variant.VariantCure;
 
             if (HasEffect(Buffs.Flamethrower) || JustUsed(Flamethrower, 10f))
-                return OriginalHook(11);
+                return All.SavageBlade;
 
             if (IsEnabled(CustomComboPreset.MCH_Variant_Rampart) &&
                 IsEnabled(Variant.VariantRampart) &&
@@ -759,7 +759,7 @@ internal partial class MCH
 
         protected override uint Invoke(uint actionID) =>
             actionID is Dismantle && TargetHasEffectAny(Debuffs.Dismantled) && IsOffCooldown(Dismantle)
-                ? OriginalHook(11)
+                ? All.SavageBlade
                 : actionID;
     }
 }

@@ -408,7 +408,7 @@ internal partial class RDM
         protected override uint Invoke(uint actionID) =>
             actionID is Embolden &&
             ActionReady(Embolden) &&
-            HasEffectAny(Buffs.EmboldenOthers) ? OriginalHook(11) : actionID;
+            HasEffectAny(Buffs.EmboldenOthers) ? All.SavageBlade : actionID;
     }
 
     internal class RDM_MagickProtection : CustomCombo
@@ -417,6 +417,6 @@ internal partial class RDM
         protected override uint Invoke(uint actionID) =>
             actionID is MagickBarrier &&
             ActionReady(MagickBarrier) &&
-            HasEffectAny(Buffs.MagickBarrier) ? OriginalHook(11) : actionID;
+            HasEffectAny(Buffs.MagickBarrier) ? All.SavageBlade : actionID;
     }
 }
