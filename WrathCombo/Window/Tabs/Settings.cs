@@ -129,7 +129,7 @@ namespace WrathCombo.Window.Tabs
                 if (ImGui.Checkbox("Block spells if moving", ref Service.Configuration.BlockSpellOnMove))
                     Service.Configuration.Save();
 
-                ImGuiComponents.HelpMarker("Completely blocks spells from being used if you are moving.\nThis would supersede combo-specific movement options, available for most jobs.");
+                ImGuiComponents.HelpMarker("Completely blocks spells from being used if you are moving, by replacing your actions with Savage Blade.\nThis would supersede combo-specific movement options, available for most jobs.");
 
                 #endregion
 
