@@ -403,6 +403,9 @@ namespace WrathCombo.AutoRotation
             {
                 if (attributes.AutoAction.IsHeal)
                 {
+                    LockedAoE = false;
+                    LockedST = false;
+
                     uint outAct = OriginalHook(InvokeCombo(preset, attributes, ref gameAct, Player.Object));
                     if (ActionManager.Instance()->GetActionStatus(ActionType.Action, outAct) != 0) return false;
                     if (!ActionReady(outAct))
