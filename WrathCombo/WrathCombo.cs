@@ -10,18 +10,17 @@ using ECommons;
 using ECommons.Automation.LegacyTaskManager;
 using ECommons.DalamudServices;
 using ECommons.GameHelpers;
-using ECommons.Logging;
-using Lumina.Excel.Sheets;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PunishLib;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using WrathCombo.Attributes;
 using WrathCombo.AutoRotation;
+using WrathCombo.Combos;
 using WrathCombo.Combos.PvE;
 using WrathCombo.Core;
 using WrathCombo.CustomComboNS;
@@ -175,51 +174,43 @@ public sealed partial class WrathCombo : IDalamudPlugin
 #endif
     }
 
+    private void RemoveNullAutos()
+    {
+        try
+        {
+            var save = false;
+            if (!Svc.PluginInterface.ConfigFile.Exists) return;
+
+            var json = JObject.Parse(File.ReadAllText(Svc.PluginInterface.ConfigFile.FullName));
+            if (json["AutoActions"] is JObject autoActions)
+            {
+                var clone = autoActions.JSONClone();
+                foreach (var a in clone)
+                {
+                    if (a.Key == "$type")
+                        continue;
+
+                    if (Enum.TryParse(typeof(CustomComboPreset), a.Key, out _))
+                        continue;
+
+                    Svc.Log.Debug($"Couldn't find {a.Key}");
+                    autoActions[a.Key].Parent.Remove();
+                    save = true;
+                }
+            }
+            if (save)
+                File.WriteAllText(Svc.PluginInterface.ConfigFile.FullName, json.ToString());
+        }
+        catch (Exception e)
+        {
+            e.Log();
+        }
+    }
+
     private void ClientState_TerritoryChanged(ushort obj)
     {
         UpdateCaches();
     }
-        private void RemoveNullAutos()
-        {
-            try
-            {
-                bool save = false;
-                if (Svc.PluginInterface.ConfigFile.Exists)
-                {
-                    var json = JObject.Parse(File.ReadAllText(Svc.PluginInterface.ConfigFile.FullName));
-                    var autoActions = json["AutoActions"] as JObject;
-                    if (autoActions != null)
-                    {
-                        var clone = autoActions.JSONClone();
-                        foreach (var a in clone)
-                        {
-                            if (a.Key == "$type")
-                                continue;
-
-                            if (!Enum.TryParse(typeof(CustomComboPreset), a.Key, out var res))
-                            {
-                                Svc.Log.Debug($"Couldn't find {a.Key}");
-                                autoActions[a.Key].Parent.Remove();
-                                save = true;
-                            }
-                        }
-                    }
-                    if (save)
-                        File.WriteAllText(Svc.PluginInterface.ConfigFile.FullName, json.ToString());
-                }
-
-
-            }
-            catch (Exception e)
-            {
-                e.Log();
-            }
-        }
-
-        private void ClientState_TerritoryChanged(ushort obj)
-        {
-            UpdateCaches();
-        }
 
     public const string OptionControlledByIPC =
         "(being overwritten by another plugin, check the setting in /wrath)";
