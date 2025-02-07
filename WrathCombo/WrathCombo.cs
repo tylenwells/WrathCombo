@@ -14,6 +14,7 @@ using ECommons.GameHelpers;
 using ECommons.Logging;
 using Lumina.Excel.Sheets;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using PunishLib;
 using System;
 using System.Collections.Generic;
@@ -137,6 +138,7 @@ namespace WrathCombo
             PunishLibMain.Init(pluginInterface, "Wrath Combo");
 
             TM = new();
+            RemoveNullAutos();
             Service.Configuration = pluginInterface.GetPluginConfig() as PluginConfiguration ?? new PluginConfiguration();
             Service.Address = new PluginAddressResolver();
             Service.Address.Setup(Svc.SigScanner);
@@ -188,6 +190,43 @@ namespace WrathCombo
 #if DEBUG
             ConfigWindow.IsOpen = true;
 #endif
+        }
+
+        private void RemoveNullAutos()
+        {
+            try
+            {
+                bool save = false;
+                if (Svc.PluginInterface.ConfigFile.Exists)
+                {
+                    var json = JObject.Parse(File.ReadAllText(Svc.PluginInterface.ConfigFile.FullName));
+                    var autoActions = json["AutoActions"] as JObject;
+                    if (autoActions != null)
+                    {
+                        var clone = autoActions.JSONClone();
+                        foreach (var a in clone) 
+                        { 
+                            if (a.Key == "$type")
+                                continue;
+
+                            if (!Enum.TryParse(typeof(CustomComboPreset), a.Key, out var res))
+                            {
+                                Svc.Log.Debug($"Couldn't find {a.Key}");
+                                autoActions[a.Key].Parent.Remove();
+                                save = true;
+                            }
+                        }
+                    }
+                    if (save)
+                        File.WriteAllText(Svc.PluginInterface.ConfigFile.FullName, json.ToString());
+                }
+
+                    
+            }
+            catch (Exception e)
+            {
+                e.Log();
+            }
         }
 
         private void ClientState_TerritoryChanged(ushort obj)
