@@ -10,6 +10,10 @@ using ECommons;
 using ECommons.Automation.LegacyTaskManager;
 using ECommons.DalamudServices;
 using ECommons.GameHelpers;
+using ECommons.Logging;
+using Lumina.Excel.Sheets;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using PunishLib;
 using System;
 using System.Collections.Generic;
@@ -122,7 +126,7 @@ public sealed partial class WrathCombo : IDalamudPlugin
         PunishLibMain.Init(pluginInterface, "Wrath Combo");
 
         TM = new();
-        Service.Configuration = pluginInterface.GetPluginConfig() as PluginConfiguration ?? new PluginConfiguration();
+        RemoveNullAutos();Service.Configuration = pluginInterface.GetPluginConfig() as PluginConfiguration ?? new PluginConfiguration();
         Service.Address = new PluginAddressResolver();
         Service.Address.Setup(Svc.SigScanner);
         PresetStorage.Init();
@@ -175,6 +179,47 @@ public sealed partial class WrathCombo : IDalamudPlugin
     {
         UpdateCaches();
     }
+        private void RemoveNullAutos()
+        {
+            try
+            {
+                bool save = false;
+                if (Svc.PluginInterface.ConfigFile.Exists)
+                {
+                    var json = JObject.Parse(File.ReadAllText(Svc.PluginInterface.ConfigFile.FullName));
+                    var autoActions = json["AutoActions"] as JObject;
+                    if (autoActions != null)
+                    {
+                        var clone = autoActions.JSONClone();
+                        foreach (var a in clone)
+                        {
+                            if (a.Key == "$type")
+                                continue;
+
+                            if (!Enum.TryParse(typeof(CustomComboPreset), a.Key, out var res))
+                            {
+                                Svc.Log.Debug($"Couldn't find {a.Key}");
+                                autoActions[a.Key].Parent.Remove();
+                                save = true;
+                            }
+                        }
+                    }
+                    if (save)
+                        File.WriteAllText(Svc.PluginInterface.ConfigFile.FullName, json.ToString());
+                }
+
+
+            }
+            catch (Exception e)
+            {
+                e.Log();
+            }
+        }
+
+        private void ClientState_TerritoryChanged(ushort obj)
+        {
+            UpdateCaches();
+        }
 
     public const string OptionControlledByIPC =
         "(being overwritten by another plugin, check the setting in /wrath)";
