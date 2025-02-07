@@ -94,11 +94,12 @@ public partial class Provider
     /// </param>
     /// <seealso cref="AutoRotationConfigOption"/>
     [EzIPC]
-    public void SetAutoRotationConfigState(Guid lease, object passedOption, object value)
+    public int SetAutoRotationConfigState
+        (Guid lease, object passedOption, object value)
     {
         // Bail for standard conditions
-        if (Helper.CheckForBailConditionsAtSetTime(lease))
-            return;
+        if (Helper.CheckForBailConditionsAtSetTime(out var result, lease))
+            return (int)result;
 
         // Try to cast the input to an Auto-Rotation Configuration option
         arcOption option;
@@ -117,7 +118,7 @@ public partial class Provider
             Logging.Warn("Invalid or not-yet-implemented `option` of " +
                           $"'{passedOption}'. Please refer to " +
                           "WrathCombo.Services.IPC.AutoRotationConfigOption");
-            return;
+            return (int)SetResult.InvalidConfiguration;
         }
 
         object convertedValue;
@@ -136,7 +137,7 @@ public partial class Provider
                           "Value likely out of range for option that wanted an enum. " +
                           $"Expected type: {type}.\n" +
                           e.Message);
-            return;
+            return (int)SetResult.InvalidValue;
         }
 
         // Handle converting bool->int, which doesn't work for some reason, despite
@@ -144,7 +145,7 @@ public partial class Provider
         if (type == typeof(bool))
             convertedValue = (bool)convertedValue ? 1 : 0;
 
-        Leasing.AddRegistrationForAutoRotationConfig(
+        return (int)Leasing.AddRegistrationForAutoRotationConfig(
             lease, option, (int)convertedValue);
     }
 }
