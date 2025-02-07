@@ -114,7 +114,7 @@ internal partial class SAM
             // reset meikyo
             if (gcd >= 2.09f && MeikyoUsed % 7 is 0 && !HasEffect(Buffs.MeikyoShisui) && WasLastWeaponskill(Yukikaze))
                 return true;
-            
+
             //Pre double meikyo / Overcap protection
             if (GetRemainingCharges(MeikyoShisui) == GetMaxCharges(MeikyoShisui) && !HasEffect(Buffs.TsubameReady))
                 return true;
@@ -132,7 +132,7 @@ internal partial class SAM
         public override List<uint> OpenerActions { get; set; } =
         [
             MeikyoShisui,
-            All.TrueNorth,
+            All.TrueNorth, //2
             Gekko,
             Kasha,
             Ikishoten,
@@ -150,7 +150,7 @@ internal partial class SAM
             Kasha,
             Shinten,
             Gekko,
-            Gyoten,
+            Gyoten, //20
             Gyofu,
             Yukikaze,
             Shinten,
@@ -166,7 +166,8 @@ internal partial class SAM
 
         public override List<(int[] Steps, uint NewAction, Func<bool> Condition)> SubstitutionSteps { get; set; } =
         [
-            ([2], 11, () => !TargetNeedsPositionals())
+            ([2], 11, () => !TargetNeedsPositionals()),
+            ([20], Shinten, () => Gauge.Kenki >= 25)
         ];
 
         public override bool HasCooldowns()
