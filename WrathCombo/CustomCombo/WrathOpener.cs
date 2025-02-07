@@ -178,7 +178,7 @@ namespace WrathCombo.CustomComboNS
                     {
                         if (!CanDelayedWeave())
                         {
-                            actionID = 11;
+                            actionID = All.SavageBlade;
                             return true;
                         }
                     }
@@ -205,7 +205,7 @@ namespace WrathCombo.CustomComboNS
                         if ((DateTime.Now - DelayedAt).TotalSeconds < HoldDelay && !PartyInCombat())
                         {
                             ActionWatching.TimeLastActionUsed = DateTime.Now; //Hacky workaround for TN jobs
-                            actionID = 11;
+                            actionID = All.SavageBlade;
                             return true;
                         }
                     }
