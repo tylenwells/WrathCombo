@@ -65,10 +65,17 @@ internal partial class DRK
                     UserConfig.DrawBossOnlyChoice(DRK_ST_OpenerDifficulty);
                     break;
 
-                case CustomComboPreset.DRK_ST_Sp_BloodOvercap:
-                    UserConfig.DrawSliderInt(50, 100, DRK_ST_BloodOvercapThreshold,
-                        startUsingAboveDescription,
-                        itemWidth: medium, sliderIncrement: SliderIncrements.Fives);
+                case CustomComboPreset.DRK_ST_CDs:
+                    UserConfig.DrawHorizontalRadioButton(
+                        DRK_ST_CDsBossRequirement, "All Enemies",
+                        "Will use Cooldowns regardless of the type of enemy.",
+                        outputValue: (int) BossRequirement.Off, itemWidth: 125f);
+                    UserConfig.DrawHorizontalRadioButton(
+                        DRK_ST_CDsBossRequirement, "Only Bosses",
+                        "Will try to use Cooldowns only when you're in a boss fight.\n" +
+                        "(Note: don't rely on this 100%, square sometimes marks enemies inconsistently)",
+                        outputValue: (int) BossRequirement.On, itemWidth: 125f);
+
                     break;
 
                 case CustomComboPreset.DRK_ST_CD_Delirium:
@@ -91,6 +98,12 @@ internal partial class DRK
                         DRK_ST_LivingShadowThresholdDifficultyListSet
                     );
 
+                    break;
+
+                case CustomComboPreset.DRK_ST_Sp_BloodOvercap:
+                    UserConfig.DrawSliderInt(50, 100, DRK_ST_BloodOvercapThreshold,
+                        startUsingAboveDescription,
+                        itemWidth: medium, sliderIncrement: SliderIncrements.Fives);
                     break;
 
                 case CustomComboPreset.DRK_ST_Sp_Edge:
@@ -179,12 +192,6 @@ internal partial class DRK
 
                 #region Adv AoE
 
-                case CustomComboPreset.DRK_AoE_Sp_BloodOvercap:
-                    UserConfig.DrawSliderInt(50, 100, DRK_AoE_BloodOvercapThreshold,
-                        startUsingAboveDescription,
-                        itemWidth: medium, sliderIncrement: SliderIncrements.Fives);
-                    break;
-
                 case CustomComboPreset.DRK_AoE_CD_Delirium:
                     UserConfig.DrawSliderInt(0, 60, DRK_AoE_DeliriumThreshold,
                         stopUsingAtDescription,
@@ -207,6 +214,12 @@ internal partial class DRK
 
                     break;
 
+                case CustomComboPreset.DRK_AoE_Sp_BloodOvercap:
+                    UserConfig.DrawSliderInt(50, 100, DRK_AoE_BloodOvercapThreshold,
+                        startUsingAboveDescription,
+                        itemWidth: medium, sliderIncrement: SliderIncrements.Fives);
+                    break;
+
                 case CustomComboPreset.DRK_AoE_Mit_Oblation:
                     UserConfig.DrawSliderInt(10, 100, DRK_AoE_Mit_OblationThreshold,
                         startUsingAtDescriptionPlusDisable,
@@ -226,7 +239,6 @@ internal partial class DRK
                         itemWidth: little, sliderIncrement: SliderIncrements.Ones);
 
                     break;
-
 
                 case CustomComboPreset.DRK_AoE_Mit_Rampart:
                     UserConfig.DrawSliderInt(10, 100, DRK_AoE_Mit_RampartThreshold,
@@ -450,6 +462,15 @@ internal partial class DRK
         }
 
         /// <summary>
+        ///     Whether abilities should be restricted to bosses or not.
+        /// </summary>
+        internal enum BossRequirement
+        {
+            Off = 1,
+            On = 2,
+        }
+
+        /// <summary>
         ///     Whether abilities should be restricted to while in a party or not.
         /// </summary>
         internal enum PartyRequirement
@@ -514,16 +535,15 @@ internal partial class DRK
             new("DRK_ST_OpenerDifficulty", [false, true]);
 
         /// <summary>
-        ///     Target HP% to use Blood Overcap above for Single Target.
+        ///     Cooldown Boss Restriction for Single Target.
         /// </summary>
         /// <value>
-        ///     <b>Default</b>: 90<br />
-        ///     <b>Range</b>: 50 - 100 <br />
-        ///     <b>Step</b>: <see cref="SliderIncrements.Fives" />
+        ///     <b>Default</b>: <see cref="BossRequirement.Off" /> <br />
+        ///     <b>Options</b>: <see cref="BossRequirement">BossRequirement Enum</see>
         /// </value>
-        /// <seealso cref="CustomComboPreset.DRK_ST_Sp_BloodOvercap" />
-        public static readonly UserInt DRK_ST_BloodOvercapThreshold =
-            new("DRK_ST_BloodOvercapThreshold", 90);
+        /// <seealso cref="CustomComboPreset.DRK_ST_CDs" />
+        public static readonly UserInt DRK_ST_CDsBossRequirement =
+            new("DRK_ST_CDsBossRequirement", (int) BossRequirement.Off);
 
         /// <summary>
         ///     Target HP% to use Delirium above for Single Target.
@@ -589,6 +609,18 @@ internal partial class DRK
         public static readonly ContentCheck.ListSet
             DRK_ST_LivingShadowThresholdDifficultyListSet =
                 ContentCheck.ListSet.Halved;
+
+        /// <summary>
+        ///     Target HP% to use Blood Overcap above for Single Target.
+        /// </summary>
+        /// <value>
+        ///     <b>Default</b>: 90<br />
+        ///     <b>Range</b>: 50 - 100 <br />
+        ///     <b>Step</b>: <see cref="SliderIncrements.Fives" />
+        /// </value>
+        /// <seealso cref="CustomComboPreset.DRK_ST_Sp_BloodOvercap" />
+        public static readonly UserInt DRK_ST_BloodOvercapThreshold =
+            new("DRK_ST_BloodOvercapThreshold", 90);
 
         /// <summary>
         ///     How much mana to save for TBN.
@@ -759,18 +791,6 @@ internal partial class DRK
         #region Adv AoE
 
         /// <summary>
-        ///     Target HP% to use Blood Overcap above for AoE.
-        /// </summary>
-        /// <value>
-        ///     <b>Default</b>: 90<br />
-        ///     <b>Range</b>: 50 - 100 <br />
-        ///     <b>Step</b>: <see cref="SliderIncrements.Fives" />
-        /// </value>
-        /// <seealso cref="CustomComboPreset.DRK_AoE_Sp_BloodOvercap" />
-        public static readonly UserInt DRK_AoE_BloodOvercapThreshold =
-            new("DRK_AoE_BloodOvercapThreshold", 90);
-
-        /// <summary>
         ///     Target HP% to use Delirium above for AoE.
         /// </summary>
         /// <value>
@@ -836,6 +856,18 @@ internal partial class DRK
         public static readonly ContentCheck.ListSet
             DRK_AoE_LivingShadowThresholdDifficultyListSet =
                 ContentCheck.ListSet.Halved;
+
+        /// <summary>
+        ///     Target HP% to use Blood Overcap above for AoE.
+        /// </summary>
+        /// <value>
+        ///     <b>Default</b>: 90<br />
+        ///     <b>Range</b>: 50 - 100 <br />
+        ///     <b>Step</b>: <see cref="SliderIncrements.Fives" />
+        /// </value>
+        /// <seealso cref="CustomComboPreset.DRK_AoE_Sp_BloodOvercap" />
+        public static readonly UserInt DRK_AoE_BloodOvercapThreshold =
+            new("DRK_AoE_BloodOvercapThreshold", 90);
 
         /// <summary>
         ///     The number of Oblation charges to keep for manual use in AoE.

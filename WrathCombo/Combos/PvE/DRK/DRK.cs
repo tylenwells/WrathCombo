@@ -46,7 +46,12 @@ internal partial class DRK
             if (TryGetAction<Variant>(comboFlags, ref newAction))
                 return newAction;
 
+            var cdBossRequirement =
+                (int)Config.DRK_ST_CDsBossRequirement ==
+                (int)Config.BossRequirement.On;
             if (IsEnabled(CustomComboPreset.DRK_ST_CDs) &&
+                ((cdBossRequirement && InBossEncounter()) ||
+                 !cdBossRequirement) &&
                 TryGetAction<Cooldown>(comboFlags, ref newAction))
                 return newAction;
 
