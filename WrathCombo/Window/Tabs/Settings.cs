@@ -185,7 +185,7 @@ namespace WrathCombo.Window.Tabs
 
                 #region Logging Options
 
-                ImGui.Spacing();
+                ImGui.Dummy(new Vector2(20f));
                 ImGuiEx.TextUnderlined("Troubleshooting / Analysis Options");
 
                 #region Combat Log
