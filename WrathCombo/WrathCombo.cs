@@ -87,13 +87,13 @@ public sealed partial class WrathCombo : IDalamudPlugin
         {
             if (jobID != value && value != null)
             {
-                UpdateCaches();
+                UpdateCaches(true, false);
             }
             jobID = value;
         }
     }
 
-    private static void UpdateCaches()
+    private static void UpdateCaches(bool onJobChange, bool onTerritoryChange)
     {
         TM.DelayNext(1000);
         TM.Enqueue(() =>
@@ -101,15 +101,19 @@ public sealed partial class WrathCombo : IDalamudPlugin
             if (!Player.Available)
                 return false;
 
-            Service.IconReplacer.UpdateFilteredCombos();
+            if (onJobChange)
+                {Service.IconReplacer.UpdateFilteredCombos();
             AST.QuickTargetCards.SelectedRandomMember = null;
             WrathOpener.SelectOpener();
-            P.IPCSearch.UpdateActiveJobPresets();
+            P.IPCSearch.UpdateActiveJobPresets();}
+
+                if (onTerritoryChange)
+                {
             if (Service.Configuration.RotationConfig.EnableInInstance && Content.InstanceContentRow?.RowId > 0)
                 Service.Configuration.RotationConfig.Enabled = true;
 
             if (Service.Configuration.RotationConfig.DisableAfterInstance && Content.InstanceContentRow?.RowId == 0)
-                Service.Configuration.RotationConfig.Enabled = false;
+                Service.Configuration.RotationConfig.Enabled = false;}
 
             return true;
         }, "UpdateCaches");
@@ -209,7 +213,7 @@ public sealed partial class WrathCombo : IDalamudPlugin
 
     private void ClientState_TerritoryChanged(ushort obj)
     {
-        UpdateCaches();
+        UpdateCaches(false, true);
     }
 
     public const string OptionControlledByIPC =
@@ -282,19 +286,20 @@ public sealed partial class WrathCombo : IDalamudPlugin
 
     }
 
-    private static void ResetFeatures()
-    {
-        // Enumerable.Range is a start and count, not a start and end.
-        // Enumerable.Range(Start, Count)
-        Service.Configuration.ResetFeatures("v3.0.17.0_NINRework", Enumerable.Range(10000, 100).ToArray());
-        Service.Configuration.ResetFeatures("v3.0.17.0_DRGCleanup", Enumerable.Range(6100, 400).ToArray());
-        Service.Configuration.ResetFeatures("v3.0.18.0_GNBCleanup", Enumerable.Range(7000, 700).ToArray());
-        Service.Configuration.ResetFeatures("v3.0.18.0_PvPCleanup", Enumerable.Range(80000, 11000).ToArray());
-        Service.Configuration.ResetFeatures("v3.0.18.1_PLDRework", Enumerable.Range(11000, 100).ToArray());
-        Service.Configuration.ResetFeatures("v3.1.0.1_BLMRework", Enumerable.Range(2000, 100).ToArray());
-        Service.Configuration.ResetFeatures("v3.1.1.0_DRGRework", Enumerable.Range(6000, 800).ToArray());
-        Service.Configuration.ResetFeatures("1.0.0.6_DNCRework", Enumerable.Range(4000, 150).ToArray());
-    }
+        private static void ResetFeatures()
+        {
+            // Enumerable.Range is a start and count, not a start and end.
+            // Enumerable.Range(Start, Count)
+            Service.Configuration.ResetFeatures("v3.0.17.0_NINRework", Enumerable.Range(10000, 100).ToArray());
+            Service.Configuration.ResetFeatures("v3.0.17.0_DRGCleanup", Enumerable.Range(6100, 400).ToArray());
+            Service.Configuration.ResetFeatures("v3.0.18.0_GNBCleanup", Enumerable.Range(7000, 700).ToArray());
+            Service.Configuration.ResetFeatures("v3.0.18.0_PvPCleanup", Enumerable.Range(80000, 11000).ToArray());
+            Service.Configuration.ResetFeatures("v3.0.18.1_PLDRework", Enumerable.Range(11000, 100).ToArray());
+            Service.Configuration.ResetFeatures("v3.1.0.1_BLMRework", Enumerable.Range(2000, 100).ToArray());
+            Service.Configuration.ResetFeatures("v3.1.1.0_DRGRework", Enumerable.Range(6000, 800).ToArray());
+            Service.Configuration.ResetFeatures("1.0.0.6_DNCRework", Enumerable.Range(4000, 150).ToArray());
+            Service.Configuration.ResetFeatures("1.0.0.11_DRKRework", Enumerable.Range(5000, 200).ToArray());
+        }
 
     private void DrawUI()
     {
@@ -358,7 +363,7 @@ public sealed partial class WrathCombo : IDalamudPlugin
                 PluginConfiguration.ProcessSaveQueue();
             }
 
-        ws.RemoveAllWindows();
+        Debug.Dispose();ws.RemoveAllWindows();
         Svc.DtrBar.Remove("Wrath Combo");
         Svc.Framework.Update -= OnFrameworkUpdate;
         Svc.ClientState.TerritoryChanged -= ClientState_TerritoryChanged;
