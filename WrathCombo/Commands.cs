@@ -124,11 +124,13 @@ public partial class WrathCombo
 
         #endregion
 
+        #if !DEBUG
         if (Player.Available && CustomComboFunctions.InCombat())
         {
             DuoLog.Error("Cannot use this command in combat");
             return;
         }
+        #endif
 
         // Parse the action
         switch (argument[0])
