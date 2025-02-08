@@ -134,7 +134,8 @@ public sealed partial class WrathCombo : IDalamudPlugin
         PunishLibMain.Init(pluginInterface, "Wrath Combo");
 
         TM = new();
-        RemoveNullAutos(); Service.Configuration = pluginInterface.GetPluginConfig() as PluginConfiguration ?? new PluginConfiguration();
+        RemoveNullAutos(); 
+        Service.Configuration = pluginInterface.GetPluginConfig() as PluginConfiguration ?? new PluginConfiguration();
         Service.Address = new PluginAddressResolver();
         Service.Address.Setup(Svc.SigScanner);
         PresetStorage.Init();
