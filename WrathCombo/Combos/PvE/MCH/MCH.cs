@@ -263,10 +263,12 @@ internal partial class MCH
                              JustUsed(Excavator, 2f)))
                         {
                             if (ActionReady(GaussRound) &&
+                                GetRemainingCharges(OriginalHook(GaussRound)) > Config.MCH_ST_GaussRicoPool &&
                                 !JustUsed(OriginalHook(GaussRound), 2f))
                                 return OriginalHook(GaussRound);
 
                             if (ActionReady(Ricochet) &&
+                                GetRemainingCharges(OriginalHook(Ricochet)) > Config.MCH_ST_GaussRicoPool &&
                                 !JustUsed(OriginalHook(Ricochet), 2f))
                                 return OriginalHook(Ricochet);
                         }
@@ -284,11 +286,13 @@ internal partial class MCH
                     JustUsed(OriginalHook(Heatblast), 1f) && HasNotWeaved)
                 {
                     if (ActionReady(GaussRound) &&
+                        GetRemainingCharges(OriginalHook(GaussRound)) > Config.MCH_ST_GaussRicoPool &&
                         GetRemainingCharges(OriginalHook(GaussRound)) >=
                         GetRemainingCharges(OriginalHook(Ricochet)))
                         return OriginalHook(GaussRound);
 
                     if (ActionReady(Ricochet) &&
+                        GetRemainingCharges(OriginalHook(Ricochet)) > Config.MCH_ST_GaussRicoPool &&
                         GetRemainingCharges(OriginalHook(Ricochet)) >
                         GetRemainingCharges(OriginalHook(GaussRound)))
                         return OriginalHook(Ricochet);
