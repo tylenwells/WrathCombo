@@ -62,6 +62,8 @@ namespace WrathCombo.Core
 
         public bool OpenToCurrentJob = false;
 
+        public bool OpenToCurrentJobOnSwitch = false;
+
         #endregion
 
         #region AutoAction Settings

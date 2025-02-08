@@ -52,10 +52,15 @@ namespace WrathCombo.Window.Tabs
 
                 #region Open to Current Job
 
-                if (ImGui.Checkbox("Open UI to current Job", ref Service.Configuration.OpenToCurrentJob))
+                if (ImGui.Checkbox("Open PvE Features UI to Current Job on Opening", ref Service.Configuration.OpenToCurrentJob))
                     Service.Configuration.Save();
 
                 ImGuiComponents.HelpMarker("When you open Wrath's UI, it will automatically open to the job you are currently playing.");
+
+                if (ImGui.Checkbox("Open PvE Features UI to Current Job on Switching Jobs", ref Service.Configuration.OpenToCurrentJobOnSwitch))
+                    Service.Configuration.Save();
+
+                ImGuiComponents.HelpMarker("When you switch jobs, it will automatically open to the job you are currently playing.");
 
                 #endregion
 

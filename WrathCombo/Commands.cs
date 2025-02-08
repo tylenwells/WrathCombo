@@ -549,11 +549,7 @@ public partial class WrathCombo
         }
 
         // Open to current job setting
-        if (Service.Configuration.OpenToCurrentJob && Player.Available)
-            PvEFeatures.OpenJob = ConfigWindow.groupedPresets
-                .FirstOrDefault(x =>
-                    x.Value.Any(y => y.Info.JobShorthand == Player.Job.ToString()))
-                .Key;
+        PvEFeatures.OpenToCurrentJob(false);
 
         // Open to specified job
         if (argument[0].Length <= 0) return;

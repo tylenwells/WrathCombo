@@ -1,6 +1,7 @@
 ﻿using Dalamud.Interface.Textures.TextureWraps;
 using Dalamud.Interface.Utility;
 using Dalamud.Interface.Utility.Raii;
+using ECommons.GameHelpers;
 using ECommons.ImGuiMethods;
 using ImGuiNET;
 using System.Linq;
@@ -219,6 +220,19 @@ namespace WrathCombo.Window.Tabs
                     ImGuiHelpers.ScaledDummy(12.0f);
                 }
             }
+        }
+
+        internal static void OpenToCurrentJob(bool onJobChange)
+        {
+            if ((onJobChange && Service.Configuration.OpenToCurrentJobOnSwitch) || 
+                (!onJobChange && Service.Configuration.OpenToCurrentJob && Player.Available))
+            {
+                    OpenJob = groupedPresets
+                        .FirstOrDefault(x =>
+                            x.Value.Any(y => y.Info.JobShorthand == Player.Job.ToString()))
+                        .Key;
+            }
+ 
         }
     }
 }
