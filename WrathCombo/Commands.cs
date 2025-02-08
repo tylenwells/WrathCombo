@@ -124,6 +124,7 @@ public partial class WrathCombo
 
         #endregion
 
+        /*
         #if !DEBUG
         if (Player.Available && CustomComboFunctions.InCombat())
         {
@@ -131,6 +132,7 @@ public partial class WrathCombo
             return;
         }
         #endif
+        */
 
         // Parse the action
         switch (argument[0])
@@ -158,7 +160,10 @@ public partial class WrathCombo
         }
 
         if (target is null && argument.Length < 2)
+        {
             DuoLog.Error($"Please specify a feature to {action}");
+            return;
+        }
 
         // Parse the target feature
         target ??= argument[1];
