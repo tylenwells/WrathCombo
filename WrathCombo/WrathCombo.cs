@@ -29,6 +29,7 @@ using WrathCombo.Data;
 using WrathCombo.Services;
 using WrathCombo.Services.IPC;
 using WrathCombo.Window;
+using WrathCombo.Window.Tabs;
 
 namespace WrathCombo;
 
@@ -102,18 +103,21 @@ public sealed partial class WrathCombo : IDalamudPlugin
                 return false;
 
             if (onJobChange)
-                {Service.IconReplacer.UpdateFilteredCombos();
-            AST.QuickTargetCards.SelectedRandomMember = null;
-            WrathOpener.SelectOpener();
-            P.IPCSearch.UpdateActiveJobPresets();}
+            {
+                Service.IconReplacer.UpdateFilteredCombos();
+                AST.QuickTargetCards.SelectedRandomMember = null;
+                WrathOpener.SelectOpener();
+                P.IPCSearch.UpdateActiveJobPresets();
+            }
 
-                if (onTerritoryChange)
-                {
-            if (Service.Configuration.RotationConfig.EnableInInstance && Content.InstanceContentRow?.RowId > 0)
-                Service.Configuration.RotationConfig.Enabled = true;
+            if (onTerritoryChange)
+            {
+                if (Service.Configuration.RotationConfig.EnableInInstance && Content.InstanceContentRow?.RowId > 0)
+                    Service.Configuration.RotationConfig.Enabled = true;
 
-            if (Service.Configuration.RotationConfig.DisableAfterInstance && Content.InstanceContentRow?.RowId == 0)
-                Service.Configuration.RotationConfig.Enabled = false;}
+                if (Service.Configuration.RotationConfig.DisableAfterInstance && Content.InstanceContentRow?.RowId == 0)
+                    Service.Configuration.RotationConfig.Enabled = false;
+            }
 
             return true;
         }, "UpdateCaches");
@@ -363,7 +367,9 @@ public sealed partial class WrathCombo : IDalamudPlugin
                 PluginConfiguration.ProcessSaveQueue();
             }
 
-        Debug.Dispose();ws.RemoveAllWindows();
+        Debug.Dispose();
+
+        ws.RemoveAllWindows();
         Svc.DtrBar.Remove("Wrath Combo");
         Svc.Framework.Update -= OnFrameworkUpdate;
         Svc.ClientState.TerritoryChanged -= ClientState_TerritoryChanged;

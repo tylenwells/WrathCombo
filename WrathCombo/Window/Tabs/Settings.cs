@@ -185,36 +185,6 @@ namespace WrathCombo.Window.Tabs
 
                 #region Logging Options
 
-                ImGui.Dummy(new Vector2(20f));
-                ImGuiEx.TextUnderlined("Troubleshooting / Analysis Options");
-
-                #region Combat Log
-
-                bool showCombatLog = Service.Configuration.EnabledOutputLog;
-
-                if (ImGui.Checkbox("Output Log to Chat", ref showCombatLog))
-                {
-                    Service.Configuration.EnabledOutputLog = showCombatLog;
-                    Service.Configuration.Save();
-                }
-
-                ImGuiComponents.HelpMarker("Every time you use an action, the plugin will print it to the chat.");
-                #endregion
-
-                #region Opener Log
-
-                if (ImGui.Checkbox($"Output opener status to chat", ref Service.Configuration.OutputOpenerLogs))
-                    Service.Configuration.Save();
-                }
-
-                ImGuiComponents.HelpMarker("The percentage of a total cast time to wait before interrupting.\nApplies to all interrupts, in every job's combos.\n\nIt is recommend to keep this value below 50%.");
-
-                #endregion
-
-                #endregion
-
-                #region Logging Options
-
                 ImGui.Spacing();
                 ImGuiEx.TextUnderlined("Troubleshooting / Analysis Options");
 
