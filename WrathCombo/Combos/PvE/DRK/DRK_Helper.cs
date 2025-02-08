@@ -31,11 +31,11 @@ internal partial class DRK
     /// <seealso cref="CustomComboFunctions.CanWeave(double)" />
     /// <seealso cref="CanDelayedWeave(double,double)" />
     private static bool CanWeave =>
-        (IsEnabled(Preset.DRK_ST_Combo) &&
+        (IsEnabled(Preset.DRK_ST_Adv) &&
          IsEnabled(Preset.DRK_PreventTripleWeaves) &&
          CanWeave() &&
          !ActionWatching.HasDoubleWeaved()) ||
-        ((IsNotEnabled(Preset.DRK_ST_Combo) ||
+        ((IsNotEnabled(Preset.DRK_ST_Adv) ||
           IsNotEnabled(Preset.DRK_PreventTripleWeaves)) &&
          (CanWeave() || CanDelayedWeave()));
 

@@ -1337,14 +1337,14 @@ public enum CustomComboPreset
 
     [AutoAction(false, false)]
     [ReplaceSkill(DRK.HardSlash)]
-    [ConflictingCombos(DRK_ST_Combo)]
+    [ConflictingCombos(DRK_ST_Adv)]
     [CustomComboInfo("Simple Mode - Single Target",
         "Replaces Hard Slash with a full one-button single target rotation.", DRK.JobID)]
     DRK_ST_Simple = 5001,
 
     [AutoAction(true, false)]
     [ReplaceSkill(DRK.Unleash)]
-    [ConflictingCombos(DRK_AoE_Combo)]
+    [ConflictingCombos(DRK_AoE_Adv)]
     [CustomComboInfo("Simple Mode - AoE", "Replaces Unleash with a full one-button AoE rotation.", DRK.JobID)]
     DRK_AoE_Simple = 5002,
 
@@ -1358,13 +1358,13 @@ public enum CustomComboPreset
     [CustomComboInfo("Advanced Mode - Single Target",
         "Replaces Hard Slash with a full one-button single target rotation.\nThese features are ideal if you want to customize the rotation.",
         DRK.JobID)]
-    DRK_ST_Combo = 5010,
+    DRK_ST_Adv = 5010,
 
-    [ParentCombo(DRK_ST_Combo)]
+    [ParentCombo(DRK_ST_Adv)]
     [CustomComboInfo("Prevent Triple Weaves Option", "Tries to prevent any triple-weaving (even when it may not clip).", DRK.JobID)]
     DRK_PreventTripleWeaves = 5038,
 
-    [ParentCombo(DRK_ST_Combo)]
+    [ParentCombo(DRK_ST_Adv)]
     [CustomComboInfo("Balance Opener (Level 100)",
         "Adds the Balance opener at level 100." +
         "\nRequirements:" +
@@ -1378,13 +1378,13 @@ public enum CustomComboPreset
         DRK.JobID)]
     DRK_ST_BalanceOpener = 5011,
 
-    [ParentCombo(DRK_ST_Combo)]
+    [ParentCombo(DRK_ST_Adv)]
     [CustomComboInfo("Unmend Uptime Option", "Adds Unmend to the rotation when you are out of range.", DRK.JobID)]
     DRK_ST_RangedUptime = 5012,
 
     #region Cooldowns
 
-    [ParentCombo(DRK_ST_Combo)]
+    [ParentCombo(DRK_ST_Adv)]
     [CustomComboInfo("Cooldown Options", "Collection of cooldowns to add to the rotation.", DRK.JobID)]
     DRK_ST_CDs = 5013,
 
@@ -1445,7 +1445,7 @@ public enum CustomComboPreset
 
     #region Spenders
 
-    [ParentCombo(DRK_ST_Combo)]
+    [ParentCombo(DRK_ST_Adv)]
     [CustomComboInfo("Spender Options", "Collection of spenders (mana and blood) to add to the rotation.", DRK.JobID)]
     DRK_ST_Spenders = 5023,
 
@@ -1490,7 +1490,7 @@ public enum CustomComboPreset
 
     #region Mitigation Options
 
-    [ParentCombo(DRK_ST_Combo)]
+    [ParentCombo(DRK_ST_Adv)]
     [CustomComboInfo("Mitigation Options", "Collection of Mitigations to add to the rotation.", DRK.JobID)]
     DRK_ST_Mitigation = 5031,
 
@@ -1536,11 +1536,11 @@ public enum CustomComboPreset
     [CustomComboInfo("Advanced Mode - AoE",
         "Replaces Unleash with a full one-button AoE rotation.\nThese features are ideal if you want to customize the rotation.",
         DRK.JobID)]
-    DRK_AoE_Combo = 5050,
+    DRK_AoE_Adv = 5050,
 
     #region Cooldowns
 
-    [ParentCombo(DRK_AoE_Combo)]
+    [ParentCombo(DRK_AoE_Adv)]
     [CustomComboInfo("Cooldowns Options", "Collection of cooldowns to add to the rotation.", DRK.JobID)]
     DRK_AoE_CDs = 5051,
 
@@ -1598,7 +1598,7 @@ public enum CustomComboPreset
 
     #region Spenders
 
-    [ParentCombo(DRK_AoE_Combo)]
+    [ParentCombo(DRK_AoE_Adv)]
     [CustomComboInfo("Spender Options", "Collection of spenders (mana and blood) to add to the rotation.", DRK.JobID)]
     DRK_AoE_Spenders = 5061,
 
@@ -1634,7 +1634,7 @@ public enum CustomComboPreset
 
     #region Mitigation Options
 
-    [ParentCombo(DRK_AoE_Combo)]
+    [ParentCombo(DRK_AoE_Adv)]
     [CustomComboInfo("Mitigation Options", "Collection of Mitigations to add to the rotation.", DRK.JobID)]
     DRK_AoE_Mitigation = 5067,
 
@@ -1749,18 +1749,18 @@ public enum CustomComboPreset
     #region Variant
 
     [Variant]
-    [VariantParent(DRK_ST_Combo, DRK_AoE_Combo, DRK_ST_Simple, DRK_AoE_Simple)]
+    [VariantParent(DRK_ST_Adv, DRK_AoE_Adv, DRK_ST_Simple, DRK_AoE_Simple)]
     [CustomComboInfo("Spirit Dart Option",
         "Use Variant Spirit Dart whenever the debuff is not present or less than 3s.", DRK.JobID)]
     DRK_Var_Dart = 5140,
 
     [Variant]
-    [VariantParent(DRK_ST_Combo, DRK_AoE_Combo, DRK_ST_Simple, DRK_AoE_Simple)]
+    [VariantParent(DRK_ST_Adv, DRK_AoE_Adv, DRK_ST_Simple, DRK_AoE_Simple)]
     [CustomComboInfo("Cure Option", "Use Variant Cure when HP is below set threshold.", DRK.JobID)]
     DRK_Var_Cure = 5141,
 
     [Variant]
-    [VariantParent(DRK_ST_Combo, DRK_AoE_Combo, DRK_ST_Simple, DRK_AoE_Simple)]
+    [VariantParent(DRK_ST_Adv, DRK_AoE_Adv, DRK_ST_Simple, DRK_AoE_Simple)]
     [CustomComboInfo("Ultimatum Option", "Use Variant Ultimatum on cooldown.", DRK.JobID)]
     DRK_Var_Ulti = 5142,
 
