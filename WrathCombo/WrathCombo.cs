@@ -99,13 +99,13 @@ namespace WrathCombo
             {
                 if (jobID != value && value != null)
                 {
-                    UpdateCaches();
+                    UpdateCaches(true, false);
                 }
                 jobID = value;
             }
         }
 
-        private static void UpdateCaches()
+        private static void UpdateCaches(bool onJobChange, bool onTerritoryChange)
         {
             TM.DelayNext(1000);
             TM.Enqueue(() =>
@@ -113,16 +113,23 @@ namespace WrathCombo
                 if (!Player.Available)
                     return false;
 
-                Service.IconReplacer.UpdateFilteredCombos();
-                AST.QuickTargetCards.SelectedRandomMember = null;
-                PvEFeatures.HasToOpenJob = true;
-                WrathOpener.SelectOpener();
-                P.IPCSearch.UpdateActiveJobPresets();
-                if (Service.Configuration.RotationConfig.EnableInInstance && Content.InstanceContentRow?.RowId > 0)
-                    Service.Configuration.RotationConfig.Enabled = true;
+                if (onJobChange)
+                {
+                    Service.IconReplacer.UpdateFilteredCombos();
+                    AST.QuickTargetCards.SelectedRandomMember = null;
+                    PvEFeatures.HasToOpenJob = true;
+                    WrathOpener.SelectOpener();
+                    P.IPCSearch.UpdateActiveJobPresets();
+                }
 
-                if (Service.Configuration.RotationConfig.DisableAfterInstance && Content.InstanceContentRow?.RowId == 0)
-                    Service.Configuration.RotationConfig.Enabled = false;
+                if (onTerritoryChange)
+                {
+                    if (Service.Configuration.RotationConfig.EnableInInstance && Content.InstanceContentRow?.RowId > 0)
+                        Service.Configuration.RotationConfig.Enabled = true;
+
+                    if (Service.Configuration.RotationConfig.DisableAfterInstance && Content.InstanceContentRow?.RowId == 0)
+                        Service.Configuration.RotationConfig.Enabled = false;
+                }
 
                 return true;
             }, "UpdateCaches");
@@ -231,7 +238,7 @@ namespace WrathCombo
 
         private void ClientState_TerritoryChanged(ushort obj)
         {
-            UpdateCaches();
+            UpdateCaches(false, true);
         }
 
         public const string OptionControlledByIPC =
