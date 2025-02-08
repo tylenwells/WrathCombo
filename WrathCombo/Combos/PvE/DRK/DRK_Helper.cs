@@ -325,7 +325,8 @@ internal partial class DRK
                  !IsEnabled(Preset.DRK_ST_CD_BringerBurst)) ||
                 (flags.HasFlag(Combo.Adv) && flags.HasFlag(Combo.ST) &&
                  IsEnabled(Preset.DRK_ST_CD_BringerBurst) &&
-                 IsOnCooldown(LivingShadow) && !HasEffect(Buffs.Scorn));
+                 GetCooldownRemainingTime(LivingShadow) >= 90 &&
+                 !HasEffect(Buffs.Scorn));
 
             #endregion
 
