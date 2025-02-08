@@ -50,6 +50,7 @@ public sealed partial class WrathCombo : IDalamudPlugin
 
     private readonly TextPayload starterMotd = new("[Wrath Message of the Day] ");
     private static uint? jobID;
+    private static bool inInstancedContent = false;
 
     public static readonly List<uint> DisabledJobsPVE =
     [
@@ -113,11 +114,17 @@ public sealed partial class WrathCombo : IDalamudPlugin
 
             if (onTerritoryChange)
             {
-                if (Service.Configuration.RotationConfig.EnableInInstance && Content.InstanceContentRow?.RowId > 0)
+                if (Service.Configuration.RotationConfig.EnableInInstance && Content.InstanceContentRow?.RowId > 0 && !inInstancedContent)
+                {
                     Service.Configuration.RotationConfig.Enabled = true;
+                    inInstancedContent = true;
+                }
 
-                if (Service.Configuration.RotationConfig.DisableAfterInstance && Content.InstanceContentRow?.RowId == 0)
+                if (Service.Configuration.RotationConfig.DisableAfterInstance && Content.InstanceContentRow?.RowId == 0 && inInstancedContent)
+                {
                     Service.Configuration.RotationConfig.Enabled = false;
+                    inInstancedContent = false;
+                }
             }
 
             return true;
