@@ -1331,12 +1331,12 @@ internal partial class DRK
     private enum Combo
     {
         // Target-type for combo
-        ST = 0,
-        AoE = 1,
+        ST = 1 << 0, // 1
+        AoE = 1 << 1, // 2
 
         // Complexity of combo
-        Adv = 2,
-        Simple = 4,
+        Adv = 1 << 2, // 4
+        Simple = 1 << 3, // 8
     }
 
     private interface IActionProvider
