@@ -113,10 +113,10 @@ namespace WrathCombo
                 if (!Player.Available)
                     return false;
 
+                AST.QuickTargetCards.SelectedRandomMember = null;
                 if (onJobChange)
                 {
                     Service.IconReplacer.UpdateFilteredCombos();
-                    AST.QuickTargetCards.SelectedRandomMember = null;
                     PvEFeatures.HasToOpenJob = true;
                     WrathOpener.SelectOpener();
                     P.IPCSearch.UpdateActiveJobPresets();
@@ -211,8 +211,8 @@ namespace WrathCombo
                     if (autoActions != null)
                     {
                         var clone = autoActions.JSONClone();
-                        foreach (var a in clone) 
-                        { 
+                        foreach (var a in clone)
+                        {
                             if (a.Key == "$type")
                                 continue;
 
@@ -228,7 +228,7 @@ namespace WrathCombo
                         File.WriteAllText(Svc.PluginInterface.ConfigFile.FullName, json.ToString());
                 }
 
-                    
+
             }
             catch (Exception e)
             {
