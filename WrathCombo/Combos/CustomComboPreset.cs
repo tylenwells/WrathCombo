@@ -1749,18 +1749,18 @@ public enum CustomComboPreset
     #region Variant
 
     [Variant]
-    [VariantParent(DRK_ST_Combo, DRK_AoE_Combo)]
+    [VariantParent(DRK_ST_Combo, DRK_AoE_Combo, DRK_ST_Simple, DRK_AoE_Simple)]
     [CustomComboInfo("Spirit Dart Option",
         "Use Variant Spirit Dart whenever the debuff is not present or less than 3s.", DRK.JobID)]
     DRK_Var_Dart = 5140,
 
     [Variant]
-    [VariantParent(DRK_ST_Combo, DRK_AoE_Combo)]
+    [VariantParent(DRK_ST_Combo, DRK_AoE_Combo, DRK_ST_Simple, DRK_AoE_Simple)]
     [CustomComboInfo("Cure Option", "Use Variant Cure when HP is below set threshold.", DRK.JobID)]
     DRK_Var_Cure = 5141,
 
     [Variant]
-    [VariantParent(DRK_ST_Combo, DRK_AoE_Combo)]
+    [VariantParent(DRK_ST_Combo, DRK_AoE_Combo, DRK_ST_Simple, DRK_AoE_Simple)]
     [CustomComboInfo("Ultimatum Option", "Use Variant Ultimatum on cooldown.", DRK.JobID)]
     DRK_Var_Ulti = 5142,
 
