@@ -18,7 +18,7 @@ internal partial class DRK
     internal class DRK_ST_Advanced : CustomCombo
     {
         protected internal override CustomComboPreset Preset { get; } =
-            CustomComboPreset.DRK_ST_Combo;
+            CustomComboPreset.DRK_ST_Adv;
 
         protected override uint Invoke(uint actionID)
         {
@@ -120,7 +120,7 @@ internal partial class DRK
     internal class DRK_AoE_Advanced : CustomCombo
     {
         protected internal override CustomComboPreset Preset { get; } =
-            CustomComboPreset.DRK_AoE_Combo;
+            CustomComboPreset.DRK_AoE_Adv;
 
         protected override uint Invoke(uint actionID)
         {

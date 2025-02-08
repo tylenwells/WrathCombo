@@ -281,14 +281,11 @@ public sealed partial class WrathCombo : IDalamudPlugin
 
     private static void KillRedundantIDs()
     {
-        List<int> redundantIDs = Service.Configuration.EnabledActions.Where(x => int.TryParse(x.ToString(), out _)).OrderBy(x => x).Cast<int>().ToList();
-        foreach (int id in redundantIDs)
-        {
+        var redundantIDs = Service.Configuration.EnabledActions.Where(x => int.TryParse(x.ToString(), out _)).OrderBy(x => x).Cast<int>().ToList();
+        foreach (var id in redundantIDs)
             Service.Configuration.EnabledActions.RemoveWhere(x => (int)x == id);
-        }
 
         Service.Configuration.Save();
-
     }
 
     private static void ResetFeatures()
