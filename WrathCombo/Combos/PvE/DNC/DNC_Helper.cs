@@ -62,6 +62,12 @@ internal partial class DNC
     private static DNCGauge Gauge => GetJobGauge<DNCGauge>();
 
     /// <summary>
+    ///     DNC's GCD, truncated to two decimal places.
+    /// </summary>
+    private static double GCD =>
+        Math.Floor(GetCooldown(Cascade).CooldownTotal * 100) / 100;
+
+    /// <summary>
     ///     Check if the rotation is in Auto-Rotation.
     /// </summary>
     /// <param name="singleTarget">

@@ -1,9 +1,7 @@
 ﻿#region
 
-using Dalamud.Game.ClientState.JobGauge.Types;
 using WrathCombo.Combos.PvE.Content;
 using WrathCombo.CustomComboNS;
-using WrathCombo.Services;
 
 // ReSharper disable UnusedType.Global
 // ReSharper disable ClassNeverInstantiated.Global
@@ -34,7 +32,6 @@ internal partial class DNC
             var targetHpThresholdFeather = Config.DNC_ST_Adv_FeatherBurstPercent;
             var targetHpThresholdStandard = Config.DNC_ST_Adv_SSBurstPercent;
             var targetHpThresholdTechnical = Config.DNC_ST_Adv_TSBurstPercent;
-            var gcd = GetCooldown(Fountain).CooldownTotal;
             var tillanaDriftProtectionActive =
                 Config.DNC_ST_ADV_TillanaUse == (int)Config.TillanaDriftProtection.Favor;
 
@@ -66,8 +63,8 @@ internal partial class DNC
             if (Config.DNC_ST_ADV_AntiDrift == (int)Config.AntiDrift.Hold ||
                 Config.DNC_ST_ADV_AntiDrift == (int)Config.AntiDrift.Both)
             {
-                longAlignmentThreshold = gcd;
-                shortAlignmentThreshold = gcd;
+                longAlignmentThreshold = (float)GCD;
+                shortAlignmentThreshold = (float)GCD;
             }
 
             var needToFinish =
