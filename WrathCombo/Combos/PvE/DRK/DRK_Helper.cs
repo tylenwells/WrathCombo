@@ -174,6 +174,8 @@ internal partial class DRK
     /// </remarks>
     private class Cooldown : IActionProvider
     {
+        public static bool ShouldDeliriumNext = false;
+
         public bool TryGetAction(Combo flags, ref uint action)
         {
             #region Disesteem
@@ -667,6 +669,14 @@ internal partial class DRK
     {
         public bool TryGetAction(Combo flags, ref uint action)
         {
+            #region Variables
+
+            var bloodGCDReady = ActionReady(Bloodspiller) &&
+                                IsOffCooldown(Bloodspiller) &&
+                                LevelChecked(Bloodspiller);
+
+            #endregion
+
             #region Delirium Chain
 
             if ((flags.HasFlag(Combo.Simple) ||
@@ -674,7 +684,8 @@ internal partial class DRK
                    IsEnabled(Preset.DRK_ST_Sp_ScarletChain)) ||
                   flags.HasFlag(Combo.AoE) &&
                   IsEnabled(Preset.DRK_AoE_Sp_ImpalementChain))) &&
-                HasEffect(Buffs.EnhancedDelirium))
+                HasEffect(Buffs.EnhancedDelirium) &&
+                bloodGCDReady)
                 if (flags.HasFlag(Combo.ST))
                     return (action = OriginalHook(Bloodspiller)) != 0;
                 else if (flags.HasFlag(Combo.AoE))
@@ -691,7 +702,8 @@ internal partial class DRK
                   IsEnabled(Preset.DRK_AoE_Sp_Quietus)) ||
                  (flags.HasFlag(Combo.ST) &&
                   IsEnabled(Preset.DRK_ST_Sp_Bloodspiller))) &&
-                GetBuffStacks(Buffs.Delirium) > 0)
+                GetBuffStacks(Buffs.Delirium) > 0 &&
+                bloodGCDReady)
                 if (flags.HasFlag(Combo.ST))
                     return (action = Bloodspiller) != 0;
                 else if (flags.HasFlag(Combo.AoE))
@@ -721,7 +733,8 @@ internal partial class DRK
                   IsEnabled(Preset.DRK_ST_Sp_Bloodspiller))) &&
                 LevelChecked(Bloodspiller) &&
                 Gauge.Blood >= 50 &&
-                GetCooldownRemainingTime(Delirium) > 37)
+                GetCooldownRemainingTime(Delirium) > 37 &&
+                bloodGCDReady)
                 if (flags.HasFlag(Combo.ST))
                     return (action = Bloodspiller) != 0;
                 else if (flags.HasFlag(Combo.AoE) && LevelChecked(Quietus))
@@ -747,7 +760,8 @@ internal partial class DRK
                   flags.HasFlag(Combo.AoE) &&
                   IsEnabled(Preset.DRK_AoE_Sp_BloodOvercap))) &&
                 LevelChecked(Bloodspiller) &&
-                Gauge.Blood >= overcapThreshold)
+                Gauge.Blood >= overcapThreshold &&
+                bloodGCDReady)
                 if (flags.HasFlag(Combo.ST))
                     return (action = Bloodspiller) != 0;
                 else if (flags.HasFlag(Combo.AoE) && LevelChecked(Quietus))
@@ -755,16 +769,17 @@ internal partial class DRK
 
             #endregion
 
+            // Bail if we can't weave anything else
+            if (!CanWeave) return false;
+
             // Mana
 
             #region Variables and some Mana bails
 
             // Bail if it is too early into the fight
             if (CombatEngageDuration().TotalSeconds <= 5) return false;
-            // Bail if we can't weave anything else
-            if (!CanWeave) return false;
-            // Bail if mana spending is not available
-            if (!ActionReady(FloodOfDarkness)) return false;
+            // Bail if mana spending is not available yet
+            if (!LevelChecked(FloodOfDarkness)) return false;
 
             var mana = (int)LocalPlayer.CurrentMp;
             var manaPooling =
@@ -779,7 +794,8 @@ internal partial class DRK
             var manaEvenBurstSoon =
                 GetCooldownRemainingTime(LivingShadow) is > 0 and < 30;
             var manaBursting =
-                GetCooldownRemainingTime(LivingShadow) >= 90;
+                GetCooldownRemainingTime(LivingShadow) >= 100 ||
+                GetCooldownRemainingTime(Delirium) >= 50;
             var manaDarksideDropping =
                 Gauge.DarksideTimeRemaining / 1000 < 10;
 
