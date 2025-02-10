@@ -110,8 +110,9 @@ internal partial class MCH
                 if (JustUsed(OriginalHook(Heatblast), 1f) && HasNotWeaved)
                 {
                     if (ActionReady(GaussRound) &&
-                        GetRemainingCharges(OriginalHook(GaussRound)) >=
-                        GetRemainingCharges(OriginalHook(Ricochet)))
+                        (GetRemainingCharges(OriginalHook(GaussRound)) >=
+                         GetRemainingCharges(OriginalHook(Ricochet)) ||
+                         !LevelChecked(Ricochet)))
                         return OriginalHook(GaussRound);
 
                     if (ActionReady(Ricochet) &&
@@ -287,8 +288,9 @@ internal partial class MCH
                 {
                     if (ActionReady(GaussRound) &&
                         GetRemainingCharges(OriginalHook(GaussRound)) > Config.MCH_ST_GaussRicoPool &&
-                        GetRemainingCharges(OriginalHook(GaussRound)) >=
-                        GetRemainingCharges(OriginalHook(Ricochet)))
+                        (GetRemainingCharges(OriginalHook(GaussRound)) >=
+                         GetRemainingCharges(OriginalHook(Ricochet)) ||
+                         !LevelChecked(Ricochet)))
                         return OriginalHook(GaussRound);
 
                     if (ActionReady(Ricochet) &&
@@ -403,8 +405,9 @@ internal partial class MCH
                      JustUsed(OriginalHook(Heatblast), 1f)) && HasNotWeaved)
                 {
                     if (ActionReady(GaussRound) &&
-                        GetRemainingCharges(OriginalHook(GaussRound)) >=
-                        GetRemainingCharges(OriginalHook(Ricochet)))
+                        (GetRemainingCharges(OriginalHook(GaussRound)) >=
+                         GetRemainingCharges(OriginalHook(Ricochet)) ||
+                         !LevelChecked(Ricochet)))
                         return OriginalHook(GaussRound);
 
                     if (ActionReady(Ricochet) &&
@@ -558,8 +561,9 @@ internal partial class MCH
                      JustUsed(OriginalHook(Heatblast), 1f)) && HasNotWeaved)
                 {
                     if (ActionReady(GaussRound) &&
-                        GetRemainingCharges(OriginalHook(GaussRound)) >=
-                        GetRemainingCharges(OriginalHook(Ricochet)))
+                        (GetRemainingCharges(OriginalHook(GaussRound)) >=
+                         GetRemainingCharges(OriginalHook(Ricochet)) ||
+                         !LevelChecked(Ricochet)))
                         return OriginalHook(GaussRound);
 
                     if (ActionReady(Ricochet) &&
@@ -645,8 +649,9 @@ internal partial class MCH
                 HasNotWeaved)
             {
                 if (ActionReady(GaussRound) &&
-                    GetRemainingCharges(OriginalHook(GaussRound)) >=
-                    GetRemainingCharges(OriginalHook(Ricochet)))
+                    (GetRemainingCharges(OriginalHook(GaussRound)) >=
+                     GetRemainingCharges(OriginalHook(Ricochet)) ||
+                     !LevelChecked(Ricochet)))
                     return OriginalHook(GaussRound);
 
                 if (ActionReady(Ricochet) &&
@@ -684,8 +689,9 @@ internal partial class MCH
                 CanWeave() && JustUsed(OriginalHook(AutoCrossbow), 1f) && HasNotWeaved)
             {
                 if (ActionReady(GaussRound) &&
-                    GetRemainingCharges(OriginalHook(GaussRound)) >=
-                    GetRemainingCharges(OriginalHook(Ricochet)))
+                    (GetRemainingCharges(OriginalHook(GaussRound)) >=
+                     GetRemainingCharges(OriginalHook(Ricochet)) ||
+                     !LevelChecked(Ricochet)))
                     return OriginalHook(GaussRound);
 
                 if (ActionReady(Ricochet) &&
@@ -711,8 +717,9 @@ internal partial class MCH
                 return actionID;
 
             if (ActionReady(GaussRound) &&
-                GetRemainingCharges(OriginalHook(GaussRound)) >=
-                GetRemainingCharges(OriginalHook(Ricochet)))
+                (GetRemainingCharges(OriginalHook(GaussRound)) >=
+                 GetRemainingCharges(OriginalHook(Ricochet)) ||
+                 !LevelChecked(Ricochet)))
                 return OriginalHook(GaussRound);
 
             if (ActionReady(Ricochet) &&
