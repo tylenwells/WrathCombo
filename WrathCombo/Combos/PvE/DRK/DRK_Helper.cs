@@ -44,6 +44,9 @@ internal partial class DRK
     /// </summary>
     private static DRKGauge Gauge => GetJobGauge<DRKGauge>();
 
+    /// <summary>
+    ///     DRK's GCD, truncated to two decimal places.
+    /// </summary>
     private static double GCD => GetCooldown(HardSlash).CooldownTotal;
 
     /// <summary>
