@@ -44,6 +44,8 @@ internal partial class DRK
     /// </summary>
     private static DRKGauge Gauge => GetJobGauge<DRKGauge>();
 
+    private static double GCD => GetCooldown(HardSlash).CooldownTotal;
+
     /// <summary>
     ///     Select the opener to use.
     /// </summary>
@@ -174,7 +176,7 @@ internal partial class DRK
     /// </remarks>
     private class Cooldown : IActionProvider
     {
-        public static bool ShouldDeliriumNext = false;
+        public static bool ShouldDeliriumNext;
 
         public bool TryGetAction(Combo flags, ref uint action)
         {
@@ -273,9 +275,17 @@ internal partial class DRK
                    IsEnabled(Preset.DRK_ST_CD_Delirium)) ||
                   flags.HasFlag(Combo.AoE) &&
                   IsEnabled(Preset.DRK_AoE_CD_Delirium))) &&
-                ActionReady(BloodWeapon) &&
-                deliriumHPMatchesThreshold)
+                deliriumHPMatchesThreshold &&
+                LevelChecked(BloodWeapon) &&
+                GetCooldownRemainingTime(BloodWeapon) < GCD)
+                ShouldDeliriumNext = true;
+
+            if (ShouldDeliriumNext &&
+                IsOffCooldown(BloodWeapon))
+            {
+                ShouldDeliriumNext = false;
                 return (action = OriginalHook(Delirium)) != 0;
+            }
 
             #endregion
 
@@ -718,8 +728,9 @@ internal partial class DRK
                  (flags.HasFlag(Combo.Adv) &&
                   IsEnabled(Preset.DRK_ST_CD_Delirium))) &&
                 LevelChecked(Delirium) &&
-                Gauge.Blood >= 60 &&
-                GetCooldownRemainingTime(Delirium) is > 0 and < 7)
+                Gauge.Blood >= 70 &&
+                Cooldown.ShouldDeliriumNext &&
+                bloodGCDReady)
                 return (action = Bloodspiller) != 0;
 
             #endregion
