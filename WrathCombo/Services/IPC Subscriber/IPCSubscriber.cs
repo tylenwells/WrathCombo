@@ -44,7 +44,10 @@ namespace WrathCombo.Services.IPC_Subscriber
 
         public static bool CanOrbwalk => IsEnabled && PluginEnabled() && !MouseMoving && EnabledJobs().Any(x => x == (uint)Player.Job);
 
-        public static bool MouseMoving => MouseButtonReleaseEnabled() && GenericHelpers.IsKeyPressed(ECommons.Interop.LimitedKeys.LeftMouseButton) && GenericHelpers.IsKeyPressed(ECommons.Interop.LimitedKeys.RightMouseButton);
+        private static unsafe InputManager.MouseButtonHoldState* _state => InputManager.GetMouseButtonHoldState() + 1;
+        private static unsafe bool BothMousebuttonsHeld => _state->HasFlag(InputManager.MouseButtonHoldState.Left) && _state->HasFlag(InputManager.MouseButtonHoldState.Right);
+        
+        public static bool MouseMoving => MouseButtonReleaseEnabled() && BothMousebuttonsHeld;
 
         internal static void Dispose()
         {
