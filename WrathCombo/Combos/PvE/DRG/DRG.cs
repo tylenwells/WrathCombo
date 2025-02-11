@@ -275,14 +275,7 @@ internal partial class DRG
                 {
                     //Life Surge Feature
                     if (IsEnabled(CustomComboPreset.DRG_ST_LifeSurge) &&
-                        ActionReady(LifeSurge) &&
-                        (GetCooldownRemainingTime(LifeSurge) < 40 || GetCooldownRemainingTime(BattleLitany) > 50) &&
-                        CanDRGWeave(LifeSurge) && !HasEffect(Buffs.LifeSurge) &&
-                        (HasEffect(Buffs.LanceCharge) &&
-                         (JustUsed(WheelingThrust) && LevelChecked(Drakesbane) ||
-                          JustUsed(FangAndClaw) && LevelChecked(Drakesbane) ||
-                          JustUsed(OriginalHook(VorpalThrust)) && LevelChecked(FullThrust)) ||
-                         !LevelChecked(LanceCharge) && JustUsed(VorpalThrust)))
+                        UseLifeSurge())
                         return LifeSurge;
 
                     //Geirskogul Feature
