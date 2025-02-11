@@ -54,10 +54,10 @@ internal partial class DRG
                     break;
 
                 case CustomComboPreset.DRG_ST_Litany:
-                    DrawHorizontalRadioButton(DRG_ST_Litany_SubOption, 
+                    DrawHorizontalRadioButton(DRG_ST_Litany_SubOption,
                         "All content", $"Uses {ActionWatching.GetActionName(BattleLitany)} logic regardless of content.", 0);
 
-                    DrawHorizontalRadioButton(DRG_ST_Litany_SubOption, 
+                    DrawHorizontalRadioButton(DRG_ST_Litany_SubOption,
                         "Boss encounters Only", $"Only uses {ActionWatching.GetActionName(BattleLitany)} logic when in Boss encounters.", 1);
 
                     break;
