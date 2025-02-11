@@ -64,6 +64,8 @@ public class AutoRotationConfigIPCWrapper(AutoRotationConfig? config)
 
     public int Throttler => config.Throttler;
 
+    public bool OrbwalkerIntegration => config.OrbwalkerIntegration;
+
     #endregion
 }
 

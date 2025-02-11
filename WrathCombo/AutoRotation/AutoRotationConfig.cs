@@ -14,6 +14,7 @@
         public HealerSettings HealerSettings = new();
         public DPSSettings DPSSettings = new();
         public int Throttler = 50;
+        public bool OrbwalkerIntegration;
     }
 
     public class DPSSettings
