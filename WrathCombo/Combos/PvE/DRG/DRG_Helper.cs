@@ -78,6 +78,23 @@ internal partial class DRG
         return false;
     }
 
+    internal static bool UseLifeSurge()
+    {
+        if (ActionReady(LifeSurge) && CanDRGWeave(LifeSurge) && !HasEffect(Buffs.LifeSurge))
+        {
+            if (LevelChecked(Drakesbane) && Gauge.IsLOTDActive &&
+                (HasEffect(Buffs.LanceCharge) || HasEffect(Buffs.BattleLitany)) &&
+                (JustUsed(WheelingThrust) ||
+                 JustUsed(FangAndClaw) ||
+                 JustUsed(OriginalHook(VorpalThrust)) && LevelChecked(HeavensThrust)))
+                return true;
+        }
+
+        return false;
+    }
+
+
+
     #region Openers
 
     internal class StandardOpenerLogic : WrathOpener

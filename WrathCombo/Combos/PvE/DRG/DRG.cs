@@ -92,23 +92,18 @@ internal partial class DRG
             {
                 //Battle Litany Feature
                 if (ActionReady(BattleLitany) &&
-                    CanDRGWeave(BattleLitany))
+                    CanDRGWeave(BattleLitany) &&
+                    InBossEncounter())
                     return BattleLitany;
 
                 //Lance Charge Feature
                 if (ActionReady(LanceCharge) &&
-                    CanDRGWeave(LanceCharge))
+                    CanDRGWeave(LanceCharge) &&
+                    InBossEncounter())
                     return LanceCharge;
 
                 //Life Surge Feature
-                if (ActionReady(LifeSurge) &&
-                    (GetCooldownRemainingTime(LifeSurge) < 40 || GetCooldownRemainingTime(BattleLitany) > 50) &&
-                    CanDRGWeave(LifeSurge) && !HasEffect(Buffs.LifeSurge) &&
-                    (HasEffect(Buffs.LanceCharge) &&
-                     (JustUsed(WheelingThrust) && LevelChecked(Drakesbane) ||
-                      JustUsed(FangAndClaw) && LevelChecked(Drakesbane) ||
-                      JustUsed(OriginalHook(VorpalThrust)) && LevelChecked(FullThrust)) ||
-                     !LevelChecked(LanceCharge) && JustUsed(VorpalThrust)))
+                if (UseLifeSurge())
                     return LifeSurge;
 
                 //Geirskogul Feature
@@ -263,14 +258,16 @@ internal partial class DRG
                     if (IsEnabled(CustomComboPreset.DRG_ST_Litany) &&
                         ActionReady(BattleLitany) &&
                         CanDRGWeave(BattleLitany) &&
-                        GetTargetHPPercent() >= Config.DRG_ST_LitanyHP)
+                        (Config.DRG_ST_Litany_SubOption == 0 ||
+                         Config.DRG_ST_Litany_SubOption == 1 && InBossEncounter()))
                         return BattleLitany;
 
                     //Lance Charge Feature
                     if (IsEnabled(CustomComboPreset.DRG_ST_Lance) &&
                         ActionReady(LanceCharge) &&
                         CanDRGWeave(LanceCharge) &&
-                        GetTargetHPPercent() >= Config.DRG_ST_LanceChargeHP)
+                        (Config.DRG_ST_Lance_SubOption == 0 ||
+                         Config.DRG_ST_Lance_SubOption == 1 && InBossEncounter()))
                         return LanceCharge;
                 }
 
