@@ -17,6 +17,7 @@ internal partial class DRG
             DRG_AoE_LanceChargeHP = new("DRG_AoE_LanceChargeHP", 5),
             DRG_AoE_SecondWind_Threshold = new("DRG_AoE_SecondWindThreshold", 25),
             DRG_AoE_Bloodbath_Threshold = new("DRG_AoE_BloodbathThreshold", 40),
+            DRG_SelectedOpener = new("DRG_SelectedOpener", 0),
             DRG_Balance_Content = new("DRG_Balance_Content", 1);
 
         internal static void Draw(CustomComboPreset preset)
@@ -24,7 +25,14 @@ internal partial class DRG
             switch (preset)
             {
                 case CustomComboPreset.DRG_ST_Opener:
+                    DrawHorizontalRadioButton(DRG_SelectedOpener, "Standard opener", "Uses Standard opener",
+                        0);
+
+                    DrawHorizontalRadioButton(DRG_SelectedOpener, "Piercing Talon opener", "Uses Piercing Talon opener",
+                        1);
+
                     DrawBossOnlyChoice(DRG_Balance_Content);
+
                     break;
                 case CustomComboPreset.DRG_ST_ComboHeals:
                     DrawSliderInt(0, 100, DRG_ST_SecondWind_Threshold,
