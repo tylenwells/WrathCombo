@@ -90,15 +90,15 @@ internal partial class DRG
 
             if (HasEffect(Buffs.PowerSurge))
             {
-                //Lance Charge Feature
-                if (ActionReady(LanceCharge) &&
-                    CanDRGWeave(LanceCharge))
-                    return LanceCharge;
-
                 //Battle Litany Feature
                 if (ActionReady(BattleLitany) &&
                     CanDRGWeave(BattleLitany))
                     return BattleLitany;
+
+                //Lance Charge Feature
+                if (ActionReady(LanceCharge) &&
+                    CanDRGWeave(LanceCharge))
+                    return LanceCharge;
 
                 //Life Surge Feature
                 if (ActionReady(LifeSurge) &&
@@ -117,19 +117,19 @@ internal partial class DRG
                     !Gauge.IsLOTDActive)
                     return Geirskogul;
 
-                //Dragonfire Dive Feature
-                if (ActionReady(DragonfireDive) &&
-                    CanDRGWeave(DragonfireDive) &&
-                    !HasEffect(Buffs.DragonsFlight) &&
-                    TimeMoving.Ticks == 0 && GetTargetDistance() <= 1)
-                    return DragonfireDive;
-
                 //(High) Jump Feature   
                 if (ActionReady(OriginalHook(Jump)) &&
                     CanDRGWeave(OriginalHook(Jump)) &&
                     !HasEffect(Buffs.DiveReady) &&
                     TimeMoving.Ticks == 0)
                     return OriginalHook(Jump);
+
+                //Dragonfire Dive Feature
+                if (ActionReady(DragonfireDive) &&
+                    CanDRGWeave(DragonfireDive) &&
+                    !HasEffect(Buffs.DragonsFlight) &&
+                    TimeMoving.Ticks == 0 && GetTargetDistance() <= 1)
+                    return DragonfireDive;
 
                 //Wyrmwind Thrust Feature
                 if (LevelChecked(WyrmwindThrust) &&
@@ -259,19 +259,19 @@ internal partial class DRG
             {
                 if (IsEnabled(CustomComboPreset.DRG_ST_Buffs))
                 {
-                    //Lance Charge Feature
-                    if (IsEnabled(CustomComboPreset.DRG_ST_Lance) &&
-                        ActionReady(LanceCharge) &&
-                        CanDRGWeave(LanceCharge) &&
-                        GetTargetHPPercent() >= Config.DRG_ST_LanceChargeHP)
-                        return LanceCharge;
-
                     //Battle Litany Feature
                     if (IsEnabled(CustomComboPreset.DRG_ST_Litany) &&
                         ActionReady(BattleLitany) &&
                         CanDRGWeave(BattleLitany) &&
                         GetTargetHPPercent() >= Config.DRG_ST_LitanyHP)
                         return BattleLitany;
+
+                    //Lance Charge Feature
+                    if (IsEnabled(CustomComboPreset.DRG_ST_Lance) &&
+                        ActionReady(LanceCharge) &&
+                        CanDRGWeave(LanceCharge) &&
+                        GetTargetHPPercent() >= Config.DRG_ST_LanceChargeHP)
+                        return LanceCharge;
                 }
 
                 if (IsEnabled(CustomComboPreset.DRG_ST_CDs))
@@ -295,16 +295,6 @@ internal partial class DRG
                         !Gauge.IsLOTDActive)
                         return Geirskogul;
 
-                    //Dragonfire Dive Feature
-                    if (IsEnabled(CustomComboPreset.DRG_ST_DragonfireDive) &&
-                        ActionReady(DragonfireDive) &&
-                        CanDRGWeave(DragonfireDive) &&
-                        !HasEffect(Buffs.DragonsFlight) &&
-                        (IsNotEnabled(CustomComboPreset.DRG_ST_DragonfireDive_Melee) ||
-                         IsEnabled(CustomComboPreset.DRG_ST_DragonfireDive_Melee) && TimeMoving.Ticks == 0 &&
-                         GetTargetDistance() <= 1))
-                        return DragonfireDive;
-
                     //(High) Jump Feature   
                     if (IsEnabled(CustomComboPreset.DRG_ST_HighJump) &&
                         ActionReady(OriginalHook(Jump)) &&
@@ -314,6 +304,16 @@ internal partial class DRG
                          IsEnabled(CustomComboPreset.DRG_ST_HighJump_Melee) && TimeMoving.Ticks == 0 &&
                          GetTargetDistance() <= 1))
                         return OriginalHook(Jump);
+
+                    //Dragonfire Dive Feature
+                    if (IsEnabled(CustomComboPreset.DRG_ST_DragonfireDive) &&
+                        ActionReady(DragonfireDive) &&
+                        CanDRGWeave(DragonfireDive) &&
+                        !HasEffect(Buffs.DragonsFlight) &&
+                        (IsNotEnabled(CustomComboPreset.DRG_ST_DragonfireDive_Melee) ||
+                         IsEnabled(CustomComboPreset.DRG_ST_DragonfireDive_Melee) && TimeMoving.Ticks == 0 &&
+                         GetTargetDistance() <= 1))
+                        return DragonfireDive;
 
                     //Wyrmwind Thrust Feature
                     if (IsEnabled(CustomComboPreset.DRG_ST_Wyrmwind) &&
