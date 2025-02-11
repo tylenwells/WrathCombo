@@ -1,6 +1,7 @@
 ﻿using ECommons;
 using ECommons.DalamudServices;
 using ECommons.EzIpcManager;
+using ECommons.GameHelpers;
 using ECommons.Reflection;
 using FFXIVClientStructs.FFXIV.Client.Game.Control;
 using FFXIVClientStructs.FFXIV.Common.Math;
@@ -29,6 +30,7 @@ namespace WrathCombo.Services.IPC_Subscriber
         [EzIPC] public static readonly Func<bool> ControllerModeEnabled;
         [EzIPC] public static readonly Func<bool> MouseButtonReleaseEnabled;
         [EzIPC] public static readonly Func<bool> PvPEnabled;
+        [EzIPC] public static readonly Func<List<uint>> EnabledJobs;
 
 
         [EzIPC] public static Action<bool> SetPluginEnabled;
@@ -38,8 +40,9 @@ namespace WrathCombo.Services.IPC_Subscriber
         [EzIPC] public static Action<bool> SetControllerMode;
         [EzIPC] public static Action<bool> SetMouseButtonRelease;
         [EzIPC] public static Action<bool> SetPvP;
+        [EzIPC] public static Action<uint, bool> SetEnabledJob;
 
-        public static bool CanOrbwalk => IsEnabled && PluginEnabled() && !MouseMoving;
+        public static bool CanOrbwalk => IsEnabled && PluginEnabled() && !MouseMoving && EnabledJobs().Any(x => x == (uint)Player.Job);
 
         public static bool MouseMoving => MouseButtonReleaseEnabled() && GenericHelpers.IsKeyPressed(ECommons.Interop.LimitedKeys.LeftMouseButton) && GenericHelpers.IsKeyPressed(ECommons.Interop.LimitedKeys.RightMouseButton);
 

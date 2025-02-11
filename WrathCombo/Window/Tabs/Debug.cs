@@ -659,6 +659,13 @@ namespace WrathCombo.Window.Tabs
                             }
 
                             CustomStyleText($"Can OrbWalk:", OrbwalkerIPC.CanOrbwalk);
+                            var jobs = OrbwalkerIPC.EnabledJobs();
+                            CustomStyleText($"Orbwalking Jobs:", string.Join(", ", jobs));
+
+                            if (ImGui.Button($"Toggle Current Job Enabled"))
+                            {
+                                OrbwalkerIPC.SetEnabledJob((uint)Player.Job, !jobs.Any(x => x == (int)Player.Job));
+                            }
                         }
                     }
                 }

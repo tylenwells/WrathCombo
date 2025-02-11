@@ -54,6 +54,18 @@ public class AutoRotationConfigIPCWrapper(AutoRotationConfig? config)
 
     public HealerSettingsIPCWrapper HealerSettings => new(config.HealerSettings);
 
+    public bool OrbwalkerIntegration
+    {
+        get
+        {
+            var checkControlled =
+                P.UIHelper.AutoRotationConfigControlled("OrbwalkerIntegration");
+            return checkControlled is not null
+                ? checkControlled.Value.state == 1
+                : config.OrbwalkerIntegration;
+        }
+    }
+
     #region Direct Pass-Throughs (no IPC check)
 
     public bool BypassQuest => config.BypassQuest;
@@ -63,8 +75,6 @@ public class AutoRotationConfigIPCWrapper(AutoRotationConfig? config)
     public int CombatDelay => config.CombatDelay;
 
     public int Throttler => config.Throttler;
-
-    public bool OrbwalkerIntegration => config.OrbwalkerIntegration;
 
     #endregion
 }
