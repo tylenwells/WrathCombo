@@ -54,8 +54,7 @@ internal partial class DRG
 
         if (PiercingTalonOpener.LevelChecked && Config.DRG_SelectedOpener == 1)
             return PiercingTalonOpener;
-
-
+        
         return WrathOpener.Dummy;
     }
 
