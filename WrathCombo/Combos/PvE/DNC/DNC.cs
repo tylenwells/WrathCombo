@@ -208,6 +208,7 @@ internal partial class DNC
 
             // ST Interrupt
             if (IsEnabled(CustomComboPreset.DNC_ST_Adv_Interrupt) &&
+                CanWeave() &&
                 CanInterruptEnemy() &&
                 ActionReady(All.HeadGraze) &&
                 !HasEffect(Buffs.TechnicalFinish))
