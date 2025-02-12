@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Dalamud.Game.ClientState.JobGauge.Types;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
@@ -1134,6 +1135,15 @@ internal partial class DRK
 
     #region Openers
 
+    private static void handleEdgeCasts
+        (uint currentAction, ref uint action, uint[] castLocations)
+    {
+        if (castLocations.Contains(currentAction) &&
+            (Gauge.HasDarkArts || LocalPlayer.CurrentMp > 3000) &&
+            CanWeave() && !ActionWatching.HasDoubleWeaved())
+            action = EdgeOfDarkness;
+    }
+
     internal static DRKOpenerMaxLevel1 Opener1 = new();
 
     internal class DRKOpenerMaxLevel1 : WrathOpener
@@ -1145,25 +1155,25 @@ internal partial class DRK
         public override List<uint> OpenerActions { get; set; } =
         [
             HardSlash,
-            EdgeOfShadow,
+            EdgeOfShadow, // Not handled like a procc, since it sets up Darkside
             LivingShadow,
             SyphonStrike,
             Souleater, // 5
             Delirium,
             Disesteem,
             SaltedEarth,
-            EdgeOfShadow, // Depends on TBN pop
-            ScarletDelirium, // 10
-            Shadowbringer,
-            EdgeOfShadow,
+            //EdgeOfShadow, // Handled like a procc
+            ScarletDelirium,
+            Shadowbringer, // 10
+            //EdgeOfShadow, // Handled like a procc
             Comeuppance,
             CarveAndSpit,
-            EdgeOfShadow, // 15
+            //EdgeOfShadow, // Handled like a procc
             Torcleaver,
             Shadowbringer,
-            EdgeOfShadow,
-            Bloodspiller,
-            SaltAndDarkness, // 20
+            //EdgeOfShadow, // Handled like a procc
+            Bloodspiller, // 15
+            SaltAndDarkness,
         ];
 
         internal override UserData? ContentCheckConfig =>

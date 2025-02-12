@@ -38,7 +38,16 @@ internal partial class DRK
             // Opener
             if (IsEnabled(CustomComboPreset.DRK_ST_BalanceOpener)
                 && Opener().FullOpener(ref actionID))
+            {
+                handleEdgeCasts(Opener().CurrentOpenerAction, ref actionID,
+                [
+                    ScarletDelirium,
+                    Comeuppance,
+                    Torcleaver,
+                    Bloodspiller,
+                ]);
                 return actionID;
+            }
 
             // Bail if not in combat
             if (!InCombat()) return HardSlash;
