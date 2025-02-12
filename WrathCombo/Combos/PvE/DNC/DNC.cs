@@ -206,6 +206,13 @@ internal partial class DNC
                     return FanDance4;
             }
 
+            // Variant Cure
+            if (IsEnabled(CustomComboPreset.DNC_Variant_Cure) &&
+                IsEnabled(Variant.VariantCure) &&
+                PlayerHealthPercentageHp() <=
+                GetOptionValue(Config.DNCVariantCurePercent))
+                return Variant.VariantCure;
+
             // ST Interrupt
             if (IsEnabled(CustomComboPreset.DNC_ST_Adv_Interrupt) &&
                 CanWeave() &&
@@ -213,13 +220,6 @@ internal partial class DNC
                 ActionReady(All.HeadGraze) &&
                 !HasEffect(Buffs.TechnicalFinish))
                 return All.HeadGraze;
-
-            // Variant Cure
-            if (IsEnabled(CustomComboPreset.DNC_Variant_Cure) &&
-                IsEnabled(Variant.VariantCure) &&
-                PlayerHealthPercentageHp() <=
-                GetOptionValue(Config.DNCVariantCurePercent))
-                return Variant.VariantCure;
 
             // Variant Rampart
             if (IsEnabled(CustomComboPreset.DNC_Variant_Rampart) &&
@@ -530,16 +530,17 @@ internal partial class DNC
                     return FanDance4;
             }
 
-            // ST Interrupt
-            if (CanInterruptEnemy() &&
-                ActionReady(All.HeadGraze) &&
-                !HasEffect(Buffs.TechnicalFinish))
-                return All.HeadGraze;
-
             // Variant Cure
             if (IsEnabled(Variant.VariantCure) &&
                 PlayerHealthPercentageHp() <= 50)
                 return Variant.VariantCure;
+
+            // ST Interrupt
+            if (CanInterruptEnemy() &&
+                CanWeave() &&
+                ActionReady(All.HeadGraze) &&
+                !HasEffect(Buffs.TechnicalFinish))
+                return All.HeadGraze;
 
             // Variant Rampart
             if (IsEnabled(Variant.VariantRampart) &&
@@ -780,17 +781,17 @@ internal partial class DNC
                 !HasEffect(Buffs.FinishingMoveReady))
                 return Flourish;
 
-            // AoE Interrupt
-            if (IsEnabled(CustomComboPreset.DNC_AoE_Adv_Interrupt) &&
-                CanInterruptEnemy() && ActionReady(All.HeadGraze) &&
-                !HasEffect(Buffs.TechnicalFinish))
-                return All.HeadGraze;
-
             if (IsEnabled(CustomComboPreset.DNC_Variant_Cure) &&
                 IsEnabled(Variant.VariantCure) &&
                 PlayerHealthPercentageHp() <=
                 GetOptionValue(Config.DNCVariantCurePercent))
                 return Variant.VariantCure;
+
+            // AoE Interrupt
+            if (IsEnabled(CustomComboPreset.DNC_AoE_Adv_Interrupt) &&
+                CanInterruptEnemy() && ActionReady(All.HeadGraze) &&
+                CanWeave() && !HasEffect(Buffs.TechnicalFinish))
+                return All.HeadGraze;
 
             if (IsEnabled(CustomComboPreset.DNC_Variant_Rampart) &&
                 IsEnabled(Variant.VariantRampart) &&
@@ -1060,14 +1061,14 @@ internal partial class DNC
                 !HasEffect(Buffs.FinishingMoveReady))
                 return Flourish;
 
-            // AoE Interrupt
-            if (CanInterruptEnemy() && ActionReady(All.HeadGraze) &&
-                !HasEffect(Buffs.TechnicalFinish))
-                return All.HeadGraze;
-
             if (IsEnabled(Variant.VariantCure) &&
                 PlayerHealthPercentageHp() <= 50)
                 return Variant.VariantCure;
+
+            // AoE Interrupt
+            if (CanInterruptEnemy() && ActionReady(All.HeadGraze) &&
+                CanWeave() && !HasEffect(Buffs.TechnicalFinish))
+                return All.HeadGraze;
 
             if (IsEnabled(Variant.VariantRampart) &&
                 IsOffCooldown(Variant.VariantRampart) &&
