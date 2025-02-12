@@ -230,13 +230,19 @@ internal partial class DNC
 
             if (CanWeave() && !WasLastWeaponskill(TechnicalFinish4))
             {
-                if (HasEffect(Buffs.ThreeFoldFanDance))
-                    return FanDance3;
+                // ST Fans
+                if (IsEnabled(CustomComboPreset.DNC_ST_Adv_FanProccs))
+                {
+                    if (IsEnabled(CustomComboPreset.DNC_ST_Adv_FanProcc3) &&
+                        HasEffect(Buffs.ThreeFoldFanDance))
+                        return FanDance3;
 
-                if (HasEffect(Buffs.FourFoldFanDance))
-                    return FanDance4;
+                    if (IsEnabled(CustomComboPreset.DNC_ST_Adv_FanProcc4) &&
+                        HasEffect(Buffs.FourFoldFanDance))
+                        return FanDance4;
+                }
 
-                // ST Feathers & Fans
+                // ST Feathers
                 if (IsEnabled(CustomComboPreset.DNC_ST_Adv_Feathers) &&
                     LevelChecked(FanDance1))
                 {
@@ -574,9 +580,7 @@ internal partial class DNC
                         // FD1 Pooling
                         if (Gauge.Feathers > 3 &&
                             (HasEffect(Buffs.SilkenSymmetry) ||
-                             HasEffect(Buffs.SilkenFlow))
-                           )
-
+                             HasEffect(Buffs.SilkenFlow)))
                             return FanDance1;
                     }
 
@@ -801,14 +805,16 @@ internal partial class DNC
 
             if (CanWeave() && !WasLastWeaponskill(TechnicalFinish4))
             {
-                // AoE Feathers & Fans
+                // AoE Fan 3
+                if (IsEnabled(CustomComboPreset.DNC_AoE_Adv_FanProccs) &&
+                    IsEnabled(CustomComboPreset.DNC_AoE_Adv_FanProcc3) &&
+                    HasEffect(Buffs.ThreeFoldFanDance))
+                    return FanDance3;
+
+                // AoE Feathers
                 if (IsEnabled(CustomComboPreset.DNC_AoE_Adv_Feathers) &&
                     LevelChecked(FanDance1))
                 {
-                    // FD3
-                    if (HasEffect(Buffs.ThreeFoldFanDance))
-                        return FanDance3;
-
                     if (LevelChecked(FanDance2))
                     {
                         if (LevelChecked(TechnicalStep))
@@ -837,7 +843,10 @@ internal partial class DNC
                         return FanDance1;
                 }
 
-                if (HasEffect(Buffs.FourFoldFanDance))
+                // AoE Fan 4
+                if (IsEnabled(CustomComboPreset.DNC_AoE_Adv_FanProccs) &&
+                    IsEnabled(CustomComboPreset.DNC_AoE_Adv_FanProcc4) &&
+                    HasEffect(Buffs.FourFoldFanDance))
                     return FanDance4;
 
                 // AoE Panic Heals

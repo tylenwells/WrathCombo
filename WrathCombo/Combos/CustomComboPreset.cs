@@ -1038,6 +1038,20 @@ public enum CustomComboPreset
     DNC_ST_Adv_Flourish = 4020,
 
     [ParentCombo(DNC_ST_AdvancedMode)]
+    [CustomComboInfo("Fan Dance Procc Options",
+        "Options for including Fan Dance 3 and 4 into the rotation." +
+        "\nNote: If using the Forced Triple Weave option, FD3&4 will be used regardless of these options.", DNC.JobID)]
+    DNC_ST_Adv_FanProccs = 4028,
+
+    [ParentCombo(DNC_ST_Adv_FanProccs)]
+    [CustomComboInfo("Fan Dance 3", "Includes Fan Dance 3 when under Threefold Fan Dance.", DNC.JobID)]
+    DNC_ST_Adv_FanProcc3 = 4029,
+
+    [ParentCombo(DNC_ST_Adv_FanProccs)]
+    [CustomComboInfo("Fan Dance 4", "Includes Fan Dance 4 when under Fourfold Fan Dance.", DNC.JobID)]
+    DNC_ST_Adv_FanProcc4 = 4030,
+
+    [ParentCombo(DNC_ST_AdvancedMode)]
     [CustomComboInfo("Feathers Option",
         "Expends a feather in the next available weave window when capped and under the effect of Flourishing Symmetry or Flourishing Flow." +
         "\nWeaves feathers where possible during Technical Finish." +
@@ -1078,7 +1092,7 @@ public enum CustomComboPreset
     DNC_ST_Adv_PanicHeals = 4027,
 
     #endregion
-    // Last value = 4027
+    // Last value = 4030
 
     #region Advanced Dancer (AoE)
 
@@ -1124,6 +1138,18 @@ public enum CustomComboPreset
     DNC_AoE_Adv_Flourish = 4047,
 
     [ParentCombo(DNC_AoE_AdvancedMode)]
+    [CustomComboInfo("Fan Dance Procc Options", "Options for including Fan Dance 3 and 4 into the rotation.", DNC.JobID)]
+    DNC_AoE_Adv_FanProccs = 4055,
+
+    [ParentCombo(DNC_AoE_Adv_FanProccs)]
+    [CustomComboInfo("Fan Dance 3", "Includes Fan Dance 3 when under Threefold Fan Dance.", DNC.JobID)]
+    DNC_AoE_Adv_FanProcc3 = 4056,
+
+    [ParentCombo(DNC_AoE_Adv_FanProccs)]
+    [CustomComboInfo("Fan Dance 4", "Includes Fan Dance 4 when under Fourfold Fan Dance.", DNC.JobID)]
+    DNC_AoE_Adv_FanProcc4 = 4057,
+
+    [ParentCombo(DNC_AoE_AdvancedMode)]
     [CustomComboInfo("Feathers Option",
         "Expends a feather in the next available weave window when capped and under the effect of Flourishing Symmetry or Flourishing Flow." +
         "\nWeaves feathers where possible during Technical Finish." +
@@ -1163,7 +1189,7 @@ public enum CustomComboPreset
     DNC_AoE_Adv_PanicHeals = 4054,
 
     #endregion
-    // Last value = 4054
+    // Last value = 4057
 
     #region Multibutton Features
 
