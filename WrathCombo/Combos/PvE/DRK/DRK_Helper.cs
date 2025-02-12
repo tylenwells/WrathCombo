@@ -719,9 +719,9 @@ internal partial class DRK
                 GetBuffStacks(Buffs.Delirium) > 0 &&
                 bloodGCDReady)
                 if (flags.HasFlag(Combo.ST))
-                    return (action = Bloodspiller) != 0;
+                    return (action = OriginalHook(Bloodspiller)) != 0;
                 else if (flags.HasFlag(Combo.AoE))
-                    return (action = Quietus) != 0;
+                    return (action = OriginalHook(Quietus)) != 0;
 
             #endregion
 
@@ -1141,7 +1141,7 @@ internal partial class DRK
         if (castLocations.Contains(currentAction) &&
             (Gauge.HasDarkArts || LocalPlayer.CurrentMp > 3000) &&
             CanWeave() && !ActionWatching.HasDoubleWeaved())
-            action = EdgeOfDarkness;
+            action = OriginalHook(EdgeOfDarkness);
     }
 
     internal static DRKOpenerMaxLevel1 Opener1 = new();
