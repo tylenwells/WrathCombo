@@ -111,13 +111,11 @@ namespace WrathCombo.AutoRotation
                     }
 
                     if (cfg.HealerSettings.AutoRez)
-                    {
-                        RezParty();
-                        bool rdmCheck = Player.Job is Job.RDM && ActionReady(RDM.Verraise) && ActionManager.GetAdjustedCastTime(ActionType.Action, RDM.Verraise) > 0;
-
-                        //if (GetPartyMembers().Any(RezQuery) && !rdmCheck)
-                        //    return;
-                    }
+                        if ((cfg.HealerSettings.AutoRezRequireSwift &&
+                             (ActionReady(All.Swiftcast) ||
+                              HasEffect(RDM.Buffs.Dualcast))) ||
+                            !cfg.HealerSettings.AutoRezRequireSwift)
+                            RezParty();
                 }
             }
 
