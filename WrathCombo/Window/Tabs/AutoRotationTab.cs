@@ -220,7 +220,7 @@ namespace WrathCombo.Window.Tabs
                 var autoRez = (bool)P.IPC.GetAutoRotationConfigState(AutoRotationConfigOption.AutoRez)!;
                 if (autoRez)
                 {
-                    ImGuiExtensions.Prefix(true);
+                    ImGuiExtensions.Prefix(false);
                     changed |= ImGui.Checkbox("Require Swiftcast/Dualcast", ref
                         cfg.HealerSettings.AutoRezRequireSwift);
                     ImGuiComponents.HelpMarker(
