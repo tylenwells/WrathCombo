@@ -7,7 +7,6 @@ using ECommons.GameFunctions;
 using ECommons.GameHelpers;
 using ECommons.Throttlers;
 using FFXIVClientStructs.FFXIV.Client.Game;
-using FFXIVClientStructs.FFXIV.Client.Game.Control;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -111,13 +110,7 @@ namespace WrathCombo.AutoRotation
                     }
 
                     if (cfg.HealerSettings.AutoRez)
-                    {
                         RezParty();
-                        bool rdmCheck = Player.Job is Job.RDM && ActionReady(RDM.Verraise) && ActionManager.GetAdjustedCastTime(ActionType.Action, RDM.Verraise) > 0;
-
-                        //if (GetPartyMembers().Any(RezQuery) && !rdmCheck)
-                        //    return;
-                    }
                 }
             }
 
@@ -225,6 +218,7 @@ namespace WrathCombo.AutoRotation
                 _ => throw new NotImplementedException(),
             };
 
+
             if (ActionManager.Instance()->QueuedActionId == resSpell)
                 ActionManager.Instance()->QueuedActionId = 0;
 
@@ -263,7 +257,8 @@ namespace WrathCombo.AutoRotation
 
                         if (!IsMoving() || HasEffect(All.Buffs.Swiftcast))
                         {
-                            ActionManager.Instance()->UseAction(ActionType.Action, resSpell, member.BattleChara.GameObjectId);
+                            if ((cfg.HealerSettings.AutoRezRequireSwift && ActionManager.GetAdjustedCastTime(ActionType.Action, resSpell) == 0) || !cfg.HealerSettings.AutoRezRequireSwift)
+                                ActionManager.Instance()->UseAction(ActionType.Action, resSpell, member.BattleChara.GameObjectId);
                         }
                     }
                 }
