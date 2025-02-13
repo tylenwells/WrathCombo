@@ -681,13 +681,13 @@ internal partial class DRK
     /// </remarks>
     private class Spender : IActionProvider
     {
-        public bool TryGetAction(Combo flags, ref uint action)
+        private bool TryGetBloodAction(Combo flags, ref uint action)
         {
             #region Variables
 
             var bloodGCDReady =
                 LevelChecked(Bloodspiller) &&
-                GetCooldownRemainingTime(Bloodspiller) < (GCD / 1.5);
+                GetCooldownRemainingTime(Bloodspiller) < GCD;
 
             #endregion
 
@@ -706,8 +706,6 @@ internal partial class DRK
                     return (action = OriginalHook(Quietus)) != 0;
 
             #endregion
-
-            // Blood
 
             #region Blood Spending during Delirium (Lower Levels)
 
@@ -784,10 +782,13 @@ internal partial class DRK
 
             #endregion
 
+            return false;
+        }
+
+        private bool TryGetManaAction(Combo flags, ref uint action)
+        {
             // Bail if we can't weave anything else
             if (!CanWeave) return false;
-
-            // Mana
 
             #region Variables and some Mana bails
 
@@ -896,6 +897,14 @@ internal partial class DRK
                     return (action = OriginalHook(FloodOfDarkness)) != 0;
 
             #endregion
+
+            return false;
+        }
+
+        public bool TryGetAction(Combo flags, ref uint action)
+        {
+            if (TryGetManaAction(flags, ref action)) return true;
+            if (TryGetBloodAction(flags, ref action)) return true;
 
             return false;
         }
