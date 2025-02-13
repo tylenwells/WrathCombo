@@ -685,9 +685,9 @@ internal partial class DRK
         {
             #region Variables
 
-            var bloodGCDReady = ActionReady(Bloodspiller) &&
-                                IsOffCooldown(Bloodspiller) &&
-                                LevelChecked(Bloodspiller);
+            var bloodGCDReady =
+                LevelChecked(Bloodspiller) &&
+                GetCooldownRemainingTime(Bloodspiller) < (GCD / 1.5);
 
             #endregion
 
