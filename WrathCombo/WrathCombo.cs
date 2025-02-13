@@ -137,7 +137,7 @@ public sealed partial class WrathCombo : IDalamudPlugin
     {
         P = this;
         pluginInterface.Create<Service>();
-        ECommonsMain.Init(pluginInterface, this);
+        ECommonsMain.Init(pluginInterface, this, Module.All);
         PunishLibMain.Init(pluginInterface, "Wrath Combo");
 
         TM = new();
