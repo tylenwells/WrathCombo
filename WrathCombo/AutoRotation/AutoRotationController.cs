@@ -113,6 +113,7 @@ namespace WrathCombo.AutoRotation
                     if (cfg.HealerSettings.AutoRez)
                         if ((cfg.HealerSettings.AutoRezRequireSwift &&
                              (ActionReady(All.Swiftcast) ||
+                              HasEffect(All.Buffs.Swiftcast) ||
                               HasEffect(RDM.Buffs.Dualcast))) ||
                             !cfg.HealerSettings.AutoRezRequireSwift)
                             RezParty();
