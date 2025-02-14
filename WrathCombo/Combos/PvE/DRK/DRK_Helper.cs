@@ -65,7 +65,7 @@ internal partial class DRK
     /// <returns>
     ///     The player's current target, or the nearest target if AoE.
     /// </returns>
-    private static IGameObject? Target (Combo flags, bool restrictToHostile = true)
+    private static IGameObject? Target(Combo flags, bool restrictToHostile = true)
     {
         switch (restrictToHostile)
         {
@@ -339,9 +339,12 @@ internal partial class DRK
                 (flags.HasFlag(Combo.Adv) && flags.HasFlag(Combo.AoE) &&
                  IsEnabled(Preset.DRK_AoE_CD_SaltStill) && !IsMoving() &&
                  CombatEngageDuration().TotalSeconds >= 7);
-            var saltHPThreshold = flags.HasFlag(Combo.Adv)
-                ? Config.DRK_AoE_SaltThreshold
-                : 30;
+            var saltHPThreshold =
+                flags.HasFlag(Combo.AoE)
+                    ? flags.HasFlag(Combo.Adv)
+                        ? Config.DRK_AoE_SaltThreshold
+                        : 30
+                    : 100;
 
             #endregion
 
@@ -515,7 +518,8 @@ internal partial class DRK
             #endregion
 
             if ((flags.HasFlag(Combo.Simple) ||
-                 ((flags.HasFlag(Combo.ST) && IsEnabled(Preset.DRK_ST_Mit_LivingDead)) ||
+                 ((flags.HasFlag(Combo.ST) &&
+                   IsEnabled(Preset.DRK_ST_Mit_LivingDead)) ||
                   flags.HasFlag(Combo.AoE) &&
                   IsEnabled(Preset.DRK_AoE_Mit_LivingDead))) &&
                 ActionReady(LivingDead) &&
@@ -548,13 +552,13 @@ internal partial class DRK
 
             #region Variables
 
-            var oblationCharges = flags.HasFlag(Combo.Adv) ?
-                flags.HasFlag(Combo.ST)
+            var oblationCharges = flags.HasFlag(Combo.Adv)
+                ? flags.HasFlag(Combo.ST)
                     ? Config.DRK_ST_OblationCharges
                     : Config.DRK_AoE_OblationCharges
                 : 0;
-            var oblationThreshold = flags.HasFlag(Combo.Adv) ?
-                flags.HasFlag(Combo.ST)
+            var oblationThreshold = flags.HasFlag(Combo.Adv)
+                ? flags.HasFlag(Combo.ST)
                     ? Config.DRK_ST_Mit_OblationThreshold
                     : Config.DRK_AoE_Mit_OblationThreshold
                 : 90;
@@ -562,8 +566,10 @@ internal partial class DRK
             #endregion
 
             if ((flags.HasFlag(Combo.Simple) ||
-                 ((flags.HasFlag(Combo.ST) && IsEnabled(Preset.DRK_ST_Mit_Oblation)) ||
-                  flags.HasFlag(Combo.AoE) && IsEnabled(Preset.DRK_AoE_Mit_Oblation))) &&
+                 ((flags.HasFlag(Combo.ST) &&
+                   IsEnabled(Preset.DRK_ST_Mit_Oblation)) ||
+                  flags.HasFlag(Combo.AoE) &&
+                  IsEnabled(Preset.DRK_AoE_Mit_Oblation))) &&
                 ActionReady(Oblation) &&
                 !HasEffectAny(Buffs.Oblation) &&
                 GetRemainingCharges(Oblation) > oblationCharges &&
@@ -593,8 +599,10 @@ internal partial class DRK
             #endregion
 
             if ((flags.HasFlag(Combo.Simple) ||
-                 ((flags.HasFlag(Combo.ST) && IsEnabled(Preset.DRK_ST_Mit_Reprisal)) ||
-                  flags.HasFlag(Combo.AoE) && IsEnabled(Preset.DRK_AoE_Mit_Reprisal))) &&
+                 ((flags.HasFlag(Combo.ST) &&
+                   IsEnabled(Preset.DRK_ST_Mit_Reprisal)) ||
+                  flags.HasFlag(Combo.AoE) &&
+                  IsEnabled(Preset.DRK_AoE_Mit_Reprisal))) &&
                 ActionReady(All.Reprisal) &&
                 reprisalTargetHasNoDebuff &&
                 reprisalUseForRaidwides &&
@@ -684,7 +692,8 @@ internal partial class DRK
 
             if ((flags.HasFlag(Combo.Simple) ||
                  ((flags.HasFlag(Combo.ST) && IsEnabled(Preset.DRK_ST_Mit_Vigil)) ||
-                  flags.HasFlag(Combo.AoE) && IsEnabled(Preset.DRK_AoE_Mit_Vigil))) &&
+                  flags.HasFlag(Combo.AoE) &&
+                  IsEnabled(Preset.DRK_AoE_Mit_Vigil))) &&
                 ActionReady(ShadowedVigil) &&
                 PlayerHealthPercentageHp() <= vigilHealthThreshold)
                 return (action = OriginalHook(ShadowWall)) != 0;
@@ -729,6 +738,14 @@ internal partial class DRK
     /// </remarks>
     private class Spender : IActionProvider
     {
+        public bool TryGetAction(Combo flags, ref uint action)
+        {
+            if (TryGetManaAction(flags, ref action)) return true;
+            if (TryGetBloodAction(flags, ref action)) return true;
+
+            return false;
+        }
+
         private bool TryGetBloodAction(Combo flags, ref uint action)
         {
             #region Variables
@@ -900,10 +917,10 @@ internal partial class DRK
             #region Mana Darkside Maintenance
 
             if (flags.HasFlag(Combo.Simple) ||
-                 flags.HasFlag(Combo.AoE) ||
-                 (flags.HasFlag(Combo.ST) &&
-                  IsEnabled(Preset.DRK_ST_Sp_EdgeDarkside)) &&
-                 manaDarksideDropping)
+                flags.HasFlag(Combo.AoE) ||
+                (flags.HasFlag(Combo.ST) &&
+                 IsEnabled(Preset.DRK_ST_Sp_EdgeDarkside)) &&
+                manaDarksideDropping)
                 if (flags.HasFlag(Combo.ST) && LevelChecked(EdgeOfDarkness))
                     return (action = OriginalHook(EdgeOfDarkness)) != 0;
                 else
@@ -945,14 +962,6 @@ internal partial class DRK
                     return (action = OriginalHook(FloodOfDarkness)) != 0;
 
             #endregion
-
-            return false;
-        }
-
-        public bool TryGetAction(Combo flags, ref uint action)
-        {
-            if (TryGetManaAction(flags, ref action)) return true;
-            if (TryGetBloodAction(flags, ref action)) return true;
 
             return false;
         }
