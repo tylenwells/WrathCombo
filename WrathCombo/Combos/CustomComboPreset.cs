@@ -1258,6 +1258,7 @@ public enum CustomComboPreset
         "\nLets you still dance with combos on, without using Dance Step Combo Feature.", DNC.JobID)]
     DNC_CustomDanceSteps = 4115,
 
+    [ParentCombo(DNC_CustomDanceSteps)]
     [ReplaceSkill(DNC.Devilment)]
     [CustomComboInfo("Override Smaller Features", "If enabled, will let you choose actions that are replaced by the smaller features listed below here, and they will return the Step that you have set them to when dancing.", DNC.JobID)]
     DNC_CustomDanceSteps_Conflicts = 4116,
