@@ -551,8 +551,17 @@ public partial class WrathCombo
         // Open to current job setting
         PvEFeatures.OpenToCurrentJob(false);
 
-        // Open to specified job
         if (argument[0].Length <= 0) return;
+
+        // Open to settings
+        if (argument[0] == "settings")
+        {
+            ConfigWindow.IsOpen = true;
+            ConfigWindow.OpenWindow = OpenWindow.Settings;
+            return;
+        }
+
+        // Open to specified job
         var jobName = ConfigWindow.groupedPresets
             .FirstOrDefault(x =>
                 x.Value.Any(y =>
