@@ -227,24 +227,24 @@ namespace WrathCombo.Window.Tabs
 
         internal static void OpenToCurrentJob(bool onJobChange)
         {
-            if ((onJobChange && Service.Configuration.OpenToCurrentJobOnSwitch) ||
-                (!onJobChange && Service.Configuration.OpenToCurrentJob && Player.Available))
+            if ((!onJobChange || !Service.Configuration.OpenToCurrentJobOnSwitch) &&
+                (onJobChange || !Service.Configuration.OpenToCurrentJob ||
+                 !Player.Available)) return;
+
+            if (Player.Job.IsDoh())
+                return;
+
+            if (Player.Job.IsDol())
             {
-                if (Player.Job.IsDoh())
-                    return;
-
-                if (Player.Job.IsDol())
-                {
-                    OpenJob = groupedPresets
-                        .FirstOrDefault(x => x.Value.Any(y => y.Info.JobID == DOL.JobID)).Key;
-                    return;
-                }
-
                 OpenJob = groupedPresets
-                    .FirstOrDefault(x =>
-                        x.Value.Any(y => y.Info.JobShorthand == Player.Job.ToString()))
-                    .Key;
+                    .FirstOrDefault(x => x.Value.Any(y => y.Info.JobID == DOL.JobID)).Key;
+                return;
             }
+
+            OpenJob = groupedPresets
+                .FirstOrDefault(x =>
+                    x.Value.Any(y => y.Info.JobShorthand == Player.Job.ToString()))
+                .Key;
 
         }
     }
