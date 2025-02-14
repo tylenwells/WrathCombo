@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Dalamud.Game.ClientState.JobGauge.Types;
+using Dalamud.Game.ClientState.Objects.Types;
+using WrathCombo.AutoRotation;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Data;
@@ -49,6 +51,37 @@ internal partial class DRK
     ///     DRK's GCD, truncated to two decimal places.
     /// </summary>
     private static double GCD => GetCooldown(HardSlash).CooldownTotal;
+
+    /// <summary>
+    ///     Method for getting the player's target more reliably.
+    /// </summary>
+    /// <param name="flags">
+    ///     The flags to describe the combo executing this method.
+    /// </param>
+    /// <param name="restrictToHostile">
+    ///     Whether to restrict the target to hostile targets.<br />
+    ///     Defaults to <c>true</c>.
+    /// </param>
+    /// <returns>
+    ///     The player's current target, or the nearest target if AoE.
+    /// </returns>
+    private static IGameObject? Target (Combo flags, bool restrictToHostile = true)
+    {
+        switch (restrictToHostile)
+        {
+            case true when LocalPlayer.TargetObject is IBattleChara:
+            case false when LocalPlayer.TargetObject is not null:
+                return LocalPlayer.TargetObject;
+        }
+
+        if (flags.HasFlag(Combo.AoE))
+            return AutoRotationController.DPSTargeting.BaseSelection
+                .OrderByDescending(
+                    x => GetTargetDistance(x))
+                .FirstOrDefault();
+
+        return null;
+    }
 
     /// <summary>
     ///     Select the opener to use.
@@ -218,7 +251,8 @@ internal partial class DRK
                 : Config.DRK_AoE_LivingShadowThreshold;
             var shadowHPMatchesThreshold =
                 flags.HasFlag(Combo.Simple) || !shadowInHPContent ||
-                (shadowInHPContent && GetTargetHPPercent() > shadowHPThreshold);
+                (shadowInHPContent &&
+                 GetTargetHPPercent(Target(flags)) > shadowHPThreshold);
 
             #endregion
 
@@ -270,7 +304,8 @@ internal partial class DRK
                 : Config.DRK_AoE_DeliriumThreshold;
             var deliriumHPMatchesThreshold =
                 flags.HasFlag(Combo.Simple) || !deliriumInHPContent ||
-                (deliriumInHPContent && GetTargetHPPercent() > deliriumHPThreshold);
+                (deliriumInHPContent &&
+                 GetTargetHPPercent(Target(flags)) > deliriumHPThreshold);
 
             #endregion
 
@@ -481,7 +516,7 @@ internal partial class DRK
                   IsEnabled(Preset.DRK_AoE_Mit_LivingDead))) &&
                 ActionReady(LivingDead) &&
                 PlayerHealthPercentageHp() <= livingDeadSelfThreshold &&
-                GetTargetHPPercent() >= livingDeadTargetThreshold &&
+                GetTargetHPPercent(Target(flags)) >= livingDeadTargetThreshold &&
                 // Checking if the target matches the boss avoidance option
                 ((bossRestrictionLivingDead is (int)Config.BossAvoidance.On &&
                   InBossEncounter()) ||
