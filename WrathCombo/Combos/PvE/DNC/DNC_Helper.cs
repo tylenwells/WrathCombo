@@ -45,13 +45,18 @@ internal partial class DNC
 
         if (Config.DNC_ST_OpenerSelection ==
             (int) Config.Openers.ThirtySecondTech &&
-            Opener30TechS.LevelChecked)
-            return Opener30TechS;
+            Opener30STech.LevelChecked)
+            return Opener30STech;
+
+        if (Config.DNC_ST_OpenerSelection ==
+            (int) Config.Openers.SevenPlusSecondTech &&
+            Opener07PlusSTech.LevelChecked)
+            return Opener07PlusSTech;
 
         if (Config.DNC_ST_OpenerSelection ==
             (int) Config.Openers.SevenSecondTech &&
-            Opener07TechS.LevelChecked)
-            return Opener07TechS;
+            Opener07STech.LevelChecked)
+            return Opener07STech;
 
         return WrathOpener.Dummy;
     }
@@ -342,7 +347,7 @@ internal partial class DNC
 
     #region Technical Openers
 
-    internal static ThirtySecondTechOpener Opener30TechS = new();
+    internal static ThirtySecondTechOpener Opener30STech = new();
 
     internal class ThirtySecondTechOpener : WrathOpener
     {
@@ -434,7 +439,90 @@ internal partial class DNC
         }
     }
 
-    internal static SevenSecondTechOpener Opener07TechS = new();
+    internal static SevenPlusSecondTechOpener Opener07PlusSTech = new();
+
+    internal class SevenPlusSecondTechOpener : WrathOpener
+    {
+        public override int MinOpenerLevel => 100;
+
+        public override int MaxOpenerLevel => 109;
+
+        public override List<uint> OpenerActions { get; set; } =
+        [
+            TechnicalStep,
+            Emboite,
+            Emboite,
+            Emboite,
+            Emboite, //5
+            TechnicalFinish4,
+            Devilment,
+            Tillana,
+            Flourish,
+            DanceOfTheDawn, //10
+            FanDance4,
+            LastDance,
+            FanDance3,
+            FinishingMove,
+            StarfallDance, //15
+            ReverseCascade,
+            ReverseCascade,
+            ReverseCascade,
+        ];
+
+        public override List<(int[] Steps, int HoldDelay)> PrepullDelays
+        {
+            get;
+            set;
+        } = [];
+
+        public override List<(int[], uint, Func<bool>)> SubstitutionSteps
+        {
+            get;
+            set;
+        } =
+        [
+            ([2, 3, 4, 5], Entrechat, () => Gauge.NextStep == Entrechat),
+            ([2, 3, 4, 5], Jete, () => Gauge.NextStep == Jete),
+            ([2, 3, 4, 5], Pirouette, () => Gauge.NextStep == Pirouette),
+            ([15], SaberDance, () => Gauge.Esprit >= 50),
+            ([16, 17, 18], SaberDance, () => Gauge.Esprit > 80),
+            ([16, 17, 18], StarfallDance, () =>
+                HasEffect(Buffs.FlourishingStarfall)),
+            ([16, 17, 18], SaberDance, () => Gauge.Esprit >= 50),
+            ([16, 17, 18], LastDance, () => HasEffect(Buffs.LastDanceReady)),
+            ([16, 17, 18], Fountainfall, () =>
+                HasEffect(Buffs.SilkenFlow) || HasEffect(Buffs.FlourishingFlow)),
+        ];
+
+        internal override UserData? ContentCheckConfig =>
+            Config.DNC_ST_OpenerDifficulty;
+
+        public override bool HasCooldowns()
+        {
+            if (ActionReady(StandardStep))
+                return false;
+
+            if (!ActionReady(TechnicalStep))
+                return false;
+
+            if (!IsOffCooldown(Devilment))
+                return false;
+
+            if (InCombat())
+                return false;
+
+            if (!CountdownActive)
+                return false;
+
+            // go at 7s, with some leeway
+            if (CountdownRemaining is < 5.5f or > 8f)
+                return false;
+
+            return true;
+        }
+    }
+
+    internal static SevenSecondTechOpener Opener07STech = new();
 
     internal class SevenSecondTechOpener : WrathOpener
     {
