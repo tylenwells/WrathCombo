@@ -87,7 +87,7 @@ public sealed partial class WrathCombo : IDalamudPlugin
         get => jobID;
         set
         {
-            if (jobID != value && value != null)
+            if (jobID != value && value != null && jobID != null)
             {
                 UpdateCaches(true, false);
             }
