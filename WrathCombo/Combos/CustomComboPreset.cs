@@ -1590,7 +1590,7 @@ public enum CustomComboPreset
     #endregion
 
     [ParentCombo(DRK_AoE_CDs)]
-    [CustomComboInfo("Abyssal Drain Option", "Adds Abyssal Drain to the rotation when you fall below 60 percent hp.",
+    [CustomComboInfo("Abyssal Drain Option", "Adds Abyssal Drain to the rotation when you fall below the chosen HP.",
         DRK.JobID)]
     DRK_AoE_CD_Drain = 5060,
 
