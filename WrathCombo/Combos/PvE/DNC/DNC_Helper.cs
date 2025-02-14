@@ -194,14 +194,14 @@ internal partial class DNC
             ReverseCascade,
         ];
 
-        public override List<(int[] Steps, int HoldDelay)> PrepullDelays
+        public override List<(int[] Steps, Func<int> HoldDelay)> PrepullDelays
         {
             get;
             set;
         } =
         [
-            ([4], 7),
-            ([5], 5),
+            ([4], () => 7),
+            ([5], () => 5),
         ];
 
         public override List<(int[], uint, Func<bool>)> SubstitutionSteps
@@ -286,14 +286,14 @@ internal partial class DNC
             ReverseCascade,
         ];
 
-        public override List<(int[] Steps, int HoldDelay)> PrepullDelays
+        public override List<(int[] Steps, Func<int> HoldDelay)> PrepullDelays
         {
             get;
             set;
         } =
         [
-            ([4], 2),
-            ([5], 2),
+            ([4], () => 2),
+            ([5], () => 2),
         ];
 
         public override List<(int[], uint, Func<bool>)> SubstitutionSteps
@@ -382,14 +382,14 @@ internal partial class DNC
             ReverseCascade,
         ];
 
-        public override List<(int[] Steps, int HoldDelay)> PrepullDelays
+        public override List<(int[] Steps, Func<int> HoldDelay)> PrepullDelays
         {
             get;
             set;
         } =
         [
-            ([5], 1),
-            ([6], 6),
+            ([5], () => 1),
+            ([6], () => 6),
         ];
 
         public override List<(int[], uint, Func<bool>)> SubstitutionSteps
@@ -469,7 +469,7 @@ internal partial class DNC
             ReverseCascade,
         ];
 
-        public override List<(int[] Steps, int HoldDelay)> PrepullDelays
+        public override List<(int[] Steps, Func<int> HoldDelay)> PrepullDelays
         {
             get;
             set;
@@ -552,13 +552,13 @@ internal partial class DNC
             ReverseCascade,
         ];
 
-        public override List<(int[] Steps, int HoldDelay)> PrepullDelays
+        public override List<(int[] Steps, Func<int> HoldDelay)> PrepullDelays
         {
             get;
             set;
         } =
         [
-            ([7], 2),
+            ([7], () => 2),
         ];
 
         public override List<(int[], uint, Func<bool>)> SubstitutionSteps
