@@ -369,14 +369,14 @@ internal partial class DNC
             Emboite, //10
             TechnicalFinish4,
             Devilment,
-            Tillana,
-            Flourish,
-            DanceOfTheDawn, //15
-            FanDance4,
             LastDance,
-            FanDance3,
-            FinishingMove,
-            StarfallDance, //20
+            Flourish,
+            FinishingMove, //15
+            Tillana,
+            DanceOfTheDawn,
+            FanDance4,
+            StarfallDance,
+            FanDance3, //20
             ReverseCascade,
             ReverseCascade,
             ReverseCascade,
@@ -401,7 +401,7 @@ internal partial class DNC
             ([2, 3, 7, 8, 9, 10], Entrechat, () => Gauge.NextStep == Entrechat),
             ([2, 3, 7, 8, 9, 10], Jete, () => Gauge.NextStep == Jete),
             ([2, 3, 7, 8, 9, 10], Pirouette, () => Gauge.NextStep == Pirouette),
-            ([20], SaberDance, () => Gauge.Esprit >= 50),
+            ([19], SaberDance, () => Gauge.Esprit >= 50),
             ([21, 22, 23], SaberDance, () => Gauge.Esprit > 80),
             ([21, 22, 23], StarfallDance,
                 () => HasEffect(Buffs.FlourishingStarfall)),
@@ -456,14 +456,14 @@ internal partial class DNC
             Emboite, //5
             TechnicalFinish4,
             Devilment,
-            Tillana,
-            Flourish,
-            DanceOfTheDawn, //10
-            FanDance4,
             LastDance,
-            FanDance3,
-            FinishingMove,
-            StarfallDance, //15
+            Flourish,
+            FinishingMove, //10
+            Tillana,
+            DanceOfTheDawn,
+            FanDance4,
+            StarfallDance,
+            FanDance3, //15
             ReverseCascade,
             ReverseCascade,
             ReverseCascade,
@@ -484,7 +484,7 @@ internal partial class DNC
             ([2, 3, 4, 5], Entrechat, () => Gauge.NextStep == Entrechat),
             ([2, 3, 4, 5], Jete, () => Gauge.NextStep == Jete),
             ([2, 3, 4, 5], Pirouette, () => Gauge.NextStep == Pirouette),
-            ([15], SaberDance, () => Gauge.Esprit >= 50),
+            ([14], SaberDance, () => Gauge.Esprit >= 50),
             ([16, 17, 18], SaberDance, () => Gauge.Esprit > 80),
             ([16, 17, 18], StarfallDance, () =>
                 HasEffect(Buffs.FlourishingStarfall)),
