@@ -225,7 +225,7 @@ namespace WrathCombo.Window.Tabs
                         DebugFile.MakeDebugFile(allJobs:true);
                 }
 
-                ImGuiComponents.HelpMarker("Will generate a debug file on your desktop.\nUseful to give developers to help troubleshoot issues.");
+                ImGuiComponents.HelpMarker("Will generate a debug file on your desktop.\nUseful to give developers to help troubleshoot issues.\nThe same as using the following command: /wrath debug");
                 #endregion
 
                 #endregion
