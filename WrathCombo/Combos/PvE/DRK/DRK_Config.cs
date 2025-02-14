@@ -214,6 +214,13 @@ internal partial class DRK
 
                     break;
 
+                case CustomComboPreset.DRK_AoE_CD_Drain:
+                    UserConfig.DrawSliderInt(20, 100, DRK_AoE_DrainThreshold,
+                        startUsingAtDescriptionPlusDisable,
+                        itemWidth: bigger, sliderIncrement: SliderIncrements.Fives);
+
+                    break;
+
                 case CustomComboPreset.DRK_AoE_Sp_BloodOvercap:
                     UserConfig.DrawSliderInt(50, 100, DRK_AoE_BloodOvercapThreshold,
                         startUsingAboveDescription,
@@ -858,6 +865,17 @@ internal partial class DRK
                 ContentCheck.ListSet.Halved;
 
         /// <summary>
+        ///     Target HP% to use Drain above for AoE.
+        /// </summary>
+        /// <value>
+        ///     <b>Default</b>: 20 <br />
+        ///     <b>Range</b>: 20 - 100 <br />
+        ///     <b>Step</b>: <see cref="SliderIncrements.Fives" />
+        /// </value>
+        /// <seealso cref="CustomComboPreset.DRK_AoE_CD_Drain" />
+        public static readonly UserInt DRK_AoE_DrainThreshold = new("DRK_AoE_DrainThreshold", 60);
+
+        /// <summary>
         ///     Target HP% to use Blood Overcap above for AoE.
         /// </summary>
         /// <value>
@@ -951,7 +969,7 @@ internal partial class DRK
         /// </value>
         /// <seealso cref="CustomComboPreset.DRK_AoE_Mit_Vigil" />
         public static readonly UserInt DRK_AoE_ShadowedVigilThreshold =
-            new("DRK_AoE_ShadowedVigilThreshold", 55);
+            new("DRK_AoE_ShadowedVigilThreshold", 50);
 
         /// <summary>
         ///     Self HP% to use Living Dead below for AoE.

@@ -368,10 +368,19 @@ internal partial class DRK
 
             #region Abyssal Drain (AoE only)
 
+            #region Variables
+
+            var drainHPThreshold = flags.HasFlag(Combo.Adv)
+                ? Config.DRK_AoE_DrainThreshold
+                : 60;
+
+            #endregion
+
             if (flags.HasFlag(Combo.AoE) &&
                 (flags.HasFlag(Combo.Simple) ||
                  IsEnabled(Preset.DRK_AoE_CD_Drain)) &&
-                ActionReady(AbyssalDrain))
+                ActionReady(AbyssalDrain) &&
+                PlayerHealthPercentageHp() <= drainHPThreshold)
                 return (action = AbyssalDrain) != 0;
 
             #endregion
