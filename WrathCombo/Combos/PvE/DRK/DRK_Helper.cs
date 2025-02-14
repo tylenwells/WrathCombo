@@ -339,6 +339,9 @@ internal partial class DRK
                 (flags.HasFlag(Combo.Adv) && flags.HasFlag(Combo.AoE) &&
                  IsEnabled(Preset.DRK_AoE_CD_SaltStill) && !IsMoving() &&
                  CombatEngageDuration().TotalSeconds >= 7);
+            var saltHPThreshold = flags.HasFlag(Combo.Adv)
+                ? Config.DRK_AoE_SaltThreshold
+                : 30;
 
             #endregion
 
@@ -348,7 +351,8 @@ internal partial class DRK
                 LevelChecked(SaltedEarth) &&
                 IsOffCooldown(SaltedEarth) &&
                 !HasEffect(Buffs.SaltedEarth) &&
-                saltStill)
+                saltStill &&
+                GetTargetHPPercent(Target(flags)) >= saltHPThreshold)
                 return (action = SaltedEarth) != 0;
 
             #endregion

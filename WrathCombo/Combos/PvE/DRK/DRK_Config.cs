@@ -214,6 +214,13 @@ internal partial class DRK
 
                     break;
 
+                case CustomComboPreset.DRK_AoE_CD_Salt:
+                    UserConfig.DrawSliderInt(0, 60, DRK_AoE_SaltThreshold,
+                        stopUsingAtDescription,
+                        itemWidth: bigger, sliderIncrement: SliderIncrements.Fives);
+
+                    break;
+
                 case CustomComboPreset.DRK_AoE_CD_Drain:
                     UserConfig.DrawSliderInt(20, 100, DRK_AoE_DrainThreshold,
                         startUsingAtDescriptionPlusDisable,
@@ -865,6 +872,18 @@ internal partial class DRK
                 ContentCheck.ListSet.Halved;
 
         /// <summary>
+        ///     Target HP% to use Salted Earth above for AoE.
+        /// </summary>
+        /// <value>
+        ///     <b>Default</b>: 30 <br />
+        ///     <b>Range</b>: 0 - 60 <br />
+        ///     <b>Step</b>: <see cref="SliderIncrements.Fives" />
+        /// </value>
+        /// <seealso cref="CustomComboPreset.DRK_AoE_CD_Salt" />
+        public static readonly UserInt DRK_AoE_SaltThreshold =
+            new("DRK_AoE_SaltThreshold", 30);
+
+        /// <summary>
         ///     Target HP% to use Drain above for AoE.
         /// </summary>
         /// <value>
@@ -873,7 +892,8 @@ internal partial class DRK
         ///     <b>Step</b>: <see cref="SliderIncrements.Fives" />
         /// </value>
         /// <seealso cref="CustomComboPreset.DRK_AoE_CD_Drain" />
-        public static readonly UserInt DRK_AoE_DrainThreshold = new("DRK_AoE_DrainThreshold", 60);
+        public static readonly UserInt DRK_AoE_DrainThreshold =
+            new("DRK_AoE_DrainThreshold", 60);
 
         /// <summary>
         ///     Target HP% to use Blood Overcap above for AoE.
