@@ -557,13 +557,14 @@ public partial class WrathCombo
         switch (argument[0])
         {
             case "settings":
-            case "setting":
             case "config":
                 ConfigWindow.OpenWindow = OpenWindow.Settings;
                 return;
 
-            case "autorot":
-            case "autorotation":
+            case "autosettings":
+            case "autorotationsettings":
+            case "autoconfig":
+            case "autorotationconfig":
                 ConfigWindow.OpenWindow = OpenWindow.AutoRotation;
                 return;
         }
