@@ -116,7 +116,7 @@ namespace WrathCombo.Window.Tabs
                             {
                                 if (ImGui.BeginTabItem("Normal"))
                                 {
-                                    DrawHeadingContents(OpenJob, i);
+                                    DrawHeadingContents(OpenJob);
                                     ImGui.EndTabItem();
                                 }
 
@@ -177,7 +177,7 @@ namespace WrathCombo.Window.Tabs
             }
         }
 
-        internal static void DrawHeadingContents(string jobName, int i)
+        internal static void DrawHeadingContents(string jobName)
         {
             if (!Messages.PrintBLUMessage(jobName)) return;
 
@@ -207,7 +207,7 @@ namespace WrathCombo.Window.Tabs
 
                         // Keep removed items in the counter
                         var parent = PresetStorage.GetParent(preset) ?? preset;
-                        i += 1 + Presets.AllChildren(presetChildren[parent]);
+                        currentPreset += 1 + Presets.AllChildren(presetChildren[parent]);
                     }
 
                     else
