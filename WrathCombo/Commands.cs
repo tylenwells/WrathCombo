@@ -553,20 +553,26 @@ public partial class WrathCombo
 
         if (argument[0].Length <= 0) return;
 
-        // Open to settings
-        if (argument[0] == "settings")
+        // Open to specified tab
+        switch (argument[0])
         {
-            ConfigWindow.IsOpen = true;
-            ConfigWindow.OpenWindow = OpenWindow.Settings;
-            return;
+            case "settings":
+            case "setting":
+            case "config":
+                ConfigWindow.OpenWindow = OpenWindow.Settings;
+                return;
+
+            case "autorot":
+            case "autorotation":
+                ConfigWindow.OpenWindow = OpenWindow.AutoRotation;
+                return;
         }
 
         // Open to specified job
-        var jobName = ConfigWindow.groupedPresets
+        var jobName = argument[0].ToUpperInvariant();
+        jobName = ConfigWindow.groupedPresets
             .FirstOrDefault(x =>
-                x.Value.Any(y =>
-                    y.Info.JobShorthand == argument[0].ToUpperInvariant()))
-            .Key;
+                x.Value.Any(y => y.Info.JobShorthand == jobName)).Key;
         if (jobName is null)
         {
             DuoLog.Error($"{argument[0]} is not a correct job abbreviation.");
