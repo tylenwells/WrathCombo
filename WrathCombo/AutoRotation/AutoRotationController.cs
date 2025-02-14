@@ -17,6 +17,7 @@ using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Data;
 using WrathCombo.Extensions;
 using WrathCombo.Services;
+using WrathCombo.Services.IPC_Subscriber;
 using WrathCombo.Window.Functions;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
 using Action = Lumina.Excel.Sheets.Action;
@@ -109,13 +110,7 @@ namespace WrathCombo.AutoRotation
                     }
 
                     if (cfg.HealerSettings.AutoRez)
-                    {
                         RezParty();
-                        bool rdmCheck = Player.Job is Job.RDM && ActionReady(RDM.Verraise) && ActionManager.GetAdjustedCastTime(ActionType.Action, RDM.Verraise) > 0;
-
-                        //if (GetPartyMembers().Any(RezQuery) && !rdmCheck)
-                        //    return;
-                    }
                 }
             }
 
@@ -223,6 +218,7 @@ namespace WrathCombo.AutoRotation
                 _ => throw new NotImplementedException(),
             };
 
+
             if (ActionManager.Instance()->QueuedActionId == resSpell)
                 ActionManager.Instance()->QueuedActionId = 0;
 
@@ -261,7 +257,8 @@ namespace WrathCombo.AutoRotation
 
                         if (!IsMoving() || HasEffect(All.Buffs.Swiftcast))
                         {
-                            ActionManager.Instance()->UseAction(ActionType.Action, resSpell, member.BattleChara.GameObjectId);
+                            if ((cfg.HealerSettings.AutoRezRequireSwift && ActionManager.GetAdjustedCastTime(ActionType.Action, resSpell) == 0) || !cfg.HealerSettings.AutoRezRequireSwift)
+                                ActionManager.Instance()->UseAction(ActionType.Action, resSpell, member.BattleChara.GameObjectId);
                         }
                     }
                 }
@@ -414,7 +411,8 @@ namespace WrathCombo.AutoRotation
                     if (HealerTargeting.CanAoEHeal(outAct))
                     {
                         var castTime = ActionManager.GetAdjustedCastTime(ActionType.Action, outAct);
-                        if (IsMoving() && castTime > 0)
+                        bool orbwalking = cfg.OrbwalkerIntegration && OrbwalkerIPC.CanOrbwalk;
+                        if (IsMoving() && castTime > 0 && !orbwalking)
                             return false;
 
                         var ret = ActionManager.Instance()->UseAction(ActionType.Action, Service.IconReplacer.getIconHook.IsEnabled ? gameAct : outAct);
@@ -453,7 +451,8 @@ namespace WrathCombo.AutoRotation
 
                     bool switched = SwitchOnDChole(attributes, outAct, ref target);
                     var castTime = ActionManager.GetAdjustedCastTime(ActionType.Action, outAct);
-                    if (IsMoving() && castTime > 0)
+                    bool orbwalking = cfg.OrbwalkerIntegration && OrbwalkerIPC.CanOrbwalk;
+                    if (IsMoving() && castTime > 0 && !orbwalking)
                         return false;
 
                     if (mustTarget || cfg.DPSSettings.AlwaysSelectTarget)
@@ -510,7 +509,8 @@ namespace WrathCombo.AutoRotation
                     Svc.Targets.Target = target;
 
                 var castTime = ActionManager.GetAdjustedCastTime(ActionType.Action, outAct);
-                if (IsMoving() && castTime > 0)
+                bool orbwalking = cfg.OrbwalkerIntegration && OrbwalkerIPC.CanOrbwalk;
+                if (IsMoving() && castTime > 0 && !orbwalking)
                     return false;
 
                 if (canUse && (inRange || areaTargeted))
