@@ -6535,6 +6535,7 @@ public enum CustomComboPreset
     #region ASTROLOGIAN
 
     [PvPCustomCombo]
+    [ReplaceSkill(ASTPvP.Malefic)]
     [CustomComboInfo("Burst Mode", "Turns Fall Malefic into an all-in-one damage button.", AST.JobID)]
     ASTPvP_Burst = 111000,
 
@@ -6547,6 +6548,7 @@ public enum CustomComboPreset
     ASTPvP_Burst_PlayCard = 111003,
 
     [PvPCustomCombo]
+    [ReplaceSkill(ASTPvP.AspectedBenefic)]
     [CustomComboInfo("Double Cast Heal Feature", "Adds Double Cast to Aspected Benefic.", AST.JobID)]
     ASTPvP_Heal = 111004,
 
@@ -6569,6 +6571,7 @@ public enum CustomComboPreset
     ASTPvP_Burst_Macrocosmos = 111007,
 
     [PvPCustomCombo]
+    [ReplaceSkill(ASTPvP.Epicycle)]
     [CustomComboInfo("Epicycle Burst Feature", "Turns Epicycle into burst combo.", AST.JobID)]
     ASTPvP_Epicycle = 111008,
 
@@ -6620,6 +6623,7 @@ public enum CustomComboPreset
     #region BARD
 
     [PvPCustomCombo]
+    [ReplaceSkill(BRDPvP.PowerfulShot)]
     [CustomComboInfo("Burst Mode", "Turns Powerful Shot into an all-in-one damage button.", BRDPvP.JobID)]
     BRDPvP_BurstMode = 113000,
 
@@ -6663,6 +6667,7 @@ public enum CustomComboPreset
     #region DANCER
 
     [PvPCustomCombo]
+    [ReplaceSkill(DNCPvP.Fountain)]
     [CustomComboInfo("Burst Mode", "Turns Fountain Combo into an all-in-one damage button.", DNC.JobID)]
     DNCPvP_BurstMode = 114000,
 
@@ -6697,6 +6702,7 @@ public enum CustomComboPreset
     #region DARK KNIGHT
 
     [PvPCustomCombo]
+    [ReplaceSkill(DRKPvP.Souleater)]
     [CustomComboInfo("Burst Mode", "Turns Souleater Combo into an all-in-one damage button.", DRK.JobID)]
     DRKPvP_Burst = 115000,
 
@@ -6748,6 +6754,7 @@ public enum CustomComboPreset
     #region DRAGOON
 
     [PvPCustomCombo]
+    [ReplaceSkill(DRGPvP.Drakesbane)]
     [CustomComboInfo("Burst Mode", "Turns Drakesbane Combo into an all-in-one damage button.", DRG.JobID)]
     DRGPvP_Burst = 116000,
 
@@ -6796,6 +6803,7 @@ public enum CustomComboPreset
     #region Burst Mode
 
     [PvPCustomCombo]
+    [ReplaceSkill(GNBPvP.SolidBarrel)]
     [CustomComboInfo("Burst Mode", "Turns Solid Barrel Combo into an all-in-one damage button.", GNB.JobID)]
     GNBPvP_Burst = 117000,
 
@@ -6831,8 +6839,8 @@ public enum CustomComboPreset
 
     #region Option Select
 
-    [ConflictingCombos(GNBPvP_ST_GnashingFang)]
     [PvPCustomCombo]
+    [ReplaceSkill(GNBPvP.GnashingFang)]
     [CustomComboInfo("Continuation Feature", "Adds Continuation to Gnashing Fang.", GNB.JobID)]
     GNBPvP_GnashingFang = 117010,
 
@@ -6845,6 +6853,7 @@ public enum CustomComboPreset
     #region MACHINIST
 
     [PvPCustomCombo]
+    [ReplaceSkill(MCHPvP.BlastCharge)]
     [CustomComboInfo("Burst Mode", "Turns Blast Charge into an all-in-one damage button.", MCHPvP.JobID)]
     MCHPvP_BurstMode = 118000,
 
@@ -6906,6 +6915,7 @@ public enum CustomComboPreset
     #region MONK
 
     [PvPCustomCombo]
+    [ReplaceSkill(MNKPvP.PhantomRush)]
     [CustomComboInfo("Burst Mode", "Turns Phantom Rush Combo into an all-in-one damage button.", MNK.JobID)]
     MNKPvP_Burst = 119000,
 
@@ -6949,10 +6959,12 @@ public enum CustomComboPreset
     #region NINJA
 
     [PvPCustomCombo]
+    [ReplaceSkill(NINPvP.AeolianEdge)]
     [CustomComboInfo("Burst Mode", "Turns Aeolian Edge Combo into an all-in-one damage button.", NINPvP.JobID)]
     NINPvP_ST_BurstMode = 120000,
 
     [PvPCustomCombo]
+    [ReplaceSkill(NINPvP.FumaShuriken)]
     [CustomComboInfo("AoE Burst Mode", "Turns Fuma Shuriken into an all-in-one AoE damage button.", NINPvP.JobID)]
     NINPvP_AoE_BurstMode = 120001,
 
@@ -7048,6 +7060,7 @@ public enum CustomComboPreset
     #region PALADIN
 
     [PvPCustomCombo]
+    [ReplaceSkill(PLDPvP.RoyalAuthority)]
     [CustomComboInfo("Burst Mode", "Turns Royal Authority Combo into an all-in-one damage button.", PLD.JobID)]
     PLDPvP_Burst = 121000,
 
@@ -7136,6 +7149,7 @@ public enum CustomComboPreset
     #region REAPER
 
     [PvPCustomCombo]
+    [ReplaceSkill(RPRPvP.Slice)]
     [CustomComboInfo("Burst Mode",
         "Turns Slice Combo into an all-in-one damage button.\nAdds Soul Slice to the main combo.", RPR.JobID)]
     RPRPvP_Burst = 122000,
@@ -7248,6 +7262,7 @@ public enum CustomComboPreset
     #region SAGE
 
     [PvPCustomCombo]
+    [ReplaceSkill(SGEPvP.Dosis)]
     [CustomComboInfo("Burst Mode", "Turns Dosis III into an all-in-one damage button.", SGE.JobID)]
     SGEPvP_BurstMode = 124000,
 
@@ -7333,6 +7348,7 @@ public enum CustomComboPreset
     #region SCHOLAR
 
     [PvPCustomCombo]
+    [ReplaceSkill(SCHPvP.Broil)]
     [CustomComboInfo("Burst Mode", "Turns Broil IV into all-in-one damage button.", SCH.JobID)]
     SCHPvP_Burst = 126000,
 
@@ -7359,6 +7375,7 @@ public enum CustomComboPreset
     #region SUMMONER
 
     [PvPCustomCombo]
+    [ReplaceSkill(SMNPvP.Ruin3)]
     [CustomComboInfo("Burst Mode",
         "Turns Ruin III into an all-in-one damage button.\nOnly uses Crimson Cyclone when in melee range.",
         SMNPvP.JobID)]
@@ -7459,6 +7476,7 @@ public enum CustomComboPreset
     #region WARRIOR
 
     [PvPCustomCombo]
+    [ReplaceSkill(WARPvP.HeavySwing)]
     [CustomComboInfo("Burst Mode", "Turns Heavy Swing into an all-in-one damage button.", WARPvP.JobID)]
     WARPvP_BurstMode = 128000,
 
