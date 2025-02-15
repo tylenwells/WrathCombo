@@ -1,4 +1,5 @@
-﻿using Dalamud.Interface.Components;
+﻿using System;
+using Dalamud.Interface.Components;
 using Dalamud.Interface.Utility.Raii;
 using ImGuiNET;
 using System.Numerics;
@@ -127,10 +128,7 @@ namespace WrathCombo.Window.Tabs
                 if (ImGui.InputInt("milliseconds    -    Action Updater Throttle",
                         ref throttle, 10))
                 {
-                    if (throttle < 0) throttle = 0;
-                    if (throttle > 1500) throttle = 1500;
-                    Service.Configuration.Throttle = throttle;
-
+                    Service.Configuration.Throttle = Math.Clamp(throttle, 0, 1500);
                     Service.Configuration.Save();
                 }
 
