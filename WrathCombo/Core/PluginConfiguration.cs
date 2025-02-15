@@ -325,6 +325,7 @@ namespace WrathCombo.Core
         /// <seealso cref="SaveQueue"/>
         public void Save()
         {
+            PluginLog.Debug("Saving configuration.");
             if (Debug.DebugConfig)
                 return;
 
