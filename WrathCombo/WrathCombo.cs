@@ -243,13 +243,9 @@ public sealed partial class WrathCombo : IDalamudPlugin
             if (conflictingCombos != null)
             {
                 foreach (var conflict in conflictingCombos.ConflictingPresets)
-                {
                     if (PresetStorage.IsEnabled(conflict))
-                    {
-                        Service.Configuration.EnabledActions.Remove(conflict);
-                        Service.Configuration.Save();
-                    }
-                }
+                        if (Service.Configuration.EnabledActions.Remove(conflict))
+                            Service.Configuration.Save();
             }
         }
     }
