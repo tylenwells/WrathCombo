@@ -128,7 +128,7 @@ namespace WrathCombo.Window.Tabs
                         ref throttle, 10))
                 {
                     if (throttle < 0) throttle = 0;
-                    if (throttle > 1000) throttle = 1000;
+                    if (throttle > 1500) throttle = 1500;
                     Service.Configuration.Throttle = throttle;
 
                     Service.Configuration.Save();
