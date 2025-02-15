@@ -1221,7 +1221,7 @@ public enum CustomComboPreset
     #region Dance Features
 
     [ReplaceSkill(DNC.StandardStep, DNC.TechnicalStep)]
-    [ConflictingCombos(DNC_StandardStep_LastDance, DNC_TechnicalStep_Devilment)]
+    [ConflictingCombos(DNC_TechnicalStep_Devilment)]
     [CustomComboInfo("Dance Step Combo Feature",
         "Change Standard Step and Technical Step into each dance step, while dancing." +
         "\nWorks with Advanced Mode DNC.", DNC.JobID)]
@@ -1286,7 +1286,7 @@ public enum CustomComboPreset
 
     // StandardStep(or Finishing Move) --> Last Dance
     [ReplaceSkill(DNC.StandardStep, DNC.FinishingMove)]
-    [ConflictingCombos(DNC_DanceStepCombo, DNC_TechnicalStep_Devilment)]
+    [ConflictingCombos(DNC_TechnicalStep_Devilment)]
     [CustomComboInfo("Standard Step to Last Dance Feature",
         "Change Standard Step or Finishing Move to Last Dance when available.", DNC.JobID)]
     DNC_StandardStep_LastDance = 4155,
