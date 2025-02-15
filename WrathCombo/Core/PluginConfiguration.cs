@@ -58,6 +58,8 @@ namespace WrathCombo.Core
 
         public bool PerformanceMode = false;
 
+        public int Throttle = 25;
+
         public double InterruptDelay  = 0.0f;
 
         public bool OpenToCurrentJob = false;

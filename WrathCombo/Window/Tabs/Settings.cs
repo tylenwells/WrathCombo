@@ -120,6 +120,23 @@ namespace WrathCombo.Window.Tabs
                 ImGui.Dummy(new Vector2(20f));
                 ImGuiEx.TextUnderlined("Rotation Behavior Options");
 
+                #region Throttle
+
+                ImGui.PushItemWidth(110);
+                var throttle = Service.Configuration.Throttle;
+                if (ImGui.InputInt("milliseconds    -    Action Updater Throttle", ref throttle))
+                {
+                    if (throttle < 0) throttle = 0;
+                    if (throttle > 1500) throttle = 1500;
+                    Service.Configuration.Throttle = throttle;
+
+                    Service.Configuration.Save();
+                }
+
+                ImGuiComponents.HelpMarker("This is the restriction for how often combos will update the action on your hotbar.\nBy default this isn't really restricting the combos,\nso you always get an up-to-date action, dependent on your game's performance.\n\nHowever, if you have FPS issues, you can increase this value to make combos run less often.\nThis has the trade-off of making your combos less responsive, and perhaps even clipping your GCDs.\nIt is not recommended to increase this value over 500ms.");
+
+                #endregion
+
                 #region Performance Mode
 
                 if (ImGui.Checkbox("Performance Mode", ref Service.Configuration.PerformanceMode))

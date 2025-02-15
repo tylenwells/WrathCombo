@@ -20,7 +20,6 @@ namespace WrathCombo.Core
     /// <summary> This class facilitates icon replacement. </summary>
     internal sealed partial class IconReplacer : IDisposable
     {
-        public static AutoRotationConfigIPCWrapper? cfg;
         public readonly List<CustomCombo> CustomCombos;
         private readonly Hook<IsIconReplaceableDelegate> isIconReplaceableHook;
         public readonly Hook<GetIconDelegate> getIconHook;
@@ -72,25 +71,25 @@ namespace WrathCombo.Core
             Svc.Log.Debug($"Now running {FilteredCombos.Count()} combos\n{string.Join("\n", FilteredCombos.Select(x => x.Preset.Attributes().CustomComboInfo.Name))}");
         }
 
-        private unsafe uint GetIconDetour(IntPtr actionManager, uint actionID)
+        private uint GetIconDetour(IntPtr _, uint actionID)
         {
             if (FilteredCombos is null)
                 UpdateFilteredCombos();
-            
-            cfg ??= new AutoRotationConfigIPCWrapper(Service.Configuration.RotationConfig);
-            if (!EzThrottler.Throttle("Icons" + actionID, cfg.Throttler))
-            {
-                return lastActionInvokeFor[actionID];
-            }
-            lastActionInvokeFor[actionID] = GetIcon(actionManager, actionID);
-            return lastActionInvokeFor[actionID];
 
+            // Only refresh every so often
+            if (!EzThrottler.Throttle("Icons" + actionID,
+                    Service.Configuration.Throttle))
+                return lastActionInvokeFor[actionID];
+
+            // Actually get the icon
+            lastActionInvokeFor[actionID] = GetIcon(actionID);
+            return lastActionInvokeFor[actionID];
         }
-        private unsafe uint GetIcon(IntPtr actionManager, uint actionID)
+
+        private unsafe uint GetIcon(uint actionID)
         {
             try
             {
-
                 if (Service.Configuration.PerformanceMode)
                     return OriginalHook(actionID);
 
