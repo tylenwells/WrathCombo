@@ -22,7 +22,7 @@ internal sealed class ActionReplacer : IDisposable
     public readonly List<CustomCombo> CustomCombos;
 
     /// <summary>
-    ///     Critical for the hook, do not remove or modify
+    ///     Critical for the hook, do not remove or modify.
     /// </summary>
     // ReSharper disable once FieldCanBeMadeReadOnly.Local
     private IntPtr _actionManager = IntPtr.Zero;
@@ -81,6 +81,12 @@ internal sealed class ActionReplacer : IDisposable
         if (FilteredCombos is null)
             UpdateFilteredCombos();
 
+        // Bail if not wanting to replace actions in this manner
+        if (Service.Configuration.PerformanceMode)
+            return OriginalHook(actionID);
+        if (Svc.ClientState.LocalPlayer == null)
+            return OriginalHook(actionID);
+
         // Only refresh every so often
         if (!EzThrottler.Throttle("Actions" + actionID,
                 Service.Configuration.Throttle))
@@ -101,12 +107,6 @@ internal sealed class ActionReplacer : IDisposable
     {
         try
         {
-            if (Service.Configuration.PerformanceMode)
-                return OriginalHook(actionID);
-
-            if (Svc.ClientState.LocalPlayer == null)
-                return OriginalHook(actionID);
-
             if (ClassLocked() ||
                 (DisabledJobsPVE.Any(x => x == Svc.ClientState.LocalPlayer.ClassJob.RowId) && !Svc.ClientState.IsPvP) ||
                 (DisabledJobsPVP.Any(x => x == Svc.ClientState.LocalPlayer.ClassJob.RowId) && Svc.ClientState.IsPvP))
