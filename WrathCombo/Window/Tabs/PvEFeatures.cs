@@ -23,7 +23,7 @@ namespace WrathCombo.Window.Tabs
         internal static new void Draw()
         {
             //#if !DEBUG
-            if (IconReplacer.ClassLocked())
+            if (ActionReplacer.ClassLocked())
             {
                 ImGui.TextWrapped("Equip your job stone to re-unlock features.");
                 return;

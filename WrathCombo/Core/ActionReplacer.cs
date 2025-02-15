@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using ECommons.Throttlers;
-using WrathCombo.AutoRotation;
 using WrathCombo.Combos.PvE;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
@@ -17,19 +16,19 @@ using WrathCombo.Services;
 
 namespace WrathCombo.Core
 {
-    /// <summary> This class facilitates icon replacement. </summary>
-    internal sealed partial class IconReplacer : IDisposable
+    /// <summary> This class facilitates action+icon replacement. </summary>
+    internal sealed class ActionReplacer : IDisposable
     {
         public readonly List<CustomCombo> CustomCombos;
-        private readonly Hook<IsIconReplaceableDelegate> isIconReplaceableHook;
-        public readonly Hook<GetIconDelegate> getIconHook;
+        private readonly Hook<IsActionReplaceableDelegate> isActionReplaceableHook;
+        public readonly Hook<GetActionDelegate> getActionHook;
 
         private IntPtr actionManager = IntPtr.Zero;
         private readonly IntPtr module = IntPtr.Zero;
         private Dictionary<uint, uint> lastActionInvokeFor = new Dictionary<uint, uint>();
 
-        /// <summary> Initializes a new instance of the <see cref="IconReplacer"/> class. </summary>
-        public IconReplacer()
+        /// <summary> Initializes a new instance of the <see cref="ActionReplacer"/> class. </summary>
+        public ActionReplacer()
         {
             CustomCombos = Assembly.GetAssembly(typeof(CustomCombo))!.GetTypes()
                 .Where(t => !t.IsAbstract && t.BaseType == typeof(CustomCombo))
@@ -38,30 +37,30 @@ namespace WrathCombo.Core
                 .OrderByDescending(x => x.Preset)
                 .ToList();
 
-            getIconHook = Svc.Hook.HookFromAddress<GetIconDelegate>((nint)ActionManager.Addresses.GetAdjustedActionId.Value, GetIconDetour);
-            isIconReplaceableHook = Svc.Hook.HookFromAddress<IsIconReplaceableDelegate>(Service.Address.IsActionIdReplaceable, IsIconReplaceableDetour);
+            getActionHook = Svc.Hook.HookFromAddress<GetActionDelegate>((nint)ActionManager.Addresses.GetAdjustedActionId.Value, GetAdjustedActionDetour);
+            isActionReplaceableHook = Svc.Hook.HookFromAddress<IsActionReplaceableDelegate>(Service.Address.IsActionIdReplaceable, IsActionReplaceableDetour);
 
-            getIconHook.Enable();
-            isIconReplaceableHook.Enable();
+            getActionHook.Enable();
+            isActionReplaceableHook.Enable();
         }
 
-        private delegate ulong IsIconReplaceableDelegate(uint actionID);
+        private delegate ulong IsActionReplaceableDelegate(uint actionID);
 
-        public delegate uint GetIconDelegate(IntPtr actionManager, uint actionID);
+        public delegate uint GetActionDelegate(IntPtr actionManager, uint actionID);
 
         /// <inheritdoc/>
         public void Dispose()
         {
-            getIconHook?.Disable();
-            getIconHook?.Dispose();
-            isIconReplaceableHook?.Disable();
-            isIconReplaceableHook?.Dispose();
+            getActionHook?.Disable();
+            getActionHook?.Dispose();
+            isActionReplaceableHook?.Disable();
+            isActionReplaceableHook?.Dispose();
         }
 
         /// <summary> Calls the original hook. </summary>
         /// <param name="actionID"> Action ID. </param>
         /// <returns> The result from the hook. </returns>
-        internal uint OriginalHook(uint actionID) => getIconHook.Original(actionManager, actionID);
+        internal uint OriginalHook(uint actionID) => getActionHook.Original(actionManager, actionID);
 
         public static IEnumerable<CustomCombo>? FilteredCombos;
 
@@ -71,22 +70,22 @@ namespace WrathCombo.Core
             Svc.Log.Debug($"Now running {FilteredCombos.Count()} combos\n{string.Join("\n", FilteredCombos.Select(x => x.Preset.Attributes().CustomComboInfo.Name))}");
         }
 
-        private uint GetIconDetour(IntPtr _, uint actionID)
+        private uint GetAdjustedActionDetour(IntPtr _, uint actionID)
         {
             if (FilteredCombos is null)
                 UpdateFilteredCombos();
 
             // Only refresh every so often
-            if (!EzThrottler.Throttle("Icons" + actionID,
+            if (!EzThrottler.Throttle("Actions" + actionID,
                     Service.Configuration.Throttle))
                 return lastActionInvokeFor[actionID];
 
-            // Actually get the icon
-            lastActionInvokeFor[actionID] = GetIcon(actionID);
+            // Actually get the action
+            lastActionInvokeFor[actionID] = GetAdjustedAction(actionID);
             return lastActionInvokeFor[actionID];
         }
 
-        private unsafe uint GetIcon(uint actionID)
+        private unsafe uint GetAdjustedAction(uint actionID)
         {
             try
             {
@@ -144,6 +143,6 @@ namespace WrathCombo.Core
             return false;
         }
 
-        private ulong IsIconReplaceableDetour(uint actionID) => 1;
+        private ulong IsActionReplaceableDetour(uint actionID) => 1;
     }
 }
