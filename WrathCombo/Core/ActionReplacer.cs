@@ -21,11 +21,17 @@ internal sealed class ActionReplacer : IDisposable
 {
     public readonly List<CustomCombo> CustomCombos;
 
+    /// <summary>
+    ///     Critical for the hook, do not remove or modify
+    /// </summary>
+    // ReSharper disable once FieldCanBeMadeReadOnly.Local
+    private IntPtr _actionManager = IntPtr.Zero;
+
     private readonly Hook<IsActionReplaceableDelegate> isActionReplaceableHook;
     public readonly Hook<GetActionDelegate> getActionHook;
 
     private delegate ulong IsActionReplaceableDelegate(uint actionID);
-    public delegate uint GetActionDelegate(uint actionID);
+    public delegate uint GetActionDelegate(IntPtr actionManager, uint actionID);
 
     private ulong IsActionReplaceableDetour(uint actionID) => 1;
 
@@ -34,7 +40,8 @@ internal sealed class ActionReplacer : IDisposable
     /// <summary> Calls the original hook. </summary>
     /// <param name="actionID"> Action ID. </param>
     /// <returns> The result from the hook. </returns>
-    internal uint OriginalHook(uint actionID) => getActionHook.Original(actionID);
+    internal uint OriginalHook(uint actionID) =>
+        getActionHook.Original(_actionManager, actionID);
 
     /// <summary> Initializes a new instance of the <see cref="ActionReplacer"/> class. </summary>
     public ActionReplacer()
@@ -46,8 +53,11 @@ internal sealed class ActionReplacer : IDisposable
             .OrderByDescending(x => x.Preset)
             .ToList();
 
+        // ReSharper disable once RedundantCast
+        // Must keep the nint cast
         getActionHook = Svc.Hook.HookFromAddress<GetActionDelegate>
-            (ActionManager.Addresses.GetAdjustedActionId.Value, GetAdjustedActionDetour);
+            ((nint)ActionManager.Addresses.GetAdjustedActionId.Value,
+            GetAdjustedActionDetour);
         isActionReplaceableHook = Svc.Hook.HookFromAddress<IsActionReplaceableDelegate>
             (Service.Address.IsActionIdReplaceable, IsActionReplaceableDetour);
 
@@ -55,12 +65,18 @@ internal sealed class ActionReplacer : IDisposable
         isActionReplaceableHook.Enable();
     }
 
+#pragma warning disable CS1573
     /// <summary>
     ///     Throttles access to <see cref="GetAdjustedAction(uint)"/>.
     /// </summary>
     /// <param name="actionID">The action a combo replaces.</param>
     /// <returns>The action a combo returns.</returns>
-    private uint GetAdjustedActionDetour(uint actionID)
+    /// <remarks>
+    ///     The <see langword="IntPtr"/> parameter is necessary for the hook
+    ///     delegate, but is not used in the method.<br/>
+    ///     Do not remove or modify the <see langword="IntPtr"/> parameter.
+    /// </remarks>
+    private uint GetAdjustedActionDetour(IntPtr _, uint actionID)
     {
         if (FilteredCombos is null)
             UpdateFilteredCombos();
@@ -74,6 +90,7 @@ internal sealed class ActionReplacer : IDisposable
         lastActionInvokeFor[actionID] = GetAdjustedAction(actionID);
         return lastActionInvokeFor[actionID];
     }
+#pragma warning restore CS1573
 
     /// <summary>
     ///     Replaces an action with the result from a combo.

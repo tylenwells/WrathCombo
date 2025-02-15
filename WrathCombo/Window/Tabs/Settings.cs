@@ -132,7 +132,15 @@ namespace WrathCombo.Window.Tabs
                     Service.Configuration.Save();
                 }
 
-                ImGuiComponents.HelpMarker("This is the restriction for how often combos will update the action on your hotbar.\nBy default this isn't really restricting the combos,\nso you always get an up-to-date action, dependent on your game's performance.\n\nIf you have minor FPS issues, you can increase this value to make combos run less often.\nThis has the trade-off of making your combos less responsive, and perhaps even clipping your GCDs.\nAt large values, this may break your rotation entirely.\n\nA value of 200 can make a reasonable difference in your FPS.\nIt is not recommended to increase this value over 500ms.\nPerformance Mode below is vastly superior to values over 500ms.");
+                ImGuiComponents.HelpMarker(
+                    "This is the restriction for how often combos will update the action on your hotbar." +
+                    "\nBy default this isn't restricting the combos, so you always get an up-to-date action." +
+                    "\n\nIf you have minor FPS issues, you can increase this value to make combos run less often." +
+                    "\nThis makes your combos less responsive, and perhaps even clips GCDs." +
+                    "\nAt high values, this can break your rotation entirely." +
+                    "\nMore severe FPS issues should instead be handled with Performance Mode below." +
+                    "\n\n200ms can make a reasonable difference in your FPS." +
+                    "\nValues over 500ms are NOT recommended.");
 
                 #endregion
 
