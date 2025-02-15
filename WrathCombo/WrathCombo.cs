@@ -107,7 +107,6 @@ public sealed partial class WrathCombo : IDalamudPlugin
                 PvEFeatures.OpenToCurrentJob(true);
             if (onJobChange || firstRun)
             {
-                Service.IconReplacer.UpdateFilteredCombos();
                 Service.ActionReplacer.UpdateFilteredCombos();
                 WrathOpener.SelectOpener();
                 P.IPCSearch.UpdateActiveJobPresets();
@@ -227,7 +226,7 @@ public sealed partial class WrathCombo : IDalamudPlugin
 
     private void ClientState_TerritoryChanged(ushort obj)
     {
-        UpdateCaches(false, true);
+        UpdateCaches(false, true, false);
     }
 
     public const string OptionControlledByIPC =
