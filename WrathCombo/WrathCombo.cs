@@ -50,7 +50,7 @@ public sealed partial class WrathCombo : IDalamudPlugin
 
     private readonly TextPayload starterMotd = new("[Wrath Message of the Day] ");
     private static uint? jobID;
-    private static bool inInstancedContent = false;
+    private static bool inInstancedContent;
 
     public static readonly List<uint> DisabledJobsPVE =
     [
@@ -85,17 +85,16 @@ public sealed partial class WrathCombo : IDalamudPlugin
     public static uint? JobID
     {
         get => jobID;
-        set
+        private set
         {
             if (jobID != value && value != null)
-            {
-                UpdateCaches(true, false);
-            }
+                UpdateCaches(jobID != null, false, jobID == null);
             jobID = value;
         }
     }
 
-    private static void UpdateCaches(bool onJobChange, bool onTerritoryChange)
+    private static void UpdateCaches
+        (bool onJobChange, bool onTerritoryChange, bool firstRun)
     {
         TM.DelayNext(1000);
         TM.Enqueue(() =>
@@ -105,8 +104,9 @@ public sealed partial class WrathCombo : IDalamudPlugin
 
             AST.QuickTargetCards.SelectedRandomMember = null;
             if (onJobChange)
-            {
                 PvEFeatures.OpenToCurrentJob(true);
+            if (onJobChange || firstRun)
+            {
                 Service.ActionReplacer.UpdateFilteredCombos();
                 WrathOpener.SelectOpener();
                 P.IPCSearch.UpdateActiveJobPresets();
@@ -226,7 +226,7 @@ public sealed partial class WrathCombo : IDalamudPlugin
 
     private void ClientState_TerritoryChanged(ushort obj)
     {
-        UpdateCaches(false, true);
+        UpdateCaches(false, true, false);
     }
 
     public const string OptionControlledByIPC =
