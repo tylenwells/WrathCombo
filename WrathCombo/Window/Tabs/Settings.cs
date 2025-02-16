@@ -236,7 +236,7 @@ namespace WrathCombo.Window.Tabs
                 if (ImGui.Checkbox($"Output opener status to chat", ref Service.Configuration.OutputOpenerLogs))
                     Service.Configuration.Save();
 
-                ImGuiComponents.HelpMarker("Every time your class's opener ir ready, fails, or finishes as expected, it will print to the chat.");
+                ImGuiComponents.HelpMarker("Every time your class's opener is ready, fails, or finishes as expected, it will print to the chat.");
                 #endregion
 
                 #region Debug File
