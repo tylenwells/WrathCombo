@@ -1837,7 +1837,7 @@ public enum CustomComboPreset
         "Adds (High) Jump to the rotation when in the target ring (1 yalm) & when not moving.", DRG.JobID)]
     DRG_ST_HighJump_Melee = 6114,
 
-    [ParentCombo(DRG_ST_HighJump)]
+    [ParentCombo(DRG_ST_CDs)]
     [CustomComboInfo("Mirage Dive Option", "Adds Mirage Dive to the rotation.", DRG.JobID)]
     DRG_ST_Mirage = 6115,
 
@@ -1940,7 +1940,7 @@ public enum CustomComboPreset
         "Adds (High) Jump to the rotation when in the target ring (1 yalm) & when not moving.", DRG.JobID)]
     DRG_AoE_HighJump_Melee = 6214,
 
-    [ParentCombo(DRG_AoE_HighJump)]
+    [ParentCombo(DRG_AoE_CDs)]
     [CustomComboInfo("Mirage Dive Option", "Adds Mirage Dive to the rotation.", DRG.JobID)]
     DRG_AoE_Mirage = 6215,
 
