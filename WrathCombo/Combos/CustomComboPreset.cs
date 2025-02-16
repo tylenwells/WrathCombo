@@ -41,7 +41,7 @@ public enum CustomComboPreset
     [ReplaceSkill(All.Reprisal)]
     [ParentCombo(ALL_Tank_Menu)]
     [CustomComboInfo("Tank: Double Reprisal Protection",
-        "Prevents the use of Reprisal when target already has the effect by replacing it with Stone.", ADV.JobID)]
+        "Prevents the use of Reprisal when target already has the effect by replacing it with Savage Blade.", ADV.JobID)]
     ALL_Tank_Reprisal = 100001,
 
     #endregion
@@ -75,7 +75,7 @@ public enum CustomComboPreset
     [ReplaceSkill(All.Addle)]
     [ParentCombo(ALL_Caster_Menu)]
     [CustomComboInfo("Magical Ranged DPS: Double Addle Protection",
-        "Prevents the use of Addle when target already has the effect by replacing it with Fell Cleave.", ADV.JobID)]
+        "Prevents the use of Addle when target already has the effect by replacing it with Savage Blade.", ADV.JobID)]
     ALL_Caster_Addle = 100020,
 
     [Role(JobRole.MagicalDPS)]
@@ -101,14 +101,14 @@ public enum CustomComboPreset
     [ReplaceSkill(All.Feint)]
     [ParentCombo(ALL_Melee_Menu)]
     [CustomComboInfo("Melee DPS: Double Feint Protection",
-        "Prevents the use of Feint when target already has the effect by replacing it with Fire.", ADV.JobID)]
+        "Prevents the use of Feint when target already has the effect by replacing it with Savage Blade.", ADV.JobID)]
     ALL_Melee_Feint = 100030,
 
     [Role(JobRole.MeleeDPS)]
     [ReplaceSkill(All.TrueNorth)]
     [ParentCombo(ALL_Melee_Menu)]
     [CustomComboInfo("Melee DPS: True North Protection",
-        "Prevents the use of True North when its buff is already active by replacing it with Fire.", ADV.JobID)]
+        "Prevents the use of True North when its buff is already active by replacing it with Savage Blade.", ADV.JobID)]
     ALL_Melee_TrueNorth = 100031,
 
     #endregion
@@ -125,7 +125,7 @@ public enum CustomComboPreset
     [ReplaceSkill(MCH.Tactician, BRD.Troubadour, DNC.ShieldSamba)]
     [ParentCombo(ALL_Ranged_Menu)]
     [CustomComboInfo("Physical Ranged DPS: Double Mitigation Protection",
-        "Prevents the use of Tactician/Troubadour/Shield Samba when target already has one of those three effects.",
+        "Prevents the use of Tactician/Troubadour/Shield Samba when target already has one of those three effects by replacing them with Savage Blade.",
         ADV.JobID)]
     ALL_Ranged_Mitigation = 100040,
 
@@ -518,7 +518,7 @@ public enum CustomComboPreset
 
     [ReplaceSkill(BLM.Triplecast)]
     [CustomComboInfo("Triplecast Protection",
-        "Replaces Triplecast with Savage Blade when u already have triplecast active.", BLM.JobID)]
+        "Replaces Triplecast with Savage Blade when you already have triplecast active.", BLM.JobID)]
     BLM_TriplecastProtection = 2056,
 
     [ReplaceSkill(BLM.Fire)]
@@ -2163,7 +2163,7 @@ public enum CustomComboPreset
     GNB_ST_Superbolide = 7022,
 
     [ParentCombo(GNB_ST_Mitigation)]
-    [CustomComboInfo("Aurora Protection Feature", "Locks out Aurora if Aurora's effect is on the target.", GNB.JobID)]
+    [CustomComboInfo("Aurora Protection Feature", "Locks out Aurora if Aurora's effect is on the target by replacing it with Savage Blade.", GNB.JobID)]
     GNB_AuroraProtection = 7023,
 
     [ParentCombo(GNB_ST_Mitigation)]
@@ -2664,7 +2664,7 @@ public enum CustomComboPreset
     [AutoAction(true, false)]
     [ReplaceSkill(MCH.SpreadShot, MCH.Scattergun)]
     [ConflictingCombos(MCH_AoE_AdvancedMode)]
-    [CustomComboInfo("Simple Mode - AoE", "Replaces Spreadshot with a full one-button AoE rotation.\nThis is the ideal option for newcomers to the job.", MCH.JobID)]
+    [CustomComboInfo("Simple Mode - AoE", "Replaces Spreadshot with a full one-button AoE rotation.\nThis is the ideal option for newcomers to the job.\nWill lock out input to keep Flamethrower going by replacing Spreadshot with Savage Blade.", MCH.JobID)]
     MCH_AoE_SimpleMode = 8200,
 
     #endregion
@@ -2748,7 +2748,7 @@ public enum CustomComboPreset
     [AutoAction(true, false)]
     [ReplaceSkill(MCH.SpreadShot, MCH.Scattergun)]
     [ConflictingCombos(MCH_AoE_SimpleMode)]
-    [CustomComboInfo("Advanced Mode - AoE", "Replaces Spreadshot with a full one-button AoE rotation.\nThese features are ideal if you want to customize the rotation.", MCH.JobID)]
+    [CustomComboInfo("Advanced Mode - AoE", "Replaces Spreadshot with a full one-button AoE rotation.\nThese features are ideal if you want to customize the rotation.\nWill lock out input to keep Flamethrower going by replacing Spreadshot with Savage Blade.", MCH.JobID)]
     MCH_AoE_AdvancedMode = 8300,
 
     [ParentCombo(MCH_AoE_AdvancedMode)]
@@ -2824,7 +2824,7 @@ public enum CustomComboPreset
     #endregion
 
     [ReplaceSkill(MCH.Dismantle)]
-    [CustomComboInfo("Physical Ranged DPS: Double Dismantle Protection", "Prevents the use of Dismantle when target already has the effect.", MCH.JobID)]
+    [CustomComboInfo("Physical Ranged DPS: Double Dismantle Protection", "Prevents the use of Dismantle when target already has the effect by replacing it with Savage Blade.", MCH.JobID)]
     All_PRanged_Dismantle = 8042,
 
     [ReplaceSkill(MCH.Dismantle)]
@@ -4482,13 +4482,13 @@ public enum CustomComboPreset
     RDM_MagickBarrierAddle = 13821,
 
     [ReplaceSkill(RDM.Embolden)]
-    [CustomComboInfo("Embolden Overlap Protection", "Disables Embolden when buffed by another Red Mage's Embolden.",
+    [CustomComboInfo("Embolden Overlap Protection", "Disables Embolden when buffed by another Red Mage's Embolden by replacing it with Savage Blade.",
         RDM.JobID)]
     RDM_EmboldenProtection = 13835,
 
     [ReplaceSkill(RDM.MagickBarrier)]
     [CustomComboInfo("Magick Barrier Overlap Protection",
-        "Disables Magick Barrier when buffed by another Red Mage's Magick Barrier.", RDM.JobID)]
+        "Disables Magick Barrier when buffed by another Red Mage's Magick Barrier by replacing it with Savage Blade.", RDM.JobID)]
     RDM_MagickProtection = 13836,
 
     [Variant]
@@ -5015,7 +5015,7 @@ public enum CustomComboPreset
     [ReplaceSkill(SAM.MeikyoShisui)]
     [ConflictingCombos(SAM_MeikyoSens)]
     [CustomComboInfo("Meikyo Shisui Protection",
-        "Replaces Meikyo Shisui with Savage Blade when u already have Meikyo Shisui active.", SAM.JobID)]
+        "Replaces Meikyo Shisui with Savage Blade when you already have Meikyo Shisui active.", SAM.JobID)]
     SAM_MeikyoShisuiProtection = 15214,
 
     #endregion
@@ -6517,7 +6517,7 @@ public enum CustomComboPreset
     [Role(JobRole.All)]
     [PvPCustomCombo]
     [CustomComboInfo("Prevent Mash Cancelling Feature",
-        "Stops you cancelling your guard if you're pressing buttons quickly.", ADV.JobID)]
+        "Stops you cancelling your guard if you're pressing buttons quickly by replacing your buttons with Savage Blade.", ADV.JobID)]
     PvP_MashCancel = 1100030,
 
     [Role(JobRole.All)]
@@ -7217,7 +7217,7 @@ public enum CustomComboPreset
 
     [PvPCustomCombo]
     [ReplaceSkill(RDMPvP.Jolt3)]
-    [CustomComboInfo("Burst Mode", "Turns Jolt III into an all-in-one button.\n- Will not attempt to cast Jolt III while moving.", RDMPvP.JobID)]
+    [CustomComboInfo("Burst Mode", "Turns Jolt III into an all-in-one button.\n- Will not attempt to cast Jolt III while moving by replacing it with Savage Blade.", RDMPvP.JobID)]
     RDMPvP_BurstMode = 123000,
 
     [PvPCustomCombo]
