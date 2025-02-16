@@ -219,7 +219,7 @@ namespace WrathCombo.CustomComboNS.Functions
             double castPercentage = chara.CurrentCastTime / chara.TotalCastTime;
 
             if (chara is { IsCasting: true, IsCastInterruptible: true })
-                return minCastPercentage >= castPercentage;
+                return minCastPercentage <= castPercentage;
 
             return false;
         }
