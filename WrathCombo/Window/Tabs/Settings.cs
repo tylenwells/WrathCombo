@@ -4,6 +4,7 @@ using Dalamud.Interface.Utility.Raii;
 using ImGuiNET;
 using System.Numerics;
 using Dalamud.Interface.Colors;
+using ECommons.GameHelpers;
 using ECommons.ImGuiMethods;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Services;
@@ -212,7 +213,7 @@ namespace WrathCombo.Window.Tabs
 
                 #endregion
 
-                #region Logging Options
+                #region Troubleshooting Options
 
                 ImGui.Dummy(new Vector2(20f));
                 ImGuiEx.TextUnderlined("Troubleshooting / Analysis Options");
@@ -236,6 +237,20 @@ namespace WrathCombo.Window.Tabs
                     Service.Configuration.Save();
 
                 ImGuiComponents.HelpMarker("Every time your class's opener ir ready, fails, or finishes as expected, it will print to the chat.");
+                #endregion
+
+                #region Debug File
+
+                if (ImGui.Button("Create Debug File"))
+                {
+                    if (Player.Available)
+                        DebugFile.MakeDebugFile();
+                    else
+                        DebugFile.MakeDebugFile(allJobs:true);
+                }
+
+                ImGuiComponents.HelpMarker("Will generate a debug file on your desktop.\nUseful to give developers to help troubleshoot issues.\nThe same as using the following command: /wrath debug");
+
                 #endregion
 
                 #endregion
