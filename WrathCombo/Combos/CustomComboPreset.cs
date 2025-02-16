@@ -25,7 +25,7 @@ public enum CustomComboPreset
 
     [Role(JobRole.Tank)]
     [CustomComboInfo("Global Tank Features",
-        "Features and options involving shared role actions for Tanks.\nCollapsing this category does NOT disable the features inside.",
+        "Features and options involving shared role actions for Tanks.",
         ADV.JobID)]
     ALL_Tank_Menu = 100099,
 
@@ -50,7 +50,7 @@ public enum CustomComboPreset
 
     [Role(JobRole.Healer)]
     [CustomComboInfo("Global Healer Features",
-        "Features and options involving shared role actions for Healers.\nCollapsing this category does NOT disable the features inside.",
+        "Features and options involving shared role actions for Healers.",
         ADV.JobID)]
     ALL_Healer_Menu = 100098,
 
@@ -67,7 +67,7 @@ public enum CustomComboPreset
 
     [Role(JobRole.MagicalDPS)]
     [CustomComboInfo("Global Magical Ranged Features",
-        "Features and options involving shared role actions for Magical Ranged DPS.\nCollapsing this category does NOT disable the features inside.",
+        "Features and options involving shared role actions for Magical Ranged DPS.",
         ADV.JobID)]
     ALL_Caster_Menu = 100097,
 
@@ -93,7 +93,7 @@ public enum CustomComboPreset
 
     [Role(JobRole.MeleeDPS)]
     [CustomComboInfo("Global Melee DPS Features",
-        "Features and options involving shared role actions for Melee DPS.\nCollapsing this category does NOT disable the features inside.",
+        "Features and options involving shared role actions for Melee DPS.",
         ADV.JobID)]
     ALL_Melee_Menu = 100096,
 
@@ -117,7 +117,7 @@ public enum CustomComboPreset
 
     [Role(JobRole.RangedDPS)]
     [CustomComboInfo("Global Physical Ranged Features",
-        "Features and options involving shared role actions for Physical Ranged DPS.\nCollapsing this category does NOT disable the features inside.",
+        "Features and options involving shared role actions for Physical Ranged DPS.",
         ADV.JobID)]
     ALL_Ranged_Menu = 100095,
 
