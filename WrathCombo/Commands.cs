@@ -551,13 +551,29 @@ public partial class WrathCombo
         // Open to current job setting
         PvEFeatures.OpenToCurrentJob(false);
 
-        // Open to specified job
         if (argument[0].Length <= 0) return;
-        var jobName = ConfigWindow.groupedPresets
+
+        // Open to specified tab
+        switch (argument[0])
+        {
+            case "settings":
+            case "config":
+                ConfigWindow.OpenWindow = OpenWindow.Settings;
+                return;
+
+            case "autosettings":
+            case "autorotationsettings":
+            case "autoconfig":
+            case "autorotationconfig":
+                ConfigWindow.OpenWindow = OpenWindow.AutoRotation;
+                return;
+        }
+
+        // Open to specified job
+        var jobName = argument[0].ToUpperInvariant();
+        jobName = ConfigWindow.groupedPresets
             .FirstOrDefault(x =>
-                x.Value.Any(y =>
-                    y.Info.JobShorthand == argument[0].ToUpperInvariant()))
-            .Key;
+                x.Value.Any(y => y.Info.JobShorthand == jobName)).Key;
         if (jobName is null)
         {
             DuoLog.Error($"{argument[0]} is not a correct job abbreviation.");
