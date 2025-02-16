@@ -19,8 +19,9 @@ namespace WrathCombo.Services.IPC_Subscriber
     {
         private static EzIPCDisposalToken[] _disposalTokens = EzIPC.Init(typeof(OrbwalkerIPC), "Orbwalker", SafeWrapper.IPCException);
 
-        internal static bool IsEnabled => DalamudReflector.TryGetDalamudPlugin("Orbwalker", out _, false, true);
-        internal static Version? Version => DalamudReflector.TryGetDalamudPlugin("Orbwalker", out var dalamudPlugin, false, true) ? dalamudPlugin.GetType().Assembly.GetName().Version : new Version(0, 0, 0, 0);
+        internal static bool IsEnabled => InstalledVersion >= _validVersion;
+        internal static Version InstalledVersion => DalamudReflector.TryGetDalamudPlugin("Orbwalker", out var dalamudPlugin, false, true) ? dalamudPlugin.GetType().Assembly.GetName().Version : new Version(0, 0, 0, 0);
+        private static Version _validVersion = new(1,0,1,1);
 
         [EzIPC] public static readonly Func<bool> PluginEnabled;
         [EzIPC] public static readonly Func<bool> MovementLocked;
