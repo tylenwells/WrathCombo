@@ -123,28 +123,6 @@ namespace WrathCombo.Window.Tabs
                 ImGui.Dummy(new Vector2(20f));
                 ImGuiEx.TextUnderlined("Rotation Behavior Options");
 
-                #region Throttle
-
-                ImGui.PushItemWidth(125);
-                var throttle = Service.Configuration.Throttle;
-                if (ImGui.InputInt("milliseconds    -    Action Updater Throttle",
-                        ref throttle, 10))
-                {
-                    Service.Configuration.Throttle = Math.Clamp(throttle, 0, 1500);
-                    Service.Configuration.Save();
-                }
-
-                ImGuiComponents.HelpMarker(
-                    "This is the restriction for how often combos will update the action on your hotbar." +
-                    "\nBy default this isn't restricting the combos, so you always get an up-to-date action." +
-                    "\n\nIf you have minor FPS issues, you can increase this value to make combos run less often." +
-                    "\nThis makes your combos less responsive, and perhaps even clips GCDs." +
-                    "\nAt high values, this can break your rotation entirely." +
-                    "\nMore severe FPS issues should instead be handled with Performance Mode below." +
-                    "\n\n200ms can make a reasonable difference in your FPS." +
-                    "\nValues over 500ms are NOT recommended.");
-
-                #endregion
 
                 #region Performance Mode
 
@@ -164,21 +142,50 @@ namespace WrathCombo.Window.Tabs
 
                 #endregion
 
-                #region Movement Check Delay
+                #region Throttle
 
-                var len = ImGui.CalcTextSize("% of cast").X;
+                var len = ImGui.CalcTextSize("milliseconds").X;
+
+                ImGui.PushItemWidth(75);
+                var throttle = Service.Configuration.Throttle;
+                if (ImGui.InputInt("###ActionThrottle",
+                        ref throttle, 0, 0))
+                {
+                    Service.Configuration.Throttle = Math.Clamp(throttle, 0, 1500);
+                    Service.Configuration.Save();
+                }
+
+                ImGui.SameLine();
+                var pos = ImGui.GetCursorPosX() + len;
+                ImGui.Text($"milliseconds");
+                ImGui.SameLine(pos);
+                ImGui.Text($"   -   Action Updater Throttle");
+
+
+                ImGuiComponents.HelpMarker(
+                    "This is the restriction for how often combos will update the action on your hotbar." +
+                    "\nBy default this isn't restricting the combos, so you always get an up-to-date action." +
+                    "\n\nIf you have minor FPS issues, you can increase this value to make combos run less often." +
+                    "\nThis makes your combos less responsive, and perhaps even clips GCDs." +
+                    "\nAt high values, this can break your rotation entirely." +
+                    "\nMore severe FPS issues should instead be handled with Performance Mode below." +
+                    "\n\n200ms can make a reasonable difference in your FPS." +
+                    "\nValues over 500ms are NOT recommended.");
+
+                #endregion
+
+                #region Movement Check Delay
 
                 ImGui.PushItemWidth(75);
                 if (ImGui.InputFloat("###MovementLeeway", ref Service.Configuration.MovementLeeway))
                     Service.Configuration.Save();
 
                 ImGui.SameLine();
-                var pos = ImGui.GetCursorPosX();
                 ImGui.Text("seconds");
 
-                ImGui.SameLine(pos + len);
+                ImGui.SameLine(pos);
 
-                ImGui.Text($"  -  Movement Check Delay");
+                ImGui.Text($"   -   Movement Check Delay");
 
                 ImGuiComponents.HelpMarker("Many features check if you are moving to decide actions, this will allow you to set a delay on how long you need to be moving before it recognizes you as moving.\nThis allows you to not have to worry about small movements affecting your rotation, primarily for casters.\n\nIt is recommended to keep this value between 0 and 1 seconds.");
 
@@ -190,12 +197,11 @@ namespace WrathCombo.Window.Tabs
                     Service.Configuration.Save();
 
                 ImGui.SameLine();
-                pos = ImGui.GetCursorPosX();
                 ImGui.Text("seconds");
 
-                ImGui.SameLine(pos + len);
+                ImGui.SameLine(pos);
 
-                ImGui.Text($"  -  Opener Failure Timeout");
+                ImGui.Text($"   -   Opener Failure Timeout");
 
                 ImGuiComponents.HelpMarker("During an opener, if this amount of time has passed since your last action, it will fail the opener and resume with non-opener functionality.");
 
@@ -212,9 +218,9 @@ namespace WrathCombo.Window.Tabs
 
                 ImGui.SameLine();
                 ImGui.Text($"yalms");
-                ImGui.SameLine(len + pos);
+                ImGui.SameLine(pos);
 
-                ImGui.Text($"  -  Melee Distance Offset");
+                ImGui.Text($"   -   Melee Distance Offset");
 
                 ImGuiComponents.HelpMarker("Offset of melee check distance.\nFor those who don't want to immediately use their ranged attack if the boss walks slightly out of range.\n\nFor example, a value of -0.5 would make you have to be 0.5 yalms closer to the target,\nor a value of 2 would disable triggering of ranged features until you are 2 yalms further from the hitbox.\n\nIt is recommended to keep this value at 0.");
                 #endregion
@@ -233,8 +239,8 @@ namespace WrathCombo.Window.Tabs
                 }
                 ImGui.SameLine();
                 ImGui.Text($"%% of cast");
-                ImGui.SameLine(len + pos);
-                ImGui.Text($"  -  Interrupt Delay");
+                ImGui.SameLine( pos);
+                ImGui.Text($"   -   Interrupt Delay");
 
                 ImGuiComponents.HelpMarker("The percentage of a total cast time to wait before interrupting.\nApplies to all interrupts, in every job's combos.\n\nIt is recommend to keep this value below 50%.");
 
