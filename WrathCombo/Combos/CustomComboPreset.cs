@@ -1617,7 +1617,7 @@ public enum CustomComboPreset
     #endregion
 
     [ParentCombo(DRK_AoE_CDs)]
-    [CustomComboInfo("Abyssal Drain Option", "Adds Abyssal Drain to the rotation when you fall below 60 percent hp.",
+    [CustomComboInfo("Abyssal Drain Option", "Adds Abyssal Drain to the rotation when you fall below the chosen HP.",
         DRK.JobID)]
     DRK_AoE_CD_Drain = 5060,
 
@@ -1752,16 +1752,32 @@ public enum CustomComboPreset
     #region oGCD Feature
 
     [ReplaceSkill(DRK.CarveAndSpit, DRK.AbyssalDrain)]
-    [CustomComboInfo("oGCD Feature", "Adds Living Shadow > Disesteem > Salted Earth > Salt And Darkness to Carve And Spit and Abyssal Drain.", DRK.JobID)]
+    [CustomComboInfo("oGCD Feature", "Adds selected oGCD abilities to Carve And Spit and Abyssal Drain.", DRK.JobID)]
     DRK_oGCD = 5120,
 
     [ParentCombo(DRK_oGCD)]
-    [CustomComboInfo("Interrupt Option", "Adds Interject to the beginning of the feature when your target's cast is interruptible.", DRK.JobID)]
+    [CustomComboInfo("Interrupt Option", "Adds Interject to the feature when your target's cast is interruptible.", DRK.JobID)]
     DRK_oGCD_Interrupt = 5121,
 
     [ParentCombo(DRK_oGCD)]
-    [CustomComboInfo("Delirium Option", "Adds Blood Weapon or Delirium to the Feature.", DRK.JobID)]
+    [CustomComboInfo("Delirium Option", "Adds Delirium (or Blood Weapon) to the Feature.", DRK.JobID)]
     DRK_oGCD_Delirium = 5122,
+
+    [ParentCombo(DRK_oGCD)]
+    [CustomComboInfo("Living Shadow Option", "Adds Living Shadow to the Feature.", DRK.JobID)]
+    DRK_oGCD_Shadow = 5124,
+
+    [ParentCombo(DRK_oGCD)]
+    [CustomComboInfo("Disesteem Option", "Adds Disesteem to the Feature.", DRK.JobID)]
+    DRK_oGCD_Disesteem = 5125,
+
+    [ParentCombo(DRK_oGCD)]
+    [CustomComboInfo("Salted Earth Option", "Adds Salted Earth to the Feature.", DRK.JobID)]
+    DRK_oGCD_SaltedEarth = 5126,
+
+    [ParentCombo(DRK_oGCD)]
+    [CustomComboInfo("Salt and Darkness Option", "Adds Saltand Darkness to the Feature when under the effect of Salted Earth.", DRK.JobID)]
+    DRK_oGCD_SaltAndDarkness = 5127,
 
     [ParentCombo(DRK_oGCD)]
     [CustomComboInfo("Shadowbringer Option", "Adds Shadowbringer to the Feature.", DRK.JobID)]
