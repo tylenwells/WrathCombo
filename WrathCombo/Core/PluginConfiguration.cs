@@ -308,8 +308,11 @@ namespace WrathCombo.Core
                 catch (Exception)
                 {
                     retryCount++;
-                    if (retryCount >= 3)
-                        throw;
+                    if (retryCount < 3) continue;
+
+                    PluginLog.Error("Failed to save configuration after 3 retries.");
+                    _isSaving = false;
+                    return;
                 }
             }
 
