@@ -9,6 +9,7 @@ using ECommons.ImGuiMethods;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Services;
 using WrathCombo.Window.Functions;
+using ECommons.DalamudServices;
 
 namespace WrathCombo.Window.Tabs
 {
@@ -165,9 +166,19 @@ namespace WrathCombo.Window.Tabs
 
                 #region Movement Check Delay
 
+                var len = ImGui.CalcTextSize("% of cast").X;
+
                 ImGui.PushItemWidth(75);
-                if (ImGui.InputFloat("seconds    -    Movement Check Delay", ref Service.Configuration.MovementLeeway))
+                if (ImGui.InputFloat("###MovementLeeway", ref Service.Configuration.MovementLeeway))
                     Service.Configuration.Save();
+
+                ImGui.SameLine();
+                var pos = ImGui.GetCursorPosX();
+                ImGui.Text("seconds");
+
+                ImGui.SameLine(pos + len);
+
+                ImGui.Text($"  -  Movement Check Delay");
 
                 ImGuiComponents.HelpMarker("Many features check if you are moving to decide actions, this will allow you to set a delay on how long you need to be moving before it recognizes you as moving.\nThis allows you to not have to worry about small movements affecting your rotation, primarily for casters.\n\nIt is recommended to keep this value between 0 and 1 seconds.");
 
@@ -175,8 +186,16 @@ namespace WrathCombo.Window.Tabs
 
                 #region Opener Failure Timeout
 
-                if (ImGui.InputFloat("seconds    -    Opener Failure Timeout", ref Service.Configuration.OpenerTimeout))
+                if (ImGui.InputFloat("###OpenerTimeout", ref Service.Configuration.OpenerTimeout))
                     Service.Configuration.Save();
+
+                ImGui.SameLine();
+                pos = ImGui.GetCursorPosX();
+                ImGui.Text("seconds");
+
+                ImGui.SameLine(pos + len);
+
+                ImGui.Text($"  -  Opener Failure Timeout");
 
                 ImGuiComponents.HelpMarker("During an opener, if this amount of time has passed since your last action, it will fail the opener and resume with non-opener functionality.");
 
@@ -185,11 +204,17 @@ namespace WrathCombo.Window.Tabs
                 #region Melee Offset
                 var offset = (float)Service.Configuration.MeleeOffset;
 
-                if (ImGui.InputFloat("yalms    -    Melee Distance Offset", ref offset))
+                if (ImGui.InputFloat("###MeleeOffset", ref offset))
                 {
                     Service.Configuration.MeleeOffset = (double)offset;
                     Service.Configuration.Save();
                 }
+
+                ImGui.SameLine();
+                ImGui.Text($"yalms");
+                ImGui.SameLine(len + pos);
+
+                ImGui.Text($"  -  Melee Distance Offset");
 
                 ImGuiComponents.HelpMarker("Offset of melee check distance.\nFor those who don't want to immediately use their ranged attack if the boss walks slightly out of range.\n\nFor example, a value of -0.5 would make you have to be 0.5 yalms closer to the target,\nor a value of 2 would disable triggering of ranged features until you are 2 yalms further from the hitbox.\n\nIt is recommended to keep this value at 0.");
                 #endregion
@@ -198,7 +223,7 @@ namespace WrathCombo.Window.Tabs
 
                 var delay = (int)(Service.Configuration.InterruptDelay * 100d);
 
-                if (ImGui.SliderInt("percent of cast    -    Interrupt Delay",
+                if (ImGui.SliderInt("###InterruptDelay",
                     ref delay, 0, 100))
                 {
                     delay = delay.RoundOff(SliderIncrements.Fives);
@@ -206,6 +231,10 @@ namespace WrathCombo.Window.Tabs
                     Service.Configuration.InterruptDelay = ((double)delay) / 100d;
                     Service.Configuration.Save();
                 }
+                ImGui.SameLine();
+                ImGui.Text($"%% of cast");
+                ImGui.SameLine(len + pos);
+                ImGui.Text($"  -  Interrupt Delay");
 
                 ImGuiComponents.HelpMarker("The percentage of a total cast time to wait before interrupting.\nApplies to all interrupts, in every job's combos.\n\nIt is recommend to keep this value below 50%.");
 
