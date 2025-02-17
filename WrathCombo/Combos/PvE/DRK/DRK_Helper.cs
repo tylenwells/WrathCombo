@@ -344,7 +344,7 @@ internal partial class DRK
                     ? flags.HasFlag(Combo.Adv)
                         ? Config.DRK_AoE_SaltThreshold
                         : 30
-                    : 100;
+                    : 0;
 
             #endregion
 
