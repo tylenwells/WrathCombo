@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using WrathCombo.Core;
 using WrathCombo.Services;
-using static FFXIVClientStructs.STD.Helper.IStaticMemorySpace;
 
 namespace WrathCombo.CustomComboNS.Functions
 {
@@ -18,13 +17,15 @@ namespace WrathCombo.CustomComboNS.Functions
         public static float GetOptionFloat(string SliderID) => PluginConfiguration.GetCustomFloatValue(SliderID);
     }
 
-    internal class UserData(string v)
+    internal abstract class UserData(string v)
     {
         public string pName = v;
 
         public static implicit operator string(UserData o) => (o.pName);
 
         public static Dictionary<string, UserData> MasterList = new();
+
+        public abstract void ResetToDefault();
     }
 
     internal class UserFloat : UserData
@@ -50,7 +51,7 @@ namespace WrathCombo.CustomComboNS.Functions
         // Implicit conversion to float
         public static implicit operator float(UserFloat o) => PluginConfiguration.GetCustomFloatValue(o.pName);
 
-        public void ResetToDefault()
+        public override void ResetToDefault()
         {
             PluginConfiguration.SetCustomFloatValue(this.pName, Default);
             Service.Configuration.Save();
@@ -79,7 +80,7 @@ namespace WrathCombo.CustomComboNS.Functions
         // Implicit conversion to int
         public static implicit operator int(UserInt o) => PluginConfiguration.GetCustomIntValue(o.pName);
 
-        public void ResetToDefault()
+        public override void ResetToDefault()
         {
             PluginConfiguration.SetCustomIntValue(this.pName, Default);
             Service.Configuration.Save();
@@ -109,14 +110,14 @@ namespace WrathCombo.CustomComboNS.Functions
         // Implicit conversion to bool
         public static implicit operator bool(UserBool o) => PluginConfiguration.GetCustomBoolValue(o.pName);
 
-        public void ResetToDefault()
+        public override void ResetToDefault()
         {
             PluginConfiguration.SetCustomBoolValue(this.pName, Default);
             Service.Configuration.Save();
         }
     }
 
-    internal class UserIntArray: UserData
+    internal class UserIntArray : UserData
     {
         public string Name => pName;
 
@@ -193,7 +194,7 @@ namespace WrathCombo.CustomComboNS.Functions
             }
         }
 
-        public void ResetToDefault()
+        public override void ResetToDefault()
         {
             PluginConfiguration.SetCustomIntArrayValue(this.pName, Default);
             Service.Configuration.Save();
@@ -244,7 +245,7 @@ namespace WrathCombo.CustomComboNS.Functions
             return array.All(predicate);
         }
 
-        public void ResetToDefault()
+        public override void ResetToDefault()
         {
             PluginConfiguration.SetCustomBoolArrayValue(this.pName, Default);
             Service.Configuration.Save();

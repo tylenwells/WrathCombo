@@ -121,13 +121,13 @@ namespace WrathCombo.Window.Functions
             };
 
             box.Draw();
-            DrawResetContextMenu(config, typeof(UserInt));
+            DrawResetContextMenu(config);
             ImGui.Spacing();
             ImGui.Unindent();
             return box.FuncRes;
         }
 
-        private static void DrawResetContextMenu(string config, Type type)
+        private static void DrawResetContextMenu(string config)
         {
             if (ImGui.IsItemClicked(ImGuiMouseButton.Right))
                 ImGui.OpenPopup($"##ResetConfig{config}");
@@ -137,7 +137,7 @@ namespace WrathCombo.Window.Functions
 
             if (ImGui.MenuItem("Reset to Default"))
             {
-                ResetToDefault(config, type);
+                ResetToDefault(config);
             }
         }
 
@@ -232,7 +232,7 @@ namespace WrathCombo.Window.Functions
             };
 
             box.Draw();
-            DrawResetContextMenu(config, typeof(UserFloat));
+            DrawResetContextMenu(config);
             ImGui.Spacing();
         }
 
@@ -328,7 +328,7 @@ namespace WrathCombo.Window.Functions
             };
 
             box.Draw();
-            DrawResetContextMenu(config, typeof(UserFloat));
+            DrawResetContextMenu(config);
             ImGui.Spacing();
         }
 
@@ -1526,27 +1526,9 @@ namespace WrathCombo.Window.Functions
             return ((int)Math.Round(i / sliderAsDouble)) * (int)sliderIncrement;
         }
 
-        private static void ResetToDefault(string config, Type type)
+        private static void ResetToDefault(string config)
         {
-            switch (type)
-            {
-                case Type UserInt when UserInt == typeof(UserInt):
-                    (UserData.MasterList[config] as UserInt).ResetToDefault();
-                    break;
-                case Type UserBool when UserBool == typeof(UserBool):
-                    (UserData.MasterList[config] as UserBool).ResetToDefault();
-                    break;
-                case Type UserFloat when UserFloat == typeof(UserFloat):
-                    (UserData.MasterList[config] as UserFloat).ResetToDefault();
-                    break;
-                case Type UserBoolArray when UserBoolArray == typeof(UserBoolArray):
-                    (UserData.MasterList[config] as UserBoolArray).ResetToDefault();
-                    break;
-                case Type UserIntArray when UserIntArray == typeof(UserIntArray):
-                    (UserData.MasterList[config] as UserIntArray).ResetToDefault();
-                    break;
-
-            }
+            UserData.MasterList[config].ResetToDefault();
         }
     }
 
