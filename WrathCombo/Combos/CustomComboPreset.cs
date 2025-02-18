@@ -1382,6 +1382,7 @@ public enum CustomComboPreset
 
     [AutoAction(false, false)]
     [ReplaceSkill(DRK.HardSlash)]
+    [ConflictingCombos(DRK_ST_Simple)]
     [CustomComboInfo("Advanced Mode - Single Target",
         "Replaces Hard Slash with a full one-button single target rotation.\nThese features are ideal if you want to customize the rotation.",
         DRK.JobID)]
@@ -1560,6 +1561,7 @@ public enum CustomComboPreset
 
     [AutoAction(true, false)]
     [ReplaceSkill(DRK.Unleash)]
+    [ConflictingCombos(DRK_AoE_Simple)]
     [CustomComboInfo("Advanced Mode - AoE",
         "Replaces Unleash with a full one-button AoE rotation.\nThese features are ideal if you want to customize the rotation.",
         DRK.JobID)]
