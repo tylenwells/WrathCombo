@@ -5,7 +5,6 @@ using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
 using static WrathCombo.Extensions.UIntExtensions;
 using static WrathCombo.Window.Functions.SliderIncrements;
 using static WrathCombo.Window.Functions.UserConfig;
-
 namespace WrathCombo.Combos.PvE;
 
 internal static partial class AST

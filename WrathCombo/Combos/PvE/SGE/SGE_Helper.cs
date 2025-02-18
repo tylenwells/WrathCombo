@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
-
 namespace WrathCombo.Combos.PvE;
 
 internal static partial class SGE
@@ -180,7 +179,7 @@ internal static partial class SGE
             Dosis3,
             Dosis3
         ];
-        internal override UserData? ContentCheckConfig => Config.SGE_Balance_Content;
+        internal override UserData ContentCheckConfig => Config.SGE_Balance_Content;
 
         public override bool HasCooldowns()
         {
