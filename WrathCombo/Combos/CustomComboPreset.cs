@@ -1648,7 +1648,7 @@ public enum CustomComboPreset
     #region Mana
 
     [ParentCombo(DRK_AoE_Spenders)]
-    [CustomComboInfo("Flood of Shadow Option", "Uses Flood of Shadow in burst, if Darkside is about to expire (<10s), or if you have Dark Arts.", DRK.JobID)]
+    [CustomComboInfo("Flood of Shadow Option", "Uses Flood of Shadow in burst, if Darkside is about to expire (<10s), if you have Dark Arts and use The Blackest Night, and outside of burst will spend to chosen MP limit.", DRK.JobID)]
     DRK_AoE_Sp_Flood = 5065,
 
     [ParentCombo(DRK_AoE_Spenders)]
