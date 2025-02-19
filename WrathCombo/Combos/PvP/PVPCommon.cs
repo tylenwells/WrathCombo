@@ -130,7 +130,7 @@ namespace WrathCombo.Combos.PvP
                     InPvP() &&
                     !GlobalSkills.Contains(actionID) &&
                     !MovmentSkills.Contains(actionID))
-                    return Guard;
+                    return OriginalHook(Guard);
 
                 return actionID;
             }
