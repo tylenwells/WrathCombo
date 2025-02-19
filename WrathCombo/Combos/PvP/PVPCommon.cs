@@ -130,7 +130,7 @@ namespace WrathCombo.Combos.PvP
                     InPvP() &&
                     !GlobalSkills.Contains(actionID) &&
                     !MovmentSkills.Contains(actionID))
-                    return All.SavageBlade;
+                    return Guard;
 
                 return actionID;
             }
