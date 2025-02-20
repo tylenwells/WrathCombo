@@ -2475,7 +2475,7 @@ internal partial class GNB
                 PlayerHealthPercentageHp() <= Config.GNB_Mit_Superbolide_Health &&
                 ContentCheck.IsInConfiguredContent(
                     Config.GNB_Mit_Superbolide_Difficulty,
-                    Config.GnbMitSuperbolideDifficultyListSet
+                    Config.GNB_Mit_Superbolide_DifficultyListSet
                 ))
                 return Superbolide;
 

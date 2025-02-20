@@ -83,7 +83,7 @@ internal partial class GNB
             GNB_Mit_Superbolide_Difficulty = new("GNB_Mit_Superbolide_Difficulty",
                 [true, false]);
 
-        public static readonly ContentCheck.ListSet GnbMitSuperbolideDifficultyListSet = ContentCheck.ListSet.Halved;
+        public static readonly ContentCheck.ListSet GNB_Mit_Superbolide_DifficultyListSet = ContentCheck.ListSet.Halved;
 
         internal static void Draw(CustomComboPreset preset)
         {
@@ -337,7 +337,7 @@ internal partial class GNB
                 case CustomComboPreset.GNB_Mit_Superbolide_Max:
                     UserConfig.DrawDifficultyMultiChoice(
                         GNB_Mit_Superbolide_Difficulty,
-                        GnbMitSuperbolideDifficultyListSet,
+                        GNB_Mit_Superbolide_DifficultyListSet,
                         "Select what difficulties Superbolide should be used in:"
                     );
 
