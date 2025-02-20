@@ -1,29 +1,16 @@
 using ECommons.ImGuiMethods;
 using ImGuiNET;
-using System.Numerics;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Data;
 using WrathCombo.Extensions;
 using WrathCombo.Window.Functions;
-
 namespace WrathCombo.Combos.PvE;
 
 internal partial class GNB
 {
     internal static class Config
     {
-        private const int numberMitigationOptions = 8;
-
-        internal enum PartyRequirement
-        {
-            No,
-            Yes
-        }
-        internal enum BossAvoidance
-        {
-            Off = 1,
-            On = 2
-        }
+        private const int NumberMitigationOptions = 8;
 
         public const string
             GNB_VariantCure = "GNB_VariantCure",
@@ -62,9 +49,9 @@ internal partial class GNB
             GNB_AoE_Nebula_SubOption = new("GNB_AoE_Nebula_Option", 0),
             GNB_AoE_Superbolide_Health = new("GNB_AoE_Superbolide_Health", 30),
             GNB_AoE_Superbolide_SubOption = new("GNB_AoE_Superbolide_Option", 0),
-            GNB_AoE_Reprisal_Health = new("GNB_ST_Reprisal_Health", 0),
-            GNB_AoE_Reprisal_SubOption = new("GNB_ST_Reprisal_Option", 0),
-            GNB_AoE_ArmsLength_Health = new("GNB_ST_ArmsLength_Health", 0),
+            GNB_AoE_Reprisal_Health = new("GNB_AoE_Reprisal_Health", 0),
+            GNB_AoE_Reprisal_SubOption = new("GNB_AoE_Reprisal_Option", 0),
+            GNB_AoE_ArmsLength_Health = new("GNB_AoE_ArmsLength_Health", 0),
             GNB_AoE_NoMercyStop = new("GNB_AoE_NoMercyStop", 5),
             GNB_NM_Features_Weave = new("GNB_NM_Feature_Weave", 0),
             GNB_GF_Features_Choice = new("GNB_GF_Choice", 0),
@@ -75,17 +62,17 @@ internal partial class GNB
             GNB_Mit_Corundum_Health = new("GNB_Mit_Corundum_Health", 60),
             GNB_Mit_Aurora_Charges = new("GNB_Mit_Aurora_Charges", 0),
             GNB_Mit_Aurora_Health = new("GNB_Mit_Aurora_Health", 60),
-            GNB_Mit_HeartOfLight_PartyRequirement = new("GNB_Mit_HeartOfLight_PartyRequirement", (int) PartyRequirement.Yes),
+            GNB_Mit_HeartOfLight_PartyRequirement = new("GNB_Mit_HeartOfLight_PartyRequirement", (int)PartyRequirement.Yes),
             GNB_Mit_Rampart_Health = new("GNB_Mit_Rampart_Health", 65),
-            GNB_Mit_ArmsLength_Boss = new("GNB_Mit_ArmsLength_Boss", (int) BossAvoidance.On),
+            GNB_Mit_ArmsLength_Boss = new("GNB_Mit_ArmsLength_Boss", (int)BossAvoidance.On),
             GNB_Mit_ArmsLength_EnemyCount = new("GNB_Mit_ArmsLength_EnemyCount", 0),
             GNB_Mit_Nebula_Health = new("GNB_Mit_Nebula_Health", 50),
 
             //Bozja
             GNB_Bozja_LostCure_Health = new("GNB_Bozja_LostCure_Health", 50),
-            GNB_Bozja_LostCure2_Health = new("GNB_Bozja_LostCure_Health", 50),
-            GNB_Bozja_LostCure3_Health = new("GNB_Bozja_LostCure_Health", 50),
-            GNB_Bozja_LostCure4_Health = new("GNB_Bozja_LostCure_Health", 50),
+            GNB_Bozja_LostCure2_Health = new("GNB_Bozja_LostCure2_Health", 50),
+            GNB_Bozja_LostCure3_Health = new("GNB_Bozja_LostCure3_Health", 50),
+            GNB_Bozja_LostCure4_Health = new("GNB_Bozja_LostCure4_Health", 50),
             GNB_Bozja_LostAethershield_Health = new("GNB_Bozja_LostAethershield_Health", 70),
             GNB_Bozja_LostReraise_Health = new("GNB_Bozja_LostReraise_Health", 10);
 
@@ -96,9 +83,7 @@ internal partial class GNB
             GNB_Mit_Superbolide_Difficulty = new("GNB_Mit_Superbolide_Difficulty",
                 [true, false]);
 
-        public static readonly ContentCheck.ListSet
-            GNB_Mit_Superbolide_DifficultyListSet =
-                ContentCheck.ListSet.Halved;
+        public static readonly ContentCheck.ListSet GnbMitSuperbolideDifficultyListSet = ContentCheck.ListSet.Halved;
 
         internal static void Draw(CustomComboPreset preset)
         {
@@ -352,7 +337,7 @@ internal partial class GNB
                 case CustomComboPreset.GNB_Mit_Superbolide_Max:
                     UserConfig.DrawDifficultyMultiChoice(
                         GNB_Mit_Superbolide_Difficulty,
-                        GNB_Mit_Superbolide_DifficultyListSet,
+                        GnbMitSuperbolideDifficultyListSet,
                         "Select what difficulties Superbolide should be used in:"
                     );
 
@@ -367,7 +352,7 @@ internal partial class GNB
                         sliderIncrement: SliderIncrements.Ones);
 
                     UserConfig.DrawPriorityInput(GNB_Mit_Priorities,
-                        numberMitigationOptions, 0,
+                        NumberMitigationOptions, 0,
                         "Heart of Corundum Priority:");
                     break;
 
@@ -380,38 +365,38 @@ internal partial class GNB
                         sliderIncrement: SliderIncrements.Ones);
 
                     UserConfig.DrawPriorityInput(GNB_Mit_Priorities,
-                        numberMitigationOptions, 1,
+                        NumberMitigationOptions, 1,
                         "Aurora Priority:");
                     break;
 
                 case CustomComboPreset.GNB_Mit_Camouflage:
                     UserConfig.DrawPriorityInput(GNB_Mit_Priorities,
-                        numberMitigationOptions, 2,
+                        NumberMitigationOptions, 2,
                         "Camouflage Priority:");
                     break;
 
                 case CustomComboPreset.GNB_Mit_Reprisal:
                     UserConfig.DrawPriorityInput(GNB_Mit_Priorities,
-                        numberMitigationOptions, 3,
+                        NumberMitigationOptions, 3,
                         "Reprisal Priority:");
                     break;
 
                 case CustomComboPreset.GNB_Mit_HeartOfLight:
-                    ImGui.Dummy(new Vector2(15f.Scale(), 0f));
+                    ImGui.Dummy(new(15f.Scale(), 0f));
                     ImGui.SameLine();
                     UserConfig.DrawHorizontalRadioButton(
                         GNB_Mit_HeartOfLight_PartyRequirement,
                         "Require party",
                         "Will not use Heart of Light unless there are 2 or more party members.",
-                        outputValue: (int) PartyRequirement.Yes);
+                        (int)PartyRequirement.Yes);
                     UserConfig.DrawHorizontalRadioButton(
                         GNB_Mit_HeartOfLight_PartyRequirement,
                         "Use Always",
                         "Will not require a party for Heart of Light.",
-                        outputValue: (int) PartyRequirement.No);
+                        (int)PartyRequirement.No);
 
                     UserConfig.DrawPriorityInput(GNB_Mit_Priorities,
-                        numberMitigationOptions, 4,
+                        NumberMitigationOptions, 4,
                         "Heart of Light Priority:");
                     break;
 
@@ -421,27 +406,27 @@ internal partial class GNB
                         sliderIncrement: SliderIncrements.Ones);
 
                     UserConfig.DrawPriorityInput(GNB_Mit_Priorities,
-                        numberMitigationOptions, 5,
+                        NumberMitigationOptions, 5,
                         "Rampart Priority:");
                     break;
 
                 case CustomComboPreset.GNB_Mit_ArmsLength:
-                    ImGui.Dummy(new Vector2(15f.Scale(), 0f));
+                    ImGui.Dummy(new(15f.Scale(), 0f));
                     ImGui.SameLine();
                     UserConfig.DrawHorizontalRadioButton(
                         GNB_Mit_ArmsLength_Boss, "All Enemies",
                         "Will use Arm's Length regardless of the type of enemy.",
-                        outputValue: (int) BossAvoidance.Off, itemWidth: 125f);
+                        (int)BossAvoidance.Off, 125f);
                     UserConfig.DrawHorizontalRadioButton(
                         GNB_Mit_ArmsLength_Boss, "Avoid Bosses",
                         "Will try not to use Arm's Length when in a boss fight.",
-                        outputValue: (int) BossAvoidance.On, itemWidth: 125f);
+                        (int)BossAvoidance.On, 125f);
 
                     UserConfig.DrawSliderInt(0, 3, GNB_Mit_ArmsLength_EnemyCount,
                         "How many enemies should be nearby? (0 = No Requirement)");
 
                     UserConfig.DrawPriorityInput(GNB_Mit_Priorities,
-                        numberMitigationOptions, 6,
+                        NumberMitigationOptions, 6,
                         "Arm's Length Priority:");
                     break;
 
@@ -451,7 +436,7 @@ internal partial class GNB
                         sliderIncrement: SliderIncrements.Ones);
 
                     UserConfig.DrawPriorityInput(GNB_Mit_Priorities,
-                        numberMitigationOptions, 7,
+                        NumberMitigationOptions, 7,
                         "Arm's Length Priority:");
                     break;
 
@@ -507,6 +492,18 @@ internal partial class GNB
 
                     break;
             }
+        }
+
+        internal enum PartyRequirement
+        {
+            No,
+            Yes
+        }
+
+        internal enum BossAvoidance
+        {
+            Off = 1,
+            On = 2
         }
     }
 }
