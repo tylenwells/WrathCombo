@@ -11,62 +11,64 @@ internal partial class GNB
 {
     public static GNBOpenerMaxLevel1 Opener1 = new();
     public static GNBOpenerMaxLevel2 Opener2 = new();
-
+    
     //Gauge
-    internal static byte Ammo = GetJobGauge<GNBGauge>().Ammo; //Our cartridge count
-    internal static byte GunStep = GetJobGauge<GNBGauge>().AmmoComboStep; //For Gnashing Fang & Reign combo purposes
+    internal static byte Ammo => GetJobGauge<GNBGauge>().Ammo; //Our cartridge count
+    internal static byte GunStep => GetJobGauge<GNBGauge>().AmmoComboStep; //For Gnashing Fang & Reign combo purposes
 
     //Cooldown-related
-    internal static float GfCD = GetCooldownRemainingTime(GnashingFang); //GnashingFang's cooldown; 30s total
-    internal static float NmCD = GetCooldownRemainingTime(NoMercy); //NoMercy's cooldown; 60s total
-    internal static float DdCD = GetCooldownRemainingTime(DoubleDown); //Double Down's cooldown; 60s total
-    internal static float BfCD = GetCooldownRemainingTime(Bloodfest); //Bloodfest's cooldown; 120s total
-    internal static float NmLeft = GetBuffRemainingTime(Buffs.NoMercy); //Remaining time for No Mercy buff (20s)
-    internal static bool HasNM = NmCD is >= 40 and <= 60; //Checks if No Mercy is active
-    internal static bool HasBreak = HasEffect(Buffs.ReadyToBreak); //Checks for Ready To Break buff
-    internal static bool HasReign = HasEffect(Buffs.ReadyToReign); //Checks for Ready To Reign buff
+    internal static float GfCD => GetCooldownRemainingTime(GnashingFang); //GnashingFang's cooldown; 30s total
+    internal static float NmCD => GetCooldownRemainingTime(NoMercy); //NoMercy's cooldown; 60s total
+    internal static float DdCD => GetCooldownRemainingTime(DoubleDown); //Double Down's cooldown; 60s total
+    internal static float BfCD => GetCooldownRemainingTime(Bloodfest); //Bloodfest's cooldown; 120s total
+    internal static float NmLeft => GetBuffRemainingTime(Buffs.NoMercy); //Remaining time for No Mercy buff (20s)
+    internal static bool HasNM => NmCD is >= 40 and <= 60; //Checks if No Mercy is active
+    internal static bool HasBreak => HasEffect(Buffs.ReadyToBreak); //Checks for Ready To Break buff
+    internal static bool HasReign => HasEffect(Buffs.ReadyToReign); //Checks for Ready To Reign buff
 
     //Misc
-    internal static bool InOdd = BfCD is < 90 and > 20; //Odd Minute
-    internal static bool CanLateWeave = CanDelayedWeave(); //SkS purposes
-    internal static float GCD = GetCooldown(KeenEdge).CooldownTotal; //2.5 is base SkS, but can work with 2.4x
-    internal static bool JustMitted = JustUsed(OriginalHook(HeartOfStone), 4f) ||
-                                      JustUsed(OriginalHook(Nebula), 5f) ||
-                                      JustUsed(Camouflage, 5f) ||
-                                      JustUsed(All.Rampart, 5f) ||
-                                      JustUsed(Aurora, 5f) ||
-                                      JustUsed(Superbolide, 9f);
+    internal static bool InOdd => BfCD is < 90 and > 20; //Odd Minute
+    internal static bool CanLateWeave => CanDelayedWeave(); //SkS purposes
+    internal static float GCD => GetCooldown(KeenEdge).CooldownTotal; //2.5 is base SkS, but can work with 2.4x
+    internal static bool JustMitted => JustUsed(OriginalHook(HeartOfStone), 4f) ||
+                                       JustUsed(OriginalHook(Nebula), 5f) ||
+                                       JustUsed(Camouflage, 5f) ||
+                                       JustUsed(All.Rampart, 5f) ||
+                                       JustUsed(Aurora, 5f) ||
+                                       JustUsed(Superbolide, 9f);
 
     //Ammo-relative
-    internal static bool canBS = LevelChecked(BurstStrike) && //Burst Strike is unlocked
-                                 Ammo > 0; //Has Ammo
-    internal static bool CanFC = LevelChecked(FatedCircle) && //Fated Circle is unlocked
-                                 Ammo > 0; //Has Ammo
-    internal static bool canGF = LevelChecked(GnashingFang) && //GnashingFang is unlocked
-                                 GfCD < 0.6f && //Gnashing Fang is off cooldown
-                                 !HasEffect(Buffs.ReadyToBlast) && //to ensure Hypervelocity is spent in case Burst Strike is used before Gnashing Fang
-                                 GunStep == 0 && //Gnashing Fang or Reign combo is not already active
-                                 Ammo > 0; //Has Ammo
-    internal static bool canDD = LevelChecked(DoubleDown) && //Double Down is unlocked
-                                 DdCD < 0.6f && //Double Down is off cooldown
-                                 Ammo > 0; //Has Ammo
-    internal static bool canBF = LevelChecked(Bloodfest) && //Bloodfest is unlocked
-                                 BfCD < 0.6f; //Bloodfest is off cooldown
+    internal static bool CanBS => LevelChecked(BurstStrike) && //Burst Strike is unlocked
+                                  Ammo > 0; //Has Ammo
+    internal static bool CanFC => LevelChecked(FatedCircle) && //Fated Circle is unlocked
+                                  Ammo > 0; //Has Ammo
+    internal static bool CanGF => LevelChecked(GnashingFang) && //GnashingFang is unlocked
+                                  GfCD < 0.6f && //Gnashing Fang is off cooldown
+                                  !HasEffect(Buffs.ReadyToBlast) && //to ensure Hypervelocity is spent in case Burst Strike is used before Gnashing Fang
+                                  GunStep == 0 && //Gnashing Fang or Reign combo is not already active
+                                  Ammo > 0; //Has Ammo
+    internal static bool CanDD => LevelChecked(DoubleDown) && //Double Down is unlocked
+                                  DdCD < 0.6f && //Double Down is off cooldown
+                                  Ammo > 0; //Has Ammo
+    internal static bool CanBF => LevelChecked(Bloodfest) && //Bloodfest is unlocked
+                                  BfCD < 0.6f; //Bloodfest is off cooldown
 
     //Cooldown-relative
-    internal static bool canZone = LevelChecked(DangerZone) && //Zone is unlocked
-                                   GetCooldownRemainingTime(OriginalHook(DangerZone)) < 0.6f; //DangerZone is off cooldown
-    internal static bool canBreak = LevelChecked(SonicBreak) && //Sonic Break is unlocked
-                                    HasBreak; //No Mercy or Ready To Break is active
-    internal static bool canBow = LevelChecked(BowShock) && //Bow Shock is unlocked
-                                  GetCooldownRemainingTime(BowShock) < 0.6f; //BowShock is off cooldown
-    internal static bool canContinue = LevelChecked(Continuation); //Continuation is unlocked
-    internal static bool canReign = LevelChecked(ReignOfBeasts) && //Reign of Beasts is unlocked
-                                    GunStep == 0 && //Gnashing Fang or Reign combo is not already active
-                                    HasReign; //Ready To Reign is active
+    internal static bool CanZone => LevelChecked(DangerZone) && //Zone is unlocked
+                                    GetCooldownRemainingTime(OriginalHook(DangerZone)) < 0.6f; //DangerZone is off cooldown
+    internal static bool CanBreak => LevelChecked(SonicBreak) && //Sonic Break is unlocked
+                                     HasBreak; //No Mercy or Ready To Break is active
+    internal static bool CanBow => LevelChecked(BowShock) && //Bow Shock is unlocked
+                                   GetCooldownRemainingTime(BowShock) < 0.6f; //BowShock is off cooldown
+    internal static bool CanContinue => LevelChecked(Continuation); //Continuation is unlocked
+    internal static bool CanReign => LevelChecked(ReignOfBeasts) && //Reign of Beasts is unlocked
+                                     GunStep == 0 && //Gnashing Fang or Reign combo is not already active
+                                     HasReign; //Ready To Reign is active
 
-    internal static int nmStop = Config.GNB_AoE_NoMercyStop;
-    
+    internal static int NmStop => Config.GNB_AoE_NoMercyStop;
+
+    internal static int MaxCartridges() => TraitLevelChecked(427) ? 3 : TraitLevelChecked(257) ? 2 : 0; //Level Check helper for Maximum Ammo
+
     public static WrathOpener Opener()
     {
         float gcd = ActionManager.GetAdjustedRecastTime(ActionType.Action, KeenEdge) / 1000f;

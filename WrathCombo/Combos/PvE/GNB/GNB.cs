@@ -5,7 +5,6 @@ using System.Linq;
 using WrathCombo.Combos.PvE.Content;
 using WrathCombo.CustomComboNS;
 using WrathCombo.Data;
-using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
 
 #endregion
 
@@ -13,8 +12,6 @@ namespace WrathCombo.Combos.PvE;
 
 internal partial class GNB
 {
-    public static int MaxCartridges() => TraitLevelChecked(427) ? 3 : TraitLevelChecked(257) ? 2 : 0; //Level Check helper for Maximum Ammo
-
     #region Simple Mode - Single Target
 
     internal class GNB_ST_Simple : CustomCombo
@@ -374,7 +371,7 @@ internal partial class GNB
                 return Hypervelocity; //Execute Hypervelocity if conditions are met
 
             //Continuation protection - Forced to prevent loss
-            if (canContinue && //able to use Continuation
+            if (CanContinue && //able to use Continuation
                 (HasEffect(Buffs.ReadyToRip) || //after Gnashing Fang
                  HasEffect(Buffs.ReadyToTear) || //after Savage Claw
                  HasEffect(Buffs.ReadyToGouge) || //after Wicked Talon
@@ -388,17 +385,17 @@ internal partial class GNB
                 //Bloodfest
                 if (InCombat() && //In combat
                     HasTarget() && //Has target
-                    canBF && //able to use Bloodfest
+                    CanBF && //able to use Bloodfest
                     Ammo == 0) //Only when ammo is empty
                     return Bloodfest; //Execute Bloodfest if conditions are met
 
                 //Zone
-                if (canZone && //able to use Zone
+                if (CanZone && //able to use Zone
                     NmCD is < 57.5f and > 17f) //Optimal use; twice per minute, 1 in NM, 1 out of NM
                     return OriginalHook(DangerZone); //Execute Zone if conditions are met
 
                 //Bow Shock
-                if (canBow && //able to use Bow Shock
+                if (CanBow && //able to use Bow Shock
                     NmCD is < 57.5f and >= 40) //No Mercy is up & was not just used within 1 GCD
                     return BowShock;
             }
@@ -412,25 +409,25 @@ internal partial class GNB
                 return SolidBarrel;
 
             //GnashingFang
-            if (canGF && //able to use Gnashing Fang
+            if (CanGF && //able to use Gnashing Fang
                 (NmCD is > 17 and < 35 || //30s Optimal use
                  JustUsed(NoMercy, 6f))) //No Mercy was just used within 4 seconds
                 return GnashingFang;
 
             //Double Down
-            if (canDD && //able to use Double Down
+            if (CanDD && //able to use Double Down
                 IsOnCooldown(GnashingFang) && //Gnashing Fang is on cooldown
                 HasNM) //No Mercy is active
                 return DoubleDown;
 
             //Sonic Break
-            if (canBreak && //able to use Sonic Break
+            if (CanBreak && //able to use Sonic Break
                 (IsOnCooldown(GnashingFang) && IsOnCooldown(DoubleDown) || //Gnashing Fang and Double Down are both on cooldown
                  NmLeft <= GCD)) //No Mercy buff is about to expire
                 return SonicBreak; //Execute Sonic Break if conditions are met
 
             //Reign of Beasts
-            if (canReign && //able to use Reign of Beasts
+            if (CanReign && //able to use Reign of Beasts
                 IsOnCooldown(GnashingFang) && //Gnashing Fang is on cooldown
                 IsOnCooldown(DoubleDown) && //Double Down is on cooldown
                 !HasEffect(Buffs.ReadyToBreak) && //Ready To Break is not active
@@ -438,7 +435,7 @@ internal partial class GNB
                 return OriginalHook(ReignOfBeasts); //Execute Reign of Beasts if conditions are met
 
             //Burst Strike
-            if (canBS && //able to use Burst Strike
+            if (CanBS && //able to use Burst Strike
                 HasEffect(Buffs.NoMercy) && //No Mercy is active
                 IsOnCooldown(GnashingFang) && //Gnashing Fang is on cooldown
                 IsOnCooldown(DoubleDown) && //Double Down is on cooldown
@@ -861,7 +858,7 @@ internal partial class GNB
             //Continuation protection - Forced to prevent loss
             if (IsEnabled(CustomComboPreset.GNB_ST_Advanced_Cooldowns) && //Cooldowns option is enabled
                 IsEnabled(CustomComboPreset.GNB_ST_Continuation) && //Continuation option is enabled
-                canContinue && //able to use Continuation
+                CanContinue && //able to use Continuation
                 (HasEffect(Buffs.ReadyToRip) || //after Gnashing Fang
                  HasEffect(Buffs.ReadyToTear) || //after Savage Claw
                  HasEffect(Buffs.ReadyToGouge) || //after Wicked Talon
@@ -879,19 +876,19 @@ internal partial class GNB
                     if (IsEnabled(CustomComboPreset.GNB_ST_Bloodfest) && //Bloodfest option is enabled
                         InCombat() && //In combat
                         HasTarget() && //Has target
-                        canBF && //able to use Bloodfest
+                        CanBF && //able to use Bloodfest
                         Ammo == 0) //Only when ammo is empty
                         return Bloodfest; //Execute Bloodfest if conditions are met
 
                     //Zone
                     if (IsEnabled(CustomComboPreset.GNB_ST_Zone) && //Zone option is enabled
-                        canZone && //able to use Zone
+                        CanZone && //able to use Zone
                         NmCD is < 57.5f and > 17f) //Optimal use; twice per minute, 1 in NM, 1 out of NM
                         return OriginalHook(DangerZone); //Execute Zone if conditions are met
 
                     //Bow Shock
                     if (IsEnabled(CustomComboPreset.GNB_ST_BowShock) && //Bow Shock option is enabled
-                        canBow && //able to use Bow Shock
+                        CanBow && //able to use Bow Shock
                         NmCD is < 57.5f and >= 40) //No Mercy is up & was not just used within 1 GCD
                         return BowShock;
                 }
@@ -910,28 +907,28 @@ internal partial class GNB
             {
                 //GnashingFang
                 if (IsEnabled(CustomComboPreset.GNB_ST_GnashingFang) && //Gnashing Fang option is enabled
-                    canGF && //able to use Gnashing Fang
+                    CanGF && //able to use Gnashing Fang
                     (NmCD is > 17 and < 35 || //30s Optimal use
                      JustUsed(NoMercy, 6f))) //No Mercy was just used within 4 seconds
                     return GnashingFang;
 
                 //Double Down
                 if (IsEnabled(CustomComboPreset.GNB_ST_DoubleDown) && //Double Down option is enabled
-                    canDD && //able to use Double Down
+                    CanDD && //able to use Double Down
                     IsOnCooldown(GnashingFang) && //Gnashing Fang is on cooldown
                     HasNM) //No Mercy is active
                     return DoubleDown;
 
                 //Sonic Break
                 if (IsEnabled(CustomComboPreset.GNB_ST_SonicBreak) && //Sonic Break option is enabled
-                    canBreak && //able to use Sonic Break
+                    CanBreak && //able to use Sonic Break
                     (IsOnCooldown(GnashingFang) && IsOnCooldown(DoubleDown) || //Gnashing Fang and Double Down are both on cooldown
                      NmLeft <= GCD)) //No Mercy buff is about to expire
                     return SonicBreak; //Execute Sonic Break if conditions are met
 
                 //Reign of Beasts
                 if (IsEnabled(CustomComboPreset.GNB_ST_Reign) && //Reign of Beasts option is enabled
-                    canReign && //able to use Reign of Beasts
+                    CanReign && //able to use Reign of Beasts
                     IsOnCooldown(GnashingFang) && //Gnashing Fang is on cooldown
                     IsOnCooldown(DoubleDown) && //Double Down is on cooldown
                     !HasEffect(Buffs.ReadyToBreak) && //Ready To Break is not active
@@ -940,7 +937,7 @@ internal partial class GNB
 
                 //Burst Strike
                 if (IsEnabled(CustomComboPreset.GNB_ST_BurstStrike) && //Burst Strike option is enabled
-                    canBS && //able to use Burst Strike
+                    CanBS && //able to use Burst Strike
                     HasEffect(Buffs.NoMercy) && //No Mercy is active
                     IsOnCooldown(GnashingFang) && //Gnashing Fang is on cooldown
                     IsOnCooldown(DoubleDown) && //Double Down is on cooldown
@@ -1326,15 +1323,15 @@ internal partial class GNB
                         GetTargetHPPercent() > 5) //if target HP is above threshold
                         return NoMercy; //execute No Mercy
                     //BowShock
-                    if (canBow && //if Bow Shock is ready
+                    if (CanBow && //if Bow Shock is ready
                         HasEffect(Buffs.NoMercy)) //if No Mercy is active
                         return BowShock; //execute Bow Shock
                     //Zone
-                    if (canZone &&
+                    if (CanZone &&
                         NmCD is < 57.5f and > 17) //use on CD after first usage in NM
                         return OriginalHook(DangerZone); //execute Zone
                     //Bloodfest
-                    if (canBF) //if Bloodfest is ready & gauge is empty
+                    if (CanBF) //if Bloodfest is ready & gauge is empty
                         return Bloodfest; //execute Bloodfest
                     //Continuation
                     if (LevelChecked(FatedBrand) && //if Fated Brand is unlocked
@@ -1343,18 +1340,18 @@ internal partial class GNB
                 }
 
                 //SonicBreak
-                if (canBreak && //if Ready To Break is active & unlocked
+                if (CanBreak && //if Ready To Break is active & unlocked
                     !HasEffect(Buffs.ReadyToRaze) && //if Ready To Raze is not active
                     HasEffect(Buffs.NoMercy)) //if No Mercy is active
                     return SonicBreak;
                 //DoubleDown
-                if (canDD && //if Double Down is ready && gauge is not empty
+                if (CanDD && //if Double Down is ready && gauge is not empty
                     HasEffect(Buffs.NoMercy)) //if No Mercy is active
                     return DoubleDown; //execute Double Down
                 //Reign - because leaving this out anywhere is a waste
                 if (LevelChecked(ReignOfBeasts)) //if Reign of Beasts is unlocked
                 {
-                    if (canReign || //can execute Reign of Beasts
+                    if (CanReign || //can execute Reign of Beasts
                         GunStep is 3 or 4) //can execute Noble Blood or Lion Heart
                         return OriginalHook(ReignOfBeasts);
                 }
@@ -1732,21 +1729,21 @@ internal partial class GNB
                     //NoMercy
                     if (IsEnabled(CustomComboPreset.GNB_AoE_NoMercy) && //if No Mercy option is enabled
                         ActionReady(NoMercy) && //if No Mercy is ready
-                        GetTargetHPPercent() > nmStop) //if target HP is above threshold
+                        GetTargetHPPercent() > NmStop) //if target HP is above threshold
                         return NoMercy; //execute No Mercy
                     //BowShock
                     if (IsEnabled(CustomComboPreset.GNB_AoE_BowShock) && //if Bow Shock option is enabled
-                        canBow && //if Bow Shock is ready
+                        CanBow && //if Bow Shock is ready
                         HasEffect(Buffs.NoMercy)) //if No Mercy is active
                         return BowShock; //execute Bow Shock
                     //Zone
                     if (IsEnabled(CustomComboPreset.GNB_AoE_Zone) &&
-                        canZone &&
+                        CanZone &&
                         NmCD is < 57.5f and > 17) //use on CD after first usage in NM
                         return OriginalHook(DangerZone); //execute Zone
                     //Bloodfest
                     if (IsEnabled(CustomComboPreset.GNB_AoE_Bloodfest) && //if Bloodfest option is enabled
-                        canBF) //if Bloodfest is ready & gauge is empty
+                        CanBF) //if Bloodfest is ready & gauge is empty
                         return Bloodfest; //execute Bloodfest
                     //Continuation
                     if (LevelChecked(FatedBrand) && //if Fated Brand is unlocked
@@ -1756,20 +1753,20 @@ internal partial class GNB
 
                 //SonicBreak
                 if (IsEnabled(CustomComboPreset.GNB_AoE_SonicBreak) && //if Sonic Break option is enabled
-                    canBreak && //if Ready To Break is active & unlocked
+                    CanBreak && //if Ready To Break is active & unlocked
                     !HasEffect(Buffs.ReadyToRaze) && //if Ready To Raze is not active
                     HasEffect(Buffs.NoMercy)) //if No Mercy is active
                     return SonicBreak;
                 //DoubleDown
                 if (IsEnabled(CustomComboPreset.GNB_AoE_DoubleDown) && //if Double Down option is enabled
-                    canDD && //if Double Down is ready && gauge is not empty
+                    CanDD && //if Double Down is ready && gauge is not empty
                     HasEffect(Buffs.NoMercy)) //if No Mercy is active
                     return DoubleDown; //execute Double Down
                 //Reign - because leaving this out anywhere is a waste
                 if (IsEnabled(CustomComboPreset.GNB_AoE_Reign) && //if Reign of Beasts option is enabled
                     LevelChecked(ReignOfBeasts)) //if Reign of Beasts is unlocked
                 {
-                    if (canReign || //can execute Reign of Beasts
+                    if (CanReign || //can execute Reign of Beasts
                         GunStep is 3 or 4) //can execute Noble Blood or Lion Heart
                         return OriginalHook(ReignOfBeasts);
                 }
@@ -1879,7 +1876,7 @@ internal partial class GNB
 
                     //Continuation
                     if (IsEnabled(CustomComboPreset.GNB_GF_Continuation) && //Continuation option is enabled
-                        canContinue && //able to use Continuation
+                        CanContinue && //able to use Continuation
                         (HasEffect(Buffs.ReadyToRip) || //after Gnashing Fang
                          HasEffect(Buffs.ReadyToTear) || //after Savage Claw
                          HasEffect(Buffs.ReadyToGouge) || //after Wicked Talon
@@ -1890,19 +1887,19 @@ internal partial class GNB
                     if (IsEnabled(CustomComboPreset.GNB_GF_Bloodfest) && //Bloodfest option is enabled
                         InCombat() && //In combat
                         HasTarget() && //Has target
-                        canBF && //able to use Bloodfest
+                        CanBF && //able to use Bloodfest
                         Ammo == 0) //Only when ammo is empty
                         return Bloodfest; //Execute Bloodfest if conditions are met
 
                     //Zone
                     if (IsEnabled(CustomComboPreset.GNB_GF_Zone) && //Zone option is enabled
-                        canZone && //able to use Zone
+                        CanZone && //able to use Zone
                         NmCD is < 57.5f and > 17f) //Optimal use; twice per minute, 1 in NM, 1 out of NM
                         return OriginalHook(DangerZone); //Execute Zone if conditions are met
 
                     //Bow Shock
                     if (IsEnabled(CustomComboPreset.GNB_GF_BowShock) && //Bow Shock option is enabled
-                        canBow && //able to use Bow Shock
+                        CanBow && //able to use Bow Shock
                         NmCD is < 57.5f and >= 40) //No Mercy is up & was not just used within 1 GCD
                         return BowShock;
                 }
@@ -1912,28 +1909,28 @@ internal partial class GNB
             if (IsEnabled(CustomComboPreset.GNB_GF_Features)) //Features are enabled
             {
                 //GnashingFang
-                if (canGF && //able to use Gnashing Fang
+                if (CanGF && //able to use Gnashing Fang
                     (NmCD is > 17 and < 35 || //30s Optimal use
                      JustUsed(NoMercy, 6f))) //No Mercy was just used within 4 seconds
                     return GnashingFang;
 
                 //Double Down
                 if (IsEnabled(CustomComboPreset.GNB_GF_DoubleDown) && //Double Down option is enabled
-                    canDD && //able to use Double Down
+                    CanDD && //able to use Double Down
                     IsOnCooldown(GnashingFang) && //Gnashing Fang is on cooldown
                     HasNM) //No Mercy is active
                     return DoubleDown;
 
                 //Sonic Break
                 if (IsEnabled(CustomComboPreset.GNB_GF_SonicBreak) && //Sonic Break option is enabled
-                    canBreak && //able to use Sonic Break
+                    CanBreak && //able to use Sonic Break
                     (IsOnCooldown(GnashingFang) && IsOnCooldown(DoubleDown) || //Gnashing Fang and Double Down are both on cooldown
                      NmLeft <= GCD)) //No Mercy buff is about to expire
                     return SonicBreak; //Execute Sonic Break if conditions are met
 
                 //Reign of Beasts
                 if (IsEnabled(CustomComboPreset.GNB_GF_Reign) && //Reign of Beasts option is enabled
-                    canReign && //able to use Reign of Beasts
+                    CanReign && //able to use Reign of Beasts
                     IsOnCooldown(GnashingFang) && //Gnashing Fang is on cooldown
                     IsOnCooldown(DoubleDown) && //Double Down is on cooldown
                     !HasEffect(Buffs.ReadyToBreak) && //Ready To Break is not active
@@ -1942,7 +1939,7 @@ internal partial class GNB
 
                 //Burst Strike
                 if (IsEnabled(CustomComboPreset.GNB_GF_BurstStrike) && //Burst Strike option is enabled
-                    canBS && //able to use Burst Strike
+                    CanBS && //able to use Burst Strike
                     HasEffect(Buffs.NoMercy) && //No Mercy is active
                     IsOnCooldown(GnashingFang) && //Gnashing Fang is on cooldown
                     IsOnCooldown(DoubleDown) && //Double Down is on cooldown
@@ -2007,7 +2004,7 @@ internal partial class GNB
             //Continuation
             if (IsEnabled(CustomComboPreset.GNB_BS_Continuation) && //Continuation option is enabled
                 !IsEnabled(CustomComboPreset.GNB_BS_Hypervelocity) && //Hypervelocity Only option is disabled
-                canContinue && //able to use Continuation
+                CanContinue && //able to use Continuation
                 (HasEffect(Buffs.ReadyToRip) || //after Gnashing Fang
                  HasEffect(Buffs.ReadyToTear) || //after Savage Claw
                  HasEffect(Buffs.ReadyToGouge) || //after Wicked Talon
@@ -2017,7 +2014,7 @@ internal partial class GNB
             //Bloodfest
             if (IsEnabled(CustomComboPreset.GNB_BS_Bloodfest) && //Bloodfest option is enabled
                 HasTarget() && //Has target
-                canBF && //able to use Bloodfest
+                CanBF && //able to use Bloodfest
                 Ammo == 0) //Only when ammo is empty
                 return Bloodfest; //Execute Bloodfest if conditions are met
 
@@ -2030,17 +2027,17 @@ internal partial class GNB
 
             //Gnashing Fang
             if (IsEnabled(CustomComboPreset.GNB_BS_GnashingFang) && //Gnashing Fang option is enabled
-                canGF || GunStep is 1 or 2) //able to use Gnashing Fang combo
+                CanGF || GunStep is 1 or 2) //able to use Gnashing Fang combo
                 return OriginalHook(GnashingFang); //Execute Gnashing Fang if conditions are met
 
             //Double Down
             if (IsEnabled(CustomComboPreset.GNB_BS_DoubleDown) && //Double Down option is enabled
-                canDD) //able to use Double Down
+                CanDD) //able to use Double Down
                 return DoubleDown; //Execute Double Down if conditions are met
 
             //Reign
             if (IsEnabled(CustomComboPreset.GNB_BS_Reign) && //Reign of Beasts option is enabled
-                (canReign || GunStep is 3 or 4)) //able to use Reign of Beasts
+                (CanReign || GunStep is 3 or 4)) //able to use Reign of Beasts
                 return OriginalHook(ReignOfBeasts); //Execute Reign combo if conditions are met
 
             return actionID;
@@ -2069,31 +2066,31 @@ internal partial class GNB
             //Double Down under NM only
             if (IsEnabled(CustomComboPreset.GNB_FC_DoubleDown) && //Double Down option is enabled
                 IsEnabled(CustomComboPreset.GNB_FC_DoubleDown_NM) && //Double Down No Mercy option is enabled
-                canDD && //able to use Double Down
+                CanDD && //able to use Double Down
                 HasNM) //No Mercy is active
                 return DoubleDown; //Execute Double Down if conditions are met
 
             //Bloodfest
             if (IsEnabled(CustomComboPreset.GNB_FC_Bloodfest) && //Bloodfest option is enabled
                 HasTarget() && //Has target
-                canBF && //able to use Bloodfest
+                CanBF && //able to use Bloodfest
                 Ammo == 0) //Only when ammo is empty
                 return Bloodfest; //Execute Bloodfest if conditions are met
 
             //Bow Shock
             if (IsEnabled(CustomComboPreset.GNB_FC_BowShock) && //Bow Shock option is enabled
-                canBow) //able to use Bow Shock
+                CanBow) //able to use Bow Shock
                 return BowShock; //Execute Bow Shock if conditions are met
 
             //Double Down
             if (IsEnabled(CustomComboPreset.GNB_FC_DoubleDown) && //Double Down option is enabled
                 !IsEnabled(CustomComboPreset.GNB_FC_DoubleDown_NM) && //Double Down No Mercy option is disabled
-                canDD) //able to use Double Down
+                CanDD) //able to use Double Down
                 return DoubleDown; //Execute Double Down if conditions are met
 
             //Reign
             if (IsEnabled(CustomComboPreset.GNB_FC_Reign) && //Reign of Beasts option is enabled
-                (canReign || GunStep is 3 or 4)) //able to use Reign of Beasts
+                (CanReign || GunStep is 3 or 4)) //able to use Reign of Beasts
                 return OriginalHook(ReignOfBeasts); //Execute Reign combo if conditions are met
 
             return actionID;
@@ -2122,7 +2119,7 @@ internal partial class GNB
                 {
                     //Continuation
                     if (IsEnabled(CustomComboPreset.GNB_NM_Continuation) && //Continuation option is enabled
-                        canContinue && //able to use Continuation
+                        CanContinue && //able to use Continuation
                         (HasEffect(Buffs.ReadyToRip) || //after Gnashing Fang
                          HasEffect(Buffs.ReadyToTear) || //after Savage Claw
                          HasEffect(Buffs.ReadyToGouge) || //after Wicked Talon
@@ -2134,19 +2131,19 @@ internal partial class GNB
                     if (IsEnabled(CustomComboPreset.GNB_NM_Bloodfest) && //Bloodfest option is enabled
                         InCombat() && //In combat
                         HasTarget() && //Has target
-                        canBF && //able to use Bloodfest
+                        CanBF && //able to use Bloodfest
                         Ammo == 0) //Only when ammo is empty
                         return Bloodfest; //Execute Bloodfest if conditions are met
 
                     //Bow Shock
                     if (IsEnabled(CustomComboPreset.GNB_NM_BowShock) && //Bow Shock option is enabled
-                        canBow && //able to use Bow Shock
+                        CanBow && //able to use Bow Shock
                         NmCD is < 57.5f and >= 40) //No Mercy is up & was not just used within 1 GCD
                         return BowShock;
 
                     //Zone
                     if (IsEnabled(CustomComboPreset.GNB_NM_Zone) && //Zone option is enabled
-                        canZone && //able to use Zone
+                        CanZone && //able to use Zone
                         NmCD is < 57.5f and > 17f) //Optimal use; twice per minute, 1 in NM, 1 out of NM
                         return OriginalHook(DangerZone); //Execute Zone if conditions are met
                 }
@@ -2156,7 +2153,7 @@ internal partial class GNB
             {
                 //Continuation
                 if (IsEnabled(CustomComboPreset.GNB_NM_Continuation) && //Continuation option is enabled
-                    canContinue && //able to use Continuation
+                    CanContinue && //able to use Continuation
                     (HasEffect(Buffs.ReadyToRip) || //after Gnashing Fang
                      HasEffect(Buffs.ReadyToTear) || //after Savage Claw
                      HasEffect(Buffs.ReadyToGouge) || //after Wicked Talon
@@ -2168,19 +2165,19 @@ internal partial class GNB
                 if (IsEnabled(CustomComboPreset.GNB_NM_Bloodfest) && //Bloodfest option is enabled
                     InCombat() && //In combat
                     HasTarget() && //Has target
-                    canBF && //able to use Bloodfest
+                    CanBF && //able to use Bloodfest
                     Ammo == 0) //Only when ammo is empty
                     return Bloodfest; //Execute Bloodfest if conditions are met
 
                 //Bow Shock
                 if (IsEnabled(CustomComboPreset.GNB_NM_BowShock) && //Bow Shock option is enabled
-                    canBow && //able to use Bow Shock
+                    CanBow && //able to use Bow Shock
                     NmCD is < 57.5f and >= 40) //No Mercy is up & was not just used within 1 GCD
                     return BowShock;
 
                 //Zone
                 if (IsEnabled(CustomComboPreset.GNB_NM_Zone) && //Zone option is enabled
-                    canZone && //able to use Zone
+                    CanZone && //able to use Zone
                     NmCD is < 57.5f and > 17f) //Optimal use; twice per minute, 1 in NM, 1 out of NM
                     return OriginalHook(DangerZone); //Execute Zone if conditions are met
             }
