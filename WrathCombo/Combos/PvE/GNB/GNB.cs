@@ -1,13 +1,12 @@
 #region Dependencies
 
-using Dalamud.Game.ClientState.JobGauge.Types;
 using Dalamud.Game.ClientState.Statuses;
 using System.Linq;
 using WrathCombo.Combos.PvE.Content;
-using WrathCombo.Core;
 using WrathCombo.CustomComboNS;
 using WrathCombo.Data;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
+
 #endregion
 
 namespace WrathCombo.Combos.PvE;
@@ -17,6 +16,7 @@ internal partial class GNB
     public static int MaxCartridges() => TraitLevelChecked(427) ? 3 : TraitLevelChecked(257) ? 2 : 0; //Level Check helper for Maximum Ammo
 
     #region Simple Mode - Single Target
+
     internal class GNB_ST_Simple : CustomCombo
     {
         protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.GNB_ST_Simple;
@@ -26,71 +26,17 @@ internal partial class GNB
             if (actionID is not KeenEdge)
                 return actionID; //Our button
 
-            #region Variables
-            //Gauge
-            byte Ammo = GetJobGauge<GNBGauge>().Ammo; //Our cartridge count
-            byte GunStep = GetJobGauge<GNBGauge>().AmmoComboStep; //For Gnashing Fang & Reign combo purposes
-                                                                  //Cooldown-related
-            float gfCD = GetCooldownRemainingTime(GnashingFang); //GnashingFang's cooldown; 30s total
-            float nmCD = GetCooldownRemainingTime(NoMercy); //NoMercy's cooldown; 60s total
-            float ddCD = GetCooldownRemainingTime(DoubleDown); //Double Down's cooldown; 60s total
-            float bfCD = GetCooldownRemainingTime(Bloodfest); //Bloodfest's cooldown; 120s total
-            float nmLeft = GetBuffRemainingTime(Buffs.NoMercy); //Remaining time for No Mercy buff (20s)
-            bool hasNM = nmCD is >= 40 and <= 60; //Checks if No Mercy is active
-            bool hasBreak = HasEffect(Buffs.ReadyToBreak); //Checks for Ready To Break buff
-            bool hasReign = HasEffect(Buffs.ReadyToReign); //Checks for Ready To Reign buff
-                                                           //Misc
-            bool inOdd = bfCD is < 90 and > 20; //Odd Minute
-            bool canLateWeave = GetCooldownRemainingTime(actionID) < 1 && GetCooldownRemainingTime(actionID) > 0.6; //SkS purposes
-            float GCD = GetCooldown(KeenEdge).CooldownTotal; //2.5 is base SkS, but can work with 2.4x
-            bool justMitted = JustUsed(OriginalHook(HeartOfStone), 4f) ||
-                                 JustUsed(OriginalHook(Nebula), 5f) ||
-                                 JustUsed(Camouflage, 5f) ||
-                                 JustUsed(All.Rampart, 5f) ||
-                                 JustUsed(Aurora, 5f) ||
-                                 JustUsed(Superbolide, 9f);
-
-            #region Minimal Requirements
-            //Ammo-relative
-            bool canBS = LevelChecked(BurstStrike) && //Burst Strike is unlocked
-                        Ammo > 0; //Has Ammo
-            bool canGF = LevelChecked(GnashingFang) && //GnashingFang is unlocked
-                        gfCD < 0.6f && //Gnashing Fang is off cooldown
-                        !HasEffect(Buffs.ReadyToBlast) && //to ensure Hypervelocity is spent in case Burst Strike is used before Gnashing Fang
-                        GunStep == 0 && //Gnashing Fang or Reign combo is not already active
-                        Ammo > 0; //Has Ammo
-            bool canDD = LevelChecked(DoubleDown) && //Double Down is unlocked
-                        ddCD < 0.6f && //Double Down is off cooldown
-                        Ammo > 0; //Has Ammo
-            bool canBF = LevelChecked(Bloodfest) && //Bloodfest is unlocked
-                        bfCD < 0.6f; //Bloodfest is off cooldown
-            //Cooldown-relative
-            bool canZone = LevelChecked(DangerZone) && //Zone is unlocked
-                          GetCooldownRemainingTime(OriginalHook(DangerZone)) < 0.6f; //DangerZone is off cooldown
-            bool canBreak = LevelChecked(SonicBreak) && //Sonic Break is unlocked
-                           hasBreak; //No Mercy or Ready To Break is active
-            bool canBow = LevelChecked(BowShock) && //Bow Shock is unlocked
-                         GetCooldownRemainingTime(BowShock) < 0.6f; //BowShock is off cooldown
-            bool canContinue = LevelChecked(Continuation); //Continuation is unlocked
-            bool canReign = LevelChecked(ReignOfBeasts) && //Reign of Beasts is unlocked
-                           GunStep == 0 && //Gnashing Fang or Reign combo is not already active
-                           hasReign; //Ready To Reign is active
-            #endregion
-            #endregion
-
-            if (Opener().FullOpener(ref actionID))
-                return actionID;
-
             // Interrupt
             if (ActionReady(All.Interject)
                 && CanInterruptEnemy())
                 return All.Interject;
 
             #region Mitigations
+
             if (Config.GNB_ST_MitsOptions != 1)
             {
                 if (InCombat() && //Player is in combat
-                    !justMitted) //Player has not used a mitigation ability in the last 4-9 seconds
+                    !JustMitted) //Player has not used a mitigation ability in the last 4-9 seconds
                 {
                     //Superbolide
                     if (ActionReady(Superbolide) && //Superbolide is ready
@@ -133,9 +79,11 @@ internal partial class GNB
                         return Aurora;
                 }
             }
+
             #endregion
 
             #region Variant
+
             //Variant Cure
             if (IsEnabled(CustomComboPreset.GNB_Variant_Cure) &&
                 IsEnabled(Variant.VariantCure)
@@ -147,7 +95,7 @@ internal partial class GNB
             if (IsEnabled(CustomComboPreset.GNB_Variant_SpiritDart) &&
                 IsEnabled(Variant.VariantSpiritDart) &&
                 CanWeave() &&
-                (sustainedDamage is null || sustainedDamage?.RemainingTime <= 3))
+                (sustainedDamage is null || sustainedDamage.RemainingTime <= 3))
                 return Variant.VariantSpiritDart;
 
             //Variant Ultimatum
@@ -156,9 +104,11 @@ internal partial class GNB
                 CanWeave() &&
                 ActionReady(Variant.VariantUltimatum))
                 return Variant.VariantUltimatum;
+
             #endregion
 
             #region Bozja
+
             if (Bozja.IsInBozja) //Checks if we're inside Bozja instances
             {
                 //oGCDs
@@ -383,9 +333,11 @@ internal partial class GNB
                     !JustUsed(Bozja.LostParalyze3, 60f))
                     return Bozja.LostParalyze3;
             }
+
             #endregion
 
             #region Rotation
+
             //Ranged Uptime
             if (LevelChecked(LightningShot) && //Lightning Shot is unlocked
                 !InMeleeRange() && //Out of melee range
@@ -400,15 +352,15 @@ internal partial class GNB
             {
                 if (LevelChecked(DoubleDown)) //Lv90+
                 {
-                    if ((inOdd && //Odd Minute window
-                         (Ammo >= 2 || (ComboAction is BrutalShell && Ammo == 1))) || //2 or 3 Ammo or 1 Ammo with Solid Barrel next in combo
-                        (!inOdd && //Even Minute window
-                         Ammo != 3)) //Ammo is not full (3)
+                    if (InOdd && //Odd Minute window
+                        (Ammo >= 2 || ComboAction is BrutalShell && Ammo == 1) || //2 or 3 Ammo or 1 Ammo with Solid Barrel next in combo
+                        !InOdd && //Even Minute window
+                        Ammo != 3) //Ammo is not full (3)
                         return NoMercy; //Execute No Mercy if conditions are met
                 }
                 if (!LevelChecked(DoubleDown)) //Lv1-89
                 {
-                    if (canLateWeave && //Late-weaveable
+                    if (CanLateWeave && //Late-weaveable
                         Ammo == MaxCartridges()) //Ammo is full
                         return NoMercy; //Execute No Mercy if conditions are met
                 }
@@ -418,7 +370,7 @@ internal partial class GNB
             if (JustUsed(BurstStrike, 5f) && //Burst Strike was just used within 5 seconds
                 LevelChecked(Hypervelocity) && //Hypervelocity is unlocked
                 HasEffect(Buffs.ReadyToBlast) && //Ready To Blast buff is active
-                nmCD is > 1 or <= 0.1f) //Priority hack to prevent Hypervelocity from being used before No Mercy
+                NmCD is > 1 or <= 0.1f) //Priority hack to prevent Hypervelocity from being used before No Mercy
                 return Hypervelocity; //Execute Hypervelocity if conditions are met
 
             //Continuation protection - Forced to prevent loss
@@ -442,12 +394,12 @@ internal partial class GNB
 
                 //Zone
                 if (canZone && //able to use Zone
-                    (nmCD is < 57.5f and > 17f))//Optimal use; twice per minute, 1 in NM, 1 out of NM
+                    NmCD is < 57.5f and > 17f) //Optimal use; twice per minute, 1 in NM, 1 out of NM
                     return OriginalHook(DangerZone); //Execute Zone if conditions are met
 
                 //Bow Shock
                 if (canBow && //able to use Bow Shock
-                    nmCD is < 57.5f and >= 40) //No Mercy is up & was not just used within 1 GCD
+                    NmCD is < 57.5f and >= 40) //No Mercy is up & was not just used within 1 GCD
                     return BowShock;
             }
 
@@ -461,20 +413,20 @@ internal partial class GNB
 
             //GnashingFang
             if (canGF && //able to use Gnashing Fang
-                ((nmCD is > 17 and < 35) || //30s Optimal use
+                (NmCD is > 17 and < 35 || //30s Optimal use
                  JustUsed(NoMercy, 6f))) //No Mercy was just used within 4 seconds
                 return GnashingFang;
 
             //Double Down
             if (canDD && //able to use Double Down
                 IsOnCooldown(GnashingFang) && //Gnashing Fang is on cooldown
-                hasNM) //No Mercy is active
+                HasNM) //No Mercy is active
                 return DoubleDown;
 
             //Sonic Break
             if (canBreak && //able to use Sonic Break
-                ((IsOnCooldown(GnashingFang) && IsOnCooldown(DoubleDown)) || //Gnashing Fang and Double Down are both on cooldown
-                 nmLeft <= GCD)) //No Mercy buff is about to expire
+                (IsOnCooldown(GnashingFang) && IsOnCooldown(DoubleDown) || //Gnashing Fang and Double Down are both on cooldown
+                 NmLeft <= GCD)) //No Mercy buff is about to expire
                 return SonicBreak; //Execute Sonic Break if conditions are met
 
             //Reign of Beasts
@@ -497,16 +449,16 @@ internal partial class GNB
 
             //Lv90+ 2cart forced Opener
             if (LevelChecked(DoubleDown) && //Lv90+
-                nmCD < 1 && //No Mercy is ready or about to be
+                NmCD < 1 && //No Mercy is ready or about to be
                 Ammo is 3 && //Ammo is full
-                bfCD > 110 && //Bloodfest was just used, but not recently
+                BfCD > 110 && //Bloodfest was just used, but not recently
                 ComboAction is KeenEdge) //Just used Keen Edge
                 return BurstStrike;
             //Lv100 2cart forced 2min starter
             if (LevelChecked(ReignOfBeasts) && //Lv100
-                nmCD < 1 && //No Mercy is ready or about to be
-                 Ammo is 3 && //Ammo is full
-                 bfCD < GCD * 12) //Bloodfest is ready or about to be
+                NmCD < 1 && //No Mercy is ready or about to be
+                Ammo is 3 && //Ammo is full
+                BfCD < GCD * 12) //Bloodfest is ready or about to be
                 return BurstStrike;
 
             //Gauge Combo Steps
@@ -528,7 +480,7 @@ internal partial class GNB
                     //holds Hypervelocity if NM comes up in time
                     if (LevelChecked(Hypervelocity) && //Hypervelocity is unlocked
                         HasEffect(Buffs.ReadyToBlast) && //Ready To Blast buff is active
-                        (nmCD is > 1 or <= 0.1f)) //Priority hack to prevent Hypervelocity from being used before No Mercy
+                        NmCD is > 1 or <= 0.1f) //Priority hack to prevent Hypervelocity from being used before No Mercy
                         return Hypervelocity; //Execute Hypervelocity if conditions are met
 
                     //Overcap protection
@@ -539,15 +491,17 @@ internal partial class GNB
                     return SolidBarrel; //Execute Solid Barrel if conditions are met
                 }
             }
+
             #endregion
 
             return KeenEdge; //Always default back to Keen Edge
-
         }
     }
+
     #endregion
 
     #region Advanced Mode - Single Target
+
     internal class GNB_ST_Advanced : CustomCombo
     {
         protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.GNB_ST_Advanced;
@@ -556,58 +510,6 @@ internal partial class GNB
         {
             if (actionID is not KeenEdge)
                 return actionID;
-
-            #region Variables
-            //Gauge
-            byte Ammo = GetJobGauge<GNBGauge>().Ammo; //Our cartridge count
-            byte GunStep = GetJobGauge<GNBGauge>().AmmoComboStep; //For Gnashing Fang & Reign combo purposes
-            //Cooldown-related
-            float gfCD = GetCooldownRemainingTime(GnashingFang); //GnashingFang's cooldown; 30s total
-            float nmCD = GetCooldownRemainingTime(NoMercy); //NoMercy's cooldown; 60s total
-            float ddCD = GetCooldownRemainingTime(DoubleDown); //Double Down's cooldown; 60s total
-            float bfCD = GetCooldownRemainingTime(Bloodfest); //Bloodfest's cooldown; 120s total
-            float nmLeft = GetBuffRemainingTime(Buffs.NoMercy); //Remaining time for No Mercy buff (20s)
-            bool hasNM = nmCD is >= 40 and <= 60; //Checks if No Mercy is active
-            bool hasBreak = HasEffect(Buffs.ReadyToBreak); //Checks for Ready To Break buff
-            bool hasReign = HasEffect(Buffs.ReadyToReign); //Checks for Ready To Reign buff
-            //Misc
-            bool inOdd = bfCD is < 90 and > 20; //Odd Minute
-            bool canLateWeave = GetCooldownRemainingTime(actionID) < 1 && GetCooldownRemainingTime(actionID) > 0.6; //SkS purposes
-            float GCD = GetCooldown(KeenEdge).CooldownTotal; //2.5 is base SkS, but can work with 2.4x
-            int nmStop = PluginConfiguration.GetCustomIntValue(Config.GNB_ST_NoMercyStop);
-            bool justMitted = JustUsed(OriginalHook(HeartOfStone), 4f) ||
-                             JustUsed(OriginalHook(Nebula), 5f) ||
-                             JustUsed(Camouflage, 5f) ||
-                             JustUsed(All.Rampart, 5f) ||
-                             JustUsed(Aurora, 5f) ||
-                             JustUsed(Superbolide, 9f);
-            #region Minimal Requirements
-            //Ammo-relative
-            bool canBS = LevelChecked(BurstStrike) && //Burst Strike is unlocked
-                        Ammo > 0; //Has Ammo
-            bool canGF = LevelChecked(GnashingFang) && //GnashingFang is unlocked
-                        gfCD < 0.6f && //Gnashing Fang is off cooldown
-                        !HasEffect(Buffs.ReadyToBlast) && //to ensure Hypervelocity is spent in case Burst Strike is used before Gnashing Fang
-                        GunStep == 0 && //Gnashing Fang or Reign combo is not already active
-                        Ammo > 0; //Has Ammo
-            bool canDD = LevelChecked(DoubleDown) && //Double Down is unlocked
-                        ddCD < 0.6f && //Double Down is off cooldown
-                        Ammo > 0; //Has Ammo
-            bool canBF = LevelChecked(Bloodfest) && //Bloodfest is unlocked
-                        bfCD < 0.6f; //Bloodfest is off cooldown
-            //Cooldown-relative
-            bool canZone = LevelChecked(DangerZone) && //Zone is unlocked
-                          GetCooldownRemainingTime(OriginalHook(DangerZone)) < 0.6f; //DangerZone is off cooldown
-            bool canBreak = LevelChecked(SonicBreak) && //Sonic Break is unlocked
-                           hasBreak; //No Mercy or Ready To Break is active
-            bool canBow = LevelChecked(BowShock) && //Bow Shock is unlocked
-                         GetCooldownRemainingTime(BowShock) < 0.6f; //BowShock is off cooldown
-            bool canContinue = LevelChecked(Continuation); //Continuation is unlocked
-            bool canReign = LevelChecked(ReignOfBeasts) && //Reign of Beasts is unlocked
-                           GunStep == 0 && //Gnashing Fang or Reign combo is not already active
-                           hasReign; //Ready To Reign is active
-            #endregion
-            #endregion
 
             if (IsEnabled(CustomComboPreset.GNB_ST_Advanced_Opener) &&
                 Opener().FullOpener(ref actionID))
@@ -620,16 +522,17 @@ internal partial class GNB
                 return All.Interject;
 
             #region Mitigations
+
             if (IsEnabled(CustomComboPreset.GNB_ST_Mitigation) && //Mitigation option is enabled
                 InCombat() && //Player is in combat
-                !justMitted) //Player has not used a mitigation ability in the last 4-9 seconds
+                !JustMitted) //Player has not used a mitigation ability in the last 4-9 seconds
             {
                 //Superbolide
                 if (IsEnabled(CustomComboPreset.GNB_ST_Superbolide) && //Superbolide option is enabled
                     ActionReady(Superbolide) && //Superbolide is ready
                     PlayerHealthPercentageHp() < Config.GNB_ST_Superbolide_Health && //Player's health is below selected threshold
                     (Config.GNB_ST_Superbolide_SubOption == 0 || //Superbolide is enabled for all targets
-                    (TargetIsBoss() && Config.GNB_ST_Superbolide_SubOption == 1))) //Superbolide is enabled for bosses only
+                     TargetIsBoss() && Config.GNB_ST_Superbolide_SubOption == 1)) //Superbolide is enabled for bosses only
                     return Superbolide;
 
                 if (IsPlayerTargeted()) //Player is being targeted by current target
@@ -639,7 +542,7 @@ internal partial class GNB
                         ActionReady(OriginalHook(Nebula)) && //Nebula is ready
                         PlayerHealthPercentageHp() < Config.GNB_ST_Nebula_Health && //Player's health is below selected threshold
                         (Config.GNB_ST_Nebula_SubOption == 0 || //Nebula is enabled for all targets
-                         (TargetIsBoss() && Config.GNB_ST_Nebula_SubOption == 1))) //Nebula is enabled for bosses only
+                         TargetIsBoss() && Config.GNB_ST_Nebula_SubOption == 1)) //Nebula is enabled for bosses only
                         return OriginalHook(Nebula);
 
                     //Rampart
@@ -647,7 +550,7 @@ internal partial class GNB
                         ActionReady(All.Rampart) && //Rampart is ready
                         PlayerHealthPercentageHp() < Config.GNB_ST_Rampart_Health && //Player's health is below selected threshold
                         (Config.GNB_ST_Rampart_SubOption == 0 || //Rampart is enabled for all targets
-                         (TargetIsBoss() && Config.GNB_ST_Rampart_SubOption == 1))) //Rampart is enabled for bosses only
+                         TargetIsBoss() && Config.GNB_ST_Rampart_SubOption == 1)) //Rampart is enabled for bosses only
                         return All.Rampart;
 
                     //Reprisal
@@ -656,7 +559,7 @@ internal partial class GNB
                         InActionRange(All.Reprisal) && //Player is in range of Reprisal
                         PlayerHealthPercentageHp() < Config.GNB_ST_Reprisal_Health && //Player's health is below selected threshold
                         (Config.GNB_ST_Reprisal_SubOption == 0 || //Reprisal is enabled for all targets
-                         (TargetIsBoss() && Config.GNB_ST_Reprisal_SubOption == 1))) //Reprisal is enabled for bosses only
+                         TargetIsBoss() && Config.GNB_ST_Reprisal_SubOption == 1)) //Reprisal is enabled for bosses only
                         return All.Reprisal;
 
                     //Arms Length
@@ -672,7 +575,7 @@ internal partial class GNB
                     ActionReady(Camouflage) && //Camouflage is ready
                     PlayerHealthPercentageHp() < Config.GNB_ST_Camouflage_Health && //Player's health is below selected threshold
                     (Config.GNB_ST_Camouflage_SubOption == 0 || //Camouflage is enabled for all targets
-                     (TargetIsBoss() && Config.GNB_ST_Camouflage_SubOption == 1))) //Camouflage is enabled for bosses only
+                     TargetIsBoss() && Config.GNB_ST_Camouflage_SubOption == 1)) //Camouflage is enabled for bosses only
                     return Camouflage;
 
                 //Corundum
@@ -680,7 +583,7 @@ internal partial class GNB
                     ActionReady(OriginalHook(HeartOfStone)) && //Corundum is ready
                     PlayerHealthPercentageHp() < Config.GNB_ST_Corundum_Health && //Player's health is below selected threshold
                     (Config.GNB_ST_Corundum_SubOption == 0 || //Corundum is enabled for all targets
-                     (TargetIsBoss() && Config.GNB_ST_Corundum_SubOption == 1))) //Corundum is enabled for bosses only
+                     TargetIsBoss() && Config.GNB_ST_Corundum_SubOption == 1)) //Corundum is enabled for bosses only
                     return OriginalHook(HeartOfStone);
 
                 //Aurora
@@ -690,15 +593,17 @@ internal partial class GNB
                     GetRemainingCharges(Aurora) > Config.GNB_ST_Aurora_Charges && //Aurora has more charges than set threshold
                     PlayerHealthPercentageHp() < Config.GNB_ST_Aurora_Health && //Player's health is below selected threshold
                     (Config.GNB_ST_Aurora_SubOption == 0 || //Aurora is enabled for all targets
-                    (TargetIsBoss() && Config.GNB_ST_Aurora_SubOption == 1))) //Aurora is enabled for bosses only
+                     TargetIsBoss() && Config.GNB_ST_Aurora_SubOption == 1)) //Aurora is enabled for bosses only
                     return Aurora;
             }
+
             #endregion
 
             #region Variant
+
             //Variant Cure
             if (IsEnabled(CustomComboPreset.GNB_Variant_Cure) && IsEnabled(Variant.VariantCure)
-                && PlayerHealthPercentageHp() <= GetOptionValue(Config.GNB_VariantCure))
+                                                              && PlayerHealthPercentageHp() <= GetOptionValue(Config.GNB_VariantCure))
                 return Variant.VariantCure;
 
             //Variant SpiritDart
@@ -706,7 +611,7 @@ internal partial class GNB
             if (IsEnabled(CustomComboPreset.GNB_Variant_SpiritDart) &&
                 IsEnabled(Variant.VariantSpiritDart) &&
                 CanWeave() &&
-                (sustainedDamage is null || sustainedDamage?.RemainingTime <= 3))
+                (sustainedDamage is null || sustainedDamage.RemainingTime <= 3))
                 return Variant.VariantSpiritDart;
 
             //Variant Ultimatum
@@ -715,9 +620,11 @@ internal partial class GNB
                 CanWeave() &&
                 ActionReady(Variant.VariantUltimatum))
                 return Variant.VariantUltimatum;
+
             #endregion
 
             #region Bozja
+
             if (Bozja.IsInBozja) //Checks if we're inside Bozja instances
             {
                 //oGCDs
@@ -904,9 +811,11 @@ internal partial class GNB
                     !JustUsed(Bozja.LostParalyze3, 60f))
                     return Bozja.LostParalyze3;
             }
+
             #endregion
 
             #region Rotation
+
             //Ranged Uptime
             if (IsEnabled(CustomComboPreset.GNB_ST_RangedUptime) && //Ranged Uptime option is enabled
                 LevelChecked(LightningShot) && //Lightning Shot is unlocked
@@ -920,19 +829,20 @@ internal partial class GNB
                 InCombat() && //In combat
                 HasTarget() && //Has target
                 CanWeave() && //Able to weave
-                GetTargetHPPercent() >= nmStop) //target HP is above threshold
+                (Config.GNB_ST_NoMercy_SubOption == 0 ||
+                 Config.GNB_ST_NoMercy_SubOption == 1 && InBossEncounter())) //Bosscheck
             {
                 if (LevelChecked(DoubleDown)) //Lv90+
                 {
-                    if ((inOdd && //Odd Minute window
-                        (Ammo >= 2 || (ComboAction is BrutalShell && Ammo == 1))) || //2 or 3 Ammo or 1 Ammo with Solid Barrel next in combo
-                        (!inOdd && //Even Minute window
-                        Ammo != 3)) //Ammo is not full (3)
+                    if (InOdd && //Odd Minute window
+                        (Ammo >= 2 || ComboAction is BrutalShell && Ammo == 1) || //2 or 3 Ammo or 1 Ammo with Solid Barrel next in combo
+                        !InOdd && //Even Minute window
+                        Ammo != 3) //Ammo is not full (3)
                         return NoMercy; //Execute No Mercy if conditions are met
                 }
                 if (!LevelChecked(DoubleDown)) //Lv1-89
                 {
-                    if (canLateWeave && //Late-weaveable
+                    if (CanLateWeave && //Late-weaveable
                         Ammo == MaxCartridges()) //Ammo is full
                         return NoMercy; //Execute No Mercy if conditions are met
                 }
@@ -945,7 +855,7 @@ internal partial class GNB
                 LevelChecked(Hypervelocity) && //Hypervelocity is unlocked
                 HasEffect(Buffs.ReadyToBlast) && //Ready To Blast buff is active
                 IsEnabled(CustomComboPreset.GNB_ST_NoMercy) && //No Mercy option is enabled
-                 nmCD is > 1 or <= 0.1f) //Priority hack to prevent Hypervelocity from being used before No Mercy
+                NmCD is > 1 or <= 0.1f) //Priority hack to prevent Hypervelocity from being used before No Mercy
                 return Hypervelocity; //Execute Hypervelocity if conditions are met
 
             //Continuation protection - Forced to prevent loss
@@ -976,13 +886,13 @@ internal partial class GNB
                     //Zone
                     if (IsEnabled(CustomComboPreset.GNB_ST_Zone) && //Zone option is enabled
                         canZone && //able to use Zone
-                        (nmCD is < 57.5f and > 17f))//Optimal use; twice per minute, 1 in NM, 1 out of NM
+                        NmCD is < 57.5f and > 17f) //Optimal use; twice per minute, 1 in NM, 1 out of NM
                         return OriginalHook(DangerZone); //Execute Zone if conditions are met
 
                     //Bow Shock
                     if (IsEnabled(CustomComboPreset.GNB_ST_BowShock) && //Bow Shock option is enabled
                         canBow && //able to use Bow Shock
-                        nmCD is < 57.5f and >= 40) //No Mercy is up & was not just used within 1 GCD
+                        NmCD is < 57.5f and >= 40) //No Mercy is up & was not just used within 1 GCD
                         return BowShock;
                 }
             }
@@ -1001,7 +911,7 @@ internal partial class GNB
                 //GnashingFang
                 if (IsEnabled(CustomComboPreset.GNB_ST_GnashingFang) && //Gnashing Fang option is enabled
                     canGF && //able to use Gnashing Fang
-                    ((nmCD is > 17 and < 35) || //30s Optimal use
+                    (NmCD is > 17 and < 35 || //30s Optimal use
                      JustUsed(NoMercy, 6f))) //No Mercy was just used within 4 seconds
                     return GnashingFang;
 
@@ -1009,14 +919,14 @@ internal partial class GNB
                 if (IsEnabled(CustomComboPreset.GNB_ST_DoubleDown) && //Double Down option is enabled
                     canDD && //able to use Double Down
                     IsOnCooldown(GnashingFang) && //Gnashing Fang is on cooldown
-                    hasNM) //No Mercy is active
+                    HasNM) //No Mercy is active
                     return DoubleDown;
 
                 //Sonic Break
                 if (IsEnabled(CustomComboPreset.GNB_ST_SonicBreak) && //Sonic Break option is enabled
                     canBreak && //able to use Sonic Break
-                    ((IsOnCooldown(GnashingFang) && IsOnCooldown(DoubleDown)) || //Gnashing Fang and Double Down are both on cooldown
-                     nmLeft <= GCD)) //No Mercy buff is about to expire
+                    (IsOnCooldown(GnashingFang) && IsOnCooldown(DoubleDown) || //Gnashing Fang and Double Down are both on cooldown
+                     NmLeft <= GCD)) //No Mercy buff is about to expire
                     return SonicBreak; //Execute Sonic Break if conditions are met
 
                 //Reign of Beasts
@@ -1044,22 +954,25 @@ internal partial class GNB
             if (IsEnabled(CustomComboPreset.GNB_ST_Advanced_Cooldowns) && //Cooldowns option is enabled
                 IsEnabled(CustomComboPreset.GNB_ST_NoMercy) && //No Mercy option is enabled
                 IsEnabled(CustomComboPreset.GNB_ST_BurstStrike) && //Burst Strike option is enabled
-                GetTargetHPPercent() > nmStop && //target HP is above threshold
+                (Config.GNB_ST_NoMercy_SubOption == 0 ||
+                 Config.GNB_ST_NoMercy_SubOption == 1 && InBossEncounter()) && //Bosscheck
                 LevelChecked(DoubleDown) && //Lv90+
-                nmCD < 1 && //No Mercy is ready or about to be
-                 Ammo is 3 && //Ammo is full
-                 bfCD > 110 && //Bloodfest was just used, but not recently
-                 ComboAction is KeenEdge) //Just used Keen Edge
+                NmCD < 1 && //No Mercy is ready or about to be
+                Ammo is 3 && //Ammo is full
+                BfCD > 110 && //Bloodfest was just used, but not recently
+                ComboAction is KeenEdge) //Just used Keen Edge
                 return BurstStrike;
+
             //Lv100 2cart forced 2min starter
             if (IsEnabled(CustomComboPreset.GNB_ST_Advanced_Cooldowns) && //Cooldowns option is enabled
                 IsEnabled(CustomComboPreset.GNB_ST_NoMercy) && //No Mercy option is enabled
                 IsEnabled(CustomComboPreset.GNB_ST_BurstStrike) && //Burst Strike option is enabled
-                GetTargetHPPercent() > nmStop && //target HP is above threshold
+                (Config.GNB_ST_NoMercy_SubOption == 0 ||
+                 Config.GNB_ST_NoMercy_SubOption == 1 && InBossEncounter()) && //Bosscheck
                 LevelChecked(ReignOfBeasts) && //Lv100
-                nmCD < 1 && //No Mercy is ready or about to be
-                 Ammo is 3 && //Ammo is full
-                 bfCD < GCD * 12) //Bloodfest is ready or about to be
+                NmCD < 1 && //No Mercy is ready or about to be
+                Ammo is 3 && //Ammo is full
+                BfCD < GCD * 12) //Bloodfest is ready or about to be
                 return BurstStrike;
 
             //Gauge Combo Steps
@@ -1085,8 +998,9 @@ internal partial class GNB
                         IsEnabled(CustomComboPreset.GNB_ST_NoMercy) && //No Mercy option is enabled
                         LevelChecked(Hypervelocity) && //Hypervelocity is unlocked
                         HasEffect(Buffs.ReadyToBlast) && //Ready To Blast buff is active
-                        (nmCD is > 1 or <= 0.1f || //Priority hack to prevent Hypervelocity from being used before No Mercy
-                         GetTargetHPPercent() < nmStop)) //target HP is below threshold
+                        (NmCD is > 1 or <= 0.1f && //Priority hack to prevent Hypervelocity from being used before No Mercy
+                         Config.GNB_ST_NoMercy_SubOption == 0 ||
+                         Config.GNB_ST_NoMercy_SubOption == 1 && InBossEncounter())) //Bosscheck
                         return Hypervelocity; //Execute Hypervelocity if conditions are met
 
                     //Overcap protection
@@ -1098,15 +1012,17 @@ internal partial class GNB
                     return SolidBarrel; //Execute Solid Barrel if conditions are met
                 }
             }
+
             #endregion
 
             return KeenEdge; //Always default back to Keen Edge
-
         }
     }
+
     #endregion
 
     #region Simple Mode - AoE
+
     internal class GNB_AoE_Simple : CustomCombo
     {
         protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.GNB_AoE_Simple;
@@ -1116,42 +1032,7 @@ internal partial class GNB
             if (actionID is not DemonSlice)
                 return actionID;
 
-            #region Variables
-            //Gauge
-            byte Ammo = GetJobGauge<GNBGauge>().Ammo; //Our cartridge count
-            byte GunStep = GetJobGauge<GNBGauge>().AmmoComboStep; //For Gnashing Fang & Reign combo purposes
-            //Cooldown-related
-            float nmCD = GetCooldownRemainingTime(NoMercy); //NoMercy's cooldown; 60s total
-            float bfCD = GetCooldownRemainingTime(Bloodfest); //Bloodfest's cooldown; 120s total
-            bool hasBreak = HasEffect(Buffs.ReadyToBreak); //Checks for Ready To Break buff
-            bool hasReign = HasEffect(Buffs.ReadyToReign); //Checks for Ready To Reign buff
-            bool justMitted = JustUsed(OriginalHook(HeartOfStone), 4f) ||
-                              JustUsed(OriginalHook(Nebula), 5f) ||
-                              JustUsed(Camouflage, 5f) ||
-                              JustUsed(All.Rampart, 5f) ||
-                              JustUsed(Aurora, 5f) ||
-                              JustUsed(Superbolide, 9f);
-            #region Minimal Requirements
-            //Ammo-relative
-            bool canFC = LevelChecked(FatedCircle) && //Fated Circle is unlocked
-                        Ammo > 0; //Has Ammo
-            bool canDD = LevelChecked(DoubleDown) && //Double Down is unlocked
-                        GetCooldownRemainingTime(DoubleDown) < 0.6f && //Double Down is off cooldown
-                        Ammo > 0; //Has Ammo
-            bool canBF = LevelChecked(Bloodfest) && //Bloodfest is unlocked
-                        GetCooldownRemainingTime(Bloodfest) < 0.6f; //Bloodfest is off cooldown
-            //Cooldown-relative
-            bool canZone = LevelChecked(DangerZone) && //Zone is unlocked
-                          GetCooldownRemainingTime(OriginalHook(DangerZone)) < 0.6f; //DangerZone is off cooldown
-            bool canBreak = LevelChecked(SonicBreak) && //Sonic Break is unlocked
-                           hasBreak; //No Mercy or Ready To Break is active
-            bool canBow = LevelChecked(BowShock) && //Bow Shock is unlocked
-                         GetCooldownRemainingTime(BowShock) < 0.6f; //BowShock is off cooldown
-            bool canReign = LevelChecked(ReignOfBeasts) && //Reign of Beasts is unlocked
-                           GunStep == 0 && //Gnashing Fang or Reign combo is not already active
-                           hasReign; //Ready To Reign is active
-            #endregion
-            #endregion
+
 
             #region Stuns
 
@@ -1168,10 +1049,11 @@ internal partial class GNB
             #endregion
 
             #region Mitigations
+
             if (Config.GNB_AoE_MitsOptions != 1)
             {
                 if (InCombat() && //Player is in combat
-                    !justMitted) //Player has not used a mitigation ability in the last 4-9 seconds
+                    !JustMitted) //Player has not used a mitigation ability in the last 4-9 seconds
                 {
                     //Superbolide
                     if (ActionReady(Superbolide) && //Superbolide is ready
@@ -1214,9 +1096,11 @@ internal partial class GNB
                         return Aurora;
                 }
             }
+
             #endregion
 
             #region Variant
+
             //Variant Cure
             if (IsEnabled(CustomComboPreset.GNB_Variant_Cure) &&
                 IsEnabled(Variant.VariantCure)
@@ -1228,7 +1112,7 @@ internal partial class GNB
             if (IsEnabled(CustomComboPreset.GNB_Variant_SpiritDart) &&
                 IsEnabled(Variant.VariantSpiritDart) &&
                 CanWeave() &&
-                (sustainedDamage is null || sustainedDamage?.RemainingTime <= 3))
+                (sustainedDamage is null || sustainedDamage.RemainingTime <= 3))
                 return Variant.VariantSpiritDart;
 
             //Variant Ultimatum
@@ -1237,9 +1121,11 @@ internal partial class GNB
                 CanWeave() &&
                 ActionReady(Variant.VariantUltimatum))
                 return Variant.VariantUltimatum;
+
             #endregion
 
             #region Bozja
+
             if (Bozja.IsInBozja) //Checks if we're inside Bozja instances
             {
                 //oGCDs
@@ -1426,9 +1312,11 @@ internal partial class GNB
                     !JustUsed(Bozja.LostParalyze3, 60f))
                     return Bozja.LostParalyze3;
             }
+
             #endregion
 
             #region Rotation
+
             if (InCombat()) //if already in combat
             {
                 if (CanWeave()) //if we can weave
@@ -1443,7 +1331,7 @@ internal partial class GNB
                         return BowShock; //execute Bow Shock
                     //Zone
                     if (canZone &&
-                        nmCD is < 57.5f and > 17) //use on CD after first usage in NM
+                        NmCD is < 57.5f and > 17) //use on CD after first usage in NM
                         return OriginalHook(DangerZone); //execute Zone
                     //Bloodfest
                     if (canBF) //if Bloodfest is ready & gauge is empty
@@ -1467,24 +1355,24 @@ internal partial class GNB
                 if (LevelChecked(ReignOfBeasts)) //if Reign of Beasts is unlocked
                 {
                     if (canReign || //can execute Reign of Beasts
-                        (GunStep is 3 or 4)) //can execute Noble Blood or Lion Heart
+                        GunStep is 3 or 4) //can execute Noble Blood or Lion Heart
                         return OriginalHook(ReignOfBeasts);
                 }
                 //FatedCircle - if not LevelChecked, use BurstStrike
-                if (canFC && //if Fated Circle is unlocked && gauge is not empty
-                             //Normal
-                    ((HasEffect(Buffs.NoMercy) && //if No Mercy is active
-                      !ActionReady(DoubleDown) && //if Double Down is not ready
-                      GunStep == 0) || //if Gnashing Fang or Reign combo is not active
-                                       //Bloodfest prep
-                     (IsEnabled(CustomComboPreset.GNB_AoE_Bloodfest) && //if Bloodfest option is enabled
-                      bfCD < 6))) //if Bloodfest is about to be ready
+                if (CanFC && //if Fated Circle is unlocked && gauge is not empty
+                    //Normal
+                    (HasEffect(Buffs.NoMercy) && //if No Mercy is active
+                     !ActionReady(DoubleDown) && //if Double Down is not ready
+                     GunStep == 0 || //if Gnashing Fang or Reign combo is not active
+                     //Bloodfest prep
+                     IsEnabled(CustomComboPreset.GNB_AoE_Bloodfest) && //if Bloodfest option is enabled
+                     BfCD < 6)) //if Bloodfest is about to be ready
                     return FatedCircle;
                 if (Ammo > 0 && //if gauge is not empty
                     !LevelChecked(FatedCircle) && //if Fated Circle is not unlocked
                     LevelChecked(BurstStrike) && //if Burst Strike is unlocked
                     HasEffect(Buffs.NoMercy) && //if No Mercy is active
-                     GunStep == 0) //if Gnashing Fang or Reign combo is not active
+                    GunStep == 0) //if Gnashing Fang or Reign combo is not active
                     return BurstStrike;
             }
 
@@ -1505,15 +1393,17 @@ internal partial class GNB
                         return DemonSlaughter; //execute Demon Slaughter
                 }
             }
+
             #endregion
 
             return DemonSlice; //Always default back to Demon Slice
-
         }
     }
+
     #endregion
 
     #region Advanced Mode - AoE
+
     internal class GNB_AoE_Advanced : CustomCombo
     {
         protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.GNB_AoE_Advanced;
@@ -1522,45 +1412,6 @@ internal partial class GNB
         {
             if (actionID is not DemonSlice)
                 return actionID;
-
-            #region Variables
-            //Gauge
-            byte Ammo = GetJobGauge<GNBGauge>().Ammo; //Our cartridge count
-            byte GunStep = GetJobGauge<GNBGauge>().AmmoComboStep; //For Gnashing Fang & Reign combo purposes
-            //Cooldown-related
-            float nmCD = GetCooldownRemainingTime(NoMercy); //NoMercy's cooldown; 60s total
-            float bfCD = GetCooldownRemainingTime(Bloodfest); //Bloodfest's cooldown; 120s total
-            bool hasBreak = HasEffect(Buffs.ReadyToBreak); //Checks for Ready To Break buff
-            bool hasReign = HasEffect(Buffs.ReadyToReign); //Checks for Ready To Reign buff
-            bool justMitted = JustUsed(OriginalHook(HeartOfStone), 4f) ||
-                              JustUsed(OriginalHook(Nebula), 5f) ||
-                              JustUsed(Camouflage, 5f) ||
-                              JustUsed(All.Rampart, 5f) ||
-                              JustUsed(Aurora, 5f) ||
-                              JustUsed(Superbolide, 9f);
-            //Misc
-            int nmStop = PluginConfiguration.GetCustomIntValue(Config.GNB_AoE_NoMercyStop);
-            #region Minimal Requirements
-            //Ammo-relative
-            bool canFC = LevelChecked(FatedCircle) && //Fated Circle is unlocked
-                        Ammo > 0; //Has Ammo
-            bool canDD = LevelChecked(DoubleDown) && //Double Down is unlocked
-                        GetCooldownRemainingTime(DoubleDown) < 0.6f && //Double Down is off cooldown
-                        Ammo > 0; //Has Ammo
-            bool canBF = LevelChecked(Bloodfest) && //Bloodfest is unlocked
-                        GetCooldownRemainingTime(Bloodfest) < 0.6f; //Bloodfest is off cooldown
-            //Cooldown-relative
-            bool canZone = LevelChecked(DangerZone) && //Zone is unlocked
-                          GetCooldownRemainingTime(OriginalHook(DangerZone)) < 0.6f; //DangerZone is off cooldown
-            bool canBreak = LevelChecked(SonicBreak) && //Sonic Break is unlocked
-                           hasBreak; //No Mercy or Ready To Break is active
-            bool canBow = LevelChecked(BowShock) && //Bow Shock is unlocked
-                         GetCooldownRemainingTime(BowShock) < 0.6f; //BowShock is off cooldown
-            bool canReign = LevelChecked(ReignOfBeasts) && //Reign of Beasts is unlocked
-                           GunStep == 0 && //Gnashing Fang or Reign combo is not already active
-                           hasReign; //Ready To Reign is active
-            #endregion
-            #endregion
 
             #region Stuns
 
@@ -1579,16 +1430,17 @@ internal partial class GNB
             #endregion
 
             #region Mitigations
+
             if (IsEnabled(CustomComboPreset.GNB_AoE_Mitigation) && //Mitigation option is enabled
                 InCombat() && //Player is in combat
-                !justMitted) //Player has not used a mitigation ability in the last 4-9 seconds
+                !JustMitted) //Player has not used a mitigation ability in the last 4-9 seconds
             {
                 //Superbolide
                 if (IsEnabled(CustomComboPreset.GNB_AoE_Superbolide) && //Superbolide option is enabled
                     ActionReady(Superbolide) && //Superbolide is ready
                     PlayerHealthPercentageHp() < Config.GNB_AoE_Superbolide_Health && //Player's health is below selected threshold
                     (Config.GNB_AoE_Superbolide_SubOption == 0 || //Superbolide is enabled for all targets
-                     (TargetIsBoss() && Config.GNB_AoE_Superbolide_SubOption == 1))) //Superbolide is enabled for bosses only
+                     TargetIsBoss() && Config.GNB_AoE_Superbolide_SubOption == 1)) //Superbolide is enabled for bosses only
                     return Superbolide;
 
                 if (IsPlayerTargeted()) //Player is being targeted by current target
@@ -1598,7 +1450,7 @@ internal partial class GNB
                         ActionReady(OriginalHook(Nebula)) && //Nebula is ready
                         PlayerHealthPercentageHp() < Config.GNB_AoE_Nebula_Health && //Player's health is below selected threshold
                         (Config.GNB_AoE_Nebula_SubOption == 0 || //Nebula is enabled for all targets
-                         (TargetIsBoss() && Config.GNB_AoE_Nebula_SubOption == 1))) //Nebula is enabled for bosses only
+                         TargetIsBoss() && Config.GNB_AoE_Nebula_SubOption == 1)) //Nebula is enabled for bosses only
                         return OriginalHook(Nebula);
 
                     //Rampart
@@ -1606,7 +1458,7 @@ internal partial class GNB
                         ActionReady(All.Rampart) && //Rampart is ready
                         PlayerHealthPercentageHp() < Config.GNB_AoE_Rampart_Health && //Player's health is below selected threshold
                         (Config.GNB_AoE_Rampart_SubOption == 0 || //Rampart is enabled for all targets
-                         (TargetIsBoss() && Config.GNB_AoE_Rampart_SubOption == 1))) //Rampart is enabled for bosses only
+                         TargetIsBoss() && Config.GNB_AoE_Rampart_SubOption == 1)) //Rampart is enabled for bosses only
                         return All.Rampart;
 
                     //Reprisal
@@ -1615,7 +1467,7 @@ internal partial class GNB
                         InActionRange(All.Reprisal) && //Player is in range of Reprisal
                         PlayerHealthPercentageHp() < Config.GNB_AoE_Reprisal_Health && //Player's health is below selected threshold
                         (Config.GNB_AoE_Reprisal_SubOption == 0 || //Reprisal is enabled for all targets
-                         (TargetIsBoss() && Config.GNB_AoE_Reprisal_SubOption == 1))) //Reprisal is enabled for bosses only
+                         TargetIsBoss() && Config.GNB_AoE_Reprisal_SubOption == 1)) //Reprisal is enabled for bosses only
                         return All.Reprisal;
 
                     //Arm's Length
@@ -1631,7 +1483,7 @@ internal partial class GNB
                     ActionReady(Camouflage) && //Camouflage is ready
                     PlayerHealthPercentageHp() < Config.GNB_AoE_Camouflage_Health && //Player's health is below selected threshold
                     (Config.GNB_AoE_Camouflage_SubOption == 0 || //Camouflage is enabled for all targets
-                     (TargetIsBoss() && Config.GNB_AoE_Camouflage_SubOption == 1))) //Camouflage is enabled for bosses only
+                     TargetIsBoss() && Config.GNB_AoE_Camouflage_SubOption == 1)) //Camouflage is enabled for bosses only
                     return Camouflage;
 
                 //Corundum
@@ -1639,7 +1491,7 @@ internal partial class GNB
                     ActionReady(OriginalHook(HeartOfStone)) && //Corundum is ready
                     PlayerHealthPercentageHp() < Config.GNB_AoE_Corundum_Health && //Player's health is below selected threshold
                     (Config.GNB_AoE_Corundum_SubOption == 0 || //Corundum is enabled for all targets
-                     (TargetIsBoss() && Config.GNB_AoE_Corundum_SubOption == 1))) //Corundum is enabled for bosses only
+                     TargetIsBoss() && Config.GNB_AoE_Corundum_SubOption == 1)) //Corundum is enabled for bosses only
                     return OriginalHook(HeartOfStone);
 
                 //Aurora
@@ -1649,12 +1501,14 @@ internal partial class GNB
                     !(HasEffect(Buffs.Aurora) || TargetHasEffectAny(Buffs.Aurora)) && //Aurora is not already active on player or target
                     PlayerHealthPercentageHp() < Config.GNB_AoE_Aurora_Health && //Player's health is below selected threshold
                     (Config.GNB_AoE_Aurora_SubOption == 0 || //Aurora is enabled for all targets
-                    (TargetIsBoss() && Config.GNB_AoE_Aurora_SubOption == 1))) //Aurora is enabled for bosses only
+                     TargetIsBoss() && Config.GNB_AoE_Aurora_SubOption == 1)) //Aurora is enabled for bosses only
                     return Aurora;
             }
+
             #endregion
 
             #region Variant
+
             //Variant Cure
             if (IsEnabled(CustomComboPreset.GNB_Variant_Cure) &&
                 IsEnabled(Variant.VariantCure)
@@ -1666,7 +1520,7 @@ internal partial class GNB
             if (IsEnabled(CustomComboPreset.GNB_Variant_SpiritDart) &&
                 IsEnabled(Variant.VariantSpiritDart) &&
                 CanWeave() &&
-                (sustainedDamage is null || sustainedDamage?.RemainingTime <= 3))
+                (sustainedDamage is null || sustainedDamage.RemainingTime <= 3))
                 return Variant.VariantSpiritDart;
 
             //Variant Ultimatum
@@ -1675,9 +1529,11 @@ internal partial class GNB
                 CanWeave() &&
                 ActionReady(Variant.VariantUltimatum))
                 return Variant.VariantUltimatum;
+
             #endregion
 
             #region Bozja
+
             if (Bozja.IsInBozja) //Checks if we're inside Bozja instances
             {
                 //oGCDs
@@ -1864,9 +1720,11 @@ internal partial class GNB
                     !JustUsed(Bozja.LostParalyze3, 60f))
                     return Bozja.LostParalyze3;
             }
+
             #endregion
 
             #region Rotation
+
             if (InCombat()) //if already in combat
             {
                 if (CanWeave()) //if we can weave
@@ -1884,7 +1742,7 @@ internal partial class GNB
                     //Zone
                     if (IsEnabled(CustomComboPreset.GNB_AoE_Zone) &&
                         canZone &&
-                        nmCD is < 57.5f and > 17) //use on CD after first usage in NM
+                        NmCD is < 57.5f and > 17) //use on CD after first usage in NM
                         return OriginalHook(DangerZone); //execute Zone
                     //Bloodfest
                     if (IsEnabled(CustomComboPreset.GNB_AoE_Bloodfest) && //if Bloodfest option is enabled
@@ -1912,26 +1770,26 @@ internal partial class GNB
                     LevelChecked(ReignOfBeasts)) //if Reign of Beasts is unlocked
                 {
                     if (canReign || //can execute Reign of Beasts
-                        (GunStep is 3 or 4)) //can execute Noble Blood or Lion Heart
+                        GunStep is 3 or 4) //can execute Noble Blood or Lion Heart
                         return OriginalHook(ReignOfBeasts);
                 }
                 //FatedCircle - if not LevelChecked, use BurstStrike
                 if (IsEnabled(CustomComboPreset.GNB_AoE_FatedCircle) && //if Fated Circle option is enabled
-                    canFC && //if Fated Circle is unlocked && gauge is not empty
-                             //Normal
-                    ((HasEffect(Buffs.NoMercy) && //if No Mercy is active
-                      !ActionReady(DoubleDown) && //if Double Down is not ready
-                      GunStep == 0) || //if Gnashing Fang or Reign combo is not active
-                                       //Bloodfest prep
-                     (IsEnabled(CustomComboPreset.GNB_AoE_Bloodfest) && //if Bloodfest option is enabled
-                      bfCD < 6))) //if Bloodfest is about to be ready
+                    CanFC && //if Fated Circle is unlocked && gauge is not empty
+                    //Normal
+                    (HasEffect(Buffs.NoMercy) && //if No Mercy is active
+                     !ActionReady(DoubleDown) && //if Double Down is not ready
+                     GunStep == 0 || //if Gnashing Fang or Reign combo is not active
+                     //Bloodfest prep
+                     IsEnabled(CustomComboPreset.GNB_AoE_Bloodfest) && //if Bloodfest option is enabled
+                     BfCD < 6)) //if Bloodfest is about to be ready
                     return FatedCircle;
                 if (IsEnabled(CustomComboPreset.GNB_AoE_noFatedCircle) && //if Fated Circle Burst Strike option is disabled
                     Ammo > 0 && //if gauge is not empty
                     !LevelChecked(FatedCircle) && //if Fated Circle is not unlocked
                     LevelChecked(BurstStrike) && //if Burst Strike is unlocked
                     HasEffect(Buffs.NoMercy) && //if No Mercy is active
-                     GunStep == 0) //if Gnashing Fang or Reign combo is not active
+                    GunStep == 0) //if Gnashing Fang or Reign combo is not active
                     return BurstStrike;
             }
 
@@ -1951,81 +1809,37 @@ internal partial class GNB
                             return BurstStrike; //execute Burst Strike
                     }
                     if (Ammo != MaxCartridges() || //if gauge is not full
-                        (Ammo == MaxCartridges() && //if gauge is full
-                         !LevelChecked(FatedCircle) && //if Fated Circle is not unlocked
-                         !IsEnabled(CustomComboPreset.GNB_AoE_BSOvercap))) //if Burst Strike Overcap option is disabled
+                        Ammo == MaxCartridges() && //if gauge is full
+                        !LevelChecked(FatedCircle) && //if Fated Circle is not unlocked
+                        !IsEnabled(CustomComboPreset.GNB_AoE_BSOvercap)) //if Burst Strike Overcap option is disabled
                     {
                         return DemonSlaughter; //execute Demon Slaughter
                     }
                 }
             }
+
             #endregion
 
             return DemonSlice; //execute Demon Slice
-
         }
     }
+
     #endregion
 
     #region Gnashing Fang Features
+
     internal class GNB_GF_Features : CustomCombo
     {
         protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.GNB_GF_Features;
 
         protected override uint Invoke(uint actionID)
         {
-            bool GFchoice = Config.GNB_GF_Features_Choice == 0; //Gnashing Fang as button
-            bool NMchoice = Config.GNB_GF_Features_Choice == 1; //No Mercy as button
+            bool gFchoice = Config.GNB_GF_Features_Choice == 0; //Gnashing Fang as button
+            bool nMchoice = Config.GNB_GF_Features_Choice == 1; //No Mercy as button
 
-            if ((GFchoice && actionID is not GnashingFang) ||
-                (NMchoice && actionID is not NoMercy))
+            if (gFchoice && actionID is not GnashingFang ||
+                nMchoice && actionID is not NoMercy)
                 return actionID;
-
-            #region Variables
-            //Gauge
-            byte Ammo = GetJobGauge<GNBGauge>().Ammo; //Our cartridge count
-            byte GunStep = GetJobGauge<GNBGauge>().AmmoComboStep; //For Gnashing Fang & Reign combo purposes
-            //Cooldown-related
-            float gfCD = GetCooldownRemainingTime(GnashingFang); //GnashingFang's cooldown; 30s total
-            float nmCD = GetCooldownRemainingTime(NoMercy); //NoMercy's cooldown; 60s total
-            float ddCD = GetCooldownRemainingTime(DoubleDown); //Double Down's cooldown; 60s total
-            float bfCD = GetCooldownRemainingTime(Bloodfest); //Bloodfest's cooldown; 120s total
-            float nmLeft = GetBuffRemainingTime(Buffs.NoMercy); //Remaining time for No Mercy buff (20s)
-            bool hasNM = nmCD is >= 40 and <= 60; //Checks if No Mercy is active
-            bool hasBreak = HasEffect(Buffs.ReadyToBreak); //Checks for Ready To Break buff
-            bool hasReign = HasEffect(Buffs.ReadyToReign); //Checks for Ready To Reign buff
-
-            //Misc
-            bool inOdd = bfCD is < 90 and > 20; //Odd Minute
-            bool canLateWeave = GetCooldownRemainingTime(actionID) < 1 && GetCooldownRemainingTime(actionID) > 0.6; //SkS purposes
-            float GCD = GetCooldown(KeenEdge).CooldownTotal; //2.5 is base SkS, but can work with 2.4x
-            #region Minimal Requirements
-            //Ammo-relative
-            bool canBS = LevelChecked(BurstStrike) && //Burst Strike is unlocked
-                        Ammo > 0; //Has Ammo
-            bool canGF = LevelChecked(GnashingFang) && //GnashingFang is unlocked
-                        gfCD < 0.6f && //Gnashing Fang is off cooldown
-                        !HasEffect(Buffs.ReadyToBlast) && //to ensure Hypervelocity is spent in case Burst Strike is used before Gnashing Fang
-                        GunStep == 0 && //Gnashing Fang or Reign combo is not already active
-                        Ammo > 0; //Has Ammo
-            bool canDD = LevelChecked(DoubleDown) && //Double Down is unlocked
-                        ddCD < 0.6f && //Double Down is off cooldown
-                        Ammo > 0; //Has Ammo
-            bool canBF = LevelChecked(Bloodfest) && //Bloodfest is unlocked
-                        bfCD < 0.6f; //Bloodfest is off cooldown
-            //Cooldown-relative
-            bool canZone = LevelChecked(DangerZone) && //Zone is unlocked
-                          GetCooldownRemainingTime(OriginalHook(DangerZone)) < 0.6f; //DangerZone is off cooldown
-            bool canBreak = LevelChecked(SonicBreak) && //Sonic Break is unlocked
-                           hasBreak; //No Mercy or Ready To Break is active
-            bool canBow = LevelChecked(BowShock) && //Bow Shock is unlocked
-                         GetCooldownRemainingTime(BowShock) < 0.6f; //BowShock is off cooldown
-            bool canContinue = LevelChecked(Continuation); //Continuation is unlocked
-            bool canReign = LevelChecked(ReignOfBeasts) && //Reign of Beasts is unlocked
-                           GunStep == 0 && //Gnashing Fang or Reign combo is not already active
-                           hasReign; //Ready To Reign is active
-            #endregion
-            #endregion
 
             //oGCDs
             if (CanWeave())
@@ -2039,15 +1853,15 @@ internal partial class GNB
                 {
                     if (LevelChecked(DoubleDown)) //Lv90+
                     {
-                        if ((inOdd && //Odd Minute window
-                             (Ammo >= 2 || (ComboAction is BrutalShell && Ammo == 1))) || //2 or 3 Ammo or 1 Ammo with Solid Barrel next in combo
-                            (!inOdd && //Even Minute window
-                             Ammo != 3)) //Ammo is not full (3)
+                        if (InOdd && //Odd Minute window
+                            (Ammo >= 2 || ComboAction is BrutalShell && Ammo == 1) || //2 or 3 Ammo or 1 Ammo with Solid Barrel next in combo
+                            !InOdd && //Even Minute window
+                            Ammo != 3) //Ammo is not full (3)
                             return NoMercy; //Execute No Mercy if conditions are met
                     }
                     if (!LevelChecked(DoubleDown)) //Lv1-89
                     {
-                        if (canLateWeave && //Late-weaveable
+                        if (CanLateWeave && //Late-weaveable
                             Ammo == MaxCartridges()) //Ammo is full
                             return NoMercy; //Execute No Mercy if conditions are met
                     }
@@ -2083,13 +1897,13 @@ internal partial class GNB
                     //Zone
                     if (IsEnabled(CustomComboPreset.GNB_GF_Zone) && //Zone option is enabled
                         canZone && //able to use Zone
-                        (nmCD is < 57.5f and > 17f))//Optimal use; twice per minute, 1 in NM, 1 out of NM
+                        NmCD is < 57.5f and > 17f) //Optimal use; twice per minute, 1 in NM, 1 out of NM
                         return OriginalHook(DangerZone); //Execute Zone if conditions are met
 
                     //Bow Shock
                     if (IsEnabled(CustomComboPreset.GNB_GF_BowShock) && //Bow Shock option is enabled
                         canBow && //able to use Bow Shock
-                        nmCD is < 57.5f and >= 40) //No Mercy is up & was not just used within 1 GCD
+                        NmCD is < 57.5f and >= 40) //No Mercy is up & was not just used within 1 GCD
                         return BowShock;
                 }
             }
@@ -2099,7 +1913,7 @@ internal partial class GNB
             {
                 //GnashingFang
                 if (canGF && //able to use Gnashing Fang
-                    ((nmCD is > 17 and < 35) || //30s Optimal use
+                    (NmCD is > 17 and < 35 || //30s Optimal use
                      JustUsed(NoMercy, 6f))) //No Mercy was just used within 4 seconds
                     return GnashingFang;
 
@@ -2107,14 +1921,14 @@ internal partial class GNB
                 if (IsEnabled(CustomComboPreset.GNB_GF_DoubleDown) && //Double Down option is enabled
                     canDD && //able to use Double Down
                     IsOnCooldown(GnashingFang) && //Gnashing Fang is on cooldown
-                    hasNM) //No Mercy is active
+                    HasNM) //No Mercy is active
                     return DoubleDown;
 
                 //Sonic Break
                 if (IsEnabled(CustomComboPreset.GNB_GF_SonicBreak) && //Sonic Break option is enabled
                     canBreak && //able to use Sonic Break
-                    ((IsOnCooldown(GnashingFang) && IsOnCooldown(DoubleDown)) || //Gnashing Fang and Double Down are both on cooldown
-                     nmLeft <= GCD)) //No Mercy buff is about to expire
+                    (IsOnCooldown(GnashingFang) && IsOnCooldown(DoubleDown) || //Gnashing Fang and Double Down are both on cooldown
+                     NmLeft <= GCD)) //No Mercy buff is about to expire
                     return SonicBreak; //Execute Sonic Break if conditions are met
 
                 //Reign of Beasts
@@ -2143,9 +1957,9 @@ internal partial class GNB
                 IsEnabled(CustomComboPreset.GNB_GF_NoMercy) && //No Mercy option is enabled
                 IsEnabled(CustomComboPreset.GNB_GF_BurstStrike) && //Burst Strike option is enabled
                 LevelChecked(DoubleDown) && //Lv90+
-                nmCD < 1 && //No Mercy is ready or about to be
+                NmCD < 1 && //No Mercy is ready or about to be
                 Ammo is 3 && //Ammo is full
-                bfCD > 110 && //Bloodfest was recently used, but not just used
+                BfCD > 110 && //Bloodfest was recently used, but not just used
                 ComboAction is KeenEdge) //Just used Keen Edge
                 return BurstStrike;
             //Lv100 2cart forced 2min starter
@@ -2153,23 +1967,26 @@ internal partial class GNB
                 IsEnabled(CustomComboPreset.GNB_GF_NoMercy) && //No Mercy option is enabled
                 IsEnabled(CustomComboPreset.GNB_GF_BurstStrike) && //Burst Strike option is enabled
                 LevelChecked(ReignOfBeasts) && //Lv100
-                nmCD < 1 && //No Mercy is ready or about to be
-                 Ammo is 3 && //Ammo is full
-                 bfCD < GCD * 12) //Bloodfest is ready or about to be
+                NmCD < 1 && //No Mercy is ready or about to be
+                Ammo is 3 && //Ammo is full
+                BfCD < GCD * 12) //Bloodfest is ready or about to be
                 return BurstStrike;
 
             //Gauge Combo Steps
             if (GunStep is 1 or 2) //Gnashing Fang combo is only for 1 and 2
                 return OriginalHook(GnashingFang); //Execute Gnashing Fang combo if conditions are met
+
             if (GunStep is 3 or 4) //Reign of Beasts combo is only for 3 and 4
                 return OriginalHook(ReignOfBeasts); //Execute Reign of Beasts combo if conditions are met
 
             return actionID;
         }
     }
+
     #endregion
 
     #region Burst Strike Features
+
     internal class GNB_BS_Features : CustomCombo
     {
         protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.GNB_BS_Features;
@@ -2178,36 +1995,6 @@ internal partial class GNB
         {
             if (actionID is not BurstStrike)
                 return actionID;
-
-            #region Variables
-            //Gauge
-            byte Ammo = GetJobGauge<GNBGauge>().Ammo; //Our cartridge count
-            byte GunStep = GetJobGauge<GNBGauge>().AmmoComboStep; //For Gnashing Fang & Reign combo purposes
-            //Cooldown-related
-            float gfCD = GetCooldownRemainingTime(GnashingFang); //GnashingFang's cooldown; 30s total
-            float ddCD = GetCooldownRemainingTime(DoubleDown); //Double Down's cooldown; 60s total
-            float bfCD = GetCooldownRemainingTime(Bloodfest); //Bloodfest's cooldown; 120s total
-            bool hasReign = HasEffect(Buffs.ReadyToReign); //Checks for Ready To Reign buff
-
-            #region Minimal Requirements
-            //Ammo-relative
-            bool canGF = LevelChecked(GnashingFang) && //GnashingFang is unlocked
-                        gfCD < 0.6f && //Gnashing Fang is off cooldown
-                        !HasEffect(Buffs.ReadyToBlast) && //to ensure Hypervelocity is spent in case Burst Strike is used before Gnashing Fang
-                        GunStep == 0 && //Gnashing Fang or Reign combo is not already active
-                        Ammo > 0; //Has Ammo
-            bool canDD = LevelChecked(DoubleDown) && //Double Down is unlocked
-                        ddCD < 0.6f && //Double Down is off cooldown
-                        Ammo > 0; //Has Ammo
-            bool canBF = LevelChecked(Bloodfest) && //Bloodfest is unlocked
-                        bfCD < 0.6f; //Bloodfest is off cooldown
-            //Cooldown-relative
-            bool canContinue = LevelChecked(Continuation); //Continuation is unlocked
-            bool canReign = LevelChecked(ReignOfBeasts) && //Reign of Beasts is unlocked
-                           GunStep == 0 && //Gnashing Fang or Reign combo is not already active
-                           hasReign; //Ready To Reign is active
-            #endregion
-            #endregion
 
             //Hypervelocity
             if (IsEnabled(CustomComboPreset.GNB_BS_Continuation) && //Continuation option is enabled
@@ -2237,13 +2024,13 @@ internal partial class GNB
             //Double Down higher prio if only 1 cartridge
             if (IsEnabled(CustomComboPreset.GNB_BS_DoubleDown) && //Double Down option is enabled
                 LevelChecked(DoubleDown) && //Double Down is unlocked
-                ddCD < 0.6f && //Double Down is off cooldown
+                DdCD < 0.6f && //Double Down is off cooldown
                 Ammo == 1) //Has Ammo
                 return DoubleDown; //Execute Double Down if conditions are met
 
             //Gnashing Fang
-            if ((IsEnabled(CustomComboPreset.GNB_BS_GnashingFang) && //Gnashing Fang option is enabled
-                canGF) || GunStep is 1 or 2) //able to use Gnashing Fang combo
+            if (IsEnabled(CustomComboPreset.GNB_BS_GnashingFang) && //Gnashing Fang option is enabled
+                canGF || GunStep is 1 or 2) //able to use Gnashing Fang combo
                 return OriginalHook(GnashingFang); //Execute Gnashing Fang if conditions are met
 
             //Double Down
@@ -2259,9 +2046,11 @@ internal partial class GNB
             return actionID;
         }
     }
+
     #endregion
 
     #region Fated Circle Features
+
     internal class GNB_FC_Features : CustomCombo
     {
         protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.GNB_FC_Features;
@@ -2270,32 +2059,6 @@ internal partial class GNB
         {
             if (actionID is not FatedCircle)
                 return actionID;
-
-            #region Variables
-            //Gauge
-            byte Ammo = GetJobGauge<GNBGauge>().Ammo; //Our cartridge count
-            byte GunStep = GetJobGauge<GNBGauge>().AmmoComboStep; //For Gnashing Fang & Reign combo purposes
-            //Cooldown-related
-            float nmCD = GetCooldownRemainingTime(NoMercy); //NoMercy's cooldown; 60s total
-            float ddCD = GetCooldownRemainingTime(DoubleDown); //Double Down's cooldown; 60s total
-            float bfCD = GetCooldownRemainingTime(Bloodfest); //Bloodfest's cooldown; 120s total
-            bool hasNM = nmCD is >= 40 and <= 60; //Checks if No Mercy is active
-            bool hasReign = HasEffect(Buffs.ReadyToReign); //Checks for Ready To Reign buff
-            #region Minimal Requirements
-            //Ammo-relative
-            bool canDD = LevelChecked(DoubleDown) && //Double Down is unlocked
-                        ddCD < 0.6f && //Double Down is off cooldown
-                        Ammo > 0; //Has Ammo
-            bool canBF = LevelChecked(Bloodfest) && //Bloodfest is unlocked
-                        bfCD < 0.6f; //Bloodfest is off cooldown
-            //Cooldown-relative
-            bool canBow = LevelChecked(BowShock) && //Bow Shock is unlocked
-                         GetCooldownRemainingTime(BowShock) < 0.6f; //BowShock is off cooldown
-            bool canReign = LevelChecked(ReignOfBeasts) && //Reign of Beasts is unlocked
-                           GunStep == 0 && //Gnashing Fang or Reign combo is not already active
-                           hasReign; //Ready To Reign is active
-            #endregion
-            #endregion
 
             //Fated Brand
             if (IsEnabled(CustomComboPreset.GNB_FC_Continuation) && //Continuation option is enabled
@@ -2307,7 +2070,7 @@ internal partial class GNB
             if (IsEnabled(CustomComboPreset.GNB_FC_DoubleDown) && //Double Down option is enabled
                 IsEnabled(CustomComboPreset.GNB_FC_DoubleDown_NM) && //Double Down No Mercy option is enabled
                 canDD && //able to use Double Down
-                hasNM) //No Mercy is active
+                HasNM) //No Mercy is active
                 return DoubleDown; //Execute Double Down if conditions are met
 
             //Bloodfest
@@ -2336,9 +2099,11 @@ internal partial class GNB
             return actionID;
         }
     }
+
     #endregion
 
     #region No Mercy Features
+
     internal class GNB_NM_Features : CustomCombo
     {
         protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.GNB_NM_Features;
@@ -2348,25 +2113,7 @@ internal partial class GNB
             if (actionID is not NoMercy)
                 return actionID;
 
-            #region Variables
-            //Gauge
-            byte Ammo = GetJobGauge<GNBGauge>().Ammo; //Our cartridge count
-            //Cooldown-related
-            float nmCD = GetCooldownRemainingTime(NoMercy); //NoMercy's cooldown; 60s total
-            float bfCD = GetCooldownRemainingTime(Bloodfest); //Bloodfest's cooldown; 120s total
 
-            #region Minimal Requirements
-            //Ammo-relative
-            bool canBF = LevelChecked(Bloodfest) && //Bloodfest is unlocked
-                        bfCD < 0.6f; //Bloodfest is off cooldown
-            //Cooldown-relative
-            bool canZone = LevelChecked(DangerZone) && //Zone is unlocked
-                          GetCooldownRemainingTime(OriginalHook(DangerZone)) < 0.6f; //DangerZone is off cooldown
-            bool canBow = LevelChecked(BowShock) && //Bow Shock is unlocked
-                         GetCooldownRemainingTime(BowShock) < 0.6f; //BowShock is off cooldown
-            bool canContinue = LevelChecked(Continuation); //Continuation is unlocked
-            #endregion
-            #endregion
 
             //oGCDs
             if (Config.GNB_NM_Features_Weave == 0) //Weave option is enabled
@@ -2394,13 +2141,13 @@ internal partial class GNB
                     //Bow Shock
                     if (IsEnabled(CustomComboPreset.GNB_NM_BowShock) && //Bow Shock option is enabled
                         canBow && //able to use Bow Shock
-                        nmCD is < 57.5f and >= 40) //No Mercy is up & was not just used within 1 GCD
+                        NmCD is < 57.5f and >= 40) //No Mercy is up & was not just used within 1 GCD
                         return BowShock;
 
                     //Zone
                     if (IsEnabled(CustomComboPreset.GNB_NM_Zone) && //Zone option is enabled
                         canZone && //able to use Zone
-                        (nmCD is < 57.5f and > 17f))//Optimal use; twice per minute, 1 in NM, 1 out of NM
+                        NmCD is < 57.5f and > 17f) //Optimal use; twice per minute, 1 in NM, 1 out of NM
                         return OriginalHook(DangerZone); //Execute Zone if conditions are met
                 }
             }
@@ -2428,22 +2175,24 @@ internal partial class GNB
                 //Bow Shock
                 if (IsEnabled(CustomComboPreset.GNB_NM_BowShock) && //Bow Shock option is enabled
                     canBow && //able to use Bow Shock
-                    nmCD is < 57.5f and >= 40) //No Mercy is up & was not just used within 1 GCD
+                    NmCD is < 57.5f and >= 40) //No Mercy is up & was not just used within 1 GCD
                     return BowShock;
 
                 //Zone
                 if (IsEnabled(CustomComboPreset.GNB_NM_Zone) && //Zone option is enabled
                     canZone && //able to use Zone
-                    (nmCD is < 57.5f and > 17f))//Optimal use; twice per minute, 1 in NM, 1 out of NM
+                    NmCD is < 57.5f and > 17f) //Optimal use; twice per minute, 1 in NM, 1 out of NM
                     return OriginalHook(DangerZone); //Execute Zone if conditions are met
             }
 
             return actionID;
         }
     }
+
     #endregion
 
     #region Aurora Protection
+
     internal class GNB_AuroraProtection : CustomCombo
     {
         protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.GNB_AuroraProtection;
@@ -2452,15 +2201,19 @@ internal partial class GNB
         {
             if (actionID is not Aurora)
                 return actionID;
-            if ((HasFriendlyTarget() && TargetHasEffectAny(Buffs.Aurora)) ||
-                (!HasFriendlyTarget() && HasEffectAny(Buffs.Aurora)))
+
+            if (HasFriendlyTarget() && TargetHasEffectAny(Buffs.Aurora) ||
+                !HasFriendlyTarget() && HasEffectAny(Buffs.Aurora))
                 return All.SavageBlade;
+
             return actionID;
         }
     }
+
     #endregion
 
     #region One-Button Mitigation
+
     internal class GNB_Mit_OneButton : CustomCombo
     {
         protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.GNB_Mit_OneButton;
@@ -2479,7 +2232,7 @@ internal partial class GNB
                 ))
                 return Superbolide;
 
-            foreach (int priority in Config.GNB_Mit_Priorities.Items.OrderBy(x => x))
+            foreach(int priority in Config.GNB_Mit_Priorities.Items.OrderBy(x => x))
             {
                 int index = Config.GNB_Mit_Priorities.IndexOf(priority);
                 if (CheckMitigationConfigMeetsRequirements(index, out uint action))
@@ -2489,6 +2242,6 @@ internal partial class GNB
             return actionID;
         }
     }
-    #endregion
 
+    #endregion
 }
