@@ -23,7 +23,7 @@ internal partial class RPR
 
         public static UserBoolArray
             RPR_SoulsowOptions = new("RPR_SoulsowOptions");
-        
+
         internal static void Draw(CustomComboPreset preset)
         {
             switch (preset)
@@ -31,16 +31,16 @@ internal partial class RPR
                 case CustomComboPreset.RPR_ST_Opener:
                     DrawBossOnlyChoice(RPR_Balance_Content);
                     break;
-                
+
                 case CustomComboPreset.RPR_ST_ArcaneCircle:
                     DrawHorizontalRadioButton(RPR_ST_ArcaneCircle_SubOption,
-                        "All content", $"Uses {ActionWatching.GetActionName(ArcaneCircle)} logic regardless of content.", 0);
+                        "All content", $"Uses {ActionWatching.GetActionName(ArcaneCircle)} regardless of content.", 0);
 
                     DrawHorizontalRadioButton(RPR_ST_ArcaneCircle_SubOption,
-                        "Boss encounters Only", $"Only uses {ActionWatching.GetActionName(ArcaneCircle)} logic when in Boss encounters.", 1);
+                        "Boss encounters Only", $"Only uses {ActionWatching.GetActionName(ArcaneCircle)} when in Boss encounters.", 1);
 
                     break;
-                
+
                 case CustomComboPreset.RPR_ST_AdvancedMode:
                     DrawHorizontalRadioButton(RPR_Positional, "Rear First",
                         "First positional: Gallows.", 0);
