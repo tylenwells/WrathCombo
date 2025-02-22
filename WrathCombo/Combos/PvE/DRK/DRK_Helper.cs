@@ -809,7 +809,6 @@ internal partial class DRK
                   IsEnabled(Preset.DRK_AoE_Sp_Quietus)) ||
                  (flags.HasFlag(Combo.ST) &&
                   IsEnabled(Preset.DRK_ST_Sp_Bloodspiller))) &&
-                LevelChecked(Bloodspiller) &&
                 Gauge.Blood >= 50 &&
                 GetCooldownRemainingTime(Delirium) > 37 &&
                 bloodGCDReady)
@@ -830,6 +829,9 @@ internal partial class DRK
                     : Config.DRK_AoE_BloodOvercapThreshold
                 : 90;
 
+            var beforeSouleater =
+                flags.HasFlag(Combo.AoE) || ComboAction == SyphonStrike;
+
             #endregion
 
             if ((flags.HasFlag(Combo.Simple) ||
@@ -837,9 +839,9 @@ internal partial class DRK
                    IsEnabled(Preset.DRK_ST_Sp_BloodOvercap)) ||
                   flags.HasFlag(Combo.AoE) &&
                   IsEnabled(Preset.DRK_AoE_Sp_BloodOvercap))) &&
-                LevelChecked(Bloodspiller) &&
                 Gauge.Blood >= overcapThreshold &&
-                bloodGCDReady)
+                bloodGCDReady &&
+                beforeSouleater)
                 if (flags.HasFlag(Combo.ST))
                     return (action = Bloodspiller) != 0;
                 else if (flags.HasFlag(Combo.AoE) && LevelChecked(Quietus))
