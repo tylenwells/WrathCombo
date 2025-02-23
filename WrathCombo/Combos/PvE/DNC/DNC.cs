@@ -360,7 +360,8 @@ internal partial class DNC
 
             // ST Tillana
             if (HasEffect(Buffs.FlourishingFinish) &&
-                IsEnabled(CustomComboPreset.DNC_ST_Adv_Tillana))
+                IsEnabled(CustomComboPreset.DNC_ST_Adv_Tillana) &&
+                EnemyIn15Yalms)
                 return Tillana;
 
             // ST Saber Dance
@@ -653,7 +654,8 @@ internal partial class DNC
                 return StarfallDance;
 
             // ST Tillana
-            if (HasEffect(Buffs.FlourishingFinish))
+            if (HasEffect(Buffs.FlourishingFinish) &&
+                EnemyIn15Yalms)
                 return Tillana;
 
             // ST combos and burst attacks
