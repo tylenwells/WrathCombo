@@ -290,7 +290,8 @@ internal partial class DNC
                 if (IsEnabled(CustomComboPreset.DNC_ST_Adv_Improvisation) &&
                     ActionReady(Improvisation) &&
                     !HasEffect(Buffs.TechnicalFinish) &&
-                    InCombat())
+                    InCombat() &&
+                    EnemyIn8Yalms)
                     return Improvisation;
             }
 
@@ -315,7 +316,7 @@ internal partial class DNC
                 return LastDance;
 
             // ST Standard Step (Finishing Move)
-            if (needToStandardOrFinish && needToFinish)
+            if (needToStandardOrFinish && needToFinish && EnemyIn15Yalms)
                 return OriginalHook(FinishingMove);
 
             // ST Standard Step
@@ -616,7 +617,7 @@ internal partial class DNC
                 return LastDance;
 
             // ST Standard Step (Finishing Move)
-            if (needToStandardOrFinish && needToFinish)
+            if (needToStandardOrFinish && needToFinish && EnemyIn15Yalms)
                 return OriginalHook(FinishingMove);
 
             // ST Standard Step
