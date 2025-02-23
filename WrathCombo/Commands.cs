@@ -570,6 +570,11 @@ public partial class WrathCombo
                 ConfigWindow.IsOpen = true;
                 return;
 
+            case "pve":
+                ConfigWindow.OpenWindow = OpenWindow.PvE;
+                ConfigWindow.IsOpen = true;
+                return;
+
             case "pvp":
                 ConfigWindow.OpenWindow = OpenWindow.PvP;
                 ConfigWindow.IsOpen = true;
