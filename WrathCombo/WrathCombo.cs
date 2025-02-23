@@ -37,7 +37,7 @@ namespace WrathCombo;
 public sealed partial class WrathCombo : IDalamudPlugin
 {
     private static TaskManager? TM;
-    private readonly ConfigWindow ConfigWindow;
+    internal readonly ConfigWindow ConfigWindow;
     private readonly SettingChangeWindow SettingChangeWindow;
     private readonly TargetHelper TargetHelper;
     internal static WrathCombo? P;
