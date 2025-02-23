@@ -4,6 +4,7 @@ using Dalamud.Interface.Colors;
 using Dalamud.Interface.Utility.Raii;
 using Dalamud.Utility;
 using ECommons.DalamudServices;
+using ECommons.ImGuiMethods;
 using ImGuiNET;
 using System;
 using System.Numerics;
@@ -391,27 +392,33 @@ namespace WrathCombo.Window.Functions
         {
             if (descriptionColor == new Vector4()) descriptionColor = ImGuiColors.DalamudYellow;
             int output = PluginConfiguration.GetCustomIntValue(config);
-            ImGui.SameLine();
             ImGui.PushItemWidth(itemWidth);
+            var labelW = ImGui.CalcTextSize(checkBoxName);
+            var finishPos = ImGui.GetCursorPosX() + labelW.X + ImGui.GetStyle().ItemSpacing.X + ImGui.GetStyle().ItemInnerSpacing.X + ImGui.GetStyle().FramePadding.Length() + ImGui.GetCursorStartPos().X;
+            if (finishPos >= ImGui.GetWindowWidth())
+            {
+                ImGui.NewLine();
+            }
+
             bool enabled = output == outputValue;
 
-            ImGui.PushStyleColor(ImGuiCol.Text, descriptionColor);
-            if (ImGui.RadioButton($"{checkBoxName}###{config}{outputValue}", enabled))
+            using (ImRaii.PushColor(ImGuiCol.Text, descriptionColor))
             {
-                PluginConfiguration.SetCustomIntValue(config, outputValue);
-                Service.Configuration.Save();
-            }
+                if (ImGui.RadioButton($"{checkBoxName}###{config}{outputValue}", enabled))
+                {
+                    PluginConfiguration.SetCustomIntValue(config, outputValue);
+                    Service.Configuration.Save();
+                }
 
-            if (!checkboxDescription.IsNullOrEmpty() && ImGui.IsItemHovered())
-            {
-                ImGui.BeginTooltip();
-                ImGui.TextUnformatted(checkboxDescription);
-                ImGui.EndTooltip();
+                if (!checkboxDescription.IsNullOrEmpty() && ImGui.IsItemHovered())
+                {
+                    ImGui.BeginTooltip();
+                    ImGui.TextUnformatted(checkboxDescription);
+                    ImGui.EndTooltip();
+                }
             }
-            ImGui.PopStyleColor();
 
             ImGui.SameLine();
-            ImGui.Dummy(new Vector2(16f, 0));
         }
 
         /// <summary>
@@ -430,29 +437,28 @@ namespace WrathCombo.Window.Functions
         {
             if (descriptionColor == new Vector4()) descriptionColor = ImGuiColors.DalamudYellow;
             bool[]? values = PluginConfiguration.GetCustomBoolArrayValue(config);
-            ImGui.SameLine();
             ImGui.PushItemWidth(itemWidth);
 
-            ImGui.PushStyleColor(ImGuiCol.Text, descriptionColor);
-            if (ImGui.RadioButton($"{checkBoxName}###{config}{choice}", values[choice]))
+            using (ImRaii.PushColor(ImGuiCol.Text, descriptionColor))
             {
-                for (var i = 0; i < values.Length; i++)
-                    values[i] = false;
-                values[choice] = true;
-                PluginConfiguration.SetCustomBoolArrayValue(config, values);
-                Service.Configuration.Save();
-            }
+                if (ImGui.RadioButton($"{checkBoxName}###{config}{choice}", values[choice]))
+                {
+                    for (var i = 0; i < values.Length; i++)
+                        values[i] = false;
+                    values[choice] = true;
+                    PluginConfiguration.SetCustomBoolArrayValue(config, values);
+                    Service.Configuration.Save();
+                }
 
-            if (!checkboxDescription.IsNullOrEmpty() && ImGui.IsItemHovered())
-            {
-                ImGui.BeginTooltip();
-                ImGui.TextUnformatted(checkboxDescription);
-                ImGui.EndTooltip();
+                if (!checkboxDescription.IsNullOrEmpty() && ImGui.IsItemHovered())
+                {
+                    ImGui.BeginTooltip();
+                    ImGui.TextUnformatted(checkboxDescription);
+                    ImGui.EndTooltip();
+                }
             }
-            ImGui.PopStyleColor();
 
             ImGui.SameLine();
-            ImGui.Dummy(new Vector2(16f, 0));
         }
 
         /// <summary>A true or false configuration. Similar to presets except can be used as part of a condition on another config.</summary>
@@ -1388,19 +1394,18 @@ namespace WrathCombo.Window.Functions
         {
             using (ImRaii.PushColor(ImGuiCol.Text, ImGuiColors.DalamudYellow))
             {
-                ImGui.Indent();
-                ImGui.TextUnformatted(overrideText.IsNullOrEmpty()
+                ImGui.Text(overrideText.IsNullOrEmpty()
                     ? "Select what kind of content this option applies to:"
                     : overrideText);
             }
-            ImGui.Unindent();
-            ImGui.NewLine();
+
             DrawHorizontalBoolRadioButton(
                 config, "All Content",
                 "Applies to all content in the game.",
                 choice: 0,
                 descriptionColor: ImGuiColors.DalamudYellow
             );
+
             DrawHorizontalBoolRadioButton(
                 config, "Boss Only Content",
                 "Only applies in instances where you directly fight a boss. Excludes many A Realm Reborn & Heavensward raids that include trash.",
@@ -1433,13 +1438,12 @@ namespace WrathCombo.Window.Functions
         {
             using (ImRaii.PushColor(ImGuiCol.Text, ImGuiColors.DalamudYellow))
             {
-                ImGui.Indent();
+
                 ImGui.TextUnformatted(overrideText.IsNullOrEmpty()
                     ? "Select what kind of content this option applies to:"
                     : overrideText);
             }
-            ImGui.Unindent();
-            ImGui.NewLine();
+            
             DrawHorizontalRadioButton(
                 config, "All Content",
                 "Applies to all content in the game.",
