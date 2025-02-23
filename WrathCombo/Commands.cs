@@ -559,6 +559,7 @@ public partial class WrathCombo
             case "settings":
             case "config":
                 ConfigWindow.OpenWindow = OpenWindow.Settings;
+                ConfigWindow.IsOpen = true;
                 return;
 
             case "autosettings":
@@ -566,6 +567,18 @@ public partial class WrathCombo
             case "autoconfig":
             case "autorotationconfig":
                 ConfigWindow.OpenWindow = OpenWindow.AutoRotation;
+                ConfigWindow.IsOpen = true;
+                return;
+
+            case "pvp":
+                ConfigWindow.OpenWindow = OpenWindow.PvP;
+                ConfigWindow.IsOpen = true;
+                return;
+
+            case "dbg":
+            case "debugtab":
+                ConfigWindow.OpenWindow = OpenWindow.Debug;
+                ConfigWindow.IsOpen = true;
                 return;
         }
 
