@@ -748,6 +748,8 @@ internal partial class DRK
 
         private bool TryGetBloodAction(Combo flags, ref uint action)
         {
+            if (ComboTimer > 0 && ComboTimer < GCD * 2) return false;
+
             #region Variables
 
             var bloodGCDReady =
@@ -869,11 +871,11 @@ internal partial class DRK
                 ContentCheck.IsInConfiguredContent(
                     Config.DRK_ST_ManaSpenderPoolingDifficulty,
                     Config.DRK_ST_ManaSpenderPoolingDifficultyListSet);
-            var manaPool = flags.HasFlag(Combo.Adv) ?
-                flags.HasFlag(Combo.ST)
+            var manaPool = flags.HasFlag(Combo.Adv)
+                ? flags.HasFlag(Combo.ST)
                     ? manaPooling ? (int)Config.DRK_ST_ManaSpenderPooling : 0
-                    : (int)Config.DRK_AoE_ManaSpenderPooling :
-                0;
+                    : (int)Config.DRK_AoE_ManaSpenderPooling
+                : 0;
             var hasEnoughMana = mana >= (manaPool + 3000);
             var manaEvenBurstSoon =
                 GetCooldownRemainingTime(LivingShadow) is > 0 and < 30;
