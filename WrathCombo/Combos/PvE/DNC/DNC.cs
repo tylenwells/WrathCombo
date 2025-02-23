@@ -149,14 +149,14 @@ internal partial class DNC
                 HasEffect(Buffs.StandardStep))
                 return Gauge.CompletedSteps < 2
                     ? Gauge.NextStep
-                    : StandardFinish2;
+                    : FinishOrHold(StandardFinish2);
 
             // ST Technical (Dance) Steps & Fill
             if ((IsEnabled(CustomComboPreset.DNC_ST_Adv_TS)) &&
                 HasEffect(Buffs.TechnicalStep))
                 return Gauge.CompletedSteps < 4
                     ? Gauge.NextStep
-                    : TechnicalFinish4;
+                    : FinishOrHold(TechnicalFinish4);
 
             #endregion
 
@@ -749,14 +749,14 @@ internal partial class DNC
                 HasEffect(Buffs.StandardStep))
                 return Gauge.CompletedSteps < 2
                     ? Gauge.NextStep
-                    : StandardFinish2;
+                    : FinishOrHold(StandardFinish2);
 
             // AoE Technical (Dance) Steps & Fill
             if (IsEnabled(CustomComboPreset.DNC_AoE_Adv_TS) &&
                 HasEffect(Buffs.TechnicalStep))
                 return Gauge.CompletedSteps < 4
                     ? Gauge.NextStep
-                    : TechnicalFinish4;
+                    : FinishOrHold(TechnicalFinish4);
 
             #endregion
 
@@ -1345,14 +1345,14 @@ internal partial class DNC
                 HasEffect(Buffs.StandardStep))
                 return Gauge.CompletedSteps < 2
                     ? Gauge.NextStep
-                    : StandardFinish2;
+                    : FinishOrHold(StandardFinish2);
 
             // Technical Step
             if (actionID is TechnicalStep && Gauge.IsDancing &&
                 HasEffect(Buffs.TechnicalStep))
                 return Gauge.CompletedSteps < 4
                     ? Gauge.NextStep
-                    : TechnicalFinish4;
+                    : FinishOrHold(TechnicalFinish4);
 
             return actionID;
         }
