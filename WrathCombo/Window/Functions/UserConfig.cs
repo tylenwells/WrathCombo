@@ -8,7 +8,6 @@ using ECommons.ImGuiMethods;
 using ImGuiNET;
 using System;
 using System.Numerics;
-using System.Text.Json;
 using WrathCombo.Combos;
 using WrathCombo.Combos.PvP;
 using WrathCombo.Core;
@@ -128,12 +127,12 @@ namespace WrathCombo.Window.Functions
             return box.FuncRes;
         }
 
-        private static void DrawResetContextMenu(string config)
+        private static void DrawResetContextMenu(string config, int occurrence = 0)
         {
             if (ImGui.IsItemClicked(ImGuiMouseButton.Right))
-                ImGui.OpenPopup($"##ResetConfig{config}");
+                ImGui.OpenPopup($"##ResetConfig{config}{occurrence}");
 
-            using var contextMenu = ImRaii.Popup($"##ResetConfig{config}");
+            using var contextMenu = ImRaii.Popup($"##ResetConfig{config}{occurrence}");
             if (!contextMenu) return;
 
             if (ImGui.MenuItem("Reset to Default"))
@@ -418,6 +417,8 @@ namespace WrathCombo.Window.Functions
                 }
             }
 
+            DrawResetContextMenu(config, outputValue);
+
             ImGui.SameLine();
         }
 
@@ -458,6 +459,8 @@ namespace WrathCombo.Window.Functions
                 }
             }
 
+            DrawResetContextMenu(config, choice);
+
             ImGui.SameLine();
         }
 
@@ -475,12 +478,14 @@ namespace WrathCombo.Window.Functions
                 ImGui.Indent();
             else
             {
-                ImGui.PushStyleColor(ImGuiCol.Text, ImGuiColors.HealerGreen);
-                ImGui.PushFont(UiBuilder.IconFont);
-                ImGui.AlignTextToFramePadding();
-                ImGui.TextWrapped($"{FontAwesomeIcon.Plus.ToIconString()}");
-                ImGui.PopFont();
-                ImGui.PopStyleColor();
+                using (ImRaii.PushColor(ImGuiCol.Text, ImGuiColors.HealerGreen))
+                {
+                    ImGui.PushFont(UiBuilder.IconFont);
+                    ImGui.AlignTextToFramePadding();
+                    ImGui.TextWrapped($"{FontAwesomeIcon.Plus.ToIconString()}");
+                    ImGui.PopFont();
+                }
+
                 ImGui.SameLine();
                 ImGui.Dummy(new Vector2(3));
                 ImGui.SameLine();
@@ -492,11 +497,11 @@ namespace WrathCombo.Window.Functions
                 Service.Configuration.Save();
             }
 
+            DrawResetContextMenu(config);
+
             if (!checkboxDescription.IsNullOrEmpty())
             {
-                ImGui.PushStyleColor(ImGuiCol.Text, ImGuiColors.DalamudGrey);
-                ImGui.TextWrapped(checkboxDescription);
-                ImGui.PopStyleColor();
+                ImGuiEx.TextWrapped(ImGuiColors.DalamudGrey, checkboxDescription);
             }
 
             //!isConditionalChoice
@@ -525,28 +530,30 @@ namespace WrathCombo.Window.Functions
                 Service.Configuration.Save();
             }
 
-            ImGui.PushStyleColor(ImGuiCol.Text, descriptionColor);
-            if (choice > 0)
+            using (ImRaii.PushColor(ImGuiCol.Text, descriptionColor))
             {
-                ImGui.SameLine();
-                ImGui.Dummy(new Vector2(12f, 0));
-                ImGui.SameLine();
+                if (choice > 0)
+                {
+                    ImGui.SameLine();
+                    ImGui.Dummy(new Vector2(12f, 0));
+                    ImGui.SameLine();
+                }
+
+                if (ImGui.Checkbox($"{checkBoxName}###{config}{choice}", ref values[choice]))
+                {
+                    PluginConfiguration.SetCustomBoolArrayValue(config, values);
+                    Service.Configuration.Save();
+                }
+
+                if (!checkboxDescription.IsNullOrEmpty() && ImGui.IsItemHovered())
+                {
+                    ImGui.BeginTooltip();
+                    ImGui.TextUnformatted(checkboxDescription);
+                    ImGui.EndTooltip();
+                }
             }
 
-            if (ImGui.Checkbox($"{checkBoxName}###{config}{choice}", ref values[choice]))
-            {
-                PluginConfiguration.SetCustomBoolArrayValue(config, values);
-                Service.Configuration.Save();
-            }
-            if (!checkboxDescription.IsNullOrEmpty() && ImGui.IsItemHovered())
-            {
-                ImGui.BeginTooltip();
-                ImGui.TextUnformatted(checkboxDescription);
-                ImGui.EndTooltip();
-            }
-
-
-            ImGui.PopStyleColor();
+            DrawResetContextMenu(config, choice);
             ImGui.Unindent();
         }
 
@@ -1412,7 +1419,7 @@ namespace WrathCombo.Window.Functions
                 choice: 1,
                 descriptionColor: ImGuiColors.DalamudYellow
             );
-                
+
         }
 
         /// <summary>
@@ -1443,7 +1450,7 @@ namespace WrathCombo.Window.Functions
                     ? "Select what kind of content this option applies to:"
                     : overrideText);
             }
-            
+
             DrawHorizontalRadioButton(
                 config, "All Content",
                 "Applies to all content in the game.",
