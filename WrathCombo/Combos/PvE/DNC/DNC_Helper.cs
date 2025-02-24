@@ -7,7 +7,6 @@ using Dalamud.Game.ClientState.JobGauge.Types;
 using Dalamud.Game.ClientState.Objects.Types;
 using ECommons.DalamudServices;
 using ECommons.GameHelpers;
-using Dalamud.Game.ClientState.JobGauge.Types;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Extensions;
@@ -28,17 +27,6 @@ namespace WrathCombo.Combos.PvE;
 // ReSharper disable MemberHidesStaticFromOuterClass
 internal partial class DNC
 {
-    /// <summary>
-    ///     Dancer Gauge data, just consolidated.
-    /// </summary>
-    private static DNCGauge Gauge => GetJobGauge<DNCGauge>();
-
-    /// <summary>
-    ///     DNC's GCD, truncated to two decimal places.
-    /// </summary>
-    private static double GCD =>
-        Math.Floor(GetCooldown(Cascade).CooldownTotal * 100) / 100;
-
     /// <summary>
     ///     Dancer Gauge data, just consolidated.
     /// </summary>
@@ -139,8 +127,8 @@ internal partial class DNC
     /// </param>
     /// <returns>
     ///     The Finisher to use, or if
-    ///     <see cref="CustomComboPreset.DNC_ST_BlockFinishes"/> is enabled and
-    ///     there is no enemy in range: <see cref="All.SavageBlade"/>.
+    ///     <see cref="CustomComboPreset.DNC_ST_BlockFinishes" /> is enabled and
+    ///     there is no enemy in range: <see cref="All.SavageBlade" />.
     /// </returns>
     private static uint FinishOrHold(uint desiredFinish)
     {
