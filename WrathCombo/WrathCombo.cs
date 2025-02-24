@@ -263,6 +263,8 @@ public sealed partial class WrathCombo : IDalamudPlugin
         AutoRotationController.Run();
         PluginConfiguration.ProcessSaveQueue();
 
+        Service.Configuration.SetActionChanging();
+
         // Skip the IPC checking if hidden
         if (DtrBarEntry.UserHidden) return;
 

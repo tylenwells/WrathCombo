@@ -310,36 +310,37 @@ public partial class WrathCombo
     {
         if (argument.Length < 2)
         {
-            if (Service.ActionReplacer.getActionHook.IsEnabled)
-                Service.ActionReplacer.getActionHook.Disable();
-            else
-                Service.ActionReplacer.getActionHook.Enable();
+            Service.Configuration.SetActionChanging(
+                !Service.Configuration.ActionChanging);
+            DuoLog.Information(
+                "Action Replacing set to "
+                + (Service.Configuration.ActionChanging ? "ON" : "OFF"));
             return;
         }
 
         switch (argument[1])
         {
             case "on":
-                if (!Service.ActionReplacer.getActionHook.IsEnabled)
-                    Service.ActionReplacer.getActionHook.Enable();
+                Service.Configuration.SetActionChanging(true);
                 break;
 
             case "off":
-                if (Service.ActionReplacer.getActionHook.IsEnabled)
-                    Service.ActionReplacer.getActionHook.Disable();
+                Service.Configuration.SetActionChanging(false);
                 break;
 
             case "toggle":
-                if (Service.ActionReplacer.getActionHook.IsEnabled)
-                    Service.ActionReplacer.getActionHook.Disable();
-                else
-                    Service.ActionReplacer.getActionHook.Enable();
+                Service.Configuration.SetActionChanging(
+                    !Service.Configuration.ActionChanging);
                 break;
 
             default:
                 DuoLog.Error("Available combo options: on, off, toggle");
-                break;
+                return;
         }
+
+        DuoLog.Information(
+            "Action Replacing set to "
+            + (Service.Configuration.ActionChanging ? "ON" : "OFF"));
     }
 
     /// <summary>
