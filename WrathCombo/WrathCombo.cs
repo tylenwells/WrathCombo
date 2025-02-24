@@ -18,6 +18,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using FFXIVClientStructs.FFXIV.Client.Game;
 using WrathCombo.Attributes;
 using WrathCombo.AutoRotation;
 using WrathCombo.Combos;
@@ -227,6 +228,9 @@ public sealed partial class WrathCombo : IDalamudPlugin
     private void ClientState_TerritoryChanged(ushort obj)
     {
         UpdateCaches(false, true, false);
+
+        if (P.UIHelper.AutoRotationStateControlled() is not null)
+            OnIPCControlledTerritoryChange();
     }
 
     public const string OptionControlledByIPC =
@@ -247,6 +251,69 @@ public sealed partial class WrathCombo : IDalamudPlugin
                         if (Service.Configuration.EnabledActions.Remove(conflict))
                             Service.Configuration.Save();
             }
+        }
+    }
+
+    private unsafe void OnIPCControlledTerritoryChange(bool firstCall = true)
+    {
+        TM.DelayNext(firstCall ? 4000 : 1100);
+
+        TM.Enqueue(() =>
+        {
+            var callAgainToConfirm = false;
+
+            if (!Player.Available || !ECommons.GenericHelpers.IsScreenReady())
+                return;
+
+            #region Tank Stance
+
+            Cast(PLD.JobID, PLD.IronWill, PLD.Buffs.IronWill,
+                null, ref callAgainToConfirm);
+
+            Cast(WAR.JobID, WAR.Defiance, WAR.Buffs.Defiance,
+                null, ref callAgainToConfirm);
+
+            Cast(DRK.JobID, DRK.Grit, DRK.Buffs.Grit,
+                null, ref callAgainToConfirm);
+
+            Cast(GNB.JobID, GNB.RoyalGuard, GNB.Buffs.RoyalGuard,
+                null, ref callAgainToConfirm);
+
+            #endregion
+
+            #region Dance Partner
+
+            Cast(DNC.JobID, DNC.ClosedPosition, DNC.Buffs.ClosedPosition,
+                DNC.DesiredDancePartner, ref callAgainToConfirm);
+
+            #endregion
+
+            if (callAgainToConfirm)
+                OnIPCControlledTerritoryChange(false);
+        }, "OnIPCControlledTerritoryChange");
+
+        return;
+
+        void Cast
+            (byte job, uint action, ushort buff, ulong? target, ref bool
+                callAgain)
+        {
+            if (JobID != job || CustomComboFunctions.HasEffect(buff))
+                return;
+
+            callAgain = true;
+
+            if (CustomComboFunctions.JustUsed(action))
+                return;
+
+            if (!CustomComboFunctions.ActionReady(action))
+                return;
+
+            if (target is null)
+                ActionManager.Instance()->UseAction(ActionType.Action, action);
+            else
+                ActionManager.Instance()->UseAction(ActionType.Action, action,
+                    (ulong)target);
         }
     }
 

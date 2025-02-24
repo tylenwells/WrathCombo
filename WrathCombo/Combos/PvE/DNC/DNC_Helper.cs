@@ -4,6 +4,7 @@ using Dalamud.Game.ClientState.JobGauge.Types;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Dalamud.Game.ClientState.Objects.Types;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Services;
@@ -98,6 +99,28 @@ internal partial class DNC
                     : Options.DNC_AoE_AdvancedMode)
             ).ToString()
         )!.Values.Last();
+
+    #region Dance Partner
+
+    internal static ulong? DesiredDancePartner =>
+        TryGetDancePartner(out var partner) ? partner.GameObjectId : null;
+
+    private static bool TryGetDancePartner(out IGameObject? partner)
+    {
+        partner = null;
+
+        if (!IsEnabled(Options.DNC_ST_Adv_Partner))
+            return false;
+
+        if (!HasEffect(Buffs.ClosedPosition))
+            return false;
+
+        partner = GetPartyMembers();
+
+        return partner != null;
+    }
+
+    #endregion
 
     #region Custom Dance Step Logic
 
