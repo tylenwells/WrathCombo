@@ -1,5 +1,9 @@
 ﻿#region
 
+using System;
+using Dalamud.Game.ClientState.Objects.Types;
+using ECommons.Logging;
+using FFXIVClientStructs.FFXIV.Client.Game.Object;
 using WrathCombo.Combos.PvE.Content;
 using WrathCombo.CustomComboNS;
 
@@ -33,7 +37,8 @@ internal partial class DNC
             var targetHpThresholdStandard = Config.DNC_ST_Adv_SSBurstPercent;
             var targetHpThresholdTechnical = Config.DNC_ST_Adv_TSBurstPercent;
             var tillanaDriftProtectionActive =
-                Config.DNC_ST_ADV_TillanaUse == (int)Config.TillanaDriftProtection.Favor;
+                Config.DNC_ST_ADV_TillanaUse ==
+                (int)Config.TillanaDriftProtection.Favor;
 
             // Thresholds to wait for TS/SS to come off CD
             var longAlignmentThreshold = 0.6f;
@@ -72,7 +77,7 @@ internal partial class DNC
                 HasEffect(Buffs.FinishingMoveReady) &&
                 !HasEffect(Buffs.LastDanceReady) &&
                 ((GetCooldownRemainingTime(StandardStep) < longAlignmentThreshold &&
-                  HasEffect(Buffs.TechnicalFinish)) ||// Aggressive anti-drift
+                  HasEffect(Buffs.TechnicalFinish)) || // Aggressive anti-drift
                  (!HasEffect(Buffs.TechnicalFinish) && // Anti-Drift outside of Tech
                   GetCooldownRemainingTime(StandardStep) <
                   shortAlignmentThreshold));
@@ -333,8 +338,10 @@ internal partial class DNC
                 LevelChecked(DanceOfTheDawn) &&
                 (GetCooldownRemainingTime(TechnicalStep) > 5 ||
                  IsOffCooldown(TechnicalStep)) && // Tech is up
-                (Gauge.Esprit >= Config.DNC_ST_Adv_SaberThreshold || // >esprit threshold use
-                 (HasEffect(Buffs.TechnicalFinish) && // will overcap with Tillana if not used
+                (Gauge.Esprit >=
+                 Config.DNC_ST_Adv_SaberThreshold || // >esprit threshold use
+                 (HasEffect(Buffs
+                      .TechnicalFinish) && // will overcap with Tillana if not used
                   !tillanaDriftProtectionActive && Gauge.Esprit >= 50) ||
                  (GetBuffRemainingTime(Buffs.DanceOfTheDawnReady) < 5 &&
                   Gauge.Esprit >= 50))) // emergency use
@@ -432,7 +439,7 @@ internal partial class DNC
                 HasEffect(Buffs.FinishingMoveReady) &&
                 !HasEffect(Buffs.LastDanceReady) &&
                 ((GetCooldownRemainingTime(StandardStep) < longAlignmentThreshold &&
-                  HasEffect(Buffs.TechnicalFinish)) ||// Aggressive anti-drift
+                  HasEffect(Buffs.TechnicalFinish)) || // Aggressive anti-drift
                  (!HasEffect(Buffs.TechnicalFinish) && // Anti-Drift outside of Tech
                   GetCooldownRemainingTime(StandardStep) <
                   shortAlignmentThreshold));
@@ -591,7 +598,7 @@ internal partial class DNC
 
                 // ST Panic Heals
 
-               if (ActionReady(All.SecondWind) &&
+                if (ActionReady(All.SecondWind) &&
                     PlayerHealthPercentageHp() < 40)
                     return All.SecondWind;
             }
@@ -633,8 +640,10 @@ internal partial class DNC
                 LevelChecked(DanceOfTheDawn) &&
                 (GetCooldownRemainingTime(TechnicalStep) > 5 ||
                  IsOffCooldown(TechnicalStep)) && // Tech is up
-                (Gauge.Esprit >= Config.DNC_ST_Adv_SaberThreshold || // >esprit threshold use
-                 (HasEffect(Buffs.TechnicalFinish) && // will overcap with Tillana if not used
+                (Gauge.Esprit >=
+                 Config.DNC_ST_Adv_SaberThreshold || // >esprit threshold use
+                 (HasEffect(Buffs
+                      .TechnicalFinish) && // will overcap with Tillana if not used
                   Gauge.Esprit >= 50) ||
                  (GetBuffRemainingTime(Buffs.DanceOfTheDawnReady) < 5 &&
                   Gauge.Esprit >= 50))) // emergency use
@@ -1326,6 +1335,59 @@ internal partial class DNC
 
     #region Smaller Features
 
+    #region Dance Partner Features
+
+    /*internal class DNC_DesirablePartner : CustomCombo
+    {
+        private static DateTime _lastPartnerCheckTime = DateTime.MinValue;
+
+        protected internal override CustomComboPreset Preset =>
+            CustomComboPreset.DNC_DesirablePartner;
+
+        private static bool CurrentPartnerNonOptimal =>
+            DesirableDancePartner is not null &&
+            DesirableDancePartner.GameObjectId != CurrentDancePartner;
+
+        private static IGameObject? DesirableDancePartner
+        {
+            get
+            {
+                if ((DateTime.Now - _lastPartnerCheckTime).TotalSeconds <= 3)
+                    return field;
+
+                _lastPartnerCheckTime = DateTime.Now;
+                field = TryGetDancePartner(out var partner, true)
+                    ? partner
+                    : null;
+
+                return field;
+            }
+        }
+
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not (ClosedPosition or Ending)) return actionID;
+
+            var currentTarget = LocalPlayer.TargetObject;
+            var noCurrentPartner = !HasEffect(Buffs.ClosedPosition);
+
+            if (noCurrentPartner || CurrentPartnerNonOptimal)
+                if (DesirableDancePartner.GameObjectId == currentTarget.GameObjectId)
+                    return Ending;
+                else
+                {
+                    SetTarget(DesirableDancePartner);
+                    TM.DelayNext(250);
+                    TM.Enqueue(() => SetTarget(currentTarget));
+                    return ClosedPosition;
+                }
+
+            return actionID;
+        }
+    }*/
+
+    #endregion
+
     #region Dance Features
 
     internal class DNC_DanceStepCombo : CustomCombo
@@ -1481,7 +1543,8 @@ internal partial class DNC
         protected internal override CustomComboPreset Preset =>
             CustomComboPreset.DNC_TechnicalStep_Devilment;
 
-        protected override uint Invoke(uint actionID) {
+        protected override uint Invoke(uint actionID)
+        {
             if (actionID is not TechnicalStep) return actionID;
 
             if (WantsCustomStepsOnSmallerFeatures)
