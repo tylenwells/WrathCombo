@@ -181,11 +181,11 @@ internal partial class DNC
 
         #endregion
 
-        bool TryGetBestPartner(out IGameObject? bestPartner, int step = 0)
+        bool TryGetBestPartner(out IGameObject? newBestPartner, int step = 0)
         {
             #region Variable Setup
 
-            bestPartner = null;
+            newBestPartner = null;
             var restrictions = PartnerPriority.RestrictionSteps[step];
             var filter = party;
             const int melee = (int)PartnerPriority.Role.Melee;
@@ -211,7 +211,7 @@ internal partial class DNC
 
             if (filter.Count == 0 &&
                 step < PartnerPriority.RestrictionSteps.Length - 1)
-                return TryGetBestPartner(out bestPartner, step + 1);
+                return TryGetBestPartner(out newBestPartner, step + 1);
             if (filter.Count == 0 && step == 6)
                 return false;
 
@@ -231,7 +231,7 @@ internal partial class DNC
                         : int.MaxValue)
                 .ToList();
 
-            bestPartner = filter.First();
+            newBestPartner = filter.First();
             return true;
         }
     }
