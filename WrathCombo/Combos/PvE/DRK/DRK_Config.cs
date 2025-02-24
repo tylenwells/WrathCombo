@@ -133,6 +133,7 @@ internal partial class DRK
                         startUsingAtDescriptionPlusDisable,
                         itemWidth: medium, sliderIncrement: SliderIncrements.Fives);
 
+                    ImGui.Indent();
                     UserConfig.DrawHorizontalRadioButton(
                         DRK_ST_TBNBossRestriction, "All Enemies",
                         "Will use The Blackest Night regardless of the type of enemy.",
@@ -142,6 +143,7 @@ internal partial class DRK
                         "Will try not to use Blackest Night when your target is a boss.\n" +
                         "(Note: don't rely on this 100%, square sometimes marks enemies inconsistently)",
                         outputValue: (int) BossAvoidance.On, itemWidth: 125f);
+                    ImGui.Unindent();
 
                     break;
 
@@ -176,6 +178,7 @@ internal partial class DRK
                         stopUsingAtDescription,
                         itemWidth: little, sliderIncrement: SliderIncrements.Ones);
 
+                    ImGui.Indent();
                     UserConfig.DrawHorizontalRadioButton(
                         DRK_ST_LivingDeadBossRestriction, "All Enemies",
                         "Will use Living Dead regardless of the type of enemy.",
@@ -185,6 +188,7 @@ internal partial class DRK
                         "Will try not to use Living Dead when your target is a boss.\n" +
                         "(Note: don't rely on this 100%, square sometimes marks enemies inconsistently)",
                         outputValue: (int) BossAvoidance.On, itemWidth: 125f);
+                    ImGui.Unindent();
 
                     break;
 

@@ -343,6 +343,7 @@ namespace WrathCombo.Window.Functions
             if (descriptionColor == new Vector4()) descriptionColor = ImGuiColors.DalamudYellow;
             int output = PluginConfiguration.GetCustomIntValue(config, outputValue);
             ImGui.PushItemWidth(itemWidth);
+            ImGui.SameLine();
             ImGuiEx.Spacing(new Vector2(21, 0));
             bool enabled = output == outputValue;
 
@@ -481,6 +482,7 @@ namespace WrathCombo.Window.Functions
                     ImGui.PopFont();
                 }
 
+                ImGui.SameLine();
                 ImGuiEx.Spacing(new Vector2(3, 0));
                 if (isConditionalChoice) ImGui.Indent(); //Align checkbox after the + symbol
             }
@@ -527,6 +529,7 @@ namespace WrathCombo.Window.Functions
             {
                 if (choice > 0)
                 {
+                    ImGui.SameLine();
                     ImGuiEx.Spacing(new Vector2(12, 0));
                 }
 
