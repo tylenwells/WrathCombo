@@ -92,7 +92,7 @@ namespace WrathCombo.Window.Tabs
                         {
                             if (icon != null)
                             {
-                                ImGui.Image(icon.ImGuiHandle, new Vector2(icon.Size.X.Scale(), icon.Size.Y.Scale()) / 2f);
+                                ImGui.Image(icon.ImGuiHandle, new Vector2(icon.Size.X, icon.Size.Y).Scale() / 2f);
                                 ImGui.SameLine();
                             }
                             ImGuiEx.Text($"{OpenJob}");
