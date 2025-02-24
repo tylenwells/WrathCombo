@@ -1,3 +1,4 @@
+using System.Numerics;
 using ECommons.ImGuiMethods;
 using ImGuiNET;
 using WrathCombo.CustomComboNS.Functions;
@@ -387,8 +388,7 @@ internal partial class GNB
                     break;
 
                 case CustomComboPreset.GNB_Mit_HeartOfLight:
-                    ImGui.Dummy(new(15f.Scale(), 0f));
-                    ImGui.SameLine();
+                    ImGui.Indent();
                     DrawHorizontalRadioButton(
                         GNB_Mit_HeartOfLight_PartyRequirement,
                         "Require party",
@@ -399,6 +399,7 @@ internal partial class GNB
                         "Use Always",
                         "Will not require a party for Heart of Light.",
                         (int)PartyRequirement.No);
+                    ImGui.Unindent();
 
                     DrawPriorityInput(GNB_Mit_Priorities,
                         NumberMitigationOptions, 4,
@@ -416,8 +417,7 @@ internal partial class GNB
                     break;
 
                 case CustomComboPreset.GNB_Mit_ArmsLength:
-                    ImGui.Dummy(new(15f.Scale(), 0f));
-                    ImGui.SameLine();
+                    ImGui.Indent();
                     DrawHorizontalRadioButton(
                         GNB_Mit_ArmsLength_Boss, "All Enemies",
                         "Will use Arm's Length regardless of the type of enemy.",
@@ -426,6 +426,7 @@ internal partial class GNB
                         GNB_Mit_ArmsLength_Boss, "Avoid Bosses",
                         "Will try not to use Arm's Length when in a boss fight.",
                         (int)BossAvoidance.On, 125f);
+                    ImGui.Unindent();
 
                     DrawSliderInt(0, 3, GNB_Mit_ArmsLength_EnemyCount,
                         "How many enemies should be nearby? (0 = No Requirement)");

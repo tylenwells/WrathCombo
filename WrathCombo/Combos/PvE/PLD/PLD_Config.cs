@@ -313,8 +313,7 @@ internal partial class PLD
                     break;
 
                 case CustomComboPreset.PLD_Mit_DivineVeil:
-                    ImGui.Dummy(new Vector2(15f.Scale(), 0f));
-                    ImGui.SameLine();
+                    ImGuiEx.Spacing(new Vector2(20, 0));
                     UserConfig.DrawHorizontalRadioButton(
                         PLD_Mit_DivineVeil_PartyRequirement,
                         "Require party",
@@ -352,8 +351,7 @@ internal partial class PLD
                     break;
 
                 case CustomComboPreset.PLD_Mit_ArmsLength:
-                    ImGui.Dummy(new Vector2(15f.Scale(), 0f));
-                    ImGui.SameLine();
+                    ImGui.Indent();
                     UserConfig.DrawHorizontalRadioButton(
                         PLD_Mit_ArmsLength_Boss, "All Enemies",
                         "Will use Arm's Length regardless of the type of enemy.",
@@ -362,6 +360,7 @@ internal partial class PLD
                         PLD_Mit_ArmsLength_Boss, "Avoid Bosses",
                         "Will try not to use Arm's Length when in a boss fight.",
                         outputValue: (int) BossAvoidance.On, itemWidth: 125f);
+                    ImGui.Unindent();
 
                     UserConfig.DrawSliderInt(0, 3, PLD_Mit_ArmsLength_EnemyCount,
                         "How many enemies should be nearby? (0 = No Requirement)");

@@ -30,10 +30,9 @@ internal partial class DNC
         /// </summary>
         private static void DrawAntiDriftOptions()
         {
-            ImGui.Dummy(new Vector2(1f, 12f));
-            ImGui.Indent(40f);
+            ImGui.NewLine();
+            ImGuiEx.Spacing(new Vector2(40, 12));
             ImGui.Text("Anti-Drift Options:     (hover each for more info)");
-            ImGui.Unindent(40f);
             ImGui.NewLine();
 
             UserConfig.DrawRadioButton(
@@ -102,13 +101,14 @@ internal partial class DNC
                         "(Yellow) Pirouette replacement Action ID",
                         ref actions[3], 0);
 
-                    ImGui.Dummy(new Vector2(0f, 12f.Scale()));
+                    ImGuiEx.Spacing(new Vector2(0, 12));
+
                     ImGui.PushStyleColor(ImGuiCol.Text, ImGuiColors.DalamudYellow);
                     ImGui.TextWrapped(
                         "This WILL let you set up a conflict!");
                     ImGui.PopStyleColor();
                     ImGui.PushStyleColor(ImGuiCol.Text, ImGuiColors.DalamudGrey);
-                    ImGui.TextWrapped("Double check the actions you are setting do not conflict with other combos you are using!");
+                    ImGui.TextWrapped("Double check the actions you are setting do not conflict with other combos you are using, or enable the feature below!");
                     ImGui.PopStyleColor();
 
                     if (inputChanged)
