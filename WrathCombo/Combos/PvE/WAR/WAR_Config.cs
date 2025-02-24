@@ -448,6 +448,7 @@ internal partial class WAR
                         outputValue: (int) PartyRequirement.No);
                     ImGui.Unindent();
 
+                    ImGui.NewLine();
                     UserConfig.DrawPriorityInput(WAR_Mit_Priorities,
                         numberMitigationOptions, 5,
                         "Shake It Off Priority:");
@@ -465,6 +466,7 @@ internal partial class WAR
                         outputValue: (int) BossAvoidance.On, itemWidth: 125f);
                     ImGui.Unindent();
 
+                    ImGui.NewLine();
                     UserConfig.DrawSliderInt(0, 3, WAR_Mit_ArmsLength_EnemyCount,
                         "How many enemies should be nearby? (0 = No Requirement)");
 

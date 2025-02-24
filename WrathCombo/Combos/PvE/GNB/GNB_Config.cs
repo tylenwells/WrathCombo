@@ -401,6 +401,7 @@ internal partial class GNB
                         (int)PartyRequirement.No);
                     ImGui.Unindent();
 
+                    ImGui.NewLine();
                     DrawPriorityInput(GNB_Mit_Priorities,
                         NumberMitigationOptions, 4,
                         "Heart of Light Priority:");
@@ -428,6 +429,7 @@ internal partial class GNB
                         (int)BossAvoidance.On, 125f);
                     ImGui.Unindent();
 
+                    ImGui.NewLine();
                     DrawSliderInt(0, 3, GNB_Mit_ArmsLength_EnemyCount,
                         "How many enemies should be nearby? (0 = No Requirement)");
 

@@ -154,7 +154,10 @@ internal partial class DNC
                         "Technical: 7s Countdown",
                         "Requires at least a 7s cooldown\nand that you start Technical Step at 7s.\nNOT recommended.",
                         (int)Openers.SevenSecondTech, descriptionAsTooltip: true);
+
+                    ImGui.Indent();
                     UserConfig.DrawBossOnlyChoice(DNC_ST_OpenerDifficulty);
+                    ImGui.Unindent();
 
                     break;
 
@@ -170,6 +173,7 @@ internal partial class DNC
                         "Target HP% to stop using Standard Step below",
                         itemWidth: 75f, sliderIncrement: SliderIncrements.Fives);
 
+                    ImGuiEx.Spacing(new Vector2(30, 0));
                     UserConfig.DrawHorizontalRadioButton(
                         DNC_ST_ADV_SS_IncludeSS,
                         "Include Standard Step",
@@ -194,6 +198,7 @@ internal partial class DNC
                         "Target HP% to stop using Technical Step below",
                         itemWidth: 75f, sliderIncrement: SliderIncrements.Fives);
 
+                    ImGuiEx.Spacing(new Vector2(30, 0));
                     UserConfig.DrawHorizontalRadioButton(
                         DNC_ST_ADV_TS_IncludeTS,
                         "Include Technical Step",
@@ -276,6 +281,7 @@ internal partial class DNC
                         "Target HP% to stop using Standard Step below",
                         itemWidth: 75f, sliderIncrement: SliderIncrements.Fives);
 
+                    ImGuiEx.Spacing(new Vector2(30, 0));
                     UserConfig.DrawHorizontalRadioButton(
                         DNC_AoE_Adv_SS_IncludeSS,
                         "Include Standard Step",
@@ -298,6 +304,7 @@ internal partial class DNC
                         "Target HP% to stop using Technical Step below",
                         itemWidth: 75f, sliderIncrement: SliderIncrements.Fives);
 
+                    ImGuiEx.Spacing(new Vector2(30, 0));
                     UserConfig.DrawHorizontalRadioButton(
                         DNC_AoE_Adv_TS_IncludeTS,
                         "Include Technical Step",

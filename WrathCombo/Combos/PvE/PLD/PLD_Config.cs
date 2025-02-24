@@ -313,7 +313,7 @@ internal partial class PLD
                     break;
 
                 case CustomComboPreset.PLD_Mit_DivineVeil:
-                    ImGuiEx.Spacing(new Vector2(20, 0));
+                    ImGui.Indent();
                     UserConfig.DrawHorizontalRadioButton(
                         PLD_Mit_DivineVeil_PartyRequirement,
                         "Require party",
@@ -324,7 +324,9 @@ internal partial class PLD
                         "Use Always",
                         "Will not require a party for Divine Veil.",
                         outputValue: (int) PartyRequirement.No);
+                    ImGui.Unindent();
 
+                    ImGui.NewLine();
                     UserConfig.DrawPriorityInput(PLD_Mit_Priorities,
                         numberMitigationOptions, 2,
                         "Divine Veil Priority:");
@@ -362,6 +364,7 @@ internal partial class PLD
                         outputValue: (int) BossAvoidance.On, itemWidth: 125f);
                     ImGui.Unindent();
 
+                    ImGui.NewLine();
                     UserConfig.DrawSliderInt(0, 3, PLD_Mit_ArmsLength_EnemyCount,
                         "How many enemies should be nearby? (0 = No Requirement)");
 
