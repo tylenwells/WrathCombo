@@ -36,9 +36,6 @@ namespace WrathCombo.Window.Tabs
             {
                 var inCombatOnly = (bool)P.IPC.GetAutoRotationConfigState(
                     Enum.Parse<AutoRotationConfigOption>("InCombatOnly"))!;
-                if (P.UIHelper.AutoRotationConfigControlled("InCombatOnly") is not null)
-                    ImGuiExtensions.Prefix(false);
-                P.UIHelper.ShowIPCControlledIndicatorIfNeeded("InCombatOnly");
                 ImGuiExtensions.Prefix(!inCombatOnly);
                 changed |= P.UIHelper.ShowIPCControlledCheckboxIfNeeded(
                     "Only in Combat", ref cfg.InCombatOnly, "InCombatOnly");
