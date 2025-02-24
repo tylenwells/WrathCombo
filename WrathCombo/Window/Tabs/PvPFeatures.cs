@@ -129,7 +129,7 @@ namespace WrathCombo.Window.Tabs
                     if (!conflictsSource.Where(x => x == preset).Any() || conflictOriginals.Length == 0)
                     {
                         presetBox.Draw();
-                        ImGuiEx.Spacing(new Vector2(12));
+                        ImGuiEx.Spacing(new Vector2(0, 12));
                         continue;
                     }
 
@@ -153,7 +153,7 @@ namespace WrathCombo.Window.Tabs
                 else
                 {
                     presetBox.Draw();
-                    ImGuiEx.Spacing(new Vector2(12));
+                    ImGuiEx.Spacing(new Vector2(0, 12));
                 }
             }
         }
