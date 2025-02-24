@@ -84,19 +84,19 @@ internal partial class DNC
                         .Select(x => (int) x).ToArray();
 
                     bool inputChanged = false;
-                    ImGui.SetNextItemWidth(50f.Scale());
+                    ImGuiEx.SetNextItemWidthScaled(50);
                     inputChanged |= ImGui.InputInt(
                         "(Red) Emboite replacement Action ID",
                         ref actions[0], 0);
-                    ImGui.SetNextItemWidth(50f.Scale());
+                    ImGuiEx.SetNextItemWidthScaled(50);
                     inputChanged |= ImGui.InputInt(
                         "(Blue) Entrechat replacement Action ID",
                         ref actions[1], 0);
-                    ImGui.SetNextItemWidth(50f.Scale());
+                    ImGuiEx.SetNextItemWidthScaled(50);
                     inputChanged |= ImGui.InputInt(
                         "(Green) Jete replacement Action ID",
                         ref actions[2], 0);
-                    ImGui.SetNextItemWidth(50f.Scale());
+                    ImGuiEx.SetNextItemWidthScaled(50);
                     inputChanged |= ImGui.InputInt(
                         "(Yellow) Pirouette replacement Action ID",
                         ref actions[3], 0);

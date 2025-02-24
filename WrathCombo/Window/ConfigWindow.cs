@@ -135,7 +135,7 @@ namespace WrathCombo.Window
                 {
                     ImGuiEx.LineCentered("###WrathLogo", () =>
                     {
-                        ImGui.Image(logo.ImGuiHandle, new(125f.Scale(), 125f.Scale()));
+                        ImGui.Image(logo.ImGuiHandle, new Vector2(125).Scale());
                     });
 
                 }
