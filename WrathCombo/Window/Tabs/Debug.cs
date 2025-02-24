@@ -700,7 +700,7 @@ namespace WrathCombo.Window.Tabs
                             : "0";
                         CustomStyleText(
                             $"{registration.Value.PluginName}",
-                            $"Configurations: {registration.Value.SetsLeased,-3}; " +
+                            $"Configurations: {registration.Value.SetsLeased,3}; " +
                             $"Auto-Rotation: {registration.Value.AutoRotationControlled.Count > 0}");
 
                         ImGui.NewLine();
