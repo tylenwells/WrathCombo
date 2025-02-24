@@ -226,6 +226,7 @@ internal partial class DNC
                     break;
 
                 case CustomComboPreset.DNC_ST_Adv_Tillana:
+                    ImGui.Indent();
                     UserConfig.DrawHorizontalRadioButton(
                         DNC_ST_ADV_TillanaUse,
                         "Use Tillana Normally",
@@ -242,6 +243,7 @@ internal partial class DNC
                         "\nNOT recommended.",
                         outputValue: (int) TillanaDriftProtection.Favor,
                         itemWidth: 125f);
+                    ImGui.Unindent();
 
                     break;
 
