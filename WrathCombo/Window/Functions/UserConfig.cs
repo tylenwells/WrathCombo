@@ -387,6 +387,7 @@ namespace WrathCombo.Window.Functions
         {
             if (descriptionColor == new Vector4()) descriptionColor = ImGuiColors.DalamudYellow;
             int output = PluginConfiguration.GetCustomIntValue(config);
+            ImGui.SameLine();
             ImGui.PushItemWidth(itemWidth);
             var labelW = ImGui.CalcTextSize(checkBoxName);
             var finishPos = ImGui.GetCursorPosX() + labelW.X + ImGui.GetStyle().ItemSpacing.X + ImGui.GetStyle().ItemInnerSpacing.X + ImGui.GetStyle().FramePadding.Length() + ImGui.GetCursorStartPos().X;
