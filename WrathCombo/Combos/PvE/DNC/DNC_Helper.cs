@@ -7,6 +7,7 @@ using Dalamud.Game.ClientState.JobGauge.Types;
 using Dalamud.Game.ClientState.Objects.Types;
 using ECommons.DalamudServices;
 using ECommons.GameHelpers;
+using Dalamud.Game.ClientState.JobGauge.Types;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Extensions;
@@ -25,7 +26,6 @@ namespace WrathCombo.Combos.PvE;
 // ReSharper disable CheckNamespace
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable MemberHidesStaticFromOuterClass
-
 internal partial class DNC
 {
     /// <summary>
@@ -38,6 +38,35 @@ internal partial class DNC
     /// </summary>
     private static double GCD =>
         Math.Floor(GetCooldown(Cascade).CooldownTotal * 100) / 100;
+
+    /// <summary>
+    ///     Dancer Gauge data, just consolidated.
+    /// </summary>
+    private static DNCGauge Gauge => GetJobGauge<DNCGauge>();
+
+    /// <summary>
+    ///     DNC's GCD, truncated to two decimal places.
+    /// </summary>
+    private static double GCD =>
+        Math.Floor(GetCooldown(Cascade).CooldownTotal * 100) / 100;
+
+    /// <summary>
+    ///     Checks if any enemy is within 15 yalms.
+    /// </summary>
+    /// <remarks>
+    ///     This is used for <see cref="StandardFinish2" />,
+    ///     <see cref="TechnicalFinish4" />, <see cref="FinishingMove" />,
+    ///     and <see cref="Tillana" />.
+    /// </remarks>
+    private static bool EnemyIn15Yalms => CanCircleAoe(15, true) > 0;
+
+    /// <summary>
+    ///     Checks if any enemy is within 8 yalms.
+    /// </summary>
+    /// <remarks>
+    ///     This is used for <see cref="Improvisation" />.
+    /// </remarks>
+    private static bool EnemyIn8Yalms => CanCircleAoe(8, true) > 0;
 
     /// <summary>
     ///     Logic to pick different openers.
@@ -99,6 +128,41 @@ internal partial class DNC
                     : Options.DNC_AoE_AdvancedMode)
             ).ToString()
         )!.Values.Last();
+
+    /// <summary>
+    ///     Hold or Return a dance's Finisher based on user options and enemy ranges.
+    /// </summary>
+    /// <param name="desiredFinish">
+    ///     Which Finisher should be returned.<br />
+    ///     Expects <see cref="StandardFinish2" /> or
+    ///     <see cref="TechnicalFinish4" />.
+    /// </param>
+    /// <returns>
+    ///     The Finisher to use, or if
+    ///     <see cref="CustomComboPreset.DNC_ST_BlockFinishes"/> is enabled and
+    ///     there is no enemy in range: <see cref="All.SavageBlade"/>.
+    /// </returns>
+    private static uint FinishOrHold(uint desiredFinish)
+    {
+        // If the option to hold is not enabled
+        if (IsNotEnabled(Options.DNC_ST_BlockFinishes))
+            return desiredFinish;
+
+        // Return the Finish if the dance is about to expire
+        if (desiredFinish is StandardFinish2 &&
+            GetBuffRemainingTime(Buffs.StandardStep) < GCD * 1.5)
+            return desiredFinish;
+        if (desiredFinish is TechnicalFinish4 &&
+            GetBuffRemainingTime(Buffs.TechnicalStep) < GCD * 1.5)
+            return desiredFinish;
+
+        // If there is no enemy in range, hold the finish
+        if (!EnemyIn15Yalms)
+            return All.SavageBlade;
+
+        // If there is an enemy in range, or as a fallback, return the desired finish
+        return desiredFinish;
+    }
 
     #region Dance Partner
 

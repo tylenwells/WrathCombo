@@ -154,14 +154,14 @@ internal partial class DNC
                 HasEffect(Buffs.StandardStep))
                 return Gauge.CompletedSteps < 2
                     ? Gauge.NextStep
-                    : StandardFinish2;
+                    : FinishOrHold(StandardFinish2);
 
             // ST Technical (Dance) Steps & Fill
             if ((IsEnabled(CustomComboPreset.DNC_ST_Adv_TS)) &&
                 HasEffect(Buffs.TechnicalStep))
                 return Gauge.CompletedSteps < 4
                     ? Gauge.NextStep
-                    : TechnicalFinish4;
+                    : FinishOrHold(TechnicalFinish4);
 
             #endregion
 
@@ -295,7 +295,8 @@ internal partial class DNC
                 if (IsEnabled(CustomComboPreset.DNC_ST_Adv_Improvisation) &&
                     ActionReady(Improvisation) &&
                     !HasEffect(Buffs.TechnicalFinish) &&
-                    InCombat())
+                    InCombat() &&
+                    EnemyIn8Yalms)
                     return Improvisation;
             }
 
@@ -320,7 +321,7 @@ internal partial class DNC
                 return LastDance;
 
             // ST Standard Step (Finishing Move)
-            if (needToStandardOrFinish && needToFinish)
+            if (needToStandardOrFinish && needToFinish && EnemyIn15Yalms)
                 return OriginalHook(FinishingMove);
 
             // ST Standard Step
@@ -366,7 +367,8 @@ internal partial class DNC
 
             // ST Tillana
             if (HasEffect(Buffs.FlourishingFinish) &&
-                IsEnabled(CustomComboPreset.DNC_ST_Adv_Tillana))
+                IsEnabled(CustomComboPreset.DNC_ST_Adv_Tillana) &&
+                EnemyIn15Yalms)
                 return Tillana;
 
             // ST Saber Dance
@@ -623,7 +625,7 @@ internal partial class DNC
                 return LastDance;
 
             // ST Standard Step (Finishing Move)
-            if (needToStandardOrFinish && needToFinish)
+            if (needToStandardOrFinish && needToFinish && EnemyIn15Yalms)
                 return OriginalHook(FinishingMove);
 
             // ST Standard Step
@@ -661,7 +663,8 @@ internal partial class DNC
                 return StarfallDance;
 
             // ST Tillana
-            if (HasEffect(Buffs.FlourishingFinish))
+            if (HasEffect(Buffs.FlourishingFinish) &&
+                EnemyIn15Yalms)
                 return Tillana;
 
             // ST combos and burst attacks
@@ -755,14 +758,14 @@ internal partial class DNC
                 HasEffect(Buffs.StandardStep))
                 return Gauge.CompletedSteps < 2
                     ? Gauge.NextStep
-                    : StandardFinish2;
+                    : FinishOrHold(StandardFinish2);
 
             // AoE Technical (Dance) Steps & Fill
             if (IsEnabled(CustomComboPreset.DNC_AoE_Adv_TS) &&
                 HasEffect(Buffs.TechnicalStep))
                 return Gauge.CompletedSteps < 4
                     ? Gauge.NextStep
-                    : TechnicalFinish4;
+                    : FinishOrHold(TechnicalFinish4);
 
             #endregion
 
@@ -1404,14 +1407,14 @@ internal partial class DNC
                 HasEffect(Buffs.StandardStep))
                 return Gauge.CompletedSteps < 2
                     ? Gauge.NextStep
-                    : StandardFinish2;
+                    : FinishOrHold(StandardFinish2);
 
             // Technical Step
             if (actionID is TechnicalStep && Gauge.IsDancing &&
                 HasEffect(Buffs.TechnicalStep))
                 return Gauge.CompletedSteps < 4
                     ? Gauge.NextStep
-                    : TechnicalFinish4;
+                    : FinishOrHold(TechnicalFinish4);
 
             return actionID;
         }
