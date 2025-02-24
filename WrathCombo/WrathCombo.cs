@@ -18,6 +18,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using ECommons.Logging;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using WrathCombo.Attributes;
 using WrathCombo.AutoRotation;
@@ -27,6 +28,7 @@ using WrathCombo.Core;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Data;
+using WrathCombo.Extensions;
 using WrathCombo.Services;
 using WrathCombo.Services.IPC;
 using WrathCombo.Window;
@@ -37,7 +39,7 @@ namespace WrathCombo;
 /// <summary> Main plugin implementation. </summary>
 public sealed partial class WrathCombo : IDalamudPlugin
 {
-    private static TaskManager? TM;
+    internal static TaskManager? TM;
     private readonly ConfigWindow ConfigWindow;
     private readonly SettingChangeWindow SettingChangeWindow;
     private readonly TargetHelper TargetHelper;
@@ -254,16 +256,13 @@ public sealed partial class WrathCombo : IDalamudPlugin
         }
     }
 
-    private unsafe void OnIPCControlledTerritoryChange(bool firstCall = true)
+    private unsafe void OnIPCControlledTerritoryChange(int callNumber = 0)
     {
-        TM.DelayNext(firstCall ? 4000 : 1100);
+        TM.DelayNext(callNumber < 1 ? 6000 : 1400);
 
         TM.Enqueue(() =>
         {
             var callAgainToConfirm = false;
-
-            if (!Player.Available || !ECommons.GenericHelpers.IsScreenReady())
-                return;
 
             #region Tank Stance
 
@@ -288,8 +287,10 @@ public sealed partial class WrathCombo : IDalamudPlugin
 
             #endregion
 
+            if (callNumber > 10)
+                return;
             if (callAgainToConfirm)
-                OnIPCControlledTerritoryChange(false);
+                OnIPCControlledTerritoryChange(callNumber + 1);
         }, "OnIPCControlledTerritoryChange");
 
         return;
@@ -303,11 +304,12 @@ public sealed partial class WrathCombo : IDalamudPlugin
 
             callAgain = true;
 
-            if (CustomComboFunctions.JustUsed(action))
+            if (CustomComboFunctions.JustUsed(action, 0.5f))
                 return;
-
             if (!CustomComboFunctions.ActionReady(action))
                 return;
+
+            PluginLog.Verbose($"OnIPCInstanceChange: Casting {action.ActionName()} {target}");
 
             if (target is null)
                 ActionManager.Instance()->UseAction(ActionType.Action, action);
