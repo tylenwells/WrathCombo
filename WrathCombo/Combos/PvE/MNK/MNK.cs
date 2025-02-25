@@ -273,8 +273,7 @@ internal partial class MNK
 
             if (IsEnabled(CustomComboPreset.MNK_STUseBuffs))
             {
-                if (IsEnabled(CustomComboPreset.MNK_STUseROF) &&
-                    IsEnabled(CustomComboPreset.MNK_STUseFiresReply) &&
+                if (IsEnabled(CustomComboPreset.MNK_STUseFiresReply) &&
                     HasEffect(Buffs.FiresRumination) &&
                     !HasEffect(Buffs.PerfectBalance) &&
                     !HasEffect(Buffs.FormlessFist) &&
@@ -283,8 +282,7 @@ internal partial class MNK
                      GetBuffRemainingTime(Buffs.FiresRumination) < 4))
                     return FiresReply;
 
-                if (IsEnabled(CustomComboPreset.MNK_STUseROW) &&
-                    IsEnabled(CustomComboPreset.MNK_STUseWindsReply) &&
+                if (IsEnabled(CustomComboPreset.MNK_STUseWindsReply) &&
                     HasEffect(Buffs.WindsRumination) &&
                     LevelChecked(WindsReply) &&
                     HasEffect(Buffs.RiddleOfWind) &&
