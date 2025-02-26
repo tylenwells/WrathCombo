@@ -71,7 +71,9 @@ internal partial class MCH
                             // Only Hypercharge when tools are on cooldown
                             if (DrillCD && AnchorCD && SawCD &&
                                 (!LevelChecked(Wildfire) ||
-                                 LevelChecked(Wildfire) && (GetCooldownRemainingTime(Wildfire) > 40 || IsOffCooldown(Wildfire) && !HasEffect(Buffs.FullMetalMachinist))))
+                                 LevelChecked(Wildfire) &&
+                                 (GetCooldownRemainingTime(Wildfire) > 40 ||
+                                  IsOffCooldown(Wildfire) && !HasEffect(Buffs.FullMetalMachinist))))
                                 return Hypercharge;
                         }
 
@@ -234,7 +236,9 @@ internal partial class MCH
                             // Only Hypercharge when tools are on cooldown
                             if (DrillCD && AnchorCD && SawCD &&
                                 (!LevelChecked(Wildfire) ||
-                                 LevelChecked(Wildfire) && (GetCooldownRemainingTime(Wildfire) > 40 || IsOffCooldown(Wildfire) && !HasEffect(Buffs.FullMetalMachinist))))
+                                 LevelChecked(Wildfire) && 
+                                 (GetCooldownRemainingTime(Wildfire) > 40 || 
+                                  IsOffCooldown(Wildfire) && !HasEffect(Buffs.FullMetalMachinist))))
                                 return Hypercharge;
                         }
 

@@ -38,19 +38,42 @@ internal partial class MCH
             {
                 case CustomComboPreset.MCH_ST_Adv_Opener:
                     DrawBossOnlyChoice(MCH_Balance_Content);
+                    
                     break;
-
-                case CustomComboPreset.MCH_ST_Adv_Excavator:
-                    DrawHorizontalRadioButton(MCH_ST_Adv_Excavator_SubOption,
+                
+                case CustomComboPreset.MCH_ST_Adv_WildFire:
+                    DrawHorizontalRadioButton(MCH_ST_Adv_Wildfire_SubOption,
                         "All content",
-                        $"Uses {ActionWatching.GetActionName(Excavator)} logic regardless of content.", 0);
+                        $"Uses {ActionWatching.GetActionName(Wildfire)} regardless of content.", 0);
 
-                    DrawHorizontalRadioButton(MCH_ST_Adv_Excavator_SubOption,
+                    DrawHorizontalRadioButton(MCH_ST_Adv_Wildfire_SubOption,
                         "Boss encounters Only",
-                        $"Only uses {ActionWatching.GetActionName(Excavator)} logic when in Boss encounters.", 1);
+                        $"Only uses {ActionWatching.GetActionName(Wildfire)} when in Boss encounters.", 1);
 
                     break;
+                
+                case CustomComboPreset.MCH_ST_Adv_Stabilizer:
+                    DrawHorizontalRadioButton(MCH_ST_Adv_BarrelStabiliser_SubOption,
+                        "All content",
+                        $"Uses {ActionWatching.GetActionName(BarrelStabilizer)} regardless of content.", 0);
 
+                    DrawHorizontalRadioButton(MCH_ST_Adv_BarrelStabiliser_SubOption,
+                        "Boss encounters Only",
+                        $"Only uses {ActionWatching.GetActionName(BarrelStabilizer)} when in Boss encounters.", 1);
+
+                    break;
+                
+                case CustomComboPreset.MCH_ST_Adv_Stabilizer_FullMetalField:
+                    DrawHorizontalRadioButton(MCH_ST_Adv_FullMetalMachinist_SubOption,
+                        "All content",
+                        $"Uses {ActionWatching.GetActionName(FullMetalField)} regardless of content.", 0);
+
+                    DrawHorizontalRadioButton(MCH_ST_Adv_FullMetalMachinist_SubOption,
+                        "Boss encounters Only",
+                        $"Only uses {ActionWatching.GetActionName(FullMetalField)} when in Boss encounters.", 1);
+
+                    break;
+                
                 case CustomComboPreset.MCH_ST_Adv_TurretQueen:
                     DrawHorizontalRadioButton(MCH_ST_Adv_Turret_SubOption,
                         "All content",
@@ -67,37 +90,15 @@ internal partial class MCH
                     }
 
                     break;
-
-                case CustomComboPreset.MCH_ST_Adv_Stabilizer:
-                    DrawHorizontalRadioButton(MCH_ST_Adv_BarrelStabiliser_SubOption,
+                
+                case CustomComboPreset.MCH_ST_Adv_Excavator:
+                    DrawHorizontalRadioButton(MCH_ST_Adv_Excavator_SubOption,
                         "All content",
-                        $"Uses {ActionWatching.GetActionName(BarrelStabilizer)} regardless of content.", 0);
+                        $"Uses {ActionWatching.GetActionName(Excavator)} logic regardless of content.", 0);
 
-                    DrawHorizontalRadioButton(MCH_ST_Adv_BarrelStabiliser_SubOption,
+                    DrawHorizontalRadioButton(MCH_ST_Adv_Excavator_SubOption,
                         "Boss encounters Only",
-                        $"Only uses {ActionWatching.GetActionName(BarrelStabilizer)} when in Boss encounters.", 1);
-
-                    break;
-
-                case CustomComboPreset.MCH_ST_Adv_WildFire:
-                    DrawHorizontalRadioButton(MCH_ST_Adv_Wildfire_SubOption,
-                        "All content",
-                        $"Uses {ActionWatching.GetActionName(Wildfire)} regardless of content.", 0);
-
-                    DrawHorizontalRadioButton(MCH_ST_Adv_Wildfire_SubOption,
-                        "Boss encounters Only",
-                        $"Only uses {ActionWatching.GetActionName(Wildfire)} when in Boss encounters.", 1);
-
-                    break;
-
-                case CustomComboPreset.MCH_ST_Adv_Stabilizer_FullMetalField:
-                    DrawHorizontalRadioButton(MCH_ST_Adv_FullMetalMachinist_SubOption,
-                        "All content",
-                        $"Uses {ActionWatching.GetActionName(FullMetalField)} regardless of content.", 0);
-
-                    DrawHorizontalRadioButton(MCH_ST_Adv_FullMetalMachinist_SubOption,
-                        "Boss encounters Only",
-                        $"Only uses {ActionWatching.GetActionName(FullMetalField)} when in Boss encounters.", 1);
+                        $"Only uses {ActionWatching.GetActionName(Excavator)} logic when in Boss encounters.", 1);
 
                     break;
 
@@ -116,7 +117,19 @@ internal partial class MCH
                     DrawHorizontalMultiChoice(MCH_ST_Reassembled, $"Use on {ActionWatching.GetActionName(CleanShot)}", "", 5, 4);
 
                     break;
+                
+                case CustomComboPreset.MCH_ST_Adv_QueenOverdrive:
+                    DrawSliderInt(1, 10, MCH_ST_QueenOverDrive, "HP% for the target to be at or under");
 
+                    break;
+                
+                case CustomComboPreset.MCH_ST_Adv_SecondWind:
+                    DrawSliderInt(0, 100, MCH_ST_SecondWindThreshold,
+                        $"{ActionWatching.GetActionName(All.SecondWind)} HP percentage threshold");
+
+                    break;
+
+                //AoE
                 case CustomComboPreset.MCH_AoE_Adv_Reassemble:
                     DrawSliderInt(0, 1, MCH_AoE_ReassemblePool, "Number of Charges to Save for Manual Use");
 
@@ -126,13 +139,7 @@ internal partial class MCH
                     DrawHorizontalMultiChoice(MCH_AoE_Reassembled, $"Use on {ActionWatching.GetActionName(Excavator)}", "", 4, 3);
 
                     break;
-
-                case CustomComboPreset.MCH_ST_Adv_SecondWind:
-                    DrawSliderInt(0, 100, MCH_ST_SecondWindThreshold,
-                        $"{ActionWatching.GetActionName(All.SecondWind)} HP percentage threshold");
-
-                    break;
-
+                
                 case CustomComboPreset.MCH_AoE_Adv_SecondWind:
                     DrawSliderInt(0, 100, MCH_AoE_SecondWindThreshold,
                         $"{ActionWatching.GetActionName(All.SecondWind)} HP percentage threshold");
@@ -150,16 +157,12 @@ internal partial class MCH
 
                     break;
 
+                //Variant
                 case CustomComboPreset.MCH_Variant_Cure:
                     DrawSliderInt(1, 100, MCH_VariantCure, "HP% to be at or under", 200);
 
                     break;
-
-                case CustomComboPreset.MCH_ST_Adv_QueenOverdrive:
-                    DrawSliderInt(1, 10, MCH_ST_QueenOverDrive, "HP% for the target to be at or under");
-
-                    break;
-
+                
                 //PVP
                 case CustomComboPreset.MCHPvP_BurstMode_MarksmanSpite:
                     DrawSliderInt(0, 36000, MCHPvP.Config.MCHPVP_MarksmanSpite,
