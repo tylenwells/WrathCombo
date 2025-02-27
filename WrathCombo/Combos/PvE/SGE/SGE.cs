@@ -40,10 +40,7 @@ internal partial class SGE
     }
 
     /*
-     * Druo/Tauro
-     * Druochole Upgrade to Taurochole (like a trait upgrade)
-     * Replaces Druocole with Taurochole when Taurochole is available
-     * (As of 6.0) Taurochole (single target massive insta heal w/ cooldown), Druochole (Single target insta heal)
+     * Taurochole will be replaced by Druochole if on cooldown or below level
      */
     internal class SGE_TauroDruo : CustomCombo
     {
