@@ -154,10 +154,10 @@ internal partial class RPR
 
         public override List<(int[], uint, Func<bool>)> SubstitutionSteps { get; set; } =
         [
-            ([5], ExecutionersGallows, () => Config.RPR_Positional == 0),
-            ([6], ExecutionersGibbet, () => Config.RPR_Positional == 0),
-            ([19], UnveiledGallows, () => Config.RPR_Positional == 0),
-            ([20], Gallows, () => Config.RPR_Positional == 0)
+            ([5], ExecutionersGallows, () => OnTargetsRear()),
+            ([6], ExecutionersGibbet, () => HasEffect(Buffs.EnhancedGibbet)),
+            ([19], UnveiledGallows, () => HasEffect(Buffs.EnhancedGallows)),
+            ([20], Gallows, () => HasEffect(Buffs.EnhancedGallows))
         ];
         
         internal override UserData ContentCheckConfig => Config.RPR_Balance_Content;
