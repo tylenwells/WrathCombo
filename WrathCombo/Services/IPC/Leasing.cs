@@ -13,6 +13,7 @@ using ECommons.DalamudServices;
 using ECommons.ExcelServices;
 using WrathCombo.Combos;
 using WrathCombo.CustomComboNS.Functions;
+using WrathCombo.Extensions;
 using CancellationReasonEnum = WrathCombo.Services.IPC.CancellationReason;
 
 // ReSharper disable UseSymbolAlias
@@ -399,6 +400,18 @@ public partial class Leasing
             {
                 locking = true;
                 stringKeys = [];
+                combos = P.IPCSearch.EnabledActions
+                    .Where(a=> a.Attributes().CustomComboInfo.JobID
+                               == (uint)currentJob)
+                    .Where(a => a.Attributes().Parent is null)
+                    .Select(a => a.ToString())
+                    .ToList();
+                options = P.IPCSearch.EnabledActions
+                    .Where(a=> a.Attributes().CustomComboInfo.JobID
+                               == (uint)currentJob)
+                    .Where(a => a.Attributes().Parent is not null)
+                    .Select(a => a.ToString())
+                    .ToList();
             }
             // Get the list of combos and options to enable
             else
@@ -559,7 +572,8 @@ public partial class Leasing
         registration.LastUpdated = DateTime.Now;
         CombosUpdated = DateTime.Now;
 
-        Logging.Log($"{registration.PluginName}: Registered Combo ({combo})");
+        Logging.Log(
+            $"{registration.PluginName}: Registered Combo ({combo}){oppositeText}");
         return SetResult.Okay;
     }
 
