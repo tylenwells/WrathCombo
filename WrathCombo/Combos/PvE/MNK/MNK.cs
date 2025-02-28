@@ -20,7 +20,8 @@ internal partial class MNK
                 return OriginalHook(SteeledMeditation);
 
             if (!InCombat() && LevelChecked(FormShift) &&
-                !HasEffect(Buffs.FormlessFist) && !HasEffect(Buffs.PerfectBalance))
+                !HasEffect(Buffs.FormlessFist) && !HasEffect(Buffs.PerfectBalance) && 
+                !HasEffect(Buffs.OpoOpoForm) && !HasEffect(Buffs.RaptorForm) && !HasEffect(Buffs.CoeurlForm))
                 return FormShift;
 
             //Variant Cure
@@ -150,7 +151,8 @@ internal partial class MNK
 
             if (IsEnabled(CustomComboPreset.MNK_STUseFormShift) &&
                 !InCombat() && LevelChecked(FormShift) &&
-                !HasEffect(Buffs.FormlessFist) && !HasEffect(Buffs.PerfectBalance))
+                !HasEffect(Buffs.FormlessFist) && !HasEffect(Buffs.PerfectBalance) &&
+                !HasEffect(Buffs.OpoOpoForm) && !HasEffect(Buffs.RaptorForm) && !HasEffect(Buffs.CoeurlForm))
                 return FormShift;
 
             if (IsEnabled(CustomComboPreset.MNK_STUseOpener))
