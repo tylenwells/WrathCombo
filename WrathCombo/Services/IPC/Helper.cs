@@ -8,7 +8,9 @@ using System.Net.Http;
 using ECommons.ExcelServices;
 using ECommons.EzIpcManager;
 using ECommons.Logging;
+using WrathCombo.Combos;
 using WrathCombo.CustomComboNS.Functions;
+using WrathCombo.Extensions;
 
 #endregion
 
@@ -59,6 +61,44 @@ public partial class Helper(ref Leasing leasing)
 
         result = SetResult.IGNORED;
         return false;
+    }
+
+    /// <summary>
+    ///     Gets the "opposite" preset, as in Advanced if given Simple, and vice
+    ///     versa.
+    /// </summary>
+    /// <param name="preset">The preset to search for the opposite of.</param>
+    /// <returns>The Opposite-mode preset.</returns>
+    internal static CustomComboPreset? GetOppositeModeCombo(CustomComboPreset preset)
+    {
+        var attr = preset.Attributes();
+
+        if (attr.CustomComboInfo.Name
+            .Contains("heal", StringComparison.CurrentCultureIgnoreCase))
+            return null;
+
+        var targetType = attr.CustomComboInfo.Name
+            .Contains("single target", StringComparison.CurrentCultureIgnoreCase)
+            ? ComboTargetTypeKeys.SingleTarget
+            : ComboTargetTypeKeys.MultiTarget;
+        var simplicityLevel =
+            attr.CustomComboInfo.Name
+                .Contains("simple mode", StringComparison.CurrentCultureIgnoreCase)
+                ? ComboSimplicityLevelKeys.Simple
+                : ComboSimplicityLevelKeys.Advanced;
+        var simplicityLevelToSearchFor =
+            simplicityLevel == ComboSimplicityLevelKeys.Simple
+                ? ComboSimplicityLevelKeys.Advanced
+                : ComboSimplicityLevelKeys.Simple;
+        var categorizedPreset =
+            P.IPCSearch.ComboStatesByJobCategorized
+                [(Job)attr.CustomComboInfo.JobID]
+                [targetType][simplicityLevelToSearchFor];
+        var oppositeMode = categorizedPreset.FirstOrDefault().Key;
+        var oppositeModePreset = (CustomComboPreset)
+            Enum.Parse(typeof(CustomComboPreset), oppositeMode, true);
+
+        return oppositeModePreset;
     }
 
     #region Auto-Rotation Ready

@@ -536,6 +536,15 @@ public partial class Leasing
         var preset = (CustomComboPreset)
             Enum.Parse(typeof(CustomComboPreset), combo, true);
 
+        // Disable the combo of the opposite type mode, if one exists
+        var oppositeModeCombo = Helper.GetOppositeModeCombo(preset);
+        if (oppositeModeCombo is not null)
+            registration.CombosControlled[(CustomComboPreset)oppositeModeCombo] =
+                (false, false);
+        var oppositeText = oppositeModeCombo is not null
+            ? $" (Disabled opposite combo: {oppositeModeCombo})"
+            : "";
+
         registration.CombosControlled[preset] = (newState, newAutoState);
 
         if (CheckBlacklist(Registrations[lease].ConfigurationsHash) &&
