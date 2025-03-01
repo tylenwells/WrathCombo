@@ -81,6 +81,8 @@ internal static partial class WHM
 
                     DrawSliderInt(0, 50, WHM_STDPS_MainCombo_DoT, "Stop using at Enemy HP %. Set to Zero to disable this check.");
 
+                    ImGui.Indent();
+
                     DrawHorizontalRadioButton(WHM_ST_MainCombo_DoTSubOption,
                         "All content", $"Uses {ActionWatching.GetActionName(Aero)} logic regardless of content.", 0);
 
@@ -90,6 +92,8 @@ internal static partial class WHM
                     ImGui.NewLine();
 
                     DrawRoundedSliderFloat(0, 4, WHM_ST_MainCombo_DoT_Threshold, "Seconds remaining before reapplying the DoT. Set to Zero to disable this check.", digits: 1);
+
+                    ImGui.Unindent();
 
                     break;
 

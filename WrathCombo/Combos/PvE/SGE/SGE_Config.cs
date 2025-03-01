@@ -29,6 +29,8 @@ internal static partial class SGE
 
                     DrawSliderInt(0, 50, SGE_ST_DPS_EDosisHPPer, "Stop using at Enemy HP %. Set to Zero to disable this check.");
 
+                    ImGui.Indent();
+
                     DrawHorizontalRadioButton(SGE_ST_DPS_EDosisSubOption,
                         "All content", $"Uses {ActionWatching.GetActionName(EukrasianDosis)} logic regardless of content.", 0);
 
@@ -38,6 +40,8 @@ internal static partial class SGE
                     ImGui.NewLine();
 
                     DrawRoundedSliderFloat(0, 6, SGE_ST_DPS_EDosisThreshold, "Seconds remaining before reapplying the DoT. Set to Zero to disable this check.", digits: 1);
+
+                    ImGui.Unindent();
 
                     break;
 

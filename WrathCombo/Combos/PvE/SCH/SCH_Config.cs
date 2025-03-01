@@ -41,6 +41,8 @@ internal static partial class SCH
 
                     DrawSliderInt(0, 50, SCH_ST_DPS_BioOption, "Stop using at Enemy HP %. Set to Zero to disable this check.");
 
+                    ImGui.Indent();
+
                     DrawHorizontalRadioButton(SCH_DPS_BioSubOption,
                         "All content", $"Uses {ActionWatching.GetActionName(Bio)} logic regardless of content.", 0);
 
@@ -50,6 +52,8 @@ internal static partial class SCH
                     ImGui.NewLine();
 
                     DrawRoundedSliderFloat(0, 4, SCH_ST_DPS_Bio_Threshold, "Seconds remaining before reapplying the DoT. Set to Zero to disable this check.", digits: 1);
+
+                    ImGui.Unindent();
 
                     break;
 

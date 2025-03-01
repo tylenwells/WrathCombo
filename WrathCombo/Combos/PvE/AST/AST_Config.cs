@@ -73,6 +73,8 @@ internal static partial class AST
                 case CustomComboPreset.AST_ST_DPS_CombustUptime:
                     
                     DrawSliderInt(0, 50, AST_DPS_CombustOption, "Stop using at Enemy HP %. Set to Zero to disable this check.");
+
+                    ImGui.Indent();
                     
                     DrawHorizontalRadioButton(AST_ST_DPS_CombustSubOption,
                         "All content", $"Uses {ActionWatching.GetActionName(Combust)} logic regardless of content.", 0);
@@ -83,6 +85,8 @@ internal static partial class AST
                     ImGui.NewLine();
 
                     DrawRoundedSliderFloat(0, 4, AST_ST_DPS_CombustUptime_Threshold, "Seconds remaining before reapplying the DoT. Set to Zero to disable this check.", digits: 1);
+
+                    ImGui.Unindent();
 
                     break;
 
