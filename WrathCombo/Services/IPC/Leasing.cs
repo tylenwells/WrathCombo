@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using Dalamud.Plugin.Services;
 using ECommons.DalamudServices;
 using ECommons.ExcelServices;
+using ECommons.GameHelpers;
 using WrathCombo.Combos;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Extensions;
@@ -317,6 +318,10 @@ public partial class Leasing
 
         registration.LastUpdated = DateTime.Now;
         AutoRotationStateUpdated = DateTime.Now;
+
+        // Try to build combo data before auto-rotation-readiness is requested
+        Task.Run(() => P.IPCSearch.ComboStatesByJobCategorized
+            .TryGetValue(Player.Job, out var _));
 
         Logging.Log($"{registration.PluginName}: Auto-Rotation state updated");
         return SetResult.Okay;
