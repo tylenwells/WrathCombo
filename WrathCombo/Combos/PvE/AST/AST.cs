@@ -134,9 +134,7 @@ internal static partial class AST
                     if (IsEnabled(CustomComboPreset.AST_ST_DPS_CombustUptime) &&
                         !GravityList.Contains(actionID) &&
                         LevelChecked(Combust) &&
-                        CombustList.TryGetValue(OriginalHook(Combust), out ushort dotDebuffID) && 
-                         (Config.AST_ST_DPS_CombustSubOption == 0 ||
-                          Config.AST_ST_DPS_CombustSubOption == 1 && InBossEncounter()))
+                        CombustList.TryGetValue(OriginalHook(Combust), out ushort dotDebuffID))
                     {
                         if (IsEnabled(CustomComboPreset.AST_Variant_SpiritDart) &&
                             IsEnabled(Variant.VariantSpiritDart) &&
@@ -146,7 +144,9 @@ internal static partial class AST
 
                         float refreshTimer = Config.AST_ST_DPS_CombustUptime_Adv ? Config.AST_ST_DPS_CombustUptime_Threshold : 3;
                         if (GetDebuffRemainingTime(dotDebuffID) <= refreshTimer &&
-                            GetTargetHPPercent() > Config.AST_DPS_CombustOption)
+                            GetTargetHPPercent() > Config.AST_DPS_CombustOption &&
+                            (Config.AST_ST_DPS_CombustSubOption == 0 ||
+                             Config.AST_ST_DPS_CombustSubOption == 1 && InBossEncounter()))
                             return OriginalHook(Combust);
 
                         //Alternate Mode (idles as Malefic)

@@ -238,9 +238,7 @@ internal partial class SGE
             {
                 // Eukrasian Dosis.
                 // If we're too low level to use Eukrasia, we can stop here.
-                if (IsEnabled(CustomComboPreset.SGE_ST_DPS_EDosis) && LevelChecked(Eukrasia) && InCombat() &&
-                    (Config.SGE_ST_DPS_EDosisSubOption == 0 ||
-                     Config.SGE_ST_DPS_EDosisSubOption == 1 && InBossEncounter()))
+                if (IsEnabled(CustomComboPreset.SGE_ST_DPS_EDosis) && LevelChecked(Eukrasia) && InCombat())
                 {
                     // Grab current Dosis via OriginalHook, grab it's fellow debuff ID from Dictionary, then check for the debuff
                     // Using TryGetValue due to edge case where the actionID would be read as Eukrasian Dosis instead of Dosis
@@ -260,10 +258,12 @@ internal partial class SGE
                         if (TraitLevelChecked(Traits.OffensiveMagicMasteryII))
                             dotDebuff = Math.Max(dotDebuff, GetDebuffRemainingTime(Debuffs.EukrasianDyskrasia));
 
-                        float refreshtimer = Config.SGE_ST_DPS_EDosis_Adv ? Config.SGE_ST_DPS_EDosisThreshold : 3;
+                        float refreshtimer = Config.SGE_ST_DPS_EDosis_Adv ? Config.SGE_ST_DPS_EDosisThreshold : 4;
 
                         if (dotDebuff <= refreshtimer &&
-                            GetTargetHPPercent() > Config.SGE_ST_DPS_EDosisHPPer)
+                            GetTargetHPPercent() > Config.SGE_ST_DPS_EDosisHPPer &&
+                            (Config.SGE_ST_DPS_EDosisSubOption == 0 ||
+                             Config.SGE_ST_DPS_EDosisSubOption == 1 && InBossEncounter()))
                             return Eukrasia;
                     }
                 }

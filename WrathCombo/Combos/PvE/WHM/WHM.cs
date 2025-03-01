@@ -118,9 +118,7 @@ internal partial class WHM
             {
                 // DoTs
                 if (IsEnabled(CustomComboPreset.WHM_ST_MainCombo_DoT) && LevelChecked(Aero) && HasBattleTarget() &&
-                    AeroList.TryGetValue(OriginalHook(Aero), out ushort dotDebuffID) &&
-                    (Config.WHM_ST_MainCombo_DoTSubOption == 0 ||
-                     Config.WHM_ST_MainCombo_DoTSubOption == 1 && InBossEncounter()))
+                    AeroList.TryGetValue(OriginalHook(Aero), out ushort dotDebuffID))
                 {
                     if (IsEnabled(CustomComboPreset.WHM_DPS_Variant_SpiritDart) &&
                         IsEnabled(Variant.VariantSpiritDart) &&
@@ -133,7 +131,9 @@ internal partial class WHM
                         Config.WHM_ST_MainCombo_DoT_Adv ? Config.WHM_ST_MainCombo_DoT_Threshold : 3;
 
                     if (GetDebuffRemainingTime(dotDebuffID) <= refreshtimer &&
-                        GetTargetHPPercent() > Config.WHM_STDPS_MainCombo_DoT)
+                        GetTargetHPPercent() > Config.WHM_STDPS_MainCombo_DoT &&
+                        (Config.WHM_ST_MainCombo_DoTSubOption == 0 ||
+                         Config.WHM_ST_MainCombo_DoTSubOption == 1 && InBossEncounter()))
                         return OriginalHook(Aero);
                 }
 

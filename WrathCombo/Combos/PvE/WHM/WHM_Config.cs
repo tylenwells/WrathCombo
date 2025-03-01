@@ -78,6 +78,9 @@ internal static partial class WHM
                     break;
 
                 case CustomComboPreset.WHM_ST_MainCombo_DoT:
+
+                    DrawSliderInt(0, 50, WHM_STDPS_MainCombo_DoT, "Stop using at Enemy HP %. Set to Zero to disable this check.");
+
                     DrawHorizontalRadioButton(WHM_ST_MainCombo_DoTSubOption,
                         "All content", $"Uses {ActionWatching.GetActionName(Aero)} logic regardless of content.", 0);
 

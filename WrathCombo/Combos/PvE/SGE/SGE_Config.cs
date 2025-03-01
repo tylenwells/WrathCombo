@@ -10,64 +10,6 @@ internal static partial class SGE
 {
     public static class Config
     {
-
-        #region DPS
-
-        public static UserBool
-            SGE_ST_DPS_Adv = new("SGE_ST_DPS_Adv"),
-            SGE_ST_DPS_EDosis_Adv = new("SGE_ST_Dosis_EDosis_Adv");
-        public static UserBoolArray
-            SGE_ST_DPS_Movement = new("SGE_ST_DPS_Movement");
-        public static UserInt
-            SGE_ST_DPS_EDosisHPPer = new("SGE_ST_DPS_EDosisHPPer", 10),
-            SGE_ST_DPS_Lucid = new("SGE_ST_DPS_Lucid", 6500),
-            SGE_ST_DPS_Rhizo = new("SGE_ST_DPS_Rhizo"),
-            SGE_ST_DPS_Phlegma = new("SGE_ST_DPS_Phlegma"),
-            SGE_ST_DPS_EDosisSubOption = new("SGE_ST_DPS_EDosisSubOption", 0),
-            SGE_ST_DPS_AddersgallProtect = new("SGE_ST_DPS_AddersgallProtect", 3),
-            SGE_AoE_DPS_Lucid = new("SGE_AoE_Phlegma_Lucid", 6500),
-            SGE_AoE_DPS_Rhizo = new("SGE_AoE_DPS_Rhizo"),
-            SGE_AoE_DPS_AddersgallProtect = new("SGE_AoE_DPS_AddersgallProtect", 3),
-            SGE_Balance_Content = new("SGE_Balance_Content");
-        public static UserFloat
-            SGE_ST_DPS_EDosisThreshold = new("SGE_ST_Dosis_EDosisThreshold", 3.0f);
-
-        #endregion
-        
-        #region Healing
-
-        public static UserBool
-            SGE_ST_Heal_Adv = new("SGE_ST_Heal_Adv"),
-            SGE_ST_Heal_UIMouseOver = new("SGE_ST_Heal_UIMouseOver"),
-            SGE_ST_Heal_IncludeShields = new("SGE_ST_Heal_IncludeShields"),
-            SGE_AoE_Heal_KeracholeTrait = new("SGE_AoE_Heal_KeracholeTrait");
-        public static UserInt
-            SGE_ST_Heal_Zoe = new("SGE_ST_Heal_Zoe", 70),
-            SGE_ST_Heal_Haima = new("SGE_ST_Heal_Haima", 70),
-            SGE_ST_Heal_Krasis = new("SGE_ST_Heal_Krasis", 70),
-            SGE_ST_Heal_Pepsis = new("SGE_ST_Heal_Pepsis"),
-            SGE_ST_Heal_Soteria = new("SGE_ST_Heal_Soteria", 70),
-            SGE_ST_Heal_EDiagnosisHP = new("SGE_ST_Heal_EDiagnosisHP", 70),
-            SGE_ST_Heal_Druochole = new("SGE_ST_Heal_Druochole", 70),
-            SGE_ST_Heal_Taurochole = new("SGE_ST_Heal_Taurochole", 70),
-            SGE_ST_Heal_Esuna = new("SGE_ST_Heal_Esuna", 100),
-            SGE_AoE_Heal_ZoeOption = new("SGE_AoE_Heal_PneumaOption", 70),
-            SGE_AoE_Heal_PhysisOption = new("SGE_AoE_Heal_PhysisOption", 70),
-            SGE_AoE_Heal_PhilosophiaOption = new("SGE_AoE_Heal_PhilosophiaOption", 70),
-            SGE_AoE_Heal_PepsisOption = new("SGE_AoE_Heal_PepsisOption", 70),
-            SGE_AoE_Heal_PanhaimaOption = new("SGE_AoE_Heal_PanhaimaOption", 70),
-            SGE_AoE_Heal_KeracholeOption = new("SGE_AoE_Heal_KeracholeOption", 70),
-            SGE_AoE_Heal_IxocholeOption = new("SGE_AoE_Heal_IxocholeOption", 70),
-            SGE_AoE_Heal_HolosOption = new("SGE_AoE_Heal_HolosOption", 70),
-            SGE_AoE_Heal_EPrognosisOption = new("SGE_AoE_Heal_EPrognosisOption", 34);
-        public static UserIntArray
-            SGE_ST_Heals_Priority = new("SGE_ST_Heals_Priority"),
-            SGE_AoE_Heals_Priority = new("SGE_AoE_Heals_Priority");
-        public static UserBoolArray
-            SGE_ST_Heal_EDiagnosisOpts = new("SGE_ST_Heal_EDiagnosisOpts");
-
-        #endregion
-        
         public static UserInt
             SGE_Eukrasia_Mode = new("SGE_Eukrasia_Mode");
 
@@ -84,6 +26,9 @@ internal static partial class SGE
                     break;
 
                 case CustomComboPreset.SGE_ST_DPS_EDosis:
+
+                    DrawSliderInt(0, 50, SGE_ST_DPS_EDosisHPPer, "Stop using at Enemy HP %. Set to Zero to disable this check.");
+
                     DrawHorizontalRadioButton(SGE_ST_DPS_EDosisSubOption,
                         "All content", $"Uses {ActionWatching.GetActionName(EukrasianDosis)} logic regardless of content.", 0);
 
@@ -243,5 +188,62 @@ internal static partial class SGE
                     break;
             }
         }
+
+        #region DPS
+
+        public static UserBool
+            SGE_ST_DPS_Adv = new("SGE_ST_DPS_Adv"),
+            SGE_ST_DPS_EDosis_Adv = new("SGE_ST_Dosis_EDosis_Adv");
+        public static UserBoolArray
+            SGE_ST_DPS_Movement = new("SGE_ST_DPS_Movement");
+        public static UserInt
+            SGE_ST_DPS_EDosisHPPer = new("SGE_ST_DPS_EDosisHPPer", 10),
+            SGE_ST_DPS_Lucid = new("SGE_ST_DPS_Lucid", 6500),
+            SGE_ST_DPS_Rhizo = new("SGE_ST_DPS_Rhizo"),
+            SGE_ST_DPS_Phlegma = new("SGE_ST_DPS_Phlegma"),
+            SGE_ST_DPS_EDosisSubOption = new("SGE_ST_DPS_EDosisSubOption", 0),
+            SGE_ST_DPS_AddersgallProtect = new("SGE_ST_DPS_AddersgallProtect", 3),
+            SGE_AoE_DPS_Lucid = new("SGE_AoE_Phlegma_Lucid", 6500),
+            SGE_AoE_DPS_Rhizo = new("SGE_AoE_DPS_Rhizo"),
+            SGE_AoE_DPS_AddersgallProtect = new("SGE_AoE_DPS_AddersgallProtect", 3),
+            SGE_Balance_Content = new("SGE_Balance_Content");
+        public static UserFloat
+            SGE_ST_DPS_EDosisThreshold = new("SGE_ST_Dosis_EDosisThreshold", 3.0f);
+
+        #endregion
+
+        #region Healing
+
+        public static UserBool
+            SGE_ST_Heal_Adv = new("SGE_ST_Heal_Adv"),
+            SGE_ST_Heal_UIMouseOver = new("SGE_ST_Heal_UIMouseOver"),
+            SGE_ST_Heal_IncludeShields = new("SGE_ST_Heal_IncludeShields"),
+            SGE_AoE_Heal_KeracholeTrait = new("SGE_AoE_Heal_KeracholeTrait");
+        public static UserInt
+            SGE_ST_Heal_Zoe = new("SGE_ST_Heal_Zoe", 70),
+            SGE_ST_Heal_Haima = new("SGE_ST_Heal_Haima", 70),
+            SGE_ST_Heal_Krasis = new("SGE_ST_Heal_Krasis", 70),
+            SGE_ST_Heal_Pepsis = new("SGE_ST_Heal_Pepsis"),
+            SGE_ST_Heal_Soteria = new("SGE_ST_Heal_Soteria", 70),
+            SGE_ST_Heal_EDiagnosisHP = new("SGE_ST_Heal_EDiagnosisHP", 70),
+            SGE_ST_Heal_Druochole = new("SGE_ST_Heal_Druochole", 70),
+            SGE_ST_Heal_Taurochole = new("SGE_ST_Heal_Taurochole", 70),
+            SGE_ST_Heal_Esuna = new("SGE_ST_Heal_Esuna", 100),
+            SGE_AoE_Heal_ZoeOption = new("SGE_AoE_Heal_PneumaOption", 70),
+            SGE_AoE_Heal_PhysisOption = new("SGE_AoE_Heal_PhysisOption", 70),
+            SGE_AoE_Heal_PhilosophiaOption = new("SGE_AoE_Heal_PhilosophiaOption", 70),
+            SGE_AoE_Heal_PepsisOption = new("SGE_AoE_Heal_PepsisOption", 70),
+            SGE_AoE_Heal_PanhaimaOption = new("SGE_AoE_Heal_PanhaimaOption", 70),
+            SGE_AoE_Heal_KeracholeOption = new("SGE_AoE_Heal_KeracholeOption", 70),
+            SGE_AoE_Heal_IxocholeOption = new("SGE_AoE_Heal_IxocholeOption", 70),
+            SGE_AoE_Heal_HolosOption = new("SGE_AoE_Heal_HolosOption", 70),
+            SGE_AoE_Heal_EPrognosisOption = new("SGE_AoE_Heal_EPrognosisOption", 34);
+        public static UserIntArray
+            SGE_ST_Heals_Priority = new("SGE_ST_Heals_Priority"),
+            SGE_AoE_Heals_Priority = new("SGE_AoE_Heals_Priority");
+        public static UserBoolArray
+            SGE_ST_Heal_EDiagnosisOpts = new("SGE_ST_Heal_EDiagnosisOpts");
+
+        #endregion
     }
 }

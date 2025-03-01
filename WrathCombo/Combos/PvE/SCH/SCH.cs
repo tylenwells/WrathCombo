@@ -270,9 +270,7 @@ internal static partial class SCH
 
                 //Bio/Biolysis
                 if (IsEnabled(CustomComboPreset.SCH_DPS_Bio) && LevelChecked(Bio) && InCombat() &&
-                    BioList.TryGetValue(OriginalHook(Bio), out ushort dotDebuffID) &&
-                    (Config.SCH_DPS_BioSubOption == 0 ||
-                     Config.SCH_DPS_BioSubOption == 1 && InBossEncounter()))
+                    BioList.TryGetValue(OriginalHook(Bio), out ushort dotDebuffID))
                 {
                     if (IsEnabled(CustomComboPreset.SCH_DPS_Variant_SpiritDart) &&
                         IsEnabled(Variant.VariantSpiritDart) &&
@@ -283,7 +281,9 @@ internal static partial class SCH
                     float refreshtimer = Config.SCH_ST_DPS_Bio_Adv ? Config.SCH_ST_DPS_Bio_Threshold : 3;
 
                     if (GetDebuffRemainingTime(dotDebuffID) <= refreshtimer &&
-                        GetTargetHPPercent() > Config.SCH_ST_DPS_BioOption)
+                        GetTargetHPPercent() > Config.SCH_ST_DPS_BioOption &&
+                        (Config.SCH_DPS_BioSubOption == 0 ||
+                         Config.SCH_DPS_BioSubOption == 1 && InBossEncounter()))
                         return OriginalHook(Bio); //Use appropriate DoT Action
                 }
 
