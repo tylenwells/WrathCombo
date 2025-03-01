@@ -438,12 +438,12 @@ internal partial class DRK
     ///     strength of the mitigation.
     /// </summary>
     private static readonly bool JustUsedMitigation =
-        JustUsed(BlackestNight, 2f) ||
-        JustUsed(Oblation, 2f) ||
+        JustUsed(BlackestNight, 4f) ||
+        JustUsed(Oblation, 4f) ||
         JustUsed(All.Reprisal, 4f) ||
         JustUsed(DarkMissionary, 5f) ||
         JustUsed(All.Rampart, 6f) ||
-        JustUsed(All.ArmsLength, 2f) ||
+        JustUsed(All.ArmsLength, 4f) ||
         JustUsed(ShadowedVigil, 6f) ||
         JustUsed(LivingDead, 7f);
 
