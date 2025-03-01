@@ -5492,13 +5492,8 @@ public enum CustomComboPreset
     SMN_ST_Advanced_Combo_DemiEgiMenu_oGCDPooling = 17025,
 
     [ParentCombo(SMN_ST_Advanced_Combo_DemiEgiMenu_oGCDPooling)]
-    [CustomComboInfo("Burst Delay Option",
-        "Only follows Burst Delay settings for the opener burst.\nThis Option is for high SPS builds.", SMN.JobID)]
-    SMN_ST_Advanced_Combo_Burst_Delay_Option = 17043,
-
-    [ParentCombo(SMN_ST_Advanced_Combo_DemiEgiMenu_oGCDPooling)]
     [CustomComboInfo("Any Searing Burst Option",
-        "Checks for any Searing light for bursting rather than just your own.\nUse this option if partied with multiple SMN and are worried about your Searing being overwritten.",
+        "Checks for any Searing Light for bursting rather than just your own.\nUse this option if partied with multiple SMN and are worried about your Searing Light being wasted.",
         SMN.JobID)]
     SMN_ST_Advanced_Combo_Burst_Any_Option = 17044,
 
@@ -5536,7 +5531,7 @@ public enum CustomComboPreset
     #region Advanced AoE
 
     [AutoAction(true, false)]
-    [ReplaceSkill(SMN.Outburst)]
+    [ReplaceSkill(SMN.Outburst, SMN.Tridisaster)]
     [ConflictingCombos(SMN_AoE_Simple_Combo)]
     [CustomComboInfo("Advanced Mode - AoE",
         "Replaces Outburst with a full one-button AoE rotation.\nThese features are ideal if you want to customize the rotation.",
@@ -5555,9 +5550,10 @@ public enum CustomComboPreset
     SMN_AoE_Advanced_Combo_DemiEgiMenu_oGCDPooling = 17050,
 
     [ParentCombo(SMN_AoE_Advanced_Combo_DemiEgiMenu_oGCDPooling)]
-    [CustomComboInfo("Burst Delay Option",
-        "Only follows Burst Delay settings for the opener burst.\nThis Option is for high SPS builds.", SMN.JobID)]
-    SMN_Advanced_Burst_Delay_Option_AoE = 17052,
+    [CustomComboInfo("Any Searing Burst Option",
+"Checks for any Searing Light for bursting rather than just your own.\nUse this option if partied with multiple SMN and are worried about your Searing Light being wasted.",
+SMN.JobID)]
+    SMN_AoE_Advanced_Combo_Burst_Any_Option = 17069,
 
     [ParentCombo(SMN_AoE_Advanced_Combo)]
     [CustomComboInfo("Searing Light Combo Option", "Adds Searing Light to the AoE combo.\nWill be used on cooldown.",
@@ -5609,7 +5605,7 @@ public enum CustomComboPreset
 
     [ParentCombo(SMN_AoE_Advanced_Combo)]
     [CustomComboInfo("Swiftcast Egi Ability Option", "Uses Swiftcast during the selected Egi summon.", SMN.JobID)]
-    SMN_AoE_DemiEgiMenu_SwiftcastEgi = 17063,
+    SMN_AoE_Advanced_Combo_DemiEgiMenu_SwiftcastEgi = 17063,
 
     [ParentCombo(SMN_AoE_Advanced_Combo)]
     [CustomComboInfo("Egi Attacks Combo Option", "Adds Precious Brilliance to the AoE combo.", SMN.JobID)]
