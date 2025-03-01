@@ -259,7 +259,7 @@ internal partial class SGE
                             dotDebuff = Math.Max(dotDebuff, GetDebuffRemainingTime(Debuffs.EukrasianDyskrasia));
 
                         float refreshTimer = Config.SGE_ST_DPS_EDosis_Adv ? Config.SGE_ST_DPS_EDosisThreshold : 5;
-                        int hpThreshold = Config.SGE_ST_DPS_EDosisSubOption == 0 || !InBossEncounter() ? Config.SGE_ST_DPS_EDosisSubOption : 0;
+                        int hpThreshold = Config.SGE_ST_DPS_EDosisSubOption == 1 || !InBossEncounter() ? Config.SGE_ST_DPS_EDosisOption : 0;
 
                         if (dotDebuff <= refreshTimer &&
                             GetTargetHPPercent() > hpThreshold)

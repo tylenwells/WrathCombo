@@ -279,7 +279,7 @@ internal static partial class SCH
                         return Variant.VariantSpiritDart;
 
                     float refreshTimer = Config.SCH_ST_DPS_Bio_Adv ? Config.SCH_DPS_BioUptime_Threshold : 3;
-                    int hpThreshold = Config.SCH_DPS_BioSubOption == 0 || !InBossEncounter() ? Config.SCH_DPS_BioSubOption : 0;
+                    int hpThreshold = Config.SCH_DPS_BioSubOption == 1 || !InBossEncounter() ? Config.SCH_DPS_BioOption : 0;
                     if (GetDebuffRemainingTime(dotDebuffID) <= refreshTimer &&
                         GetTargetHPPercent() > hpThreshold)
                         return OriginalHook(Bio);
