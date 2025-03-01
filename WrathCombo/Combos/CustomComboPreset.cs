@@ -1611,7 +1611,7 @@ public enum CustomComboPreset
         "Adds Salted Earth and Salt and Darkness to the rotation on cooldown and when Darkside is up.", DRK.JobID)]
     DRK_AoE_CD_Salt = 5058,
 
-    [ParentCombo(DRK_AoE_CDs)]
+    [ParentCombo(DRK_AoE_CD_Salt)]
     [CustomComboInfo("Salt After Pull Option",
         "Requires to be at a stand-still and for combat to have been going on for >7 seconds to use Salted Earth, to try to make it be placed after you finish your pull.", DRK.JobID)]
     DRK_AoE_CD_SaltStill = 5059,
