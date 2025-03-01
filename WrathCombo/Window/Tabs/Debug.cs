@@ -643,7 +643,8 @@ namespace WrathCombo.Window.Tabs
                         if (ImGui.Button("Mimic AutoDuty"))
                         {
                             // https://github.com/ffxivcode/AutoDuty/blob/master/AutoDuty/IPC/IPCSubscriber.cs#L460
-                            P.IPC.SetCurrentJobAutoRotationReady(_wrathLease!.Value);
+                            if (!P.IPC.IsCurrentJobAutoRotationReady())
+                                P.IPC.SetCurrentJobAutoRotationReady(_wrathLease!.Value);
                             P.IPC.SetAutoRotationState(_wrathLease!.Value);
                             P.IPC.SetAutoRotationConfigState(_wrathLease!.Value, AutoRotationConfigOption.InCombatOnly,
                                 false);
