@@ -1,4 +1,5 @@
-﻿using ImGuiNET;
+﻿using Dalamud.Interface.Colors;
+using ImGuiNET;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Data;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
@@ -75,13 +76,16 @@ internal static partial class AST
                     DrawSliderInt(0, 50, AST_DPS_CombustOption, "Stop using at Enemy HP %. Set to Zero to disable this check.");
 
                     ImGui.Indent();
+
+                    ImGui.TextColored(ImGuiColors.DalamudYellow, "Select what kind of enemies the HP check should be applied to:");
+
+                    DrawHorizontalRadioButton(AST_ST_DPS_CombustSubOption,
+                        "Non-Bosses", "Only applies the HP check above to non-bosses.\nAllows you to only stop DoTing early when it's not a boss.", 0);
                     
                     DrawHorizontalRadioButton(AST_ST_DPS_CombustSubOption,
-                        "All content", $"Uses {ActionWatching.GetActionName(Combust)} logic regardless of content.", 0);
+                        "All Enemies", "Applies the HP check above to all enemies.", 1);
 
-                    DrawHorizontalRadioButton(AST_ST_DPS_CombustSubOption,
-                        "Boss encounters Only", $"Only uses {ActionWatching.GetActionName(Combust)} logic when in Boss encounters.", 1);
-
+                    ImGui.NewLine();
                     ImGui.NewLine();
 
                     DrawRoundedSliderFloat(0, 4, AST_ST_DPS_CombustUptime_Threshold, "Seconds remaining before reapplying the DoT. Set to Zero to disable this check.", digits: 1);
