@@ -1,6 +1,6 @@
-﻿using ImGuiNET;
+﻿using Dalamud.Interface.Colors;
+using ImGuiNET;
 using WrathCombo.CustomComboNS.Functions;
-using WrathCombo.Data;
 using static WrathCombo.Extensions.UIntExtensions;
 using static WrathCombo.Window.Functions.SliderIncrements;
 using static WrathCombo.Window.Functions.UserConfig;
@@ -26,24 +26,27 @@ internal static partial class SGE
                     break;
 
                 case CustomComboPreset.SGE_ST_DPS_EDosis:
-
-                    DrawSliderInt(0, 50, SGE_ST_DPS_EDosisHPPer, "Stop using at Enemy HP %. Set to Zero to disable this check.");
+                    DrawSliderInt(0, 50, SGE_ST_DPS_EDosisOption, "Stop using at Enemy HP %. Set to Zero to disable this check.");
 
                     ImGui.Indent();
 
-                    DrawHorizontalRadioButton(SGE_ST_DPS_EDosisSubOption,
-                        "All content", $"Uses {ActionWatching.GetActionName(EukrasianDosis)} logic regardless of content.", 0);
+                    ImGui.TextColored(ImGuiColors.DalamudYellow, "Select what kind of enemies the HP check should be applied to:");
 
                     DrawHorizontalRadioButton(SGE_ST_DPS_EDosisSubOption,
-                        "Boss encounters Only", $"Only uses {ActionWatching.GetActionName(EukrasianDosis)} logic when in Boss encounters.", 1);
+                        "Non-Bosses", "Only applies the HP check above to non-bosses.\nAllows you to only stop DoTing early when it's not a boss.", 0);
+
+                    DrawHorizontalRadioButton(SGE_ST_DPS_EDosisSubOption,
+                        "All Enemies", "Applies the HP check above to all enemies.", 1);
 
                     ImGui.NewLine();
+                    ImGui.NewLine();
 
-                    DrawRoundedSliderFloat(0, 6, SGE_ST_DPS_EDosisThreshold, "Seconds remaining before reapplying the DoT. Set to Zero to disable this check.", digits: 1);
+                    DrawRoundedSliderFloat(0, 4, SGE_ST_DPS_EDosisThreshold, "Seconds remaining before reapplying the DoT. Set to Zero to disable this check.", digits: 1);
 
                     ImGui.Unindent();
 
                     break;
+
 
                 case CustomComboPreset.SGE_ST_DPS_Lucid:
                     DrawSliderInt(4000, 9500, SGE_ST_DPS_Lucid, "MP Threshold", 150, Hundreds);
@@ -208,6 +211,7 @@ internal static partial class SGE
             SGE_ST_DPS_Rhizo = new("SGE_ST_DPS_Rhizo"),
             SGE_ST_DPS_Phlegma = new("SGE_ST_DPS_Phlegma"),
             SGE_ST_DPS_EDosisSubOption = new("SGE_ST_DPS_EDosisSubOption", 0),
+            SGE_ST_DPS_EDosisOption = new("SGE_ST_DPS_EDosisOption"),
             SGE_ST_DPS_AddersgallProtect = new("SGE_ST_DPS_AddersgallProtect", 3),
             SGE_AoE_DPS_Lucid = new("SGE_AoE_Phlegma_Lucid", 6500),
             SGE_AoE_DPS_Rhizo = new("SGE_AoE_DPS_Rhizo"),

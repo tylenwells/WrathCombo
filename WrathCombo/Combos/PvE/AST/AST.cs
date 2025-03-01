@@ -48,7 +48,7 @@ internal static partial class AST
             if (!InCombat())
             {
                 if (IsEnabled(CustomComboPreset.AST_DPS_AutoDraw) &&
-                    ActionReady(OriginalHook(AstralDraw)) && 
+                    ActionReady(OriginalHook(AstralDraw)) &&
                     (Gauge.DrawnCards.All(x => x is CardType.NONE) || DrawnCard == CardType.NONE && Config.AST_ST_DPS_OverwriteCards))
                     return OriginalHook(AstralDraw);
             }
@@ -66,7 +66,7 @@ internal static partial class AST
                     IsOffCooldown(Variant.VariantRampart) &&
                     CanSpellWeave())
                     return Variant.VariantRampart;
-                
+
                 if (IsEnabled(CustomComboPreset.AST_Variant_SpiritDart) &&
                     IsEnabled(Variant.VariantSpiritDart) &&
                     (sustainedDamage is null || sustainedDamage.RemainingTime <= 3) &&
@@ -123,7 +123,7 @@ internal static partial class AST
 
                 //Minor Arcana / Lord of Crowns
                 if (ActionReady(OriginalHook(MinorArcana)) &&
-                    IsEnabled(CustomComboPreset.AST_DPS_LazyLord) && 
+                    IsEnabled(CustomComboPreset.AST_DPS_LazyLord) &&
                     Gauge.DrawnCrownCard is CardType.LORD &&
                     HasBattleTarget() && CanDelayedWeave())
                     return OriginalHook(MinorArcana);
@@ -143,9 +143,7 @@ internal static partial class AST
                             return Variant.VariantSpiritDart;
 
                         float refreshTimer = Config.AST_ST_DPS_CombustUptime_Adv ? Config.AST_ST_DPS_CombustUptime_Threshold : 3;
-                        var hpThreshold =
-                            (Config.AST_ST_DPS_CombustSubOption == 0 || !InBossEncounter())
-                                ? Config.AST_DPS_CombustOption : 0;
+                        int hpThreshold = Config.AST_ST_DPS_CombustSubOption == 0 || !InBossEncounter() ? Config.AST_DPS_CombustOption : 0;
                         if (GetDebuffRemainingTime(dotDebuffID) <= refreshTimer &&
                             GetTargetHPPercent() > hpThreshold)
                             return OriginalHook(Combust);

@@ -278,13 +278,11 @@ internal static partial class SCH
                         CanSpellWeave())
                         return Variant.VariantSpiritDart;
 
-                    float refreshtimer = Config.SCH_ST_DPS_Bio_Adv ? Config.SCH_ST_DPS_Bio_Threshold : 3;
-
-                    if (GetDebuffRemainingTime(dotDebuffID) <= refreshtimer &&
-                        GetTargetHPPercent() > Config.SCH_ST_DPS_BioOption &&
-                        (Config.SCH_DPS_BioSubOption == 0 ||
-                         Config.SCH_DPS_BioSubOption == 1 && InBossEncounter()))
-                        return OriginalHook(Bio); //Use appropriate DoT Action
+                    float refreshTimer = Config.SCH_ST_DPS_Bio_Adv ? Config.SCH_DPS_BioUptime_Threshold : 3;
+                    int hpThreshold = Config.SCH_DPS_BioSubOption == 0 || !InBossEncounter() ? Config.SCH_DPS_BioSubOption : 0;
+                    if (GetDebuffRemainingTime(dotDebuffID) <= refreshTimer &&
+                        GetTargetHPPercent() > hpThreshold)
+                        return OriginalHook(Bio);
                 }
 
                 //Ruin 2 Movement

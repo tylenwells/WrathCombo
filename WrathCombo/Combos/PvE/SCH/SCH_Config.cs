@@ -1,4 +1,5 @@
-﻿using ImGuiNET;
+﻿using Dalamud.Interface.Colors;
+using ImGuiNET;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Data;
 using static WrathCombo.Extensions.UIntExtensions;
@@ -39,19 +40,22 @@ internal static partial class SCH
 
                 case CustomComboPreset.SCH_DPS_Bio:
 
-                    DrawSliderInt(0, 50, SCH_ST_DPS_BioOption, "Stop using at Enemy HP %. Set to Zero to disable this check.");
+                    DrawSliderInt(0, 50, SCH_DPS_BioOption, "Stop using at Enemy HP %. Set to Zero to disable this check.");
 
                     ImGui.Indent();
 
-                    DrawHorizontalRadioButton(SCH_DPS_BioSubOption,
-                        "All content", $"Uses {ActionWatching.GetActionName(Bio)} logic regardless of content.", 0);
+                    ImGui.TextColored(ImGuiColors.DalamudYellow, "Select what kind of enemies the HP check should be applied to:");
 
                     DrawHorizontalRadioButton(SCH_DPS_BioSubOption,
-                        "Boss encounters Only", $"Only uses {ActionWatching.GetActionName(Bio)} logic when in Boss encounters.", 1);
+                        "Non-Bosses", "Only applies the HP check above to non-bosses.\nAllows you to only stop DoTing early when it's not a boss.", 0);
+
+                    DrawHorizontalRadioButton(SCH_DPS_BioSubOption,
+                        "All Enemies", "Applies the HP check above to all enemies.", 1);
 
                     ImGui.NewLine();
+                    ImGui.NewLine();
 
-                    DrawRoundedSliderFloat(0, 4, SCH_ST_DPS_Bio_Threshold, "Seconds remaining before reapplying the DoT. Set to Zero to disable this check.", digits: 1);
+                    DrawRoundedSliderFloat(0, 4, SCH_DPS_BioUptime_Threshold, "Seconds remaining before reapplying the DoT. Set to Zero to disable this check.", digits: 1);
 
                     ImGui.Unindent();
 
@@ -231,6 +235,7 @@ internal static partial class SCH
             SCH_ST_DPS_OpenerOption = new("SCH_ST_DPS_OpenerOption"),
             SCH_ST_DPS_OpenerContent = new("SCH_ST_DPS_OpenerContent", 1),
             SCH_ST_DPS_ChainStratagemOption = new("SCH_ST_DPS_ChainStratagemOption", 10),
+            SCH_DPS_BioOption = new("SCH_DPS_BioOption"),
             SCH_DPS_BioSubOption = new("SCH_DPS_BioSubOption", 0),
             SCH_ST_DPS_ChainStratagemSubOption = new("SCH_ST_DPS_ChainStratagemSubOption", 1);
         public static UserBool
@@ -238,7 +243,7 @@ internal static partial class SCH
             SCH_ST_DPS_Bio_Adv = new("SCH_ST_DPS_Bio_Adv"),
             SCH_ST_DPS_EnergyDrain_Adv = new("SCH_ST_DPS_EnergyDrain_Adv");
         public static UserFloat
-            SCH_ST_DPS_Bio_Threshold = new("SCH_ST_DPS_Bio_Threshold", 3.0f),
+            SCH_DPS_BioUptime_Threshold = new("SCH_DPS_BioUptime_Threshold", 3.0f),
             SCH_ST_DPS_EnergyDrain = new("SCH_ST_DPS_EnergyDrain", 3.0f);
         public static UserBoolArray
             SCH_ST_DPS_Adv_Actions = new("SCH_ST_DPS_Adv_Actions");

@@ -127,13 +127,10 @@ internal partial class WHM
                         return Variant.VariantSpiritDart;
 
                     // DoT Uptime & HP% threshold
-                    float refreshtimer =
-                        Config.WHM_ST_MainCombo_DoT_Adv ? Config.WHM_ST_MainCombo_DoT_Threshold : 3;
-
-                    if (GetDebuffRemainingTime(dotDebuffID) <= refreshtimer &&
-                        GetTargetHPPercent() > Config.WHM_STDPS_MainCombo_DoT &&
-                        (Config.WHM_ST_MainCombo_DoTSubOption == 0 ||
-                         Config.WHM_ST_MainCombo_DoTSubOption == 1 && InBossEncounter()))
+                    float refreshTimer = Config.WHM_ST_MainCombo_DoT_Adv ? Config.WHM_ST_MainCombo_DoT_Threshold : 3;
+                    int hpThreshold = Config.WHM_ST_DPS_AeroOptionSubOption == 0 || !InBossEncounter() ? Config.WHM_ST_DPS_AeroOptionSubOption : 0;
+                    if (GetDebuffRemainingTime(dotDebuffID) <= refreshTimer &&
+                        GetTargetHPPercent() > hpThreshold)
                         return OriginalHook(Aero);
                 }
 

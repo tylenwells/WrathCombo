@@ -1,7 +1,7 @@
-﻿using ImGuiNET;
+﻿using Dalamud.Interface.Colors;
+using ImGuiNET;
 using WrathCombo.Combos.PvP;
 using WrathCombo.CustomComboNS.Functions;
-using WrathCombo.Data;
 using static WrathCombo.Extensions.UIntExtensions;
 using static WrathCombo.Window.Functions.SliderIncrements;
 using static WrathCombo.Window.Functions.UserConfig;
@@ -14,7 +14,8 @@ internal static partial class WHM
         internal static UserInt
             WHM_STDPS_Lucid = new("WHMLucidDreamingFeature"),
             WHM_STDPS_MainCombo_DoT = new("WHM_ST_MainCombo_DoT"),
-            WHM_ST_MainCombo_DoTSubOption = new("WHM_ST_MainCombo_DoTSubOption", 0),
+            WHM_ST_DPS_AeroOption = new("WHM_ST_DPS_AeroOption"),
+            WHM_ST_DPS_AeroOptionSubOption = new("WHM_ST_DPS_AeroOptionSubOption", 0),
             WHM_AoEDPS_Lucid = new("WHM_AoE_Lucid", 6500),
             WHM_STHeals_Lucid = new("WHM_STHeals_Lucid"),
             WHM_STHeals_ThinAir = new("WHM_STHeals_ThinAir"),
@@ -79,16 +80,19 @@ internal static partial class WHM
 
                 case CustomComboPreset.WHM_ST_MainCombo_DoT:
 
-                    DrawSliderInt(0, 50, WHM_STDPS_MainCombo_DoT, "Stop using at Enemy HP %. Set to Zero to disable this check.");
+                    DrawSliderInt(0, 50, WHM_ST_DPS_AeroOption, "Stop using at Enemy HP %. Set to Zero to disable this check.");
 
                     ImGui.Indent();
 
-                    DrawHorizontalRadioButton(WHM_ST_MainCombo_DoTSubOption,
-                        "All content", $"Uses {ActionWatching.GetActionName(Aero)} logic regardless of content.", 0);
+                    ImGui.TextColored(ImGuiColors.DalamudYellow, "Select what kind of enemies the HP check should be applied to:");
 
-                    DrawHorizontalRadioButton(WHM_ST_MainCombo_DoTSubOption,
-                        "Boss encounters Only", $"Only uses {ActionWatching.GetActionName(Aero)} logic when in Boss encounters.", 1);
+                    DrawHorizontalRadioButton(WHM_ST_DPS_AeroOptionSubOption,
+                        "Non-Bosses", "Only applies the HP check above to non-bosses.\nAllows you to only stop DoTing early when it's not a boss.", 0);
 
+                    DrawHorizontalRadioButton(WHM_ST_DPS_AeroOptionSubOption,
+                        "All Enemies", "Applies the HP check above to all enemies.", 1);
+
+                    ImGui.NewLine();
                     ImGui.NewLine();
 
                     DrawRoundedSliderFloat(0, 4, WHM_ST_MainCombo_DoT_Threshold, "Seconds remaining before reapplying the DoT. Set to Zero to disable this check.", digits: 1);

@@ -258,12 +258,11 @@ internal partial class SGE
                         if (TraitLevelChecked(Traits.OffensiveMagicMasteryII))
                             dotDebuff = Math.Max(dotDebuff, GetDebuffRemainingTime(Debuffs.EukrasianDyskrasia));
 
-                        float refreshtimer = Config.SGE_ST_DPS_EDosis_Adv ? Config.SGE_ST_DPS_EDosisThreshold : 4;
+                        float refreshTimer = Config.SGE_ST_DPS_EDosis_Adv ? Config.SGE_ST_DPS_EDosisThreshold : 5;
+                        int hpThreshold = Config.SGE_ST_DPS_EDosisSubOption == 0 || !InBossEncounter() ? Config.SGE_ST_DPS_EDosisSubOption : 0;
 
-                        if (dotDebuff <= refreshtimer &&
-                            GetTargetHPPercent() > Config.SGE_ST_DPS_EDosisHPPer &&
-                            (Config.SGE_ST_DPS_EDosisSubOption == 0 ||
-                             Config.SGE_ST_DPS_EDosisSubOption == 1 && InBossEncounter()))
+                        if (dotDebuff <= refreshTimer &&
+                            GetTargetHPPercent() > hpThreshold)
                             return Eukrasia;
                     }
                 }
