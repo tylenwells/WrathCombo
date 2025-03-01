@@ -145,7 +145,7 @@ public partial class Helper(ref Leasing leasing)
         P.IPCSearch.ComboStatesByJobCategorized.TryGetValue((Job)currentRealJob,
             out var comboStates);
 
-        if (comboStates is null)
+        if (comboStates is null || comboStates.Count == 0)
             return false;
 
         comboStates[mode]
