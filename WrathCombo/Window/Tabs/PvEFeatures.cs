@@ -8,7 +8,6 @@ using ECommons.ImGuiMethods;
 using ImGuiNET;
 using System.Linq;
 using System.Numerics;
-using System.Reflection.Metadata.Ecma335;
 using ECommons.Logging;
 using WrathCombo.Combos.PvE;
 using WrathCombo.Core;
@@ -34,7 +33,6 @@ namespace WrathCombo.Window.Tabs
 
             using (var scrolling = ImRaii.Child("scrolling", new Vector2(ImGui.GetContentRegionAvail().X, ImGui.GetContentRegionAvail().Y), true))
             {
-                int i = 1;
                 var indentwidth = 12f.Scale();
                 var indentwidth2 = indentwidth + 42f.Scale();
                 if (OpenJob == string.Empty)
