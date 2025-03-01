@@ -143,10 +143,11 @@ internal static partial class AST
                             return Variant.VariantSpiritDart;
 
                         float refreshTimer = Config.AST_ST_DPS_CombustUptime_Adv ? Config.AST_ST_DPS_CombustUptime_Threshold : 3;
+                        var hpThreshold =
+                            (Config.AST_ST_DPS_CombustSubOption == 0 || !InBossEncounter())
+                                ? Config.AST_DPS_CombustOption : 0;
                         if (GetDebuffRemainingTime(dotDebuffID) <= refreshTimer &&
-                            GetTargetHPPercent() > Config.AST_DPS_CombustOption &&
-                            (Config.AST_ST_DPS_CombustSubOption == 0 ||
-                             Config.AST_ST_DPS_CombustSubOption == 1 && InBossEncounter()))
+                            GetTargetHPPercent() > hpThreshold)
                             return OriginalHook(Combust);
 
                         //Alternate Mode (idles as Malefic)
