@@ -18,6 +18,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using ECommons.Logging;
 using WrathCombo.Attributes;
 using WrathCombo.AutoRotation;
 using WrathCombo.Combos;
@@ -40,6 +41,7 @@ public sealed partial class WrathCombo : IDalamudPlugin
     private readonly ConfigWindow ConfigWindow;
     private readonly SettingChangeWindow SettingChangeWindow;
     private readonly TargetHelper TargetHelper;
+    internal static DateTime LastPresetDeconflictTime = DateTime.MinValue;
     internal static WrathCombo? P;
     private readonly WindowSystem ws;
     private readonly HttpClient httpClient = new();
@@ -182,8 +184,12 @@ public sealed partial class WrathCombo : IDalamudPlugin
         Svc.Framework.Update += OnFrameworkUpdate;
         Svc.ClientState.TerritoryChanged += ClientState_TerritoryChanged;
 
-        KillRedundantIDs();
-        HandleConflictedCombos();
+        if (DateTime.UtcNow - LastPresetDeconflictTime > TimeSpan.FromSeconds(3))
+        {
+            KillRedundantIDs();
+            HandleConflictedCombos();
+            LastPresetDeconflictTime = DateTime.UtcNow;
+        }
         CustomComboFunctions.TimerSetup();
 
 #if DEBUG
@@ -240,13 +246,15 @@ public sealed partial class WrathCombo : IDalamudPlugin
             if (!PresetStorage.IsEnabled(preset)) continue;
 
             var conflictingCombos = preset.GetAttribute<ConflictingCombosAttribute>();
-            if (conflictingCombos != null)
-            {
-                foreach (var conflict in conflictingCombos.ConflictingPresets)
-                    if (PresetStorage.IsEnabled(conflict))
-                        if (Service.Configuration.EnabledActions.Remove(conflict))
-                            Service.Configuration.Save();
-            }
+            if (conflictingCombos == null) continue;
+
+            foreach (var conflict in conflictingCombos.ConflictingPresets)
+                if (PresetStorage.IsEnabled(conflict))
+                    if (Service.Configuration.EnabledActions.Remove(conflict))
+                    {
+                        PluginLog.Debug($"Removed {conflict} due to conflict with {preset}");
+                        Service.Configuration.Save();
+                    }
         }
     }
 

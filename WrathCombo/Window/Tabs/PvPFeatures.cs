@@ -1,4 +1,5 @@
-﻿using Dalamud.Interface;
+﻿using System;
+using Dalamud.Interface;
 using Dalamud.Interface.Textures.TextureWraps;
 using Dalamud.Interface.Utility;
 using Dalamud.Interface.Utility.Raii;
@@ -6,6 +7,7 @@ using ECommons.ImGuiMethods;
 using ImGuiNET;
 using System.Linq;
 using System.Numerics;
+using ECommons.Logging;
 using WrathCombo.Core;
 using WrathCombo.Services;
 using WrathCombo.Window.Functions;
@@ -135,8 +137,15 @@ namespace WrathCombo.Window.Tabs
 
                     if (conflictOriginals.Any(PresetStorage.IsEnabled))
                     {
-                        if (Service.Configuration.EnabledActions.Remove(preset))
-                            Service.Configuration.Save();
+                        if (DateTime.UtcNow - LastPresetDeconflictTime > TimeSpan.FromSeconds(3))
+                        {
+                            if (Service.Configuration.EnabledActions.Remove(preset))
+                            {
+                                PluginLog.Debug($"Removed {preset} due to conflict");
+                                Service.Configuration.Save();
+                            }
+                            LastPresetDeconflictTime = DateTime.UtcNow;
+                        }
 
                         // Keep removed items in the counter
                         var parent = PresetStorage.GetParent(preset) ?? preset;

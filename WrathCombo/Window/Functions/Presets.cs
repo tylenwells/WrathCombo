@@ -10,6 +10,7 @@ using Dalamud.Utility;
 using ECommons.DalamudServices;
 using ECommons.GameHelpers;
 using ECommons.ImGuiMethods;
+using ECommons.Logging;
 using ImGuiNET;
 using WrathCombo.Attributes;
 using WrathCombo.Combos;
@@ -379,8 +380,15 @@ namespace WrathCombo.Window.Functions
 
                             if (conflictOriginals.Any(PresetStorage.IsEnabled))
                             {
-                                if (Service.Configuration.EnabledActions.Remove(childPreset))
-                                    Service.Configuration.Save();
+                                if (DateTime.UtcNow - LastPresetDeconflictTime > TimeSpan.FromSeconds(3))
+                                {
+                                    if (Service.Configuration.EnabledActions.Remove(childPreset))
+                                    {
+                                        PluginLog.Debug($"Removed {childPreset} due to conflict with {preset}");
+                                        Service.Configuration.Save();
+                                    }
+                                    LastPresetDeconflictTime = DateTime.UtcNow;
+                                }
 
                                 // Keep removed items in the counter
                                 currentPreset += 1 + AllChildren(presetChildren[childPreset]);
