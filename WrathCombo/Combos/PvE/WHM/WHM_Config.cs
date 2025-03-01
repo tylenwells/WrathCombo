@@ -87,6 +87,8 @@ internal static partial class WHM
                     DrawHorizontalRadioButton(WHM_ST_MainCombo_DoTSubOption,
                         "Boss encounters Only", $"Only uses {ActionWatching.GetActionName(Aero)} logic when in Boss encounters.", 1);
 
+                    ImGui.NewLine();
+
                     DrawRoundedSliderFloat(0, 4, WHM_ST_MainCombo_DoT_Threshold, "Seconds remaining before reapplying the DoT. Set to Zero to disable this check.", digits: 1);
 
                     break;

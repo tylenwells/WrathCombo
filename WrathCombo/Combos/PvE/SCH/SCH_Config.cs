@@ -47,6 +47,8 @@ internal static partial class SCH
                     DrawHorizontalRadioButton(SCH_DPS_BioSubOption,
                         "Boss encounters Only", $"Only uses {ActionWatching.GetActionName(Bio)} logic when in Boss encounters.", 1);
 
+                    ImGui.NewLine();
+
                     DrawRoundedSliderFloat(0, 4, SCH_ST_DPS_Bio_Threshold, "Seconds remaining before reapplying the DoT. Set to Zero to disable this check.", digits: 1);
 
                     break;

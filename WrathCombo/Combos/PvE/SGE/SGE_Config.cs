@@ -35,6 +35,8 @@ internal static partial class SGE
                     DrawHorizontalRadioButton(SGE_ST_DPS_EDosisSubOption,
                         "Boss encounters Only", $"Only uses {ActionWatching.GetActionName(EukrasianDosis)} logic when in Boss encounters.", 1);
 
+                    ImGui.NewLine();
+
                     DrawRoundedSliderFloat(0, 6, SGE_ST_DPS_EDosisThreshold, "Seconds remaining before reapplying the DoT. Set to Zero to disable this check.", digits: 1);
 
                     break;

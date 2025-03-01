@@ -80,6 +80,8 @@ internal static partial class AST
                     DrawHorizontalRadioButton(AST_ST_DPS_CombustSubOption,
                         "Boss encounters Only", $"Only uses {ActionWatching.GetActionName(Combust)} logic when in Boss encounters.", 1);
 
+                    ImGui.NewLine();
+
                     DrawRoundedSliderFloat(0, 4, AST_ST_DPS_CombustUptime_Threshold, "Seconds remaining before reapplying the DoT. Set to Zero to disable this check.", digits: 1);
 
                     break;
