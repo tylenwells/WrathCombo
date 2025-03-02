@@ -954,6 +954,13 @@ public enum CustomComboPreset
 
     #region DANCER
 
+    [ReplaceSkill(DNC.StandardFinish2, DNC.TechnicalFinish4)]
+    [CustomComboInfo("Require Nearby Enemy for Finishes Feature",
+        "Will hold Standard Finish and Technical Finish until an enemy is within range of the abilities in all (non-Simple) Modes and Features below by replacing whatever button with Savage Blade." +
+        "\nWill show either Finish when the dance is about to expire." +
+        "\nThis behavior is recommended by The Balance but can introduce drift, so it may not be what is best for your group.", DNC.JobID)]
+    DNC_ST_BlockFinishes = 4000,
+
     #region Simple Mode
 
     [AutoAction(false, false)]
@@ -1243,6 +1250,27 @@ public enum CustomComboPreset
     // Last value = 4093
 
     #region Smaller Features
+
+    #region Dance Partner Features
+
+    /*
+    [ReplaceSkill(DNC.ClosedPosition, DNC.Ending)]
+    [CustomComboInfo("Dance Partner on Desirable Partner Feature",
+        "Replaces Closed Position (including in the combos above) with itself, but targeted to a party member, so you can cast it without having to pick anyone and without having to actually target anyone." +
+        "\nThis will check through your party members, and select the most desirable Partner based on The Balance's priority and stuff like Rez Sickness.", DNC.JobID)]
+    DNC_DesirablePartner = 4175,
+
+    [ParentCombo(DNC_DesirablePartner)]
+    [CustomComboInfo("Party-Target Overrides Selection Option", "If you are targeting a party member that is a valid target, they will be used instead of searching party members.\nTarget must be alive and in range.", DNC.JobID)]
+    DNC_Desirable_TargetOverride = 4176,
+
+    [ParentCombo(DNC_DesirablePartner)]
+    [CustomComboInfo("Custom Priority Option", "If your Partner priority differs from The Balance's recommendation for some reason, you can customize the priority here.\nNot generally recommended.", DNC.JobID)]
+    DNC_Desirable_CustomPriority = 4177,
+    */
+
+    #endregion
+    // Last value = 4177
 
     #region Dance Features
 
@@ -2984,7 +3012,7 @@ public enum CustomComboPreset
     [CustomComboInfo("Riddle of Fire Option", "Adds Riddle of Fire to the rotation", MNK.JobID)]
     MNK_STUseROF = 9011,
 
-    [ParentCombo(MNK_STUseROF)]
+    [ParentCombo(MNK_STUseBuffs)]
     [CustomComboInfo("Fire's Reply Option", "Adds Fire's Reply to the rotation", MNK.JobID)]
     MNK_STUseFiresReply = 9016,
 
@@ -2992,7 +3020,7 @@ public enum CustomComboPreset
     [CustomComboInfo("Riddle of Wind Option", "Adds Riddle of Wind to the rotation", MNK.JobID)]
     MNK_STUseROW = 9010,
 
-    [ParentCombo(MNK_STUseROW)]
+    [ParentCombo(MNK_STUseBuffs)]
     [CustomComboInfo("Wind's Reply Option", "Adds Wind's Reply to the rotation", MNK.JobID)]
     MNK_STUseWindsReply = 9015,
 
@@ -4091,7 +4119,7 @@ public enum CustomComboPreset
     RPR_ST_AdvancedMode = 12001,
 
     [ParentCombo(RPR_ST_AdvancedMode)]
-    [CustomComboInfo("Balance Opener (Level 100)", "Adds the Balance opener at level 100.\n Does not check positional choice.\n Always does Gibbet first (FLANK)", RPR.JobID)]
+    [CustomComboInfo("Balance Opener (Level 100)", "Adds the Balance opener at level 100.", RPR.JobID)]
     RPR_ST_Opener = 12002,
 
     [ParentCombo(RPR_ST_AdvancedMode)]
@@ -4390,6 +4418,10 @@ public enum CustomComboPreset
     RDM_ST_ThunderAero_Accel = 13211,
 
     [ParentCombo(RDM_ST_ThunderAero_Accel)]
+    [CustomComboInfo("Acceleration Movement Option", "Add Acceleration when moving.", RDM.JobID)]
+    RDM_ST_ThunderAero_Accel_Movement = 13213,
+
+    [ParentCombo(RDM_ST_ThunderAero_Accel)]
     [CustomComboInfo("Include Swiftcast Option", "Add Swiftcast when all Acceleration charges are used.", RDM.JobID)]
     RDM_ST_ThunderAero_Accel_Swiftcast = 13212,
 
@@ -4454,13 +4486,15 @@ public enum CustomComboPreset
     RDM_AoE_DPS = 13310,
 
     [ParentCombo(RDM_AoE_DPS)]
-    [ReplaceSkill(RDM.Scatter, RDM.Impact)]
-    [CustomComboInfo("AoE Acceleration Option", "Use Acceleration for increased damage.", RDM.JobID)]
+    [CustomComboInfo("Acceleration Option", "Add Acceleration into the AoE rotation.", RDM.JobID)]
     RDM_AoE_Accel = 13320,
 
     [ParentCombo(RDM_AoE_Accel)]
-    [CustomComboInfo("Include Swiftcast Option",
-        "Add Swiftcast when all Acceleration charges are used or when below level 50.", RDM.JobID)]
+    [CustomComboInfo("Acceleration Movement Option", "Add Acceleration when moving.", RDM.JobID)]
+    RDM_AoE_Accel_Movement = 13223,
+
+    [ParentCombo(RDM_AoE_Accel)]
+    [CustomComboInfo("Include Swiftcast Option", "Add Swiftcast when all Acceleration charges are used or when below level 50.", RDM.JobID)]
     RDM_AoE_Accel_Swiftcast = 13321,
 
     [ParentCombo(RDM_AoE_Accel)]
@@ -7613,10 +7647,6 @@ SMN.JobID)]
     [ParentCombo(WHMPvP_Heals)]
     [CustomComboInfo("Aquaveil Option", "Adds Aquaviel to Cure II when available.", WHM.JobID)]
     WHMPvP_Aquaveil = 129007,
-
-    [ParentCombo(WHMPvP_Burst)]
-    [CustomComboInfo("Glare IV Option", "Adds Glare IV to Burst Mode.", WHM.JobID)]
-    WHMPvP_Glare4 = 129006,
 
     // Last value = 129007
 

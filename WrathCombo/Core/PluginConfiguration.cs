@@ -69,6 +69,27 @@ namespace WrathCombo.Core
 
         public bool OpenToCurrentJobOnSwitch = false;
 
+        public bool ActionChanging = true;
+
+        private DateTime _lastActionChangeCheck = DateTime.MinValue;
+
+        internal void SetActionChanging(bool? newValue = null)
+        {
+            if ((DateTime.Now - _lastActionChangeCheck).TotalSeconds < 3) return;
+
+            if (newValue is not null && newValue != ActionChanging)
+            {
+                ActionChanging = newValue.Value;
+                Save();
+            }
+
+            // Checks if action replacing is not in line with the setting
+            if (ActionChanging && !Service.ActionReplacer.getActionHook.IsEnabled)
+                Service.ActionReplacer.getActionHook.Enable();
+            if (!ActionChanging && Service.ActionReplacer.getActionHook.IsEnabled)
+                Service.ActionReplacer.getActionHook.Disable();
+        }
+
         #endregion
 
         #region AutoAction Settings

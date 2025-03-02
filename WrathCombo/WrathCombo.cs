@@ -19,6 +19,8 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using ECommons.Logging;
+using ECommons.Logging;
+using FFXIVClientStructs.FFXIV.Client.Game;
 using WrathCombo.Attributes;
 using WrathCombo.AutoRotation;
 using WrathCombo.Combos;
@@ -27,6 +29,7 @@ using WrathCombo.Core;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Data;
+using WrathCombo.Extensions;
 using WrathCombo.Services;
 using WrathCombo.Services.IPC;
 using WrathCombo.Window;
@@ -37,8 +40,8 @@ namespace WrathCombo;
 /// <summary> Main plugin implementation. </summary>
 public sealed partial class WrathCombo : IDalamudPlugin
 {
-    private static TaskManager? TM;
-    private readonly ConfigWindow ConfigWindow;
+    internal static TaskManager? TM;
+    internal readonly ConfigWindow ConfigWindow;
     private readonly SettingChangeWindow SettingChangeWindow;
     private readonly TargetHelper TargetHelper;
     internal static DateTime LastPresetDeconflictTime = DateTime.MinValue;
@@ -233,6 +236,9 @@ public sealed partial class WrathCombo : IDalamudPlugin
     private void ClientState_TerritoryChanged(ushort obj)
     {
         UpdateCaches(false, true, false);
+
+        if (P.UIHelper.AutoRotationStateControlled() is not null)
+            OnIPCControlledTerritoryChange();
     }
 
     public const string OptionControlledByIPC =
@@ -258,6 +264,69 @@ public sealed partial class WrathCombo : IDalamudPlugin
         }
     }
 
+    private unsafe void OnIPCControlledTerritoryChange(int callNumber = 0)
+    {
+        TM.DelayNext(callNumber < 1 ? 6000 : 1400);
+
+        TM.Enqueue(() =>
+        {
+            var callAgainToConfirm = false;
+
+            #region Tank Stance
+
+            Cast(PLD.JobID, PLD.IronWill, PLD.Buffs.IronWill,
+                null, ref callAgainToConfirm);
+
+            Cast(WAR.JobID, WAR.Defiance, WAR.Buffs.Defiance,
+                null, ref callAgainToConfirm);
+
+            Cast(DRK.JobID, DRK.Grit, DRK.Buffs.Grit,
+                null, ref callAgainToConfirm);
+
+            Cast(GNB.JobID, GNB.RoyalGuard, GNB.Buffs.RoyalGuard,
+                null, ref callAgainToConfirm);
+
+            #endregion
+
+            #region Dance Partner
+
+            Cast(DNC.JobID, DNC.ClosedPosition, DNC.Buffs.ClosedPosition,
+                DNC.DesiredDancePartner, ref callAgainToConfirm);
+
+            #endregion
+
+            if (callNumber > 10)
+                return;
+            if (callAgainToConfirm)
+                OnIPCControlledTerritoryChange(callNumber + 1);
+        }, "OnIPCControlledTerritoryChange");
+
+        return;
+
+        void Cast
+            (byte job, uint action, ushort buff, ulong? target, ref bool
+                callAgain)
+        {
+            if (JobID != job || CustomComboFunctions.HasEffect(buff))
+                return;
+
+            callAgain = true;
+
+            if (CustomComboFunctions.JustUsed(action, 0.5f))
+                return;
+            if (!CustomComboFunctions.ActionReady(action))
+                return;
+
+            PluginLog.Verbose($"OnIPCInstanceChange: Casting {action.ActionName()} {target}");
+
+            if (target is null)
+                ActionManager.Instance()->UseAction(ActionType.Action, action);
+            else
+                ActionManager.Instance()->UseAction(ActionType.Action, action,
+                    (ulong)target);
+        }
+    }
+
     private void OnFrameworkUpdate(IFramework framework)
     {
         if (Svc.ClientState.LocalPlayer is not null)
@@ -270,6 +339,8 @@ public sealed partial class WrathCombo : IDalamudPlugin
         TargetHelper.Draw();
         AutoRotationController.Run();
         PluginConfiguration.ProcessSaveQueue();
+
+        Service.Configuration.SetActionChanging();
 
         // Skip the IPC checking if hidden
         if (DtrBarEntry.UserHidden) return;

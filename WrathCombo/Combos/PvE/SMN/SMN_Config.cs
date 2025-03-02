@@ -63,9 +63,6 @@ internal partial class SMN
                     break;
 
                 case CustomComboPreset.SMN_ST_Advanced_Combo_DemiEgiMenu_oGCDPooling:
-                    UserConfig.DrawSliderInt(0, 3, SMN_ST_Burst_Delay,
-                        "Sets the amount of GCDs under Demi summon to wait for oGCD use.");
-
                     UserConfig.DrawHorizontalRadioButton(SMN_ST_BurstPhase, "Solar Bahamut/Bahamut",
                         "Bursts during Bahamut phase.\nBahamut burst phase becomes Solar Bahamut at Lv100.", 1);
                     UserConfig.DrawHorizontalRadioButton(SMN_ST_BurstPhase, "Phoenix", "Bursts during Phoenix phase.", 2);
@@ -76,12 +73,12 @@ internal partial class SMN
                     UserConfig.DrawHorizontalRadioButton(SMN_ST_BurstPhase, "Flexible (SpS) Option",
                         "Bursts when Searing Light is ready, regardless of phase.", 4);
 
+                    UserConfig.DrawSliderInt(0, 3, SMN_ST_Burst_Delay,
+                        "Sets the amount of GCDs under Demi summon to wait for oGCD use.");
+
                     break;
 
                 case CustomComboPreset.SMN_AoE_Advanced_Combo_DemiEgiMenu_oGCDPooling:
-                    UserConfig.DrawSliderInt(0, 3, SMN_AoE_Burst_Delay,
-                        "Sets the amount of GCDs under Demi summon to wait for oGCD use.");
-
                     UserConfig.DrawHorizontalRadioButton(SMN_AoE_BurstPhase, "Solar Bahamut/Bahamut",
                         "Bursts during Bahamut phase.\nBahamut burst phase becomes Solar Bahamut at Lv100.", 1);
                     UserConfig.DrawHorizontalRadioButton(SMN_AoE_BurstPhase, "Phoenix", "Bursts during Phoenix phase.", 2);
@@ -91,6 +88,9 @@ internal partial class SMN
 
                     UserConfig.DrawHorizontalRadioButton(SMN_AoE_BurstPhase, "Flexible (SpS) Option",
                         "Bursts when Searing Light is ready, regardless of phase.", 4);
+
+                    UserConfig.DrawSliderInt(0, 3, SMN_AoE_Burst_Delay,
+                        "Sets the amount of GCDs under Demi summon to wait for oGCD use.");
 
                     break;
 
