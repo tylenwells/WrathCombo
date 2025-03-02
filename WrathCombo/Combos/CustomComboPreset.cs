@@ -4390,6 +4390,10 @@ public enum CustomComboPreset
     RDM_ST_ThunderAero_Accel = 13211,
 
     [ParentCombo(RDM_ST_ThunderAero_Accel)]
+    [CustomComboInfo("Acceleration Movement Option", "Add Acceleration when moving.", RDM.JobID)]
+    RDM_ST_ThunderAero_Accel_Movement = 13213,
+
+    [ParentCombo(RDM_ST_ThunderAero_Accel)]
     [CustomComboInfo("Include Swiftcast Option", "Add Swiftcast when all Acceleration charges are used.", RDM.JobID)]
     RDM_ST_ThunderAero_Accel_Swiftcast = 13212,
 
@@ -4454,13 +4458,15 @@ public enum CustomComboPreset
     RDM_AoE_DPS = 13310,
 
     [ParentCombo(RDM_AoE_DPS)]
-    [ReplaceSkill(RDM.Scatter, RDM.Impact)]
-    [CustomComboInfo("AoE Acceleration Option", "Use Acceleration for increased damage.", RDM.JobID)]
+    [CustomComboInfo("Acceleration Option", "Add Acceleration into the AoE rotation.", RDM.JobID)]
     RDM_AoE_Accel = 13320,
 
     [ParentCombo(RDM_AoE_Accel)]
-    [CustomComboInfo("Include Swiftcast Option",
-        "Add Swiftcast when all Acceleration charges are used or when below level 50.", RDM.JobID)]
+    [CustomComboInfo("Acceleration Movement Option", "Add Acceleration when moving.", RDM.JobID)]
+    RDM_AoE_Accel_Movement = 13223,
+
+    [ParentCombo(RDM_AoE_Accel)]
+    [CustomComboInfo("Include Swiftcast Option", "Add Swiftcast when all Acceleration charges are used or when below level 50.", RDM.JobID)]
     RDM_AoE_Accel_Swiftcast = 13321,
 
     [ParentCombo(RDM_AoE_Accel)]
