@@ -1,17 +1,18 @@
-﻿using Dalamud.Game.ClientState.JobGauge.Types;
+﻿#region Dependencies
+using Dalamud.Game.ClientState.JobGauge.Types;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using System.Collections.Generic;
+using WrathCombo.Combos.PvE.Content;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
+#endregion
 
 namespace WrathCombo.Combos.PvE;
 
 internal partial class GNB
 {
-    public static GNBOpenerMaxLevel1 Opener1 = new();
-    public static GNBOpenerMaxLevel2 Opener2 = new();
-    
+    #region Variables
     //Gauge
     internal static byte Ammo => GetJobGauge<GNBGauge>().Ammo; //Our cartridge count
     internal static byte GunStep => GetJobGauge<GNBGauge>().AmmoComboStep; //For Gnashing Fang & Reign combo purposes
@@ -25,17 +26,6 @@ internal partial class GNB
     internal static bool HasNM => NmCD is >= 40 and <= 60; //Checks if No Mercy is active
     internal static bool HasBreak => HasEffect(Buffs.ReadyToBreak); //Checks for Ready To Break buff
     internal static bool HasReign => HasEffect(Buffs.ReadyToReign); //Checks for Ready To Reign buff
-
-    //Misc
-    internal static bool InOdd => BfCD is < 90 and > 20; //Odd Minute
-    internal static bool CanLateWeave => CanDelayedWeave(); //SkS purposes
-    internal static float GCD => GetCooldown(KeenEdge).CooldownTotal; //2.5 is base SkS, but can work with 2.4x
-    internal static bool JustMitted => JustUsed(OriginalHook(HeartOfStone), 4f) ||
-                                       JustUsed(OriginalHook(Nebula), 5f) ||
-                                       JustUsed(Camouflage, 5f) ||
-                                       JustUsed(All.Rampart, 5f) ||
-                                       JustUsed(Aurora, 5f) ||
-                                       JustUsed(Superbolide, 9f);
 
     //Ammo-relative
     internal static bool CanBS => LevelChecked(BurstStrike) && //Burst Strike is unlocked
@@ -65,10 +55,114 @@ internal partial class GNB
                                      GunStep == 0 && //Gnashing Fang or Reign combo is not already active
                                      HasReign; //Ready To Reign is active
 
+    //Misc
+    internal static bool InOdd => BfCD is < 90 and > 20; //Odd Minute
+    internal static bool CanLateWeave => CanDelayedWeave(); //SkS purposes
+    internal static float GCD => GetCooldown(KeenEdge).CooldownTotal; //2.5 is base SkS, but can work with 2.4x
     internal static int NmStop => Config.GNB_AoE_NoMercyStop;
+    internal static bool JustMitted => JustUsed(OriginalHook(HeartOfStone), 4f) ||
+                                       JustUsed(OriginalHook(Nebula), 5f) ||
+                                       JustUsed(Camouflage, 5f) ||
+                                       JustUsed(All.Rampart, 5f) ||
+                                       JustUsed(Aurora, 5f) ||
+                                       JustUsed(Superbolide, 9f);
+    #endregion
 
+    #region Helpers
     internal static int MaxCartridges() => TraitLevelChecked(427) ? 3 : TraitLevelChecked(257) ? 2 : 0; //Level Check helper for Maximum Ammo
+    internal static uint GetVariantAction()
+    {
+        if (IsEnabled(CustomComboPreset.GNB_Variant_Cure) &&
+            IsEnabled(Variant.VariantCure) &&
+            PlayerHealthPercentageHp() <= GetOptionValue(Config.GNB_VariantCure))
+        {
+            return Variant.VariantCure;
+        }
 
+        Dalamud.Game.ClientState.Statuses.Status? sustainedDamage = FindTargetEffect(Variant.Debuffs.SustainedDamage);
+        if (IsEnabled(CustomComboPreset.GNB_Variant_SpiritDart) &&
+            IsEnabled(Variant.VariantSpiritDart) &&
+            CanWeave() && sustainedDamage is null)
+        {
+            return Variant.VariantSpiritDart;
+        }
+
+        if (IsEnabled(CustomComboPreset.GNB_Variant_Ultimatum) &&
+            IsEnabled(Variant.VariantUltimatum) &&
+            CanWeave() && ActionReady(Variant.VariantUltimatum))
+        {
+            return Variant.VariantUltimatum;
+        }
+
+        return 0; //No conditions met
+    }
+    internal static uint GetBozjaAction()
+    {
+        if (!Bozja.IsInBozja)
+            return 0;
+
+        bool CanUse(uint action) => HasActionEquipped(action) && IsOffCooldown(action);
+        bool IsEnabledAndUsable(CustomComboPreset preset, uint action) => IsEnabled(preset) && CanUse(action);
+
+        //Out-of-Combat
+        if (!InCombat() && IsEnabledAndUsable(CustomComboPreset.GNB_Bozja_LostStealth, Bozja.LostStealth))
+            return Bozja.LostStealth;
+
+        //OGCDs
+        if (CanWeave())
+        {
+            foreach (var (preset, action) in new[]
+            {
+            (CustomComboPreset.GNB_Bozja_LostFocus, Bozja.LostFocus),
+            (CustomComboPreset.GNB_Bozja_LostFontOfPower, Bozja.LostFontOfPower),
+            (CustomComboPreset.GNB_Bozja_LostSlash, Bozja.LostSlash),
+            (CustomComboPreset.GNB_Bozja_LostFairTrade, Bozja.LostFairTrade),
+            (CustomComboPreset.GNB_Bozja_LostAssassination, Bozja.LostAssassination),
+        })
+                if (IsEnabledAndUsable(preset, action))
+                    return action;
+
+            foreach (var (preset, action, powerPreset) in new[]
+            {
+            (CustomComboPreset.GNB_Bozja_BannerOfNobleEnds, Bozja.BannerOfNobleEnds, CustomComboPreset.GNB_Bozja_PowerEnds),
+            (CustomComboPreset.GNB_Bozja_BannerOfHonoredSacrifice, Bozja.BannerOfHonoredSacrifice, CustomComboPreset.GNB_Bozja_PowerSacrifice)
+        })
+                if (IsEnabledAndUsable(preset, action) && (!IsEnabled(powerPreset) || JustUsed(Bozja.LostFontOfPower, 5f)))
+                    return action;
+
+            if (IsEnabledAndUsable(CustomComboPreset.GNB_Bozja_BannerOfHonedAcuity, Bozja.BannerOfHonedAcuity) &&
+                !HasEffect(Bozja.Buffs.BannerOfTranscendentFinesse))
+                return Bozja.BannerOfHonedAcuity;
+        }
+
+        //GCDs
+        foreach (var (preset, action, condition) in new[]
+        {
+        (CustomComboPreset.GNB_Bozja_LostDeath, Bozja.LostDeath, true),
+        (CustomComboPreset.GNB_Bozja_LostCure, Bozja.LostCure, PlayerHealthPercentageHp() <= Config.GNB_Bozja_LostCure_Health),
+        (CustomComboPreset.GNB_Bozja_LostArise, Bozja.LostArise, GetTargetHPPercent() == 0 && !HasEffect(All.Debuffs.Raise)),
+        (CustomComboPreset.GNB_Bozja_LostReraise, Bozja.LostReraise, PlayerHealthPercentageHp() <= Config.GNB_Bozja_LostReraise_Health),
+        (CustomComboPreset.GNB_Bozja_LostProtect, Bozja.LostProtect, !HasEffect(Bozja.Buffs.LostProtect)),
+        (CustomComboPreset.GNB_Bozja_LostShell, Bozja.LostShell, !HasEffect(Bozja.Buffs.LostShell)),
+        (CustomComboPreset.GNB_Bozja_LostBravery, Bozja.LostBravery, !HasEffect(Bozja.Buffs.LostBravery)),
+        (CustomComboPreset.GNB_Bozja_LostBubble, Bozja.LostBubble, !HasEffect(Bozja.Buffs.LostBubble)),
+        (CustomComboPreset.GNB_Bozja_LostParalyze3, Bozja.LostParalyze3, !JustUsed(Bozja.LostParalyze3, 60f))
+        })
+            if (IsEnabledAndUsable(preset, action) && condition)
+                return action;
+
+        if (IsEnabled(CustomComboPreset.GNB_Bozja_LostSpellforge) &&
+            CanUse(Bozja.LostSpellforge) &&
+            (!HasEffect(Bozja.Buffs.LostSpellforge) || !HasEffect(Bozja.Buffs.LostSteelsting)))
+            return Bozja.LostSpellforge;
+
+        if (IsEnabled(CustomComboPreset.GNB_Bozja_LostSteelsting) &&
+            CanUse(Bozja.LostSteelsting) &&
+            (!HasEffect(Bozja.Buffs.LostSpellforge) || !HasEffect(Bozja.Buffs.LostSteelsting)))
+            return Bozja.LostSteelsting;
+
+        return 0; //No conditions met
+    }
     public static WrathOpener Opener()
     {
         float gcd = ActionManager.GetAdjustedRecastTime(ActionType.Action, KeenEdge) / 1000f;
@@ -81,8 +175,111 @@ internal partial class GNB
 
         return WrathOpener.Dummy;
     }
+    #endregion
+
+    #region Cooldowns
+
+    #region OGCDs
+    internal static bool ShouldUseNoMercy()
+    {
+        bool isLv90Plus = LevelChecked(DoubleDown);
+        bool hasAmmo = Ammo > 0;
+
+        if (ActionReady(NoMercy) && InCombat() && HasTarget() && CanWeave())
+        {
+            return isLv90Plus ? ((InOdd && (Ammo >= 2 || (ComboAction is BrutalShell && Ammo == 1))) || (!InOdd && Ammo != 3)) : (CanLateWeave && hasAmmo);
+        }
+
+        return false;
+    }
+    internal static bool ShouldUseBloodfest() => InCombat() && HasTarget() && CanWeave() && CanBF && Ammo == 0;
+    internal static bool ShouldUseZone() => CanZone && CanWeave() && NmCD is < 57.5f and > 17f;
+    internal static bool ShouldUseBowShock() => CanBow && CanWeave() && NmCD is < 57.5f and >= 40;
+    internal static bool ShouldUseContinuation() => CanContinue && (HasEffect(Buffs.ReadyToRip) || HasEffect(Buffs.ReadyToTear) || HasEffect(Buffs.ReadyToGouge) || HasEffect(Buffs.ReadyToBlast) || HasEffect(Buffs.ReadyToRaze));
+    #endregion
+
+    #region GCDs
+    internal static bool ShouldUseLightningShot() => LevelChecked(LightningShot) && !InMeleeRange() && HasBattleTarget();
+    internal static bool ShouldUseGnashingFang() => CanGF && (NmCD is > 17 and < 35 || JustUsed(NoMercy, 6f));
+    internal static bool ShouldUseDoubleDown() => CanDD && IsOnCooldown(GnashingFang) && HasNM;
+    internal static bool ShouldUseSonicBreak() => CanBreak && ((GetCooldownRemainingTime(GnashingFang) > 0.6f || !LevelChecked(GnashingFang)) && (IsOnCooldown(DoubleDown) || !LevelChecked(DoubleDown)));
+    internal static bool ShouldUseReignOfBeasts() => CanReign && IsOnCooldown(GnashingFang) && IsOnCooldown(DoubleDown) && !HasEffect(Buffs.ReadyToBreak) && GunStep == 0;
+    internal static bool ApproachingOvercap() => ComboTimer > 0 && LevelChecked(SolidBarrel) && ComboAction == BrutalShell && LevelChecked(BurstStrike) && Ammo == MaxCartridges();
+    internal static bool ShouldUseBurstStrike()
+    {
+        bool isLv90Plus = LevelChecked(DoubleDown);
+        bool isLv100 = LevelChecked(ReignOfBeasts);
+        bool isAmmoFull = Ammo == 3;
+        bool isNoMercyReady = NmCD < 1;
+
+        if (CanBS && HasEffect(Buffs.NoMercy) && IsOnCooldown(GnashingFang) &&
+            (IsOnCooldown(DoubleDown) || (!LevelChecked(DoubleDown) && Ammo > 0)) &&
+            !HasEffect(Buffs.ReadyToReign) && GunStep == 0)
+            return true;
+
+        if ((isLv90Plus && isNoMercyReady && isAmmoFull && BfCD > 110 && ComboAction is KeenEdge) ||
+            (isLv100 && isNoMercyReady && isAmmoFull && !InOdd))
+            return true;
+
+        if (ApproachingOvercap())
+            return true;
+
+        return false;
+    }
+
+
+    internal static bool ShouldUseAdvancedBS()
+    {
+        //Burst Strike
+        if (IsEnabled(CustomComboPreset.GNB_ST_BurstStrike) && //Burst Strike option is enabled
+            CanBS && //able to use Burst Strike
+            HasEffect(Buffs.NoMercy) && //No Mercy is active
+            IsOnCooldown(GnashingFang) && //Gnashing Fang is on cooldown
+            (IsOnCooldown(DoubleDown) || //Double Down is on cooldown
+            !LevelChecked(DoubleDown) && Ammo > 0) && //Double Down is not unlocked and Ammo is not empty
+            !HasEffect(Buffs.ReadyToReign) && //Ready To Reign is not active
+            GunStep == 0) //Gnashing Fang or Reign combo is not active or finished
+            return true; //Execute Burst Strike if conditions are met
+
+        //Lv90+ 2cart forced Opener
+        if (IsEnabled(CustomComboPreset.GNB_ST_Advanced_Cooldowns) && //Cooldowns option is enabled
+            IsEnabled(CustomComboPreset.GNB_ST_NoMercy) && //No Mercy option is enabled
+            IsEnabled(CustomComboPreset.GNB_ST_BurstStrike) && //Burst Strike option is enabled
+            (Config.GNB_ST_NoMercy_SubOption == 0 ||
+             Config.GNB_ST_NoMercy_SubOption == 1 && InBossEncounter()) && //Bosscheck
+            LevelChecked(DoubleDown) && //Lv90+
+            NmCD < 1 && //No Mercy is ready or about to be
+            Ammo is 3 && //Ammo is full
+            BfCD > 110 && //Bloodfest was just used, but not recently
+            ComboAction is KeenEdge) //Just used Keen Edge
+            return true;
+
+        //Lv100 2cart forced 2min starter
+        if (IsEnabled(CustomComboPreset.GNB_ST_Advanced_Cooldowns) && //Cooldowns option is enabled
+            IsEnabled(CustomComboPreset.GNB_ST_NoMercy) && //No Mercy option is enabled
+            IsEnabled(CustomComboPreset.GNB_ST_BurstStrike) && //Burst Strike option is enabled
+            (Config.GNB_ST_NoMercy_SubOption == 0 ||
+             Config.GNB_ST_NoMercy_SubOption == 1 && InBossEncounter()) && //Bosscheck
+            LevelChecked(ReignOfBeasts) && //Lv100
+            NmCD < 1 && //No Mercy is ready or about to be
+            Ammo is 3 && //Ammo is full
+            BfCD < GCD * 12) //Bloodfest is ready or about to be
+            return true;
+
+        //Overcap protection
+        if (IsEnabled(CustomComboPreset.GNB_ST_Overcap) && //Overcap option is enabled
+            ApproachingOvercap())
+            return true; //Execute Burst Strike if conditions are met
+
+        return false;
+    }
+    #endregion
+
+    #endregion
 
     #region Openers
+    public static GNBOpenerMaxLevel1 Opener1 = new();
+    public static GNBOpenerMaxLevel2 Opener2 = new();
 
     internal class GNBOpenerMaxLevel1 : WrathOpener
     {
@@ -204,7 +401,7 @@ internal partial class GNB
 
     #endregion
 
-    #region ID's
+    #region IDs
 
     public const byte JobID = 37; //Gunbreaker (GNB)
 
