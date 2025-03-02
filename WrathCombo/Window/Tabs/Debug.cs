@@ -429,42 +429,42 @@ namespace WrathCombo.Window.Tabs
                     }
                 }
 
-                if (_debugSpell != null)
-                {
-                    var actionStatus =
-                        ActionManager.Instance()->GetActionStatus(ActionType.Action, _debugSpell.Value.RowId);
-                    var icon = Svc.Texture.GetFromGameIcon(new(_debugSpell.Value.Icon)).GetWrapOrEmpty()
-                        .ImGuiHandle;
-                    ImGui.Image(icon, new Vector2(60).Scale());
-                    ImGui.SameLine();
-                    ImGui.Image(icon, new Vector2(30).Scale());
-                    CustomStyleText("Action Status:",
-                        $"{actionStatus} ({Svc.Data.GetExcelSheet<LogMessage>().GetRow(actionStatus).Text})");
-                    CustomStyleText("Action Type:", _debugSpell.Value.ActionCategory.Value.Name);
-                    if (_debugSpell.Value.UnlockLink.RowId != 0)
-                        CustomStyleText("Quest:",
-                            $"{Svc.Data.GetExcelSheet<Quest>().GetRow(_debugSpell.Value.UnlockLink.RowId).Name} ({(UIState.Instance()->IsUnlockLinkUnlockedOrQuestCompleted(_debugSpell.Value.UnlockLink.RowId) ? "Completed" : "Not Completed")})");
-                    CustomStyleText("Base Recast:", $"{_debugSpell.Value.Recast100ms / 10f}s");
-                    CustomStyleText("Original Hook:", OriginalHook(_debugSpell.Value.RowId).ActionName());
-                    CustomStyleText("Cooldown Total:",
-                        $"{ActionManager.Instance()->GetRecastTime(ActionType.Action, _debugSpell.Value.RowId)}");
-                    CustomStyleText("Current Cooldown:", GetCooldown(_debugSpell.Value.RowId).CooldownRemaining);
-                    CustomStyleText("Current Cast Time:",
-                        ActionManager.GetAdjustedCastTime(ActionType.Action, _debugSpell.Value.RowId));
-                    CustomStyleText("Max Charges:", $"{_debugSpell.Value.MaxCharges}");
-                    CustomStyleText("Charges (Level):", $"{GetCooldown(_debugSpell.Value.RowId).MaxCharges}");
-                    CustomStyleText("Range:", $"{ActionWatching.GetActionRange(_debugSpell.Value.RowId)}");
-                    CustomStyleText("Effect Range:", $"{_debugSpell.Value.EffectRange}");
-                    CustomStyleText("Can Target Hostile:", $"{_debugSpell.Value.CanTargetHostile}");
-                    CustomStyleText("Can Target Self:", $"{_debugSpell.Value.CanTargetSelf}");
-                    CustomStyleText("Can Target Friendly:", $"{_debugSpell.Value.CanTargetAlly}");
-                    CustomStyleText("Can Target Party:", $"{_debugSpell.Value.CanTargetParty}");
-                    CustomStyleText("Can Target Area:", $"{_debugSpell.Value.TargetArea}");
-                    CustomStyleText("Cast Type:", $"{_debugSpell.Value.CastType}");
-                    CustomStyleText("Can Queue:", $"{CanQueue(_debugSpell.Value.RowId)}");
-                    if (_debugSpell.Value.EffectRange > 0)
-                        CustomStyleText("Targets Hit:",
-                            $"{NumberOfEnemiesInRange(_debugSpell.Value.RowId, CurrentTarget)}");
+                    if (_debugSpell != null)
+                    {
+                        var actionStatus =
+                            ActionManager.Instance()->GetActionStatus(ActionType.Action, _debugSpell.Value.RowId);
+                        var icon = Svc.Texture.GetFromGameIcon(new(_debugSpell.Value.Icon)).GetWrapOrEmpty()
+                            .ImGuiHandle;
+                        ImGui.Image(icon, new Vector2(60).Scale());
+                        ImGui.SameLine();
+                        ImGui.Image(icon, new Vector2(30).Scale());
+                        CustomStyleText("Action Status:",
+                            $"{actionStatus} ({Svc.Data.GetExcelSheet<LogMessage>().GetRow(actionStatus).Text})");
+                        CustomStyleText("Action Type:", _debugSpell.Value.ActionCategory.Value.Name);
+                        if (_debugSpell.Value.UnlockLink.RowId != 0)
+                            CustomStyleText("Quest:",
+                                $"{Svc.Data.GetExcelSheet<Quest>().GetRow(_debugSpell.Value.UnlockLink.RowId).Name} ({(UIState.Instance()->IsUnlockLinkUnlockedOrQuestCompleted(_debugSpell.Value.UnlockLink.RowId) ? "Completed" : "Not Completed")})");
+                        CustomStyleText("Base Recast:", $"{_debugSpell.Value.Recast100ms / 10f}s");
+                        CustomStyleText("Original Hook:", OriginalHook(_debugSpell.Value.RowId).ActionName());
+                        CustomStyleText("Cooldown Total:",
+                            $"{ActionManager.Instance()->GetRecastTime(ActionType.Action, _debugSpell.Value.RowId)}");
+                        CustomStyleText("Current Cooldown:", GetCooldown(_debugSpell.Value.RowId).CooldownRemaining);
+                        CustomStyleText("Current Cast Time:",
+                            ActionManager.GetAdjustedCastTime(ActionType.Action, _debugSpell.Value.RowId));
+                        CustomStyleText("Max Charges:", $"{_debugSpell.Value.MaxCharges}");
+                        CustomStyleText("Charges (Level):", $"{GetCooldown(_debugSpell.Value.RowId).MaxCharges}");
+                        CustomStyleText("Range:", $"{ActionWatching.GetActionRange(_debugSpell.Value.RowId)}");
+                        CustomStyleText("Effect Range:", $"{_debugSpell.Value.EffectRange}");
+                        CustomStyleText("Can Target Hostile:", $"{_debugSpell.Value.CanTargetHostile}");
+                        CustomStyleText("Can Target Self:", $"{_debugSpell.Value.CanTargetSelf}");
+                        CustomStyleText("Can Target Friendly:", $"{_debugSpell.Value.CanTargetAlly}");
+                        CustomStyleText("Can Target Party:", $"{_debugSpell.Value.CanTargetParty}");
+                        CustomStyleText("Can Target Area:", $"{_debugSpell.Value.TargetArea}");
+                        CustomStyleText("Cast Type:", $"{_debugSpell.Value.CastType}");
+                        CustomStyleText("Can Queue:", $"{CanQueue(_debugSpell.Value.RowId)}");
+                        if (_debugSpell.Value.EffectRange > 0)
+                            CustomStyleText("Targets Hit:",
+                                $"{NumberOfEnemiesInRange(_debugSpell.Value.RowId, CurrentTarget)}");
 
                     if (ActionWatching.ActionTimestamps.ContainsKey(_debugSpell.Value.RowId))
                         CustomStyleText("Time Since Last Use:",

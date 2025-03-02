@@ -1,3 +1,4 @@
+using ImGuiNET;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Data;
 using WrathCombo.Extensions;
@@ -97,6 +98,7 @@ internal partial class MNK
                     DrawHorizontalRadioButton(MNK_SelectedOpener, "Solar Lunar", "Uses Solar/Lunar opener",
                         1);
 
+                    ImGui.NewLine();
                     DrawBossOnlyChoice(MNK_Balance_Content);
 
                     break;
