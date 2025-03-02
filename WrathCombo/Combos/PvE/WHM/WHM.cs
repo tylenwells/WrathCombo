@@ -1,5 +1,6 @@
 using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Game.ClientState.Statuses;
+using ECommons.DalamudServices;
 using System.Linq;
 using WrathCombo.Combos.PvE.Content;
 using WrathCombo.CustomComboNS;
@@ -241,8 +242,7 @@ internal partial class WHM
 
             bool regenReady = ActionReady(Regen) &&
                               !JustUsed(Regen, 4) &&
-                              (FindEffectOnMember(Buffs.Regen, healTarget)?.RemainingTime <=
-                               Config.WHM_STHeals_RegenTimer);
+                              (!MemberHasEffect(Buffs.Regen, healTarget, false, out var regen) || regen?.RemainingTime <= Config.WHM_STHeals_RegenTimer);
 
             if (IsEnabled(CustomComboPreset.WHM_STHeals_Esuna) && ActionReady(All.Esuna) &&
                 GetTargetHPPercent(healTarget, Config.WHM_STHeals_IncludeShields) >= Config.WHM_STHeals_Esuna &&
@@ -263,6 +263,7 @@ internal partial class WHM
                         ActionReady(spell))
                         return spell;
             }
+
 
             if (IsEnabled(CustomComboPreset.WHM_STHeals_Regen) && regenReady)
                 return Regen;
