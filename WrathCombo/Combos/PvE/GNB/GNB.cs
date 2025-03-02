@@ -90,7 +90,7 @@ internal partial class GNB
                 return SonicBreak;
             if (ShouldUseReignOfBeasts())
                 return ReignOfBeasts;
-            if (ShouldUseBurstStrike())
+            if (ShouldSimpleBurstStrike())
                 return BurstStrike;
             if (GunStep is 1 or 2)
                 return OriginalHook(GnashingFang);
@@ -208,7 +208,7 @@ internal partial class GNB
                     return SonicBreak;
                 if (IsEnabled(CustomComboPreset.GNB_ST_Reign) && ShouldUseReignOfBeasts())
                     return OriginalHook(ReignOfBeasts);
-                if (ShouldUseAdvancedBS())
+                if (ShouldAdvancedBurstStrike())
                     return BurstStrike;
             }
             if (IsEnabled(CustomComboPreset.GNB_ST_GnashingFang) && GunStep is 1 or 2)

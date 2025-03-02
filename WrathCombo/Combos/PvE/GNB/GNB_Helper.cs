@@ -14,52 +14,38 @@ internal partial class GNB
 {
     #region Variables
     //Gauge
-    internal static byte Ammo => GetJobGauge<GNBGauge>().Ammo; //Our cartridge count
-    internal static byte GunStep => GetJobGauge<GNBGauge>().AmmoComboStep; //For Gnashing Fang & Reign combo purposes
+    internal static byte Ammo => GetJobGauge<GNBGauge>().Ammo;
+    internal static byte GunStep => GetJobGauge<GNBGauge>().AmmoComboStep;
 
     //Cooldown-related
-    internal static float GfCD => GetCooldownRemainingTime(GnashingFang); //GnashingFang's cooldown; 30s total
-    internal static float NmCD => GetCooldownRemainingTime(NoMercy); //NoMercy's cooldown; 60s total
-    internal static float DdCD => GetCooldownRemainingTime(DoubleDown); //Double Down's cooldown; 60s total
-    internal static float BfCD => GetCooldownRemainingTime(Bloodfest); //Bloodfest's cooldown; 120s total
-    internal static float NmLeft => GetBuffRemainingTime(Buffs.NoMercy); //Remaining time for No Mercy buff (20s)
-    internal static bool HasNM => NmCD is >= 40 and <= 60; //Checks if No Mercy is active
-    internal static bool HasBreak => HasEffect(Buffs.ReadyToBreak); //Checks for Ready To Break buff
-    internal static bool HasReign => HasEffect(Buffs.ReadyToReign); //Checks for Ready To Reign buff
+    internal static float GfCD => GetCooldownRemainingTime(GnashingFang);
+    internal static float NmCD => GetCooldownRemainingTime(NoMercy);
+    internal static float DdCD => GetCooldownRemainingTime(DoubleDown);
+    internal static float BfCD => GetCooldownRemainingTime(Bloodfest);
+    internal static float NmLeft => GetBuffRemainingTime(Buffs.NoMercy);
+    internal static bool HasNM => NmCD is >= 40 and <= 60;
+    internal static bool HasBreak => HasEffect(Buffs.ReadyToBreak);
+    internal static bool HasReign => HasEffect(Buffs.ReadyToReign);
 
-    //Ammo-relative
-    internal static bool CanBS => LevelChecked(BurstStrike) && //Burst Strike is unlocked
-                                  Ammo > 0; //Has Ammo
-    internal static bool CanFC => LevelChecked(FatedCircle) && //Fated Circle is unlocked
-                                  Ammo > 0; //Has Ammo
-    internal static bool CanGF => LevelChecked(GnashingFang) && //GnashingFang is unlocked
-                                  GfCD < 0.6f && //Gnashing Fang is off cooldown
-                                  !HasEffect(Buffs.ReadyToBlast) && //to ensure Hypervelocity is spent in case Burst Strike is used before Gnashing Fang
-                                  GunStep == 0 && //Gnashing Fang or Reign combo is not already active
-                                  Ammo > 0; //Has Ammo
-    internal static bool CanDD => LevelChecked(DoubleDown) && //Double Down is unlocked
-                                  DdCD < 0.6f && //Double Down is off cooldown
-                                  Ammo > 0; //Has Ammo
-    internal static bool CanBF => LevelChecked(Bloodfest) && //Bloodfest is unlocked
-                                  BfCD < 0.6f; //Bloodfest is off cooldown
+    //Ammo-related
+    internal static bool CanBS => LevelChecked(BurstStrike) && Ammo > 0;
+    internal static bool CanFC => LevelChecked(FatedCircle) && Ammo > 0;
+    internal static bool CanGF => LevelChecked(GnashingFang) && GfCD < 0.6f && !HasEffect(Buffs.ReadyToBlast) && GunStep == 0 && Ammo > 0;
+    internal static bool CanDD => LevelChecked(DoubleDown) && DdCD < 0.6f && Ammo > 0;
+    internal static bool CanBF => LevelChecked(Bloodfest) && BfCD < 0.6f;
 
-    //Cooldown-relative
-    internal static bool CanZone => LevelChecked(DangerZone) && //Zone is unlocked
-                                    GetCooldownRemainingTime(OriginalHook(DangerZone)) < 0.6f; //DangerZone is off cooldown
-    internal static bool CanBreak => LevelChecked(SonicBreak) && //Sonic Break is unlocked
-                                     HasBreak; //No Mercy or Ready To Break is active
-    internal static bool CanBow => LevelChecked(BowShock) && //Bow Shock is unlocked
-                                   GetCooldownRemainingTime(BowShock) < 0.6f; //BowShock is off cooldown
-    internal static bool CanContinue => LevelChecked(Continuation); //Continuation is unlocked
-    internal static bool CanReign => LevelChecked(ReignOfBeasts) && //Reign of Beasts is unlocked
-                                     GunStep == 0 && //Gnashing Fang or Reign combo is not already active
-                                     HasReign; //Ready To Reign is active
+    //Cooldown-related
+    internal static bool CanZone => LevelChecked(DangerZone) && GetCooldownRemainingTime(OriginalHook(DangerZone)) < 0.6f;
+    internal static bool CanBreak => LevelChecked(SonicBreak) && HasBreak;
+    internal static bool CanBow => LevelChecked(BowShock) && GetCooldownRemainingTime(BowShock) < 0.6f;
+    internal static bool CanContinue => LevelChecked(Continuation);
+    internal static bool CanReign => LevelChecked(ReignOfBeasts) && GunStep == 0 && HasReign;
 
     //Misc
-    internal static bool InOdd => BfCD is < 90 and > 20; //Odd Minute
-    internal static bool CanLateWeave => CanDelayedWeave(); //SkS purposes
+    internal static bool InOdd => BfCD is < 90 and > 20;
+    internal static bool CanLateWeave => CanDelayedWeave();
     internal static float HPP => PlayerHealthPercentageHp();
-    internal static float GCD => GetCooldown(KeenEdge).CooldownTotal; //2.5 is base SkS, but can work with 2.4x
+    internal static float GCD => GetCooldown(KeenEdge).CooldownTotal;
     internal static int NmStop => Config.GNB_AoE_NoMercyStop;
     internal static bool JustMitted => JustUsed(OriginalHook(HeartOfStone), 4f) ||
                                        JustUsed(OriginalHook(Nebula), 5f) ||
@@ -206,7 +192,7 @@ internal partial class GNB
     internal static bool ShouldUseSonicBreak() => CanBreak && ((GetCooldownRemainingTime(GnashingFang) > 0.6f || !LevelChecked(GnashingFang)) && (IsOnCooldown(DoubleDown) || !LevelChecked(DoubleDown)));
     internal static bool ShouldUseReignOfBeasts() => CanReign && IsOnCooldown(GnashingFang) && IsOnCooldown(DoubleDown) && !HasEffect(Buffs.ReadyToBreak) && GunStep == 0;
     internal static bool ApproachingOvercap() => ComboTimer > 0 && LevelChecked(SolidBarrel) && ComboAction == BrutalShell && LevelChecked(BurstStrike) && Ammo == MaxCartridges();
-    internal static bool ShouldUseBurstStrike()
+    internal static bool ShouldSimpleBurstStrike()
     {
         bool isLv90Plus = LevelChecked(DoubleDown);
         bool isLv100 = LevelChecked(ReignOfBeasts);
@@ -227,9 +213,7 @@ internal partial class GNB
 
         return false;
     }
-
-
-    internal static bool ShouldUseAdvancedBS()
+    internal static bool ShouldAdvancedBurstStrike()
     {
         //Burst Strike
         if (IsEnabled(CustomComboPreset.GNB_ST_BurstStrike) && //Burst Strike option is enabled
@@ -403,7 +387,6 @@ internal partial class GNB
     #endregion
 
     #region IDs
-
     public const byte JobID = 37; //Gunbreaker (GNB)
 
     public const uint //Actions
@@ -497,23 +480,23 @@ internal partial class GNB
 
     #region Mitigation Priority
 
-    /// <summary>
-    ///     The list of Mitigations to use in the One-Button Mitigation combo.<br />
-    ///     The order of the list needs to match the order in
-    ///     <see cref="CustomComboPreset" />.
-    /// </summary>
-    /// <value>
-    ///     <c>Action</c> is the action to use.<br />
-    ///     <c>Preset</c> is the preset to check if the action is enabled.<br />
-    ///     <c>Logic</c> is the logic for whether to use the action.
-    /// </value>
-    /// <remarks>
-    ///     Each logic check is already combined with checking if the preset
-    ///     <see cref="IsEnabled(uint)">is enabled</see>
-    ///     and if the action is <see cref="ActionReady(uint)">ready</see> and
-    ///     <see cref="LevelChecked(uint)">level-checked</see>.<br />
-    ///     Do not add any of these checks to <c>Logic</c>.
-    /// </remarks>
+    ///<summary>
+    ///    The list of Mitigations to use in the One-Button Mitigation combo.<br />
+    ///    The order of the list needs to match the order in
+    ///    <see cref="CustomComboPreset" />.
+    ///</summary>
+    ///<value>
+    ///    <c>Action</c> is the action to use.<br />
+    ///    <c>Preset</c> is the preset to check if the action is enabled.<br />
+    ///    <c>Logic</c> is the logic for whether to use the action.
+    ///</value>
+    ///<remarks>
+    ///    Each logic check is already combined with checking if the preset
+    ///    <see cref="IsEnabled(uint)">is enabled</see>
+    ///    and if the action is <see cref="ActionReady(uint)">ready</see> and
+    ///    <see cref="LevelChecked(uint)">level-checked</see>.<br />
+    ///    Do not add any of these checks to <c>Logic</c>.
+    ///</remarks>
     private static (uint Action, CustomComboPreset Preset, System.Func<bool> Logic)[]
         PrioritizedMitigation =>
     [
@@ -530,7 +513,7 @@ internal partial class GNB
                   PlayerHealthPercentageHp() <= Config.GNB_Mit_Aurora_Health),
         //Camouflage
         (Camouflage, CustomComboPreset.GNB_Mit_Camouflage, () => true),
-        // Reprisal
+        //Reprisal
         (All.Reprisal, CustomComboPreset.GNB_Mit_Reprisal,
             () => InActionRange(All.Reprisal)),
         //Heart of Light
@@ -551,22 +534,22 @@ internal partial class GNB
             () => PlayerHealthPercentageHp() <= Config.GNB_Mit_Nebula_Health)
     ];
 
-    /// <summary>
-    ///     Given the index of a mitigation in <see cref="PrioritizedMitigation" />,
-    ///     checks if the mitigation is ready and meets the provided requirements.
-    /// </summary>
-    /// <param name="index">
-    ///     The index of the mitigation in <see cref="PrioritizedMitigation" />,
-    ///     which is the order of the mitigation in <see cref="CustomComboPreset" />.
-    /// </param>
-    /// <param name="action">
-    ///     The variable to set to the action to, if the mitigation is set to be
-    ///     used.
-    /// </param>
-    /// <returns>
-    ///     Whether the mitigation is ready, enabled, and passes the provided logic
-    ///     check.
-    /// </returns>
+    ///<summary>
+    ///    Given the index of a mitigation in <see cref="PrioritizedMitigation" />,
+    ///    checks if the mitigation is ready and meets the provided requirements.
+    ///</summary>
+    ///<param name="index">
+    ///    The index of the mitigation in <see cref="PrioritizedMitigation" />,
+    ///    which is the order of the mitigation in <see cref="CustomComboPreset" />.
+    ///</param>
+    ///<param name="action">
+    ///    The variable to set to the action to, if the mitigation is set to be
+    ///    used.
+    ///</param>
+    ///<returns>
+    ///    Whether the mitigation is ready, enabled, and passes the provided logic
+    ///    check.
+    ///</returns>
     private static bool CheckMitigationConfigMeetsRequirements
         (int index, out uint action)
     {
