@@ -152,6 +152,25 @@ internal partial class DNC
         return desiredFinish;
     }
 
+    #region GCD Evaluation
+
+    private static GCDRange GCDValue =>
+        GCD switch
+        {
+            2.50 => GCDRange.Perfect,
+            2.49 => GCDRange.NotGood,
+            _ => GCDRange.Bad,
+        };
+
+    private enum GCDRange
+    {
+        Perfect,
+        NotGood,
+        Bad,
+    }
+
+    #endregion
+
     #region Dance Partner
 
     internal static ulong? CurrentDancePartner =>

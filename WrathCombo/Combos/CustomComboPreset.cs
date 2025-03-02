@@ -1410,6 +1410,7 @@ public enum CustomComboPreset
 
     [AutoAction(false, false)]
     [ReplaceSkill(DRK.HardSlash)]
+    [ConflictingCombos(DRK_ST_Simple)]
     [CustomComboInfo("Advanced Mode - Single Target",
         "Replaces Hard Slash with a full one-button single target rotation.\nThese features are ideal if you want to customize the rotation.",
         DRK.JobID)]
@@ -1516,7 +1517,7 @@ public enum CustomComboPreset
 
     [ParentCombo(DRK_ST_Spenders)]
     [CustomComboInfo("Blood Gauge Overcap Option",
-        "Adds Bloodspiller to the rotation when the blood gauge is above a threshold.", DRK.JobID)]
+        "Adds Bloodspiller to the rotation after Syphon Strike when the blood gauge is above the chosen threshold.", DRK.JobID)]
     DRK_ST_Sp_BloodOvercap = 5026,
 
     #endregion
@@ -1588,6 +1589,7 @@ public enum CustomComboPreset
 
     [AutoAction(true, false)]
     [ReplaceSkill(DRK.Unleash)]
+    [ConflictingCombos(DRK_AoE_Simple)]
     [CustomComboInfo("Advanced Mode - AoE",
         "Replaces Unleash with a full one-button AoE rotation.\nThese features are ideal if you want to customize the rotation.",
         DRK.JobID)]
@@ -1637,7 +1639,7 @@ public enum CustomComboPreset
         "Adds Salted Earth and Salt and Darkness to the rotation on cooldown and when Darkside is up.", DRK.JobID)]
     DRK_AoE_CD_Salt = 5058,
 
-    [ParentCombo(DRK_AoE_CDs)]
+    [ParentCombo(DRK_AoE_CD_Salt)]
     [CustomComboInfo("Salt After Pull Option",
         "Requires to be at a stand-still and for combat to have been going on for >7 seconds to use Salted Earth, to try to make it be placed after you finish your pull.", DRK.JobID)]
     DRK_AoE_CD_SaltStill = 5059,
@@ -1668,7 +1670,7 @@ public enum CustomComboPreset
     DRK_AoE_Sp_Quietus = 5063,
 
     [ParentCombo(DRK_AoE_Spenders)]
-    [CustomComboInfo("Blood Gauge Overcap Option", "Adds Quietus to the rotation when the blood gauge is above a threshold.", DRK.JobID)]
+    [CustomComboInfo("Blood Gauge Overcap Option", "Adds Quietus to the rotation when the blood gauge is above the chosen threshold.", DRK.JobID)]
     DRK_AoE_Sp_BloodOvercap = 5064,
 
     #endregion
@@ -1676,7 +1678,7 @@ public enum CustomComboPreset
     #region Mana
 
     [ParentCombo(DRK_AoE_Spenders)]
-    [CustomComboInfo("Flood of Shadow Option", "Uses Flood of Shadow in burst, if Darkside is about to expire (<10s), or if you have Dark Arts.", DRK.JobID)]
+    [CustomComboInfo("Flood of Shadow Option", "Uses Flood of Shadow in burst, if Darkside is about to expire (<10s), if you have Dark Arts and use The Blackest Night, and outside of burst will spend to chosen MP limit.", DRK.JobID)]
     DRK_AoE_Sp_Flood = 5065,
 
     [ParentCombo(DRK_AoE_Spenders)]
@@ -3010,7 +3012,7 @@ public enum CustomComboPreset
     [CustomComboInfo("Riddle of Fire Option", "Adds Riddle of Fire to the rotation", MNK.JobID)]
     MNK_STUseROF = 9011,
 
-    [ParentCombo(MNK_STUseROF)]
+    [ParentCombo(MNK_STUseBuffs)]
     [CustomComboInfo("Fire's Reply Option", "Adds Fire's Reply to the rotation", MNK.JobID)]
     MNK_STUseFiresReply = 9016,
 
@@ -3018,7 +3020,7 @@ public enum CustomComboPreset
     [CustomComboInfo("Riddle of Wind Option", "Adds Riddle of Wind to the rotation", MNK.JobID)]
     MNK_STUseROW = 9010,
 
-    [ParentCombo(MNK_STUseROW)]
+    [ParentCombo(MNK_STUseBuffs)]
     [CustomComboInfo("Wind's Reply Option", "Adds Wind's Reply to the rotation", MNK.JobID)]
     MNK_STUseWindsReply = 9015,
 
@@ -5520,13 +5522,8 @@ public enum CustomComboPreset
     SMN_ST_Advanced_Combo_DemiEgiMenu_oGCDPooling = 17025,
 
     [ParentCombo(SMN_ST_Advanced_Combo_DemiEgiMenu_oGCDPooling)]
-    [CustomComboInfo("Burst Delay Option",
-        "Only follows Burst Delay settings for the opener burst.\nThis Option is for high SPS builds.", SMN.JobID)]
-    SMN_ST_Advanced_Combo_Burst_Delay_Option = 17043,
-
-    [ParentCombo(SMN_ST_Advanced_Combo_DemiEgiMenu_oGCDPooling)]
     [CustomComboInfo("Any Searing Burst Option",
-        "Checks for any Searing light for bursting rather than just your own.\nUse this option if partied with multiple SMN and are worried about your Searing being overwritten.",
+        "Checks for any Searing Light for bursting rather than just your own.\nUse this option if partied with multiple SMN and are worried about your Searing Light being wasted.",
         SMN.JobID)]
     SMN_ST_Advanced_Combo_Burst_Any_Option = 17044,
 
@@ -5564,7 +5561,7 @@ public enum CustomComboPreset
     #region Advanced AoE
 
     [AutoAction(true, false)]
-    [ReplaceSkill(SMN.Outburst)]
+    [ReplaceSkill(SMN.Outburst, SMN.Tridisaster)]
     [ConflictingCombos(SMN_AoE_Simple_Combo)]
     [CustomComboInfo("Advanced Mode - AoE",
         "Replaces Outburst with a full one-button AoE rotation.\nThese features are ideal if you want to customize the rotation.",
@@ -5583,9 +5580,10 @@ public enum CustomComboPreset
     SMN_AoE_Advanced_Combo_DemiEgiMenu_oGCDPooling = 17050,
 
     [ParentCombo(SMN_AoE_Advanced_Combo_DemiEgiMenu_oGCDPooling)]
-    [CustomComboInfo("Burst Delay Option",
-        "Only follows Burst Delay settings for the opener burst.\nThis Option is for high SPS builds.", SMN.JobID)]
-    SMN_Advanced_Burst_Delay_Option_AoE = 17052,
+    [CustomComboInfo("Any Searing Burst Option",
+"Checks for any Searing Light for bursting rather than just your own.\nUse this option if partied with multiple SMN and are worried about your Searing Light being wasted.",
+SMN.JobID)]
+    SMN_AoE_Advanced_Combo_Burst_Any_Option = 17069,
 
     [ParentCombo(SMN_AoE_Advanced_Combo)]
     [CustomComboInfo("Searing Light Combo Option", "Adds Searing Light to the AoE combo.\nWill be used on cooldown.",
@@ -5637,7 +5635,7 @@ public enum CustomComboPreset
 
     [ParentCombo(SMN_AoE_Advanced_Combo)]
     [CustomComboInfo("Swiftcast Egi Ability Option", "Uses Swiftcast during the selected Egi summon.", SMN.JobID)]
-    SMN_AoE_DemiEgiMenu_SwiftcastEgi = 17063,
+    SMN_AoE_Advanced_Combo_DemiEgiMenu_SwiftcastEgi = 17063,
 
     [ParentCombo(SMN_AoE_Advanced_Combo)]
     [CustomComboInfo("Egi Attacks Combo Option", "Adds Precious Brilliance to the AoE combo.", SMN.JobID)]
@@ -7643,10 +7641,6 @@ public enum CustomComboPreset
     [ParentCombo(WHMPvP_Heals)]
     [CustomComboInfo("Aquaveil Option", "Adds Aquaviel to Cure II when available.", WHM.JobID)]
     WHMPvP_Aquaveil = 129007,
-
-    [ParentCombo(WHMPvP_Burst)]
-    [CustomComboInfo("Glare IV Option", "Adds Glare IV to Burst Mode.", WHM.JobID)]
-    WHMPvP_Glare4 = 129006,
 
     // Last value = 129007
 
