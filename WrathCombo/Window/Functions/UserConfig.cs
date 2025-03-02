@@ -391,10 +391,11 @@ namespace WrathCombo.Window.Functions
         {
             if (descriptionColor == new Vector4()) descriptionColor = ImGuiColors.DalamudYellow;
             int output = PluginConfiguration.GetCustomIntValue(config);
+            ImGui.SameLine();
             ImGui.PushItemWidth(itemWidth);
             var labelW = ImGui.CalcTextSize(checkBoxName);
-            var finishPos = ImGui.GetCursorPosX() + labelW.X + ImGui.GetStyle().ItemSpacing.X + ImGui.GetStyle().ItemInnerSpacing.X + ImGui.GetStyle().FramePadding.Length() + ImGui.GetCursorStartPos().X;
-            if (finishPos >= ImGui.GetWindowWidth())
+            var finishPos = ImGui.GetCursorPosX() + labelW.X + ImGui.GetStyle().ItemSpacing.X;
+            if (finishPos >= ImGui.GetContentRegionMax().X)
             {
                 ImGui.NewLine();
             }
@@ -418,8 +419,6 @@ namespace WrathCombo.Window.Functions
             }
 
             DrawResetContextMenu(config, outputValue);
-
-            ImGui.SameLine();
         }
 
         /// <summary>
