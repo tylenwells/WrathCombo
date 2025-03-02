@@ -58,6 +58,7 @@ internal partial class GNB
     //Misc
     internal static bool InOdd => BfCD is < 90 and > 20; //Odd Minute
     internal static bool CanLateWeave => CanDelayedWeave(); //SkS purposes
+    internal static float HPP => PlayerHealthPercentageHp();
     internal static float GCD => GetCooldown(KeenEdge).CooldownTotal; //2.5 is base SkS, but can work with 2.4x
     internal static int NmStop => Config.GNB_AoE_NoMercyStop;
     internal static bool JustMitted => JustUsed(OriginalHook(HeartOfStone), 4f) ||
@@ -195,7 +196,7 @@ internal partial class GNB
     internal static bool ShouldUseBloodfest() => InCombat() && HasTarget() && CanWeave() && CanBF && Ammo == 0;
     internal static bool ShouldUseZone() => CanZone && CanWeave() && NmCD is < 57.5f and > 17f;
     internal static bool ShouldUseBowShock() => CanBow && CanWeave() && NmCD is < 57.5f and >= 40;
-    internal static bool ShouldUseContinuation() => CanContinue && (HasEffect(Buffs.ReadyToRip) || HasEffect(Buffs.ReadyToTear) || HasEffect(Buffs.ReadyToGouge) || HasEffect(Buffs.ReadyToBlast) || HasEffect(Buffs.ReadyToRaze));
+    internal static bool ShouldUseContinuation() => CanContinue && (HasEffect(Buffs.ReadyToRip) || HasEffect(Buffs.ReadyToTear) || HasEffect(Buffs.ReadyToGouge) || (LevelChecked(Hypervelocity) && HasEffect(Buffs.ReadyToBlast)));
     #endregion
 
     #region GCDs
