@@ -332,7 +332,7 @@ namespace WrathCombo.Core
 
                     PluginLog.Error(
                         "Failed to save configuration after 3 retries.\n" +
-                        e.Message + "\n" + new StackTrace(new StackFrame(1)));
+                        e.Message + "\n" + new StackTrace(1));
                     _isSaving = false;
                     return;
                 }
