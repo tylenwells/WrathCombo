@@ -1,20 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
 
-<<<<<<< HEAD
-	<PropertyGroup>
-		<Authors>Team Wrath</Authors>
-		<Company>-</Company>
-		<Version>1.0.0.12</Version>
-		<!-- This is the version that will be used when pushing to the repo.-->
-		<Description>XIVCombo for very lazy players</Description>
-		<Copyright>Copyleft attick 2021 thanks attick UwU</Copyright>
-		<PackageProjectUrl></PackageProjectUrl>
-		<TargetFramework>net8.0-windows</TargetFramework>
-		<Configurations>Debug;Release</Configurations>
-        <EnableWindowsTargeting>true</EnableWindowsTargeting>
-	</PropertyGroup>
-=======
     <PropertyGroup>
         <Authors>Team Wrath</Authors>
         <Company>-</Company>
@@ -27,7 +13,6 @@
         <Configurations>Debug;Release</Configurations>
         <EnableWindowsTargeting>true</EnableWindowsTargeting>
     </PropertyGroup>
->>>>>>> main
 
     <PropertyGroup>
         <DalamudLibPath Condition="$([MSBuild]::IsOSPlatform('Windows'))">$(appdata)\XIVLauncher\addon\Hooks\dev\</DalamudLibPath>
