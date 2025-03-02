@@ -1251,6 +1251,27 @@ public enum CustomComboPreset
 
     #region Smaller Features
 
+    #region Dance Partner Features
+
+    /*
+    [ReplaceSkill(DNC.ClosedPosition, DNC.Ending)]
+    [CustomComboInfo("Dance Partner on Desirable Partner Feature",
+        "Replaces Closed Position (including in the combos above) with itself, but targeted to a party member, so you can cast it without having to pick anyone and without having to actually target anyone." +
+        "\nThis will check through your party members, and select the most desirable Partner based on The Balance's priority and stuff like Rez Sickness.", DNC.JobID)]
+    DNC_DesirablePartner = 4175,
+
+    [ParentCombo(DNC_DesirablePartner)]
+    [CustomComboInfo("Party-Target Overrides Selection Option", "If you are targeting a party member that is a valid target, they will be used instead of searching party members.\nTarget must be alive and in range.", DNC.JobID)]
+    DNC_Desirable_TargetOverride = 4176,
+
+    [ParentCombo(DNC_DesirablePartner)]
+    [CustomComboInfo("Custom Priority Option", "If your Partner priority differs from The Balance's recommendation for some reason, you can customize the priority here.\nNot generally recommended.", DNC.JobID)]
+    DNC_Desirable_CustomPriority = 4177,
+    */
+
+    #endregion
+    // Last value = 4177
+
     #region Dance Features
 
     [ReplaceSkill(DNC.StandardStep, DNC.TechnicalStep)]
