@@ -239,9 +239,10 @@ internal partial class WHM
             bool thinAirReady = LevelChecked(ThinAir) && !HasEffect(Buffs.ThinAir) &&
                                 GetRemainingCharges(ThinAir) > Config.WHM_STHeals_ThinAir;
 
-            bool regenReady = ActionReady(Regen) && (FindEffectOnMember(Buffs.Regen, healTarget) is null ||
-                                                     FindEffectOnMember(Buffs.Regen, healTarget)?.RemainingTime <=
-                                                     Config.WHM_STHeals_RegenTimer);
+            bool regenReady = ActionReady(Regen) &&
+                              !JustUsed(Regen, 4) &&
+                              (FindEffectOnMember(Buffs.Regen, healTarget)?.RemainingTime <=
+                               Config.WHM_STHeals_RegenTimer);
 
             if (IsEnabled(CustomComboPreset.WHM_STHeals_Esuna) && ActionReady(All.Esuna) &&
                 GetTargetHPPercent(healTarget, Config.WHM_STHeals_IncludeShields) >= Config.WHM_STHeals_Esuna &&
