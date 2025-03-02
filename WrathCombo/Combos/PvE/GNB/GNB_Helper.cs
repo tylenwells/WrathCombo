@@ -2,7 +2,6 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using System.Collections.Generic;
-using System.Windows.Forms;
 using WrathCombo.Combos.PvE.Content;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
@@ -44,7 +43,6 @@ internal partial class GNB
     internal static bool FastGNB => GCDLength < 2.43f;
     internal static bool MidGNB => GCDLength is <= 2.469f and >= 2.43f;
     internal static bool SlowGNB => GCDLength > 2.469f;
-
     #endregion
 
     #region Openers
