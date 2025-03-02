@@ -1,3 +1,4 @@
+using ImGuiNET;
 using WrathCombo.Combos.PvP;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Data;
@@ -37,6 +38,7 @@ internal partial class MCH
             switch (preset)
             {
                 case CustomComboPreset.MCH_ST_Adv_Opener:
+                    ImGui.Indent();
                     DrawBossOnlyChoice(MCH_Balance_Content);
                     
                     break;
@@ -53,6 +55,7 @@ internal partial class MCH
                     break;
                 
                 case CustomComboPreset.MCH_ST_Adv_Stabilizer:
+                    ImGui.Indent();
                     DrawHorizontalRadioButton(MCH_ST_Adv_BarrelStabiliser_SubOption,
                         "All content",
                         $"Uses {ActionWatching.GetActionName(BarrelStabilizer)} regardless of content.", 0);
@@ -60,10 +63,12 @@ internal partial class MCH
                     DrawHorizontalRadioButton(MCH_ST_Adv_BarrelStabiliser_SubOption,
                         "Boss encounters Only",
                         $"Only uses {ActionWatching.GetActionName(BarrelStabilizer)} when in Boss encounters.", 1);
+                    ImGui.Unindent();
 
                     break;
                 
                 case CustomComboPreset.MCH_ST_Adv_Stabilizer_FullMetalField:
+                    ImGui.Indent();
                     DrawHorizontalRadioButton(MCH_ST_Adv_FullMetalMachinist_SubOption,
                         "All content",
                         $"Uses {ActionWatching.GetActionName(FullMetalField)} regardless of content.", 0);
@@ -71,6 +76,7 @@ internal partial class MCH
                     DrawHorizontalRadioButton(MCH_ST_Adv_FullMetalMachinist_SubOption,
                         "Boss encounters Only",
                         $"Only uses {ActionWatching.GetActionName(FullMetalField)} when in Boss encounters.", 1);
+                    ImGui.Unindent();
 
                     break;
                 
@@ -171,11 +177,13 @@ internal partial class MCH
                     break;
 
                 case CustomComboPreset.MCHPvP_BurstMode_FullMetalField:
+                    ImGui.Indent();
                     DrawHorizontalRadioButton(MCHPvP.Config.MCHPVP_FMFOption, "Full Metal Field Wildfire combo",
                         "Uses Full Metal Field when Wildfire is ready.", 1);
 
                     DrawHorizontalRadioButton(MCHPvP.Config.MCHPVP_FMFOption, "Full Metal Field only when Overheated",
                         "Only uses Full Metal Field while Overheated.", 2);
+                    ImGui.Unindent();
 
                     break;
             }
