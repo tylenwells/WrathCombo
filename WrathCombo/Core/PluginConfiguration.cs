@@ -3,6 +3,7 @@ using ECommons.DalamudServices;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
@@ -11,7 +12,7 @@ using WrathCombo.AutoRotation;
 using WrathCombo.Combos;
 using WrathCombo.Extensions;
 using WrathCombo.Window;
-using WrathCombo.Window.Tabs;
+using Debug = WrathCombo.Window.Tabs.Debug;
 
 namespace WrathCombo.Core
 {
@@ -331,7 +332,7 @@ namespace WrathCombo.Core
 
                     PluginLog.Error(
                         "Failed to save configuration after 3 retries.\n" +
-                        e.Message + "\n" + e.StackTrace);
+                        e.Message + "\n" + new StackTrace(new StackFrame(1)));
                     _isSaving = false;
                     return;
                 }
