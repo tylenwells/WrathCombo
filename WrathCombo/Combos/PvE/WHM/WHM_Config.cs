@@ -92,9 +92,6 @@ internal static partial class WHM
                     DrawHorizontalRadioButton(WHM_ST_DPS_AeroOptionSubOption,
                         "All Enemies", "Applies the HP check above to all enemies.", 1);
 
-                    ImGui.NewLine();
-                    ImGui.NewLine();
-
                     DrawRoundedSliderFloat(0, 4, WHM_ST_MainCombo_DoT_Threshold, "Seconds remaining before reapplying the DoT. Set to Zero to disable this check.", digits: 1);
 
                     ImGui.Unindent();

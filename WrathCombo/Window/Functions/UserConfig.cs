@@ -396,9 +396,8 @@ namespace WrathCombo.Window.Functions
             var labelW = ImGui.CalcTextSize(checkBoxName);
             var finishPos = ImGui.GetCursorPosX() + labelW.X + ImGui.GetStyle().ItemSpacing.X;
             if (finishPos >= ImGui.GetContentRegionMax().X)
-            {
                 ImGui.NewLine();
-            }
+            
 
             bool enabled = output == outputValue;
 

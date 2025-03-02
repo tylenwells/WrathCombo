@@ -34,7 +34,7 @@ internal partial class DNC
             ImGui.Indent(40f);
             ImGui.Text("Anti-Drift Options:     (hover each for more info)");
             ImGui.Unindent(40f);
-            ImGui.NewLine();
+            
 
             UserConfig.DrawRadioButton(
                 DNC_ST_ADV_AntiDrift, "Forced Triple Weave",
@@ -132,7 +132,7 @@ internal partial class DNC
                         "Opener variations:     (hover each for more info)");
                     ImGui.PopStyleColor();
                     ImGui.Unindent();
-                    ImGui.NewLine();
+                    
 
                     UserConfig.DrawRadioButton(DNC_ST_OpenerSelection,
                         "Standard: 15s Countdown",

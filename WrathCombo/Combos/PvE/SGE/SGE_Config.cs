@@ -38,8 +38,8 @@ internal static partial class SGE
                     DrawHorizontalRadioButton(SGE_ST_DPS_EDosisSubOption,
                         "All Enemies", "Applies the HP check above to all enemies.", 1);
 
-                    ImGui.NewLine();
-                    ImGui.NewLine();
+                    
+                    
 
                     DrawRoundedSliderFloat(0, 4, SGE_ST_DPS_EDosisThreshold, "Seconds remaining before reapplying the DoT. Set to Zero to disable this check.", digits: 1);
 
