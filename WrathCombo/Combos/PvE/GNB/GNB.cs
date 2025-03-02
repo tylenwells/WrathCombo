@@ -40,7 +40,7 @@ internal partial class GNB
             #region Mitigations
             if (Config.GNB_ST_MitsOptions != 1)
             {
-                if (InCombat() && !JustMitted)
+                if (InCombat() && !MitUsed)
                 {
                     if (ActionReady(Superbolide) && HPP < 30)
                         return Superbolide;
@@ -90,7 +90,7 @@ internal partial class GNB
                 return SonicBreak;
             if (ShouldUseReignOfBeasts())
                 return ReignOfBeasts;
-            if (ShouldSimpleBurstStrike())
+            if (ShouldUseBurstStrike())
                 return BurstStrike;
             if (GunStep is 1 or 2)
                 return OriginalHook(GnashingFang);
@@ -143,7 +143,7 @@ internal partial class GNB
                 return All.Interject;
 
             #region Mitigations
-            if (IsEnabled(CustomComboPreset.GNB_ST_Mitigation) && InCombat() && !JustMitted)
+            if (IsEnabled(CustomComboPreset.GNB_ST_Mitigation) && InCombat() && !MitUsed)
             {
                 if (IsEnabled(CustomComboPreset.GNB_ST_Superbolide) && ActionReady(Superbolide) && HPP < Config.GNB_ST_Superbolide_Health &&
                     (Config.GNB_ST_Superbolide_SubOption == 0 || TargetIsBoss() && Config.GNB_ST_Superbolide_SubOption == 1))
@@ -208,7 +208,7 @@ internal partial class GNB
                     return SonicBreak;
                 if (IsEnabled(CustomComboPreset.GNB_ST_Reign) && ShouldUseReignOfBeasts())
                     return OriginalHook(ReignOfBeasts);
-                if (ShouldAdvancedBurstStrike())
+                if (ShouldUseBurstStrike())
                     return BurstStrike;
             }
             if (IsEnabled(CustomComboPreset.GNB_ST_GnashingFang) && GunStep is 1 or 2)
@@ -270,7 +270,7 @@ internal partial class GNB
             #region Mitigations
             if (Config.GNB_AoE_MitsOptions != 1)
             {
-                if (InCombat() && !JustMitted)
+                if (InCombat() && !MitUsed)
                 {
                     if (ActionReady(Superbolide) && HPP < 30)
                         return Superbolide;
@@ -377,7 +377,7 @@ internal partial class GNB
             #endregion
 
             #region Mitigations
-            if (IsEnabled(CustomComboPreset.GNB_AoE_Mitigation) && InCombat() && !JustMitted)
+            if (IsEnabled(CustomComboPreset.GNB_AoE_Mitigation) && InCombat() && !MitUsed)
             {
                 if (IsEnabled(CustomComboPreset.GNB_AoE_Superbolide) && ActionReady(Superbolide) && HPP < Config.GNB_AoE_Superbolide_Health &&
                     (Config.GNB_AoE_Superbolide_SubOption == 0 || (TargetIsBoss() && Config.GNB_AoE_Superbolide_SubOption == 1)))
@@ -498,7 +498,7 @@ internal partial class GNB
                 return SonicBreak;
             if (IsEnabled(CustomComboPreset.GNB_GF_Reign) && ShouldUseReignOfBeasts())
                 return OriginalHook(ReignOfBeasts);
-            if (ShouldUseAdvancedBS())
+            if (ShouldUseBurstStrike())
                 return BurstStrike;
             if (IsEnabled(CustomComboPreset.GNB_GF_Features) && GunStep is 1 or 2)
                 return OriginalHook(GnashingFang);
