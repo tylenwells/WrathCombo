@@ -30,7 +30,6 @@ internal partial class DNC
         /// </summary>
         private static void DrawAntiDriftOptions()
         {
-            ImGui.NewLine();
             ImGuiEx.Spacing(new Vector2(40, 12));
             ImGui.Text("Anti-Drift Options:     (hover each for more info)");
 
@@ -46,9 +45,7 @@ internal partial class DNC
             ImGui.Text("GCD: " );
             ImGui.SameLine();
             ImGui.TextColored(color, $"{GCD:0.00}");
-            ImGui.Unindent(40f);
-            
-
+            ImGui.NewLine();
             #endregion
 
             var t = ImGui.GetCursorPos();
@@ -178,8 +175,8 @@ internal partial class DNC
                         "Opener variations:     (hover each for more info)");
                     ImGui.PopStyleColor();
                     ImGui.Unindent();
-                    
 
+                    ImGui.NewLine();
                     UserConfig.DrawRadioButton(DNC_ST_OpenerSelection,
                         "Standard: 15s Countdown",
                         "Requires at least a 15s cooldown\nand that you start Standard Step at 15s.",
