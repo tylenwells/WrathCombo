@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using System.Threading.Tasks;
 using ECommons.Logging;
 using WrathCombo.AutoRotation;
 using WrathCombo.Combos;
@@ -296,21 +297,41 @@ namespace WrathCombo.Core
             _isSaving = true;
             var configToSave = SaveQueue.Dequeue();
 
+            try
+            {
+                Svc.PluginInterface.SavePluginConfig(configToSave);
+                _isSaving = false;
+            }
+            catch (Exception)
+            {
+                Task.Run(() => RetrySave(configToSave));
+            }
+        }
+
+        internal static void RetrySave(PluginConfiguration config)
+        {
             var success = false;
             var retryCount = 0;
+
             while (!success)
             {
                 try
                 {
-                    Svc.PluginInterface.SavePluginConfig(configToSave);
+                    Svc.PluginInterface.SavePluginConfig(config);
                     success = true;
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
                     retryCount++;
-                    if (retryCount < 3) continue;
+                    if (retryCount < 3)
+                    {
+                        Task.Delay(80).Wait();
+                        continue;
+                    }
 
-                    PluginLog.Error("Failed to save configuration after 3 retries.");
+                    PluginLog.Error(
+                        "Failed to save configuration after 3 retries.\n" +
+                        e.Message + "\n" + e.StackTrace);
                     _isSaving = false;
                     return;
                 }
