@@ -40,9 +40,9 @@ internal partial class GNB
     internal static bool CanLateWeave => CanDelayedWeave(start: 1);
     internal static bool MitUsed => JustUsed(OriginalHook(HeartOfStone), 4f) || JustUsed(OriginalHook(Nebula), 5f) || JustUsed(Camouflage, 5f) || JustUsed(All.Rampart, 5f) || JustUsed(Aurora, 5f) || JustUsed(Superbolide, 9f);
     internal static float GCDLength => ActionManager.GetAdjustedRecastTime(ActionType.Action, KeenEdge) / 1000f;
-    internal static bool FastGNB => GCDLength < 2.43f;
-    internal static bool MidGNB => GCDLength is <= 2.469f and >= 2.43f;
-    internal static bool SlowGNB => GCDLength > 2.469f;
+    internal static bool FastGNB => GCDLength < 2.43f; //2.42 or lower
+    internal static bool MidGNB => GCDLength is <= 2.47f and >= 2.43f; //2.43 to 2.47
+    internal static bool SlowGNB => GCDLength > 2.47f; //2.48 or higher
     #endregion
 
     #region Openers
@@ -51,7 +51,7 @@ internal partial class GNB
 
     public static WrathOpener Opener()
     {
-        if (FastGNB && Opener1.LevelChecked)
+        if ((FastGNB || MidGNB) && Opener1.LevelChecked)
             return Opener1;
 
         if (SlowGNB && Opener2.LevelChecked)
