@@ -11,6 +11,7 @@ using ECommons.Logging;
 using WrathCombo.AutoRotation;
 using WrathCombo.Combos;
 using WrathCombo.Extensions;
+using WrathCombo.Services;
 using WrathCombo.Window;
 using Debug = WrathCombo.Window.Tabs.Debug;
 
@@ -280,7 +281,7 @@ namespace WrathCombo.Core
         /// <summary>
         ///     The queue of items to be saved.
         /// </summary>
-        internal static readonly Queue<PluginConfiguration> SaveQueue = new();
+        internal static readonly Queue<(PluginConfiguration, StackTrace)> SaveQueue = [];
 
         /// <summary>
         ///     Whether an item is currently being saved.
@@ -296,20 +297,21 @@ namespace WrathCombo.Core
             if (_isSaving || SaveQueue.Count == 0) return;
 
             _isSaving = true;
-            var configToSave = SaveQueue.Dequeue();
+            var (config, trace) = SaveQueue.Dequeue();
 
             try
             {
-                Svc.PluginInterface.SavePluginConfig(configToSave);
+                Svc.PluginInterface.SavePluginConfig(config);
                 _isSaving = false;
             }
             catch (Exception)
             {
-                Task.Run(() => RetrySave(configToSave));
+                Task.Run(() => RetrySave(config, trace));
             }
         }
 
-        internal static void RetrySave(PluginConfiguration config)
+        internal static void RetrySave
+            (PluginConfiguration config, StackTrace trace)
         {
             var success = false;
             var retryCount = 0;
@@ -326,13 +328,13 @@ namespace WrathCombo.Core
                     retryCount++;
                     if (retryCount < 3)
                     {
-                        Task.Delay(80).Wait();
+                        Task.Delay(20).Wait();
                         continue;
                     }
 
                     PluginLog.Error(
                         "Failed to save configuration after 3 retries.\n" +
-                        e.Message + "\n" + new StackTrace(1));
+                        e.Message + "\n" + trace);
                     _isSaving = false;
                     return;
                 }
@@ -352,7 +354,7 @@ namespace WrathCombo.Core
             if (Debug.DebugConfig)
                 return;
 
-            SaveQueue.Enqueue(this);
+            SaveQueue.Enqueue((this, new StackTrace()));
         }
 
         #endregion
