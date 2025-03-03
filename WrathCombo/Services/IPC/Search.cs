@@ -13,6 +13,7 @@ using WrathCombo.Combos;
 using WrathCombo.Core;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Extensions;
+using WrathCombo.Window.Tabs;
 
 #endregion
 
@@ -294,11 +295,22 @@ public class Search(Leasing leasing)
                     ? _leasing.CombosUpdated
                     : _leasing.OptionsUpdated ?? DateTime.MinValue);
 
-            if (field != null &&
-                File.GetLastWriteTime(ConfigFilePath) <=
-                _lastCacheUpdateForPresetStates &&
-                presetsUpdated <= _lastCacheUpdateForPresetStates)
-                return field;
+            if (!Debug.DebugConfig)
+            {
+                if (field != null &&
+                    File.GetLastWriteTime(ConfigFilePath) <=
+                    _lastCacheUpdateForPresetStates &&
+                    presetsUpdated <= _lastCacheUpdateForPresetStates)
+                    return field;
+            }
+            else
+            {
+                if (field != null &&
+                    DateTime.Now.AddSeconds(-1) <=
+                    _lastCacheUpdateForPresetStates &&
+                    presetsUpdated <= _lastCacheUpdateForPresetStates)
+                    return field;
+            }
 
             field = Presets
                 .ToDictionary(
@@ -409,7 +421,7 @@ public class Search(Leasing leasing)
                 field = Presets
                     .Where(preset =>
                         preset.Value is
-                            { IsVariant: false, HasParentCombo: false } &&
+                        { IsVariant: false, HasParentCombo: false } &&
                         !preset.Key.Contains("pvp", ToLower))
                     .SelectMany(preset => new[]
                     {

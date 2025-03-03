@@ -768,6 +768,10 @@ namespace WrathCombo.Window.Tabs
                 Svc.PluginInterface.GetPluginConfig() as PluginConfiguration ??
                 new PluginConfiguration();
             _previousConfig = null;
+
+            P.IPC = Provider.InitAsync().Result;
+            AutoRotationController.cfg = null;
+            UpdateCaches(true, true, false);
         }
 
         public new static void Dispose()
