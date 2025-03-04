@@ -373,6 +373,7 @@ public partial class Helper(ref Leasing leasing)
             }
             catch (Exception e)
             {
+                data = "enabled";
                 Logging.Error(
                     "Failed to check IPC status. Assuming it is enabled.\n" +
                     e.Message
