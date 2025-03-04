@@ -170,7 +170,7 @@ internal partial class MNK
                 IsEnabled(Variant.VariantCure) &&
                 PlayerHealthPercentageHp() <= Config.MNK_VariantCure)
                 return Variant.VariantCure;
-
+            
             if (IsEnabled(CustomComboPreset.MNK_STUseBuffs) &&
                 IsEnabled(CustomComboPreset.MNK_STUseROF) &&
                 !HasEffect(Buffs.FiresRumination) &&
@@ -363,22 +363,21 @@ internal partial class MNK
                     return All.Bloodbath;
             }
 
-            if (LevelChecked(FiresReply) &&
-                HasEffect(Buffs.FiresRumination) &&
+            // Masterful Blitz
+            if (LevelChecked(MasterfulBlitz) &&
                 !HasEffect(Buffs.PerfectBalance) &&
-                !HasEffect(Buffs.FormlessFist))
+                !IsOriginal(MasterfulBlitz))
+                return OriginalHook(MasterfulBlitz);
+
+            if (HasEffect(Buffs.FiresRumination) &&
+                !HasEffect(Buffs.FormlessFist) &&
+                !JustUsed(RiddleOfFire, 4))
                 return FiresReply;
 
             if (HasEffect(Buffs.WindsRumination) &&
                 LevelChecked(WindsReply) &&
-                HasEffect(Buffs.RiddleOfWind) &&
-                GetBuffRemainingTime(Buffs.WindsRumination) < 4)
+                HasEffect(Buffs.RiddleOfWind))
                 return WindsReply;
-
-            // Masterful Blitz
-            if (LevelChecked(MasterfulBlitz) && !HasEffect(Buffs.PerfectBalance) &&
-                OriginalHook(MasterfulBlitz) != MasterfulBlitz)
-                return OriginalHook(MasterfulBlitz);
 
             // Perfect Balance
             if (HasEffect(Buffs.PerfectBalance))
@@ -513,31 +512,27 @@ internal partial class MNK
                 }
             }
 
-            if (IsEnabled(CustomComboPreset.MNK_AoEUseBuffs))
-            {
-                if (IsEnabled(CustomComboPreset.MNK_AoEUseROF) &&
-                    IsEnabled(CustomComboPreset.MNK_AoEUseFiresReply) &&
-                    LevelChecked(FiresReply) &&
-                    HasEffect(Buffs.FiresRumination) &&
-                    !HasEffect(Buffs.PerfectBalance) &&
-                    !HasEffect(Buffs.FormlessFist))
-                    return FiresReply;
-
-                if (IsEnabled(CustomComboPreset.MNK_AoEUseROW) &&
-                    IsEnabled(CustomComboPreset.MNK_AoEUseWindsReply) &&
-                    HasEffect(Buffs.WindsRumination) &&
-                    LevelChecked(WindsReply) &&
-                    HasEffect(Buffs.RiddleOfWind) &&
-                    GetBuffRemainingTime(Buffs.WindsRumination) < 4)
-                    return WindsReply;
-            }
-
-            // Masterful Blitz
+// Masterful Blitz
             if (IsEnabled(CustomComboPreset.MNK_AoEUseMasterfulBlitz) &&
                 LevelChecked(MasterfulBlitz) &&
                 !HasEffect(Buffs.PerfectBalance) &&
-                OriginalHook(MasterfulBlitz) != MasterfulBlitz)
+                !IsOriginal(MasterfulBlitz))
                 return OriginalHook(MasterfulBlitz);
+
+            if (IsEnabled(CustomComboPreset.MNK_AoEUseBuffs))
+            {
+                if (IsEnabled(CustomComboPreset.MNK_AoEUseFiresReply) &&
+                    HasEffect(Buffs.FiresRumination) &&
+                    !HasEffect(Buffs.FormlessFist) &&
+                    !JustUsed(RiddleOfFire, 4))
+                    return FiresReply;
+
+                if (IsEnabled(CustomComboPreset.MNK_AoEUseWindsReply) &&
+                    HasEffect(Buffs.WindsRumination) &&
+                    LevelChecked(WindsReply) &&
+                    HasEffect(Buffs.RiddleOfWind))
+                    return WindsReply;
+            }
 
             // Perfect Balance
             if (HasEffect(Buffs.PerfectBalance))
