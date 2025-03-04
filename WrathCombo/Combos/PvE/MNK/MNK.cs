@@ -16,6 +16,7 @@ internal partial class MNK
             if (LevelChecked(SteeledMeditation) &&
                 (!InCombat() || !InMeleeRange()) &&
                 Gauge.Chakra < 5 &&
+                IsOriginal(MasterfulBlitz) &&
                 !HasEffect(Buffs.RiddleOfFire) &&
                 !HasEffect(Buffs.WindsRumination) &&
                 !HasEffect(Buffs.FiresRumination))
@@ -150,6 +151,7 @@ internal partial class MNK
                 LevelChecked(SteeledMeditation) &&
                 (!InCombat() || !InMeleeRange()) &&
                 Gauge.Chakra < 5 &&
+                IsOriginal(MasterfulBlitz) &&
                 !HasEffect(Buffs.RiddleOfFire) &&
                 !HasEffect(Buffs.WindsRumination) &&
                 !HasEffect(Buffs.FiresRumination))
@@ -317,6 +319,7 @@ internal partial class MNK
             if (LevelChecked(InspiritedMeditation) &&
                 (!InCombat() || !InMeleeRange()) &&
                 Gauge.Chakra < 5 &&
+                IsOriginal(MasterfulBlitz) &&
                 !HasEffect(Buffs.RiddleOfFire) &&
                 !HasEffect(Buffs.WindsRumination) &&
                 !HasEffect(Buffs.FiresRumination))
@@ -455,6 +458,7 @@ internal partial class MNK
                 LevelChecked(InspiritedMeditation) &&
                 (!InCombat() || !InMeleeRange()) &&
                 Gauge.Chakra < 5 &&
+                IsOriginal(MasterfulBlitz) &&
                 !HasEffect(Buffs.RiddleOfFire) &&
                 !HasEffect(Buffs.WindsRumination) &&
                 !HasEffect(Buffs.FiresRumination))
