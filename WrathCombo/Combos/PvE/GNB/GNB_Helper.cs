@@ -68,8 +68,8 @@ internal partial class GNB : TankJob
 
     public static WrathOpener Opener()
     {
-        bool include = Config.GNB_Opener_LSoption == 0;
-        bool exclude = Config.GNB_Opener_LSoption == 1;
+        bool include = Config.GNB_Opener_LS == 0;
+        bool exclude = Config.GNB_Opener_LS == 1;
 
         if (!IsEnabled(CustomComboPreset.GNB_ST_Advanced_Opener) || !IsActionUnlocked(Continuation)) 
             return WrathOpener.Dummy;
