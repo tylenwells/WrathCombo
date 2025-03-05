@@ -6,6 +6,7 @@ using ECommons.GameHelpers;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -293,6 +294,16 @@ public partial class Provider : IDisposable
     private DateTime _lastJobReadyLog = DateTime.MinValue;
 
     /// <summary>
+    ///     The last time there was a full check for the current job's readiness.
+    /// </summary>
+    private DateTime _lastJobReadyCheck = DateTime.MinValue;
+
+    /// <summary>
+    ///     The state of the last <see cref="IsCurrentJobAutoRotationReady" /> check.
+    /// </summary>
+    private bool _lastJobReady;
+
+    /// <summary>
     ///     Checks if the current job has a Single and Multi-Target combo configured
     ///     that are enabled in Auto-Mode.
     /// </summary>
@@ -304,6 +315,10 @@ public partial class Provider : IDisposable
     [EzIPC]
     public bool IsCurrentJobAutoRotationReady()
     {
+        if (File.GetLastWriteTime(P.IPCSearch.ConfigFilePath) <= _lastJobReadyCheck &&
+            (DateTime.Now - _lastJobReadyCheck).TotalSeconds <= 45)
+            return _lastJobReady;
+
         // Check if the current job has a Single and Multi-Target combo configured on
         var jobOn = IsCurrentJobConfiguredOn();
         // Check if the current job has those same combos configured on in Auto-Mode
@@ -324,6 +339,8 @@ public partial class Provider : IDisposable
             _lastJobReadyLog = DateTime.Now;
         }
 
+        _lastJobReadyCheck = DateTime.Now;
+        _lastJobReady = allGood;
         return allGood;
     }
 
