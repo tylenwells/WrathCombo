@@ -196,7 +196,7 @@ public class Search(Leasing leasing)
     /// <summary>
     ///     The path to the configuration file for Wrath Combo.
     /// </summary>
-    private string ConfigFilePath
+    internal string ConfigFilePath
     {
         get
         {
