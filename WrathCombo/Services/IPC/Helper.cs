@@ -71,33 +71,46 @@ public partial class Helper(ref Leasing leasing)
     /// <returns>The Opposite-mode preset.</returns>
     internal static CustomComboPreset? GetOppositeModeCombo(CustomComboPreset preset)
     {
+        const StringComparison lower = StringComparison.CurrentCultureIgnoreCase;
         var attr = preset.Attributes();
 
-        if (attr.CustomComboInfo.Name
-            .Contains("heal", StringComparison.CurrentCultureIgnoreCase))
+        // Bail if it is a heal preset
+        if (attr.CustomComboInfo.Name.Contains("heal", lower))
             return null;
 
-        var targetType = attr.CustomComboInfo.Name
-            .Contains("single target", StringComparison.CurrentCultureIgnoreCase)
+        // Detect the target type
+        var targetType = attr.CustomComboInfo.Name.Contains("single target", lower)
             ? ComboTargetTypeKeys.SingleTarget
-            : ComboTargetTypeKeys.MultiTarget;
+            : (attr.CustomComboInfo.Name.Contains("- aoe", lower) ||
+               attr.CustomComboInfo.Name.Contains("aoe dps", lower))
+                ? ComboTargetTypeKeys.MultiTarget
+                : ComboTargetTypeKeys.Other;
+
+        // Bail if it is not a Single-Target or Multi-Target primary preset
+        if (targetType == ComboTargetTypeKeys.Other)
+            return null;
+
+        // Detect the simplicity level
         var simplicityLevel =
-            attr.CustomComboInfo.Name
-                .Contains("simple mode", StringComparison.CurrentCultureIgnoreCase)
+            attr.CustomComboInfo.Name.Contains("simple mode", lower)
                 ? ComboSimplicityLevelKeys.Simple
                 : ComboSimplicityLevelKeys.Advanced;
+        // Flip the simplicity level
         var simplicityLevelToSearchFor =
             simplicityLevel == ComboSimplicityLevelKeys.Simple
                 ? ComboSimplicityLevelKeys.Advanced
                 : ComboSimplicityLevelKeys.Simple;
+
+        // Get the opposite mode
         var categorizedPreset =
             P.IPCSearch.ComboStatesByJobCategorized
                 [(Job)attr.CustomComboInfo.JobID]
                 [targetType][simplicityLevelToSearchFor];
+
+        // Return the opposite mode, as a proper preset
         var oppositeMode = categorizedPreset.FirstOrDefault().Key;
         var oppositeModePreset = (CustomComboPreset)
             Enum.Parse(typeof(CustomComboPreset), oppositeMode, true);
-
         return oppositeModePreset;
     }
 
