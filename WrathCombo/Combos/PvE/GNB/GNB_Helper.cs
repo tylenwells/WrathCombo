@@ -67,21 +67,19 @@ internal partial class GNB : TankJob
 
     public static WrathOpener Opener()
     {
+        if (!IsEnabled(CustomComboPreset.GNB_ST_Advanced_Opener) || !LevelChecked(DoubleDown))
+            return WrathOpener.Dummy;
+
         bool includeLS = Config.GNB_Opener_LS == 0;
         bool excludeLS = Config.GNB_Opener_LS == 1;
         bool normalNM = Config.GNB_Opener_NM == 0;
         bool earlyNM = Config.GNB_Opener_NM == 1;
-
-        if (!IsEnabled(CustomComboPreset.GNB_ST_Advanced_Opener) || !LevelChecked(DoubleDown))
-            return WrathOpener.Dummy;
-
         return GetOpener(includeLS, excludeLS, normalNM, earlyNM);
     }
     private static WrathOpener GetOpener(bool includeLS, bool excludeLS, bool normalNM, bool earlyNM)
     {
         bool isFastGNB = MidGNB || FastGNB;
         bool isSlowGNB = SlowGNB;
-
         if (includeLS)
         {
             if (normalNM)
@@ -89,7 +87,6 @@ internal partial class GNB : TankJob
             if (earlyNM)
                 return GetLSOpener(isFastGNB, isSlowGNB, "Early");
         }
-
         if (excludeLS)
         {
             if (normalNM)
@@ -349,6 +346,7 @@ internal partial class GNB : TankJob
             BowShock,
             DoubleDown,
             BlastingZone,
+            SonicBreak,
             SavageClaw,
             AbdomenTear,
             WickedTalon,
@@ -357,8 +355,7 @@ internal partial class GNB : TankJob
             NobleBlood,
             LionHeart,
             BurstStrike,
-            Hypervelocity,
-            SonicBreak
+            Hypervelocity
         ];
 
         public override List<int> DelayedWeaveSteps { get; set; } = [2];
@@ -377,6 +374,7 @@ internal partial class GNB : TankJob
             BowShock,
             DoubleDown,
             BlastingZone,
+            SonicBreak,
             SavageClaw,
             AbdomenTear,
             WickedTalon,
@@ -385,8 +383,7 @@ internal partial class GNB : TankJob
             NobleBlood,
             LionHeart,
             BurstStrike,
-            Hypervelocity,
-            SonicBreak
+            Hypervelocity
         ];
 
         public override List<int> VeryDelayedWeaveSteps { get; set; } = [4];
@@ -451,9 +448,9 @@ internal partial class GNB : TankJob
             NoMercy,
             GnashingFang, //-1 (2)
             JugularRip,
+            BowShock,
             DoubleDown, //-1 (1)
             BlastingZone,
-            BowShock,
             SonicBreak,
             SavageClaw,
             AbdomenTear,
@@ -477,9 +474,9 @@ internal partial class GNB : TankJob
             NoMercy,
             GnashingFang, //-1 (2)
             JugularRip,
+            BowShock,
             DoubleDown, //-1 (1)
             BlastingZone,
-            BowShock,
             SonicBreak,
             SavageClaw,
             AbdomenTear,
@@ -520,7 +517,6 @@ internal partial class GNB : TankJob
 
         public override List<int> DelayedWeaveSteps { get; set; } = [2];
     }
-
     #endregion
 
     #endregion
