@@ -11,6 +11,7 @@ using System.Numerics;
 using ECommons.Logging;
 using WrathCombo.Combos.PvE;
 using WrathCombo.Core;
+using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Services;
 using WrathCombo.Window.Functions;
 using WrathCombo.Window.MessagesNS;
@@ -251,9 +252,11 @@ namespace WrathCombo.Window.Tabs
                 return;
             }
 
+            var job = (Job)CustomComboFunctions.JobIDs.ClassToJob((uint)Player.Job);
+
             OpenJob = groupedPresets
                 .FirstOrDefault(x =>
-                    x.Value.Any(y => y.Info.JobShorthand == Player.Job.ToString()))
+                    x.Value.Any(y => y.Info.JobShorthand == job.ToString()))
                 .Key;
 
         }
