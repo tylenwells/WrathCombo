@@ -1,11 +1,9 @@
 using Dalamud.Game.ClientState.Objects.Types;
-using Dalamud.Game.ClientState.Statuses;
 using System;
-using WrathCombo.Combos.PvE.Content;
 using WrathCombo.CustomComboNS;
 namespace WrathCombo.Combos.PvE;
 
-internal partial class SGE
+internal partial class SGE : Healer
 {
     /*
      * SGE_Kardia
@@ -33,7 +31,7 @@ internal partial class SGE
 
         protected override uint Invoke(uint actionID) =>
             AddersgallList.Contains(actionID) &&
-            ActionReady(Rhizomata) && !Gauge.HasAddersgall() && IsOffCooldown(actionID)
+            ActionReady(Rhizomata) && !HasAddersgall() && IsOffCooldown(actionID)
                 ? Rhizomata
                 : actionID;
     }
@@ -82,26 +80,14 @@ internal partial class SGE
                 return actionID;
 
             // Variant Rampart
-            if (IsEnabled(CustomComboPreset.SGE_DPS_Variant_Rampart) &&
-                IsEnabled(Variant.VariantRampart) &&
-                IsOffCooldown(Variant.VariantRampart) &&
-                CanSpellWeave())
-                return Variant.VariantRampart;
+            if (Variant.CanRampart(CustomComboPreset.SGE_DPS_Variant_Rampart)) return Variant.Rampart;
 
             // Variant Spirit Dart
-            Status? sustainedDamage = FindTargetEffect(Variant.Debuffs.SustainedDamage);
-
-            if (IsEnabled(CustomComboPreset.SGE_DPS_Variant_SpiritDart) &&
-                IsEnabled(Variant.VariantSpiritDart) &&
-                (sustainedDamage is null || sustainedDamage.RemainingTime <= 3) &&
-                CanSpellWeave())
-                return Variant.VariantSpiritDart;
+            if (Variant.CanSpiritDart(CustomComboPreset.SGE_DPS_Variant_SpiritDart)) return Variant.SpiritDart;
 
             // Lucid Dreaming
-            if (IsEnabled(CustomComboPreset.SGE_AoE_DPS_Lucid) &&
-                ActionReady(All.LucidDreaming) && CanSpellWeave() &&
-                LocalPlayer.CurrentMp <= Config.SGE_AoE_DPS_Lucid)
-                return All.LucidDreaming;
+            if (IsEnabled(CustomComboPreset.SGE_AoE_DPS_Lucid) && Job.CanLucid(Config.SGE_AoE_DPS_Lucid))
+                return Job.LucidDreaming;
 
             // Rhizomata
             if (IsEnabled(CustomComboPreset.SGE_AoE_DPS_Rhizo) && CanSpellWeave() &&
@@ -163,7 +149,7 @@ internal partial class SGE
                 if (ActionReady(toxikonID) &&
                     HasBattleTarget() &&
                     InActionRange(toxikonID) &&
-                    Gauge.HasAddersting())
+                    HasAddersting())
                     return toxikonID;
             }
 
@@ -205,16 +191,11 @@ internal partial class SGE
                     return actionID;
 
             // Lucid Dreaming
-            if (IsEnabled(CustomComboPreset.SGE_ST_DPS_Lucid) &&
-                All.CanUseLucid(Config.SGE_ST_DPS_Lucid))
-                return All.LucidDreaming;
+            if (IsEnabled(CustomComboPreset.SGE_ST_DPS_Lucid) && Job.CanLucid(Config.SGE_ST_DPS_Lucid))
+                return Job.LucidDreaming;
 
             // Variant
-            if (IsEnabled(CustomComboPreset.SGE_DPS_Variant_Rampart) &&
-                IsEnabled(Variant.VariantRampart) &&
-                IsOffCooldown(Variant.VariantRampart) &&
-                CanSpellWeave())
-                return Variant.VariantRampart;
+            if (Variant.CanRampart(CustomComboPreset.SGE_DPS_Variant_Rampart)) return Variant.Rampart;
 
             // Rhizomata
             if (IsEnabled(CustomComboPreset.SGE_ST_DPS_Rhizo) && CanSpellWeave() &&
@@ -243,11 +224,7 @@ internal partial class SGE
                     // EDosis will show for half a second if the buff is removed manually or some other act of God
                     if (DosisList.TryGetValue(OriginalHook(actionID), out ushort dotDebuffID))
                     {
-                        if (IsEnabled(CustomComboPreset.SGE_DPS_Variant_SpiritDart) &&
-                            IsEnabled(Variant.VariantSpiritDart) &&
-                            GetDebuffRemainingTime(Variant.Debuffs.SustainedDamage) <= 3 &&
-                            CanSpellWeave())
-                            return Variant.VariantSpiritDart;
+                        if (Variant.CanSpiritDart(CustomComboPreset.SGE_DPS_Variant_SpiritDart)) return Variant.SpiritDart;
 
                         // Dosis DoT Debuff
                         float dotDebuff = GetDebuffRemainingTime(dotDebuffID);
@@ -286,7 +263,7 @@ internal partial class SGE
                 if (IsEnabled(CustomComboPreset.SGE_ST_DPS_Movement) && InCombat() && IsMoving())
                 {
                     // Toxikon
-                    if (Config.SGE_ST_DPS_Movement[0] && LevelChecked(Toxikon) && Gauge.HasAddersting())
+                    if (Config.SGE_ST_DPS_Movement[0] && LevelChecked(Toxikon) && HasAddersting())
                         return OriginalHook(Toxikon);
 
                     // Dyskrasia
@@ -312,7 +289,7 @@ internal partial class SGE
         protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.SGE_Raise;
 
         protected override uint Invoke(uint actionID) =>
-            actionID is All.Swiftcast && IsOnCooldown(All.Swiftcast)
+            actionID is Job.Swiftcast && IsOnCooldown(Job.Swiftcast)
                 ? Egeiro
                 : actionID;
     }
@@ -366,13 +343,13 @@ internal partial class SGE
             IGameObject? healTarget = OptionalTarget ??
                                       GetHealTarget(Config.SGE_ST_Heal_Adv && Config.SGE_ST_Heal_UIMouseOver);
 
-            if (IsEnabled(CustomComboPreset.SGE_ST_Heal_Esuna) && ActionReady(All.Esuna) &&
+            if (IsEnabled(CustomComboPreset.SGE_ST_Heal_Esuna) && ActionReady(Job.Esuna) &&
                 GetTargetHPPercent(healTarget, Config.SGE_ST_Heal_IncludeShields) >= Config.SGE_ST_Heal_Esuna &&
                 HasCleansableDebuff(healTarget))
-                return All.Esuna;
+                return Job.Esuna;
 
             if (IsEnabled(CustomComboPreset.SGE_ST_Heal_Rhizomata) && ActionReady(Rhizomata) &&
-                !Gauge.HasAddersgall())
+                !HasAddersgall())
                 return Rhizomata;
 
             if (IsEnabled(CustomComboPreset.SGE_ST_Heal_Kardia) && LevelChecked(Kardia) &&
@@ -426,7 +403,7 @@ internal partial class SGE
                 return OriginalHook(Prognosis);
 
             if (IsEnabled(CustomComboPreset.SGE_AoE_Heal_Rhizomata) && ActionReady(Rhizomata) &&
-                !Gauge.HasAddersgall())
+                !HasAddersgall())
                 return Rhizomata;
 
             float averagePartyHP = GetPartyAvgHPPercent();

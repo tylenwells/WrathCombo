@@ -1,4 +1,5 @@
 ﻿using ECommons.DalamudServices;
+using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
 
 namespace WrathCombo.Combos.PvE.Content;
 
@@ -47,4 +48,15 @@ internal static class Variant
         public const ushort
             SustainedDamage = 3359;
     }
+}
+
+public class VariantHealer
+{
+    public static uint SpiritDart => Variant.VariantSpiritDart;
+    public static bool CanSpiritDart(CustomComboPreset preset) => 
+        IsEnabled(preset) && IsEnabled(SpiritDart) && GetDebuffRemainingTime(Variant.Debuffs.SustainedDamage) <= 3;
+    
+    public static uint Rampart => Variant.VariantRampart;
+    public static bool CanRampart(CustomComboPreset preset) =>
+        IsEnabled(preset) && IsEnabled(Rampart) && IsOffCooldown(Rampart) && CanSpellWeave();
 }

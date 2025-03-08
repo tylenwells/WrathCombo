@@ -1,10 +1,11 @@
 ﻿using ECommons.DalamudServices;
+using System.Reflection.Metadata;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 
 namespace WrathCombo.Combos.PvE;
 
-internal class All
+internal partial class All
 {
     public const byte JobID = 0;
 
@@ -284,5 +285,18 @@ internal class All
             actionID is FootGraze && CanInterruptEnemy() && ActionReady(HeadGraze)
                 ? HeadGraze
                 : actionID;
+    }
+
+    public class JobHealer
+    {
+        public const uint
+            Repose = All.Repose,
+            Esuna = All.Esuna,
+            LucidDreaming = All.LucidDreaming,
+            Rescue = All.Rescue,
+            SwiftCast = All.Swiftcast,
+            SureCast = All.Surecast;
+
+        public static bool CanLucid(int MPThreshold, bool weave = true) => All.CanUseLucid(MPThreshold, weave);
     }
 }
