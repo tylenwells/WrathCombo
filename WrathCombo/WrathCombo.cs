@@ -199,7 +199,7 @@ public sealed partial class WrathCombo : IDalamudPlugin
         ConfigWindow.IsOpen = true;
 
         if (Service.Configuration.OpenToCurrentJob && Player.Available)
-            HandleOpenCommand([Player.Job.ToString()], forceOpen:true);
+            HandleOpenCommand([""], forceOpen:true);
 #endif
     }
 
