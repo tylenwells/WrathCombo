@@ -1,9 +1,8 @@
-using WrathCombo.Combos.PvE.Content;
 using WrathCombo.CustomComboNS;
 using WrathCombo.Extensions;
 namespace WrathCombo.Combos.PvE;
 
-internal partial class DRG
+internal partial class DRG : MeleeDPS
 {
     internal class DRG_ST_FullThrustCombo : CustomCombo
     {
@@ -71,16 +70,12 @@ internal partial class DRG
             if (actionID is not TrueThrust)
                 return actionID;
 
-            if (IsEnabled(CustomComboPreset.DRG_Variant_Cure) &&
-                IsEnabled(Variant.VariantCure) &&
-                PlayerHealthPercentageHp() <= Config.DRG_Variant_Cure)
-                return Variant.VariantCure;
+            if (Variant.CanCure(CustomComboPreset.DRG_Variant_Cure, Config.DRG_Variant_Cure))
+                return Variant.Cure;
 
-            if (IsEnabled(CustomComboPreset.DRG_Variant_Rampart) &&
-                IsEnabled(Variant.VariantRampart) &&
-                IsOffCooldown(Variant.VariantRampart) &&
-                CanDRGWeave(Variant.VariantRampart))
-                return Variant.VariantRampart;
+            if (Variant.CanRampart(CustomComboPreset.DRG_Variant_Rampart, false) &&
+                CanDRGWeave(Variant.Rampart))
+                return Variant.Rampart;
 
             // Piercing Talon Uptime Option
             if (LevelChecked(PiercingTalon) &&
@@ -167,11 +162,11 @@ internal partial class DRG
                     return MirageDive;
             }
 
-            if (PlayerHealthPercentageHp() <= 25 && ActionReady(All.SecondWind))
-                return All.SecondWind;
+            if (Role.CanSecondWind(CustomComboPreset.DRG_ST_SimpleMode, 25))
+                return Role.SecondWind;
 
-            if (PlayerHealthPercentageHp() <= 40 && ActionReady(All.Bloodbath))
-                return All.Bloodbath;
+            if (Role.CanBloodBath(CustomComboPreset.DRG_ST_SimpleMode, 40))
+                return Role.Bloodbath;
 
             //1-2-3 Combo
             if (ComboTimer > 0)
@@ -231,16 +226,12 @@ internal partial class DRG
             if (actionID is not TrueThrust)
                 return actionID;
 
-            if (IsEnabled(CustomComboPreset.DRG_Variant_Cure) &&
-                IsEnabled(Variant.VariantCure) &&
-                PlayerHealthPercentageHp() <= Config.DRG_Variant_Cure)
-                return Variant.VariantCure;
+            if (Variant.CanCure(CustomComboPreset.DRG_Variant_Cure, Config.DRG_Variant_Cure))
+                return Variant.Cure;
 
-            if (IsEnabled(CustomComboPreset.DRG_Variant_Rampart) &&
-                IsEnabled(Variant.VariantRampart) &&
-                IsOffCooldown(Variant.VariantRampart) &&
-                CanDRGWeave(Variant.VariantRampart))
-                return Variant.VariantRampart;
+            if (Variant.CanRampart(CustomComboPreset.DRG_Variant_Rampart, false) &&
+                CanDRGWeave(Variant.Rampart))
+                return Variant.Rampart;
 
             // Opener for DRG
             if (IsEnabled(CustomComboPreset.DRG_ST_Opener))
@@ -358,14 +349,11 @@ internal partial class DRG
             }
 
             // healing
-            if (IsEnabled(CustomComboPreset.DRG_ST_ComboHeals))
-            {
-                if (PlayerHealthPercentageHp() <= Config.DRG_ST_SecondWind_Threshold && ActionReady(All.SecondWind))
-                    return All.SecondWind;
+            if (Role.CanSecondWind(CustomComboPreset.DRG_ST_ComboHeals, Config.DRG_ST_SecondWind_Threshold))
+                return Role.SecondWind;
 
-                if (PlayerHealthPercentageHp() <= Config.DRG_ST_Bloodbath_Threshold && ActionReady(All.Bloodbath))
-                    return All.Bloodbath;
-            }
+            if (Role.CanBloodBath(CustomComboPreset.DRG_ST_ComboHeals, Config.DRG_ST_Bloodbath_Threshold))
+                return Role.Bloodbath;
 
             //1-2-3 Combo
             if (ComboTimer > 0)
@@ -428,16 +416,12 @@ internal partial class DRG
             if (actionID is not DoomSpike)
                 return actionID;
 
-            if (IsEnabled(CustomComboPreset.DRG_Variant_Cure) &&
-                IsEnabled(Variant.VariantCure) &&
-                PlayerHealthPercentageHp() <= Config.DRG_Variant_Cure)
-                return Variant.VariantCure;
+            if (Variant.CanCure(CustomComboPreset.DRG_Variant_Cure, Config.DRG_Variant_Cure))
+                return Variant.Cure;
 
-            if (IsEnabled(CustomComboPreset.DRG_Variant_Rampart) &&
-                IsEnabled(Variant.VariantRampart) &&
-                IsOffCooldown(Variant.VariantRampart) &&
-                CanDRGWeave(Variant.VariantRampart))
-                return Variant.VariantRampart;
+            if (Variant.CanRampart(CustomComboPreset.DRG_Variant_Rampart, false) &&
+                CanDRGWeave(Variant.Rampart))
+                return Variant.Rampart;
 
             // Piercing Talon Uptime Option
             if (LevelChecked(PiercingTalon) && !InMeleeRange() && HasBattleTarget())
@@ -524,12 +508,11 @@ internal partial class DRG
                     Gauge.IsLOTDActive)
                     return Nastrond;
             }
+            if (Role.CanSecondWind(CustomComboPreset.DRG_ST_SimpleMode, 25))
+                return Role.SecondWind;
 
-            if (PlayerHealthPercentageHp() <= 25 && ActionReady(All.SecondWind))
-                return All.SecondWind;
-
-            if (PlayerHealthPercentageHp() <= 40 && ActionReady(All.Bloodbath))
-                return All.Bloodbath;
+            if (Role.CanBloodBath(CustomComboPreset.DRG_ST_SimpleMode, 40))
+                return Role.Bloodbath;
 
             if (ComboTimer > 0)
             {
@@ -568,16 +551,12 @@ internal partial class DRG
             if (actionID is not DoomSpike)
                 return actionID;
 
-            if (IsEnabled(CustomComboPreset.DRG_Variant_Cure) &&
-                IsEnabled(Variant.VariantCure) &&
-                PlayerHealthPercentageHp() <= Config.DRG_Variant_Cure)
-                return Variant.VariantCure;
+            if (Variant.CanCure(CustomComboPreset.DRG_Variant_Cure, Config.DRG_Variant_Cure))
+                return Variant.Cure;
 
-            if (IsEnabled(CustomComboPreset.DRG_Variant_Rampart) &&
-                IsEnabled(Variant.VariantRampart) &&
-                IsOffCooldown(Variant.VariantRampart) &&
-                CanDRGWeave(Variant.VariantRampart))
-                return Variant.VariantRampart;
+            if (Variant.CanRampart(CustomComboPreset.DRG_Variant_Rampart, false) &&
+                CanDRGWeave(Variant.Rampart))
+                return Variant.Rampart;
 
             // Piercing Talon Uptime Option
             if (IsEnabled(CustomComboPreset.DRG_AoE_RangedUptime) &&
@@ -693,14 +672,11 @@ internal partial class DRG
             }
 
             // healing
-            if (IsEnabled(CustomComboPreset.DRG_AoE_ComboHeals))
-            {
-                if (PlayerHealthPercentageHp() <= Config.DRG_AoE_SecondWind_Threshold && ActionReady(All.SecondWind))
-                    return All.SecondWind;
+            if (Role.CanSecondWind(CustomComboPreset.DRG_AoE_ComboHeals, Config.DRG_AoE_SecondWind_Threshold))
+                return Role.SecondWind;
 
-                if (PlayerHealthPercentageHp() <= Config.DRG_AoE_Bloodbath_Threshold && ActionReady(All.Bloodbath))
-                    return All.Bloodbath;
-            }
+            if (Role.CanBloodBath(CustomComboPreset.DRG_AoE_ComboHeals, Config.DRG_AoE_Bloodbath_Threshold))
+                return Role.Bloodbath;
 
             if (ComboTimer > 0)
             {

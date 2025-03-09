@@ -16,20 +16,20 @@ namespace WrathCombo.Combos.PvE
 
     class MeleeDPS
     {
-        public class Variant : VariantDPS;
+        public class Variant : VariantPDPS;
         public class Role : MeleeRole;
     }
 
     class PhysRangedDPS
     {
-        public class Variant : VariantDPS;
+        public class Variant : VariantPDPS;
         public class Role : RangedRole;
     }
 
     class MagicDPS
     {
-        public class Variant : VariantDPS;
-        public class Role : MagicRole;
+        public class Variant : VariantMDPS;
+        public class Role : CasterRole;
     }
 
 

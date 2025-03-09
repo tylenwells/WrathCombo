@@ -1,4 +1,4 @@
-﻿using WrathCombo.CustomComboNS.Functions;
+﻿using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
 
 namespace WrathCombo.Combos.PvE
 {
@@ -21,9 +21,9 @@ namespace WrathCombo.Combos.PvE
         }
 
         public static bool CanLucid(int MPThreshold, bool weave = true) =>
-            CustomComboFunctions.ActionReady(LucidDreaming)
-            && CustomComboFunctions.LocalPlayer.CurrentMp <= MPThreshold
-            && (!weave || CustomComboFunctions.CanSpellWeave());
+            ActionReady(LucidDreaming)
+            && LocalPlayer.CurrentMp <= MPThreshold
+            && (!weave || CanSpellWeave());
 
     }
     class CasterRole : MagicRole //Offensive Magic
@@ -34,12 +34,14 @@ namespace WrathCombo.Combos.PvE
             Addle = 7560, //Lv8 BLM/SMN/RDM/BLU, instant, 90.0s CD (group 46), range 25, single-target, targets=hostile
             Sleep = 25880; //Lv10 BLM/SMN/RDM/BLU, 2.5s cast, GCD, range 30, AOE 5 circle, targets=hostile
 
-
         public class Debuffs
         {
             public const ushort
                 Addle = 1203;
         }
+
+        public static bool CanAddle() =>
+            ActionReady(Addle) && !TargetHasEffectAny(Debuffs.Addle);
     }
 
     class HealerRole : MagicRole //Healers
@@ -66,6 +68,8 @@ namespace WrathCombo.Combos.PvE
                 ArmsLength = 1209;
         }
 
+        public static bool CanSecondWind(CustomComboPreset preset, int healthpercent) =>
+            IsEnabled(preset) && ActionReady(SecondWind) && PlayerHealthPercentageHp() <= healthpercent;
     }
 
     class RangedRole : PhysicalRole
@@ -82,6 +86,10 @@ namespace WrathCombo.Combos.PvE
             public const ushort
                 Peloton = 1199;
         }
+
+        public static bool CanHeadGraze(CustomComboPreset preset, bool checkweave = true) =>
+            IsEnabled(preset) && CanInterruptEnemy() && IsOffCooldown(HeadGraze) &&
+            (!checkweave || CanWeave());
     }
 
     class MeleeRole : PhysicalRole
@@ -107,6 +115,9 @@ namespace WrathCombo.Combos.PvE
             public const ushort
                 Feint = 1195;
         }
+
+        public static bool CanBloodBath(CustomComboPreset preset, int healthpercent) =>
+            IsEnabled(preset) && ActionReady(Bloodbath) && PlayerHealthPercentageHp() <= healthpercent;
     }
 
     class TankRole : PhysicalRole
@@ -126,5 +137,8 @@ namespace WrathCombo.Combos.PvE
             public const ushort
                 Reprisal = 1193; //applied by Reprisal to target
         }
+        public static bool CanInterject(CustomComboPreset preset) =>
+            IsEnabled(preset) && ActionReady(Interject) && CanInterruptEnemy();
+
     }
 }

@@ -3,7 +3,7 @@ using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
 
 namespace WrathCombo.Combos.PvE.Content;
 
-internal static class Variant
+internal static class VariantActions
 {
     public const uint
         VariantUltimatum = 29730,
@@ -50,13 +50,18 @@ internal static class Variant
     }
 
     public static bool CanRampart(CustomComboPreset preset) =>
-        IsEnabled(preset) && IsEnabled(VariantRampart) && IsOffCooldown(VariantRampart) && CanSpellWeave();
+        IsEnabled(preset) && IsEnabled(VariantRampart) && IsOffCooldown(VariantRampart);
 
     public static bool CanSpiritDart(CustomComboPreset preset) =>
-        IsEnabled(preset) && IsEnabled(VariantSpiritDart) && HasBattleTarget() && GetDebuffRemainingTime(Variant.Debuffs.SustainedDamage) <= 3;
+        IsEnabled(preset) && IsEnabled(VariantSpiritDart) && HasBattleTarget() && GetDebuffRemainingTime(VariantActions.Debuffs.SustainedDamage) <= 3;
 
-    public static bool CanCure(CustomComboPreset preset) => true; //TBD
-    public static bool CanRaise(CustomComboPreset preset) => true; //TBD
+    public static bool CanCure(CustomComboPreset preset, int healthpercent) =>
+        IsEnabled(preset) && IsEnabled(VariantCure) &&
+        PlayerHealthPercentageHp() <= healthpercent;
+
+    public static bool CanRaise(CustomComboPreset preset) =>
+        IsEnabled(preset) && IsEnabled(VariantRaise) && HasEffect(MagicRole.Buffs.Swiftcast);
+
     public static bool CanUltimatum(CustomComboPreset preset) => true; //TBD
 
 
@@ -65,38 +70,52 @@ internal static class Variant
 
 public class VariantTank
 {
-    public static uint Cure => Variant.VariantCure;
-    public static uint Ultimatum => Variant.VariantUltimatum;
-    public static uint Raise => Variant.VariantRaise;
-    public static uint SpiritDart => Variant.VariantSpiritDart;
+    public static uint Cure => VariantActions.VariantCure;
+    public static uint Ultimatum => VariantActions.VariantUltimatum;
+    public static uint Raise => VariantActions.VariantRaise;
+    public static uint SpiritDart => VariantActions.VariantSpiritDart;
 
-    public static bool CanCure(CustomComboPreset preset) => Variant.CanCure(preset);
-    public static bool CanUltimatum(CustomComboPreset preset) => Variant.CanUltimatum(preset);
-    public static bool CanRaise(CustomComboPreset preset) => Variant.CanRaise(preset);
-    public static bool CanSpiritDart(CustomComboPreset preset) => Variant.CanSpiritDart(preset);
+    public static bool CanCure(CustomComboPreset preset, int healthpercent) => VariantActions.CanCure(preset, healthpercent);
+    public static bool CanUltimatum(CustomComboPreset preset) => VariantActions.CanUltimatum(preset);
+    public static bool CanRaise(CustomComboPreset preset) => VariantActions.CanRaise(preset);
+    public static bool CanSpiritDart(CustomComboPreset preset) => VariantActions.CanSpiritDart(preset);
 
 }
 
 public class VariantHealer
 {
-    public static uint SpiritDart => Variant.VariantSpiritDart;
-    public static uint Rampart => Variant.VariantRampart;
-    public static uint Ultimatum => Variant.VariantUltimatum;
+    public static uint SpiritDart => VariantActions.VariantSpiritDart;
+    public static uint Rampart => VariantActions.VariantRampart;
+    public static uint Ultimatum => VariantActions.VariantUltimatum;
 
-    public static bool CanSpiritDart(CustomComboPreset preset) => Variant.CanSpiritDart(preset);
-    public static bool CanRampart(CustomComboPreset preset) => Variant.CanRampart(preset);
-    public static bool CanUltimatum(CustomComboPreset preset) => Variant.CanUltimatum(preset);
+    public static bool CanSpiritDart(CustomComboPreset preset) => VariantActions.CanSpiritDart(preset);
+    public static bool CanRampart(CustomComboPreset preset) => VariantActions.CanRampart(preset) && CanSpellWeave();
+    public static bool CanUltimatum(CustomComboPreset preset) => VariantActions.CanUltimatum(preset);
+}
+public class VariantPDPS
+{
+    public static uint Cure => VariantActions.VariantCure;
+    public static uint Ultimatum => VariantActions.VariantUltimatum;
+    public static uint Raise => VariantActions.VariantRaise;
+    public static uint Rampart => VariantActions.VariantRampart;
+
+    public static bool CanCure(CustomComboPreset preset, int healthpercent) => VariantActions.CanCure(preset, healthpercent);
+    public static bool CanUltimatum(CustomComboPreset preset) => VariantActions.CanUltimatum(preset);
+    public static bool CanRaise(CustomComboPreset preset) => VariantActions.CanRaise(preset);
+    public static bool CanRampart(CustomComboPreset preset, bool checkweave = true) => 
+        VariantActions.CanRampart(preset) && 
+        (!checkweave || CanWeave());
 }
 
-public class VariantDPS
+public class VariantMDPS
 {
-    public static uint Cure => Variant.VariantCure;
-    public static uint Ultimatum => Variant.VariantUltimatum;
-    public static uint Raise => Variant.VariantRaise;
-    public static uint Rampart => Variant.VariantRampart;
+    public static uint Cure => VariantActions.VariantCure;
+    public static uint Ultimatum => VariantActions.VariantUltimatum;
+    public static uint Raise => VariantActions.VariantRaise;
+    public static uint Rampart => VariantActions.VariantRampart;
 
-    public static bool CanCure(CustomComboPreset preset) => Variant.CanCure(preset);
-    public static bool CanUltimatum(CustomComboPreset preset) => Variant.CanUltimatum(preset);
-    public static bool CanRaise(CustomComboPreset preset) => Variant.CanRaise(preset);
-    public static bool CanRampart(CustomComboPreset preset) => Variant.CanRampart(preset);
+    public static bool CanCure(CustomComboPreset preset, int healthpercent) => VariantActions.CanCure(preset, healthpercent);
+    public static bool CanUltimatum(CustomComboPreset preset) => VariantActions.CanUltimatum(preset);
+    public static bool CanRaise(CustomComboPreset preset) => VariantActions.CanRaise(preset);
+    public static bool CanRampart(CustomComboPreset preset) => VariantActions.CanRampart(preset) && CanSpellWeave();
 }

@@ -7,7 +7,7 @@ using WrathCombo.Data;
 
 namespace WrathCombo.Combos.PvE;
 
-internal partial class GNB
+internal partial class GNB : Tank
 {
     #region Simple Mode - Single Target
     internal class GNB_ST_Simple : CustomCombo
@@ -139,8 +139,8 @@ internal partial class GNB
             }
 
             //Interject
-            if (IsEnabled(CustomComboPreset.GNB_ST_Interrupt) && ActionReady(All.Interject) && CanInterruptEnemy())
-                return All.Interject;
+            if (Role.CanInterject(CustomComboPreset.GNB_ST_Interrupt))
+                return Role.Interject;
 
             #region Mitigations
             if (IsEnabled(CustomComboPreset.GNB_ST_Mitigation) && InCombat() && !MitUsed)

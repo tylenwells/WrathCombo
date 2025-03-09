@@ -17,7 +17,6 @@ internal partial class GNB
         private const int NumberMitigationOptions = 8;
 
         public const string
-            GNB_VariantCure = "GNB_VariantCure",
             GNBPvP_Corundum = "GNBPvP_Corundum";
 
         public static UserInt
@@ -71,6 +70,9 @@ internal partial class GNB
             GNB_Mit_ArmsLength_Boss = new("GNB_Mit_ArmsLength_Boss", (int)BossAvoidance.On),
             GNB_Mit_ArmsLength_EnemyCount = new("GNB_Mit_ArmsLength_EnemyCount", 0),
             GNB_Mit_Nebula_Health = new("GNB_Mit_Nebula_Health", 50),
+
+            //Variant
+            GNB_VariantCure = new("GNB_VariantCure"),
 
             //Bozja
             GNB_Bozja_LostCure_Health = new("GNB_Bozja_LostCure_Health", 50),

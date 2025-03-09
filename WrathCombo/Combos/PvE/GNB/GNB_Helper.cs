@@ -10,7 +10,7 @@ using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
 
 namespace WrathCombo.Combos.PvE;
 
-internal partial class GNB
+internal partial class GNB : Tank
 {
     #region Variables
     internal static byte Ammo => GetJobGauge<GNBGauge>().Ammo;
@@ -38,7 +38,7 @@ internal partial class GNB
     internal static bool CanReign => LevelChecked(ReignOfBeasts) && GunStep == 0 && HasReign;
     internal static bool InOdd => BfCD is < 90 and > 20;
     internal static bool CanLateWeave => CanDelayedWeave(start: 1);
-    internal static bool MitUsed => JustUsed(OriginalHook(HeartOfStone), 4f) || JustUsed(OriginalHook(Nebula), 5f) || JustUsed(Camouflage, 5f) || JustUsed(All.Rampart, 5f) || JustUsed(Aurora, 5f) || JustUsed(Superbolide, 9f);
+    internal static bool MitUsed => JustUsed(OriginalHook(HeartOfStone), 4f) || JustUsed(OriginalHook(Nebula), 5f) || JustUsed(Camouflage, 5f) || JustUsed(Role.Rampart, 5f) || JustUsed(Aurora, 5f) || JustUsed(Superbolide, 9f);
     internal static float GCDLength => ActionManager.GetAdjustedRecastTime(ActionType.Action, KeenEdge) / 1000f;
     internal static bool FastGNB => GCDLength < 2.43f; //2.42 or lower
     internal static bool MidGNB => GCDLength is <= 2.47f and >= 2.43f; //2.43 to 2.47
@@ -183,27 +183,14 @@ internal partial class GNB
     internal static int MaxCartridges() => TraitLevelChecked(427) ? 3 : TraitLevelChecked(257) ? 2 : 0; //Level Check helper for Maximum Ammo
     internal static uint GetVariantAction()
     {
-        if (IsEnabled(CustomComboPreset.GNB_Variant_Cure) &&
-            IsEnabled(Variant.VariantCure) &&
-            PlayerHealthPercentageHp() <= GetOptionValue(Config.GNB_VariantCure))
-        {
-            return Variant.VariantCure;
-        }
+        if (Variant.CanCure(CustomComboPreset.GNB_Variant_Cure, Config.GNB_VariantCure))
+            return Variant.Cure;
 
-        Dalamud.Game.ClientState.Statuses.Status? sustainedDamage = FindTargetEffect(Variant.Debuffs.SustainedDamage);
-        if (IsEnabled(CustomComboPreset.GNB_Variant_SpiritDart) &&
-            IsEnabled(Variant.VariantSpiritDart) &&
-            CanWeave() && sustainedDamage is null)
-        {
-            return Variant.VariantSpiritDart;
-        }
-
-        if (IsEnabled(CustomComboPreset.GNB_Variant_Ultimatum) &&
-            IsEnabled(Variant.VariantUltimatum) &&
-            CanWeave() && ActionReady(Variant.VariantUltimatum))
-        {
-            return Variant.VariantUltimatum;
-        }
+        if (Variant.CanSpiritDart(CustomComboPreset.GNB_Variant_SpiritDart) && CanWeave())
+            return Variant.SpiritDart;
+        
+        if (Variant.CanUltimatum(CustomComboPreset.GNB_Variant_Ultimatum) && CanWeave())
+            return Variant.Ultimatum;
 
         return 0; //No conditions met
     }
@@ -251,7 +238,7 @@ internal partial class GNB
         {
         (CustomComboPreset.GNB_Bozja_LostDeath, Bozja.LostDeath, true),
         (CustomComboPreset.GNB_Bozja_LostCure, Bozja.LostCure, PlayerHealthPercentageHp() <= Config.GNB_Bozja_LostCure_Health),
-        (CustomComboPreset.GNB_Bozja_LostArise, Bozja.LostArise, GetTargetHPPercent() == 0 && !HasEffect(All.Debuffs.Raise)),
+        (CustomComboPreset.GNB_Bozja_LostArise, Bozja.LostArise, GetTargetHPPercent() == 0 && !HasEffect(MagicRole.Buffs.Raise)),
         (CustomComboPreset.GNB_Bozja_LostReraise, Bozja.LostReraise, PlayerHealthPercentageHp() <= Config.GNB_Bozja_LostReraise_Health),
         (CustomComboPreset.GNB_Bozja_LostProtect, Bozja.LostProtect, !HasEffect(Bozja.Buffs.LostProtect)),
         (CustomComboPreset.GNB_Bozja_LostShell, Bozja.LostShell, !HasEffect(Bozja.Buffs.LostShell)),

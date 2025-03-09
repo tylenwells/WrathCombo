@@ -1,10 +1,4 @@
 ﻿#region
-
-using System;
-using Dalamud.Game.ClientState.Objects.Types;
-using ECommons.Logging;
-using FFXIVClientStructs.FFXIV.Client.Game.Object;
-using WrathCombo.Combos.PvE.Content;
 using WrathCombo.CustomComboNS;
 
 // ReSharper disable UnusedType.Global
@@ -16,7 +10,7 @@ using WrathCombo.CustomComboNS;
 
 namespace WrathCombo.Combos.PvE;
 
-internal partial class DNC
+internal partial class DNC : PhysRangedDPS
 {
     internal class DNC_ST_AdvancedMode : CustomCombo
     {
@@ -212,11 +206,8 @@ internal partial class DNC
             }
 
             // Variant Cure
-            if (IsEnabled(CustomComboPreset.DNC_Variant_Cure) &&
-                IsEnabled(Variant.VariantCure) &&
-                PlayerHealthPercentageHp() <=
-                GetOptionValue(Config.DNCVariantCurePercent))
-                return Variant.VariantCure;
+            if (Variant.CanCure(CustomComboPreset.DNC_Variant_Cure, Config.DNCVariantCurePercent))
+                return Variant.Cure;
 
             // ST Interrupt
             if (IsEnabled(CustomComboPreset.DNC_ST_Adv_Interrupt) &&
@@ -227,11 +218,8 @@ internal partial class DNC
                 return All.HeadGraze;
 
             // Variant Rampart
-            if (IsEnabled(CustomComboPreset.DNC_Variant_Rampart) &&
-                IsEnabled(Variant.VariantRampart) &&
-                IsOffCooldown(Variant.VariantRampart) &&
-                CanWeave())
-                return Variant.VariantRampart;
+            if (Variant.CanRampart(CustomComboPreset.DNC_Variant_Rampart))
+                return Variant.Rampart;
 
             if (CanWeave() && !WasLastWeaponskill(TechnicalFinish4))
             {
@@ -546,9 +534,8 @@ internal partial class DNC
             }
 
             // Variant Cure
-            if (IsEnabled(Variant.VariantCure) &&
-                PlayerHealthPercentageHp() <= 50)
-                return Variant.VariantCure;
+            if (Variant.CanCure(CustomComboPreset.DNC_Variant_Cure, 50))
+                return Variant.Cure;
 
             // ST Interrupt
             if (CanInterruptEnemy() &&
@@ -558,10 +545,8 @@ internal partial class DNC
                 return All.HeadGraze;
 
             // Variant Rampart
-            if (IsEnabled(Variant.VariantRampart) &&
-                IsOffCooldown(Variant.VariantRampart) &&
-                CanWeave())
-                return Variant.VariantRampart;
+            if (Variant.CanRampart(CustomComboPreset.DNC_Variant_Rampart))
+                return Variant.Rampart;
 
             if (CanWeave() && !WasLastWeaponskill(TechnicalFinish4))
             {
@@ -797,11 +782,8 @@ internal partial class DNC
                 !HasEffect(Buffs.FinishingMoveReady))
                 return Flourish;
 
-            if (IsEnabled(CustomComboPreset.DNC_Variant_Cure) &&
-                IsEnabled(Variant.VariantCure) &&
-                PlayerHealthPercentageHp() <=
-                GetOptionValue(Config.DNCVariantCurePercent))
-                return Variant.VariantCure;
+            if (Variant.CanCure(CustomComboPreset.DNC_Variant_Cure, Config.DNCVariantCurePercent))
+                return Variant.Cure;
 
             // AoE Interrupt
             if (IsEnabled(CustomComboPreset.DNC_AoE_Adv_Interrupt) &&
@@ -809,11 +791,8 @@ internal partial class DNC
                 CanWeave() && !HasEffect(Buffs.TechnicalFinish))
                 return All.HeadGraze;
 
-            if (IsEnabled(CustomComboPreset.DNC_Variant_Rampart) &&
-                IsEnabled(Variant.VariantRampart) &&
-                IsOffCooldown(Variant.VariantRampart) &&
-                CanWeave())
-                return Variant.VariantRampart;
+            if (Variant.CanRampart(CustomComboPreset.DNC_Variant_Rampart))
+                return Variant.Rampart;
 
             if (CanWeave() && !WasLastWeaponskill(TechnicalFinish4))
             {
@@ -1082,19 +1061,16 @@ internal partial class DNC
                 !HasEffect(Buffs.FinishingMoveReady))
                 return Flourish;
 
-            if (IsEnabled(Variant.VariantCure) &&
-                PlayerHealthPercentageHp() <= 50)
-                return Variant.VariantCure;
+            if (Variant.CanCure(CustomComboPreset.DNC_Variant_Cure, 50))
+                return Variant.Cure;
 
             // AoE Interrupt
             if (CanInterruptEnemy() && ActionReady(All.HeadGraze) &&
                 CanWeave() && !HasEffect(Buffs.TechnicalFinish))
                 return All.HeadGraze;
 
-            if (IsEnabled(Variant.VariantRampart) &&
-                IsOffCooldown(Variant.VariantRampart) &&
-                CanWeave())
-                return Variant.VariantRampart;
+            if (Variant.CanRampart(CustomComboPreset.DNC_Variant_Rampart))
+                return Variant.Rampart;
 
             if (CanWeave() && !WasLastWeaponskill(TechnicalFinish4))
             {
