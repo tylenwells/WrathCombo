@@ -247,8 +247,7 @@ namespace WrathCombo.Window.Tabs
 
             if (Player.Job.IsDol())
             {
-                OpenJob = groupedPresets
-                    .FirstOrDefault(x => x.Value.Any(y => y.Info.JobID == DOL.JobID)).Key;
+                OpenJob = JobIDToName(DOL.JobID);
                 return;
             }
 
