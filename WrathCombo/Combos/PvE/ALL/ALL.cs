@@ -287,14 +287,14 @@ internal partial class All
                 : actionID;
     }
 
-    public class JobHealer
+    public class ClassHealer
     {
         public const uint
             Repose = All.Repose,
             Esuna = All.Esuna,
             LucidDreaming = All.LucidDreaming,
             Rescue = All.Rescue,
-            SwiftCast = All.Swiftcast,
+            Swiftcast = All.Swiftcast,
             SureCast = All.Surecast;
 
         public static bool CanLucid(int MPThreshold, bool weave = true) => All.CanUseLucid(MPThreshold, weave);

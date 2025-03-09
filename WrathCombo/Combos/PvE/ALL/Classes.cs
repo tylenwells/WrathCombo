@@ -10,7 +10,15 @@ namespace WrathCombo.Combos.PvE
     class Healer
     {
         public class Variant : VariantHealer;
-        public class Job : All.JobHealer;
+        public class Role : HealerRole;
     }
+
+    class Tank
+    {
+        public class Variant : VariantTank;
+        public class Role : TankRole;
+    }
+
+
 
 }

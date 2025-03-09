@@ -54,9 +54,14 @@ public class VariantHealer
 {
     public static uint SpiritDart => Variant.VariantSpiritDart;
     public static bool CanSpiritDart(CustomComboPreset preset) => 
-        IsEnabled(preset) && IsEnabled(SpiritDart) && GetDebuffRemainingTime(Variant.Debuffs.SustainedDamage) <= 3;
+        IsEnabled(preset) && IsEnabled(SpiritDart) && HasBattleTarget() && GetDebuffRemainingTime(Variant.Debuffs.SustainedDamage) <= 3;
     
     public static uint Rampart => Variant.VariantRampart;
     public static bool CanRampart(CustomComboPreset preset) =>
         IsEnabled(preset) && IsEnabled(Rampart) && IsOffCooldown(Rampart) && CanSpellWeave();
+}
+
+public class VariantTank
+{ 
+
 }

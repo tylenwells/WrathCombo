@@ -86,8 +86,8 @@ internal partial class SGE : Healer
             if (Variant.CanSpiritDart(CustomComboPreset.SGE_DPS_Variant_SpiritDart)) return Variant.SpiritDart;
 
             // Lucid Dreaming
-            if (IsEnabled(CustomComboPreset.SGE_AoE_DPS_Lucid) && Job.CanLucid(Config.SGE_AoE_DPS_Lucid))
-                return Job.LucidDreaming;
+            if (IsEnabled(CustomComboPreset.SGE_AoE_DPS_Lucid) && Role.CanLucid(Config.SGE_AoE_DPS_Lucid))
+                return Role.LucidDreaming;
 
             // Rhizomata
             if (IsEnabled(CustomComboPreset.SGE_AoE_DPS_Rhizo) && CanSpellWeave() &&
@@ -191,8 +191,8 @@ internal partial class SGE : Healer
                     return actionID;
 
             // Lucid Dreaming
-            if (IsEnabled(CustomComboPreset.SGE_ST_DPS_Lucid) && Job.CanLucid(Config.SGE_ST_DPS_Lucid))
-                return Job.LucidDreaming;
+            if (IsEnabled(CustomComboPreset.SGE_ST_DPS_Lucid) && Role.CanLucid(Config.SGE_ST_DPS_Lucid))
+                return Role.LucidDreaming;
 
             // Variant
             if (Variant.CanRampart(CustomComboPreset.SGE_DPS_Variant_Rampart)) return Variant.Rampart;
@@ -289,7 +289,7 @@ internal partial class SGE : Healer
         protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.SGE_Raise;
 
         protected override uint Invoke(uint actionID) =>
-            actionID is Job.Swiftcast && IsOnCooldown(Job.Swiftcast)
+            actionID is Role.Swiftcast && IsOnCooldown(Role.Swiftcast)
                 ? Egeiro
                 : actionID;
     }
@@ -343,10 +343,10 @@ internal partial class SGE : Healer
             IGameObject? healTarget = OptionalTarget ??
                                       GetHealTarget(Config.SGE_ST_Heal_Adv && Config.SGE_ST_Heal_UIMouseOver);
 
-            if (IsEnabled(CustomComboPreset.SGE_ST_Heal_Esuna) && ActionReady(Job.Esuna) &&
+            if (IsEnabled(CustomComboPreset.SGE_ST_Heal_Esuna) && ActionReady(Role.Esuna) &&
                 GetTargetHPPercent(healTarget, Config.SGE_ST_Heal_IncludeShields) >= Config.SGE_ST_Heal_Esuna &&
                 HasCleansableDebuff(healTarget))
-                return Job.Esuna;
+                return Role.Esuna;
 
             if (IsEnabled(CustomComboPreset.SGE_ST_Heal_Rhizomata) && ActionReady(Rhizomata) &&
                 !HasAddersgall())
