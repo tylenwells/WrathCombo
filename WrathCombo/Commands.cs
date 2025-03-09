@@ -579,7 +579,8 @@ public partial class WrathCombo
         if (argument[0].Length <= 0)
         {
             // Handle the "Open to current job" setting
-            PvEFeatures.OpenToCurrentJob(false);
+            if (ConfigWindow.IsOpen)
+                PvEFeatures.OpenToCurrentJob(false);
 
             // Skip trying to process arguments
             return;
