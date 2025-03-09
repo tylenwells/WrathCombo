@@ -159,7 +159,7 @@ internal partial class WHM : Healer
             bool thinAirReady = LevelChecked(ThinAir) && !HasEffect(Buffs.ThinAir) &&
                                 GetRemainingCharges(ThinAir) > Config.WHM_AoEHeals_ThinAir;
             bool canWeave = CanSpellWeave(0.3);
-            bool lucidReady = Role.CanLucid(Config.WHM_AoEHeals_Lucid);
+            bool lucidReady = Role.CanLucid(Config.WHM_AoEHeals_Lucid,false); //canWeave will be the check
 
             bool plenaryReady = ActionReady(PlenaryIndulgence) &&
                                 (!Config.WHM_AoEHeals_PlenaryWeave ||

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WrathCombo.Combos.PvE.Content;
+﻿using WrathCombo.Combos.PvE.Content;
 
 namespace WrathCombo.Combos.PvE
 {
@@ -17,6 +12,24 @@ namespace WrathCombo.Combos.PvE
     {
         public class Variant : VariantTank;
         public class Role : TankRole;
+    }
+
+    class MeleeDPS
+    {
+        public class Variant : VariantDPS;
+        public class Role : MeleeRole;
+    }
+
+    class PhysRangedDPS
+    {
+        public class Variant : VariantDPS;
+        public class Role : RangedRole;
+    }
+
+    class MagicDPS
+    {
+        public class Variant : VariantDPS;
+        public class Role : MagicRole;
     }
 
 
