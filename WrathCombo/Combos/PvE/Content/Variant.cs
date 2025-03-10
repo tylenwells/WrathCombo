@@ -62,7 +62,7 @@ internal static class VariantActions
     public static bool CanRaise(CustomComboPreset preset) =>
         IsEnabled(preset) && IsEnabled(VariantRaise) && HasEffect(MagicRole.Buffs.Swiftcast);
 
-    public static bool CanUltimatum(CustomComboPreset preset) => true; //TBD
+    public static bool CanUltimatum(CustomComboPreset preset) => CanCircleAoe(5) > 0;
 
 
 
