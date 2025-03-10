@@ -18,12 +18,10 @@ internal partial class GNB : TankJob
     internal static byte GunStep => GetJobGauge<GNBGauge>().AmmoComboStep;
     internal static float HPP => PlayerHealthPercentageHp();
     internal static int NmStop => Config.GNB_AoE_NoMercyStop;
-    internal static float GCD => GetCooldown(KeenEdge).CooldownTotal;
     internal static float GfCD => GetCooldownRemainingTime(GnashingFang);
     internal static float NmCD => GetCooldownRemainingTime(NoMercy);
     internal static float DdCD => GetCooldownRemainingTime(DoubleDown);
     internal static float BfCD => GetCooldownRemainingTime(Bloodfest);
-    internal static float NmLeft => GetBuffRemainingTime(Buffs.NoMercy);
     internal static bool HasNM => NmCD is >= 40 and <= 60;
     internal static bool HasBreak => HasEffect(Buffs.ReadyToBreak);
     internal static bool HasReign => HasEffect(Buffs.ReadyToReign);
@@ -44,7 +42,6 @@ internal partial class GNB : TankJob
     internal static bool FastGNB => GCDLength < 2.43f; //2.42 or lower
     internal static bool MidGNB => GCDLength is <= 2.47f and >= 2.43f; //2.43 to 2.47
     internal static bool SlowGNB => GCDLength > 2.47f; //2.48 or higher
-    internal static uint BestZone => LevelChecked(BlastingZone) ? BlastingZone : DangerZone;
     #endregion
 
     #region Openers
@@ -58,7 +55,6 @@ internal partial class GNB : TankJob
     public static Lv100SlowEarlyNM GNBLv100SlowEarlyNM = new();
 
     public static WrathOpener Opener() => (!IsEnabled(CustomComboPreset.GNB_ST_Advanced_Opener) || !LevelChecked(DoubleDown)) ? WrathOpener.Dummy : GetOpener(Config.GNB_Opener_NM == 0);
-
     private static WrathOpener GetOpener(bool isNormal)
     {
         if (MidGNB || FastGNB)

@@ -186,8 +186,6 @@ internal partial class GNB : TankJob
                     if (Opener().OpenerStep == 1)
                         Opener().OpenerStep++;
                 }
-                if (Config.GNB_Opener_StartChoice == 0)
-                    Opener().OpenerStep = 1;
 
                 if (Opener().FullOpener(ref actionID))
                     return actionID;
