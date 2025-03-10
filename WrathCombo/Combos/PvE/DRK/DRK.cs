@@ -13,7 +13,7 @@ using WrathCombo.Data;
 
 namespace WrathCombo.Combos.PvE;
 
-internal partial class DRK
+internal partial class DRK : Tank
 {
     internal class DRK_ST_Advanced : CustomCombo
     {
@@ -52,7 +52,7 @@ internal partial class DRK
             // Bail if not in combat
             if (!InCombat()) return HardSlash;
 
-            if (TryGetAction<Variant>(comboFlags, ref newAction))
+            if (TryGetAction<VariantAction>(comboFlags, ref newAction))
                 return newAction;
 
             var cdBossRequirement =
@@ -107,7 +107,7 @@ internal partial class DRK
             // Bail if not in combat
             if (!InCombat()) return HardSlash;
 
-            if (TryGetAction<Variant>(comboFlags, ref newAction))
+            if (TryGetAction<VariantAction>(comboFlags, ref newAction))
                 return newAction;
 
             if (TryGetAction<Cooldown>(comboFlags, ref newAction))
@@ -142,7 +142,7 @@ internal partial class DRK
             // Bail if not in combat
             if (!InCombat()) return Unleash;
 
-            if (TryGetAction<Variant>(comboFlags, ref newAction))
+            if (TryGetAction<VariantAction>(comboFlags, ref newAction))
                 return newAction;
 
             if (IsEnabled(CustomComboPreset.DRK_AoE_CDs) &&
@@ -180,7 +180,7 @@ internal partial class DRK
             // Bail if not in combat
             if (!InCombat()) return Unleash;
 
-            if (TryGetAction<Variant>(comboFlags, ref newAction))
+            if (TryGetAction<VariantAction>(comboFlags, ref newAction))
                 return newAction;
 
             if (TryGetAction<Cooldown>(comboFlags, ref newAction))
