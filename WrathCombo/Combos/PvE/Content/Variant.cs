@@ -49,8 +49,9 @@ internal static class VariantActions
             SustainedDamage = 3359;
     }
 
-    public static bool CanRampart(CustomComboPreset preset) =>
-        IsEnabled(preset) && IsEnabled(VariantRampart) && IsOffCooldown(VariantRampart);
+    
+    internal static bool CanRampart(CustomComboPreset preset, WeaveTypes weave = WeaveTypes.None) =>
+        IsEnabled(preset) && IsEnabled(VariantRampart) && IsOffCooldown(VariantRampart) && CheckWeave(weave);
 
     public static bool CanSpiritDart(CustomComboPreset preset) =>
         IsEnabled(preset) && IsEnabled(VariantSpiritDart) && HasBattleTarget() && GetDebuffRemainingTime(VariantActions.Debuffs.SustainedDamage) <= 3;
@@ -89,7 +90,7 @@ public class VariantHealer
     public static uint Ultimatum => VariantActions.VariantUltimatum;
 
     public static bool CanSpiritDart(CustomComboPreset preset) => VariantActions.CanSpiritDart(preset);
-    public static bool CanRampart(CustomComboPreset preset) => VariantActions.CanRampart(preset) && CanSpellWeave();
+    internal static bool CanRampart(CustomComboPreset preset, WeaveTypes weave = WeaveTypes.None) => VariantActions.CanRampart(preset, weave);
     public static bool CanUltimatum(CustomComboPreset preset) => VariantActions.CanUltimatum(preset);
 }
 public class VariantPDPS
@@ -102,9 +103,7 @@ public class VariantPDPS
     public static bool CanCure(CustomComboPreset preset, int healthpercent) => VariantActions.CanCure(preset, healthpercent);
     public static bool CanUltimatum(CustomComboPreset preset) => VariantActions.CanUltimatum(preset);
     public static bool CanRaise(CustomComboPreset preset) => VariantActions.CanRaise(preset);
-    public static bool CanRampart(CustomComboPreset preset, bool checkweave = true) => 
-        VariantActions.CanRampart(preset) && 
-        (!checkweave || CanWeave());
+    internal static bool CanRampart(CustomComboPreset preset, WeaveTypes weave = WeaveTypes.None) => VariantActions.CanRampart(preset, weave);
 }
 
 public class VariantMDPS
@@ -117,5 +116,5 @@ public class VariantMDPS
     public static bool CanCure(CustomComboPreset preset, int healthpercent) => VariantActions.CanCure(preset, healthpercent);
     public static bool CanUltimatum(CustomComboPreset preset) => VariantActions.CanUltimatum(preset);
     public static bool CanRaise(CustomComboPreset preset) => VariantActions.CanRaise(preset);
-    public static bool CanRampart(CustomComboPreset preset) => VariantActions.CanRampart(preset) && CanSpellWeave();
+    internal static bool CanRampart(CustomComboPreset preset, WeaveTypes weave = WeaveTypes.None) => VariantActions.CanRampart(preset, weave);
 }

@@ -1,14 +1,13 @@
 ﻿using Dalamud.Game.ClientState.JobGauge.Types;
 using Dalamud.Game.ClientState.Statuses;
 using System.Linq;
-using WrathCombo.Combos.PvE.Content;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Data;
 
 namespace WrathCombo.Combos.PvE;
 
-internal partial class PLD
+internal partial class PLD : Tank
 {
     private static PLDGauge Gauge => CustomComboFunctions.GetJobGauge<PLDGauge>();
 

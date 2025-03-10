@@ -426,7 +426,7 @@ internal partial class BRD : PhysRangedDPS
             }
 
             // Interupt Logic, set to delayed weave. Let someone else do it if they want. Better to be last line of defense and stay off cd.
-            if (Role.CanHeadGraze(CustomComboPreset.BRD_AoE_Adv_Interrupt, false) && canWeaveDelayed)
+            if (Role.CanHeadGraze(CustomComboPreset.BRD_AoE_Adv_Interrupt, WeaveTypes.None) && canWeaveDelayed)
                 return Role.HeadGraze;
 
             // Rain of death Logic
@@ -470,7 +470,7 @@ internal partial class BRD : PhysRangedDPS
 
             if (canWeave)
             {
-                if (Role.CanSecondWind(CustomComboPreset.BRD_ST_SecondWind, Config.BRD_STSecondWindThreshold))
+                if (IsEnabled(CustomComboPreset.BRD_ST_SecondWind) && Role.CanSecondWind(Config.BRD_STSecondWindThreshold))
                     return Role.SecondWind;
 
                 if (IsEnabled(CustomComboPreset.BRD_ST_Wardens))
@@ -699,7 +699,7 @@ internal partial class BRD : PhysRangedDPS
                 }
             }
             //Interupt Logic, set to delayed weave. Let someone else do it if they want. Better to be last line of defense and stay off cd.
-            if (Role.CanHeadGraze(CustomComboPreset.BRD_Adv_Interrupt, false) && canWeaveDelayed)
+            if (Role.CanHeadGraze(CustomComboPreset.BRD_Adv_Interrupt, WeaveTypes.None) && canWeaveDelayed)
                 return Role.HeadGraze;
 
             // Bloodletter pooling logic. Will Pool as buffs are coming up.
@@ -738,7 +738,7 @@ internal partial class BRD : PhysRangedDPS
             #region Self Care
             if (canWeave)
             {
-                if (Role.CanSecondWind(CustomComboPreset.BRD_ST_SecondWind, Config.BRD_STSecondWindThreshold))
+                if (IsEnabled(CustomComboPreset.BRD_ST_SecondWind) && Role.CanSecondWind(Config.BRD_STSecondWindThreshold))
                     return Role.SecondWind;
 
                 if (IsEnabled(CustomComboPreset.BRD_ST_Wardens))
@@ -1015,7 +1015,7 @@ internal partial class BRD : PhysRangedDPS
 
                 // Self care section for healing and debuff removal
 
-                if (Role.CanSecondWind(CustomComboPreset.BRD_AoE_SimpleMode, 40))
+                if (Role.CanSecondWind(40))
                     return Role.SecondWind;
 
                 if (ActionReady(TheWardensPaeon) && HasCleansableDebuff(LocalPlayer))
@@ -1201,7 +1201,7 @@ internal partial class BRD : PhysRangedDPS
                 }
 
                 //Interupt delayered weave
-                if (Role.CanHeadGraze(CustomComboPreset.BRD_ST_SimpleMode, false) && canWeaveDelayed)
+                if (Role.CanHeadGraze(CustomComboPreset.BRD_ST_SimpleMode, WeaveTypes.None) && canWeaveDelayed)
                     return Role.HeadGraze;
 
                 // Bloodletter pooling logic
@@ -1235,7 +1235,7 @@ internal partial class BRD : PhysRangedDPS
 
                 // Self Care
 
-                if (Role.CanSecondWind(CustomComboPreset.BRD_ST_SimpleMode, 40))
+                if (Role.CanSecondWind(40))
                     return Role.SecondWind;
 
                 if (ActionReady(TheWardensPaeon) && HasCleansableDebuff(LocalPlayer))

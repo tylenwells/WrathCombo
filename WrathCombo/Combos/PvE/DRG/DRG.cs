@@ -73,7 +73,7 @@ internal partial class DRG : MeleeDPS
             if (Variant.CanCure(CustomComboPreset.DRG_Variant_Cure, Config.DRG_Variant_Cure))
                 return Variant.Cure;
 
-            if (Variant.CanRampart(CustomComboPreset.DRG_Variant_Rampart, false) &&
+            if (Variant.CanRampart(CustomComboPreset.DRG_Variant_Rampart, WeaveTypes.None) &&
                 CanDRGWeave(Variant.Rampart))
                 return Variant.Rampart;
 
@@ -229,7 +229,7 @@ internal partial class DRG : MeleeDPS
             if (Variant.CanCure(CustomComboPreset.DRG_Variant_Cure, Config.DRG_Variant_Cure))
                 return Variant.Cure;
 
-            if (Variant.CanRampart(CustomComboPreset.DRG_Variant_Rampart, false) &&
+            if (Variant.CanRampart(CustomComboPreset.DRG_Variant_Rampart, WeaveTypes.None) &&
                 CanDRGWeave(Variant.Rampart))
                 return Variant.Rampart;
 
@@ -419,7 +419,7 @@ internal partial class DRG : MeleeDPS
             if (Variant.CanCure(CustomComboPreset.DRG_Variant_Cure, Config.DRG_Variant_Cure))
                 return Variant.Cure;
 
-            if (Variant.CanRampart(CustomComboPreset.DRG_Variant_Rampart, false) &&
+            if (Variant.CanRampart(CustomComboPreset.DRG_Variant_Rampart, WeaveTypes.None) &&
                 CanDRGWeave(Variant.Rampart))
                 return Variant.Rampart;
 
@@ -554,7 +554,7 @@ internal partial class DRG : MeleeDPS
             if (Variant.CanCure(CustomComboPreset.DRG_Variant_Cure, Config.DRG_Variant_Cure))
                 return Variant.Cure;
 
-            if (Variant.CanRampart(CustomComboPreset.DRG_Variant_Rampart, false) &&
+            if (Variant.CanRampart(CustomComboPreset.DRG_Variant_Rampart, WeaveTypes.None) &&
                 CanDRGWeave(Variant.Rampart))
                 return Variant.Rampart;
 

@@ -210,12 +210,9 @@ internal partial class DNC : PhysRangedDPS
                 return Variant.Cure;
 
             // ST Interrupt
-            if (IsEnabled(CustomComboPreset.DNC_ST_Adv_Interrupt) &&
-                CanWeave() &&
-                CanInterruptEnemy() &&
-                ActionReady(All.HeadGraze) &&
+            if (Role.CanHeadGraze(CustomComboPreset.DNC_ST_Adv_Interrupt, WeaveTypes.Weave) &&
                 !HasEffect(Buffs.TechnicalFinish))
-                return All.HeadGraze;
+                return Role.HeadGraze;
 
             // Variant Rampart
             if (Variant.CanRampart(CustomComboPreset.DNC_Variant_Rampart))
@@ -273,10 +270,8 @@ internal partial class DNC : PhysRangedDPS
                         Config.DNC_ST_Adv_PanicHealWaltzPercent)
                         return CuringWaltz;
 
-                    if (ActionReady(All.SecondWind) &&
-                        PlayerHealthPercentageHp() <
-                        Config.DNC_ST_Adv_PanicHealWindPercent)
-                        return All.SecondWind;
+                    if (Role.CanSecondWind(Config.DNC_ST_Adv_PanicHealWindPercent))
+                        return Role.SecondWind;
                 }
 
                 // ST Improvisation
@@ -538,11 +533,9 @@ internal partial class DNC : PhysRangedDPS
                 return Variant.Cure;
 
             // ST Interrupt
-            if (CanInterruptEnemy() &&
-                CanWeave() &&
-                ActionReady(All.HeadGraze) &&
+            if (Role.CanHeadGraze(CustomComboPreset.DNC_ST_SimpleMode, WeaveTypes.Weave) &&
                 !HasEffect(Buffs.TechnicalFinish))
-                return All.HeadGraze;
+                return Role.HeadGraze;
 
             // Variant Rampart
             if (Variant.CanRampart(CustomComboPreset.DNC_Variant_Rampart))
@@ -585,9 +578,8 @@ internal partial class DNC : PhysRangedDPS
 
                 // ST Panic Heals
 
-                if (ActionReady(All.SecondWind) &&
-                    PlayerHealthPercentageHp() < 40)
-                    return All.SecondWind;
+                if (Role.CanSecondWind(40))
+                    return Role.SecondWind;
             }
 
             #endregion
@@ -786,10 +778,9 @@ internal partial class DNC : PhysRangedDPS
                 return Variant.Cure;
 
             // AoE Interrupt
-            if (IsEnabled(CustomComboPreset.DNC_AoE_Adv_Interrupt) &&
-                CanInterruptEnemy() && ActionReady(All.HeadGraze) &&
-                CanWeave() && !HasEffect(Buffs.TechnicalFinish))
-                return All.HeadGraze;
+            if (Role.CanHeadGraze(CustomComboPreset.DNC_AoE_Adv_Interrupt, WeaveTypes.Weave) &&
+                !HasEffect(Buffs.TechnicalFinish))
+                return Role.HeadGraze;
 
             if (Variant.CanRampart(CustomComboPreset.DNC_Variant_Rampart))
                 return Variant.Rampart;
@@ -848,10 +839,8 @@ internal partial class DNC : PhysRangedDPS
                         Config.DNC_AoE_Adv_PanicHealWaltzPercent)
                         return CuringWaltz;
 
-                    if (ActionReady(All.SecondWind) &&
-                        PlayerHealthPercentageHp() <
-                        Config.DNC_AoE_Adv_PanicHealWindPercent)
-                        return All.SecondWind;
+                    if (Role.CanSecondWind(Config.DNC_AoE_Adv_PanicHealWindPercent))
+                        return Role.SecondWind;
                 }
 
                 // AoE Improvisation
@@ -1065,9 +1054,9 @@ internal partial class DNC : PhysRangedDPS
                 return Variant.Cure;
 
             // AoE Interrupt
-            if (CanInterruptEnemy() && ActionReady(All.HeadGraze) &&
-                CanWeave() && !HasEffect(Buffs.TechnicalFinish))
-                return All.HeadGraze;
+            if (Role.CanHeadGraze(CustomComboPreset.DNC_AoE_SimpleMode, WeaveTypes.Weave)&&
+                !HasEffect(Buffs.TechnicalFinish))
+                return Role.HeadGraze;
 
             if (Variant.CanRampart(CustomComboPreset.DNC_Variant_Rampart))
                 return Variant.Rampart;
@@ -1113,9 +1102,8 @@ internal partial class DNC : PhysRangedDPS
                     return FanDance4;
 
                 // AoE Panic Heals
-                if (ActionReady(All.SecondWind) &&
-                    PlayerHealthPercentageHp() < 40)
-                    return All.SecondWind;
+                if (Role.CanSecondWind(40))
+                    return Role.SecondWind;
             }
 
             #endregion

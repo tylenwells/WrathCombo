@@ -68,8 +68,8 @@ namespace WrathCombo.Combos.PvE
                 ArmsLength = 1209;
         }
 
-        public static bool CanSecondWind(CustomComboPreset preset, int healthpercent) =>
-            IsEnabled(preset) && ActionReady(SecondWind) && PlayerHealthPercentageHp() <= healthpercent;
+        public static bool CanSecondWind(int healthpercent) =>
+            ActionReady(SecondWind) && PlayerHealthPercentageHp() <= healthpercent;
     }
 
     class RangedRole : PhysicalRole
@@ -87,9 +87,8 @@ namespace WrathCombo.Combos.PvE
                 Peloton = 1199;
         }
 
-        public static bool CanHeadGraze(CustomComboPreset preset, bool checkweave = true) =>
-            IsEnabled(preset) && CanInterruptEnemy() && IsOffCooldown(HeadGraze) &&
-            (!checkweave || CanWeave());
+        public static bool CanHeadGraze(CustomComboPreset preset, WeaveTypes weave = WeaveTypes.None) =>
+            IsEnabled(preset) && CanInterruptEnemy() && IsOffCooldown(HeadGraze) && CheckWeave(weave);
     }
 
     class MeleeRole : PhysicalRole
@@ -116,8 +115,8 @@ namespace WrathCombo.Combos.PvE
                 Feint = 1195;
         }
 
-        public static bool CanBloodBath(CustomComboPreset preset, int healthpercent) =>
-            IsEnabled(preset) && ActionReady(Bloodbath) && PlayerHealthPercentageHp() <= healthpercent;
+        public static bool CanBloodBath(int healthpercent) =>
+            ActionReady(Bloodbath) && PlayerHealthPercentageHp() <= healthpercent;
     }
 
     class TankRole : PhysicalRole

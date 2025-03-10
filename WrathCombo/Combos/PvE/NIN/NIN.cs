@@ -1,6 +1,5 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
 using Dalamud.Game.ClientState.Statuses;
-using WrathCombo.Combos.PvE.Content;
 using WrathCombo.Core;
 using WrathCombo.CustomComboNS;
 using WrathCombo.Data;
@@ -8,7 +7,7 @@ using WrathCombo.Extensions;
 
 namespace WrathCombo.Combos.PvE;
 
-internal partial class NIN
+internal partial class NIN : MeleeDPS
 {
     internal class NIN_ST_AdvancedMode : CustomCombo
     {
@@ -95,8 +94,8 @@ internal partial class NIN
                 mudraState.CastHyoshoRanryu(ref actionID))
                 return actionID;
 
-            if (IsEnabled(CustomComboPreset.NIN_Variant_Cure) && IsEnabled(Variant.VariantCure) && PlayerHealthPercentageHp() <= GetOptionValue(Config.NIN_VariantCure))
-                return Variant.VariantCure;
+            if (Variant.CanCure(CustomComboPreset.NIN_Variant_Cure, Config.NIN_VariantCure))
+                return Variant.Cure;
 
             if (InCombat() && !InMeleeRange())
             {
@@ -130,10 +129,8 @@ internal partial class NIN
 
             if (canWeave && !InMudra)
             {
-                if (IsEnabled(CustomComboPreset.NIN_Variant_Rampart) &&
-                    IsEnabled(Variant.VariantRampart) &&
-                    IsOffCooldown(Variant.VariantRampart))
-                    return Variant.VariantRampart;
+                if (Variant.CanRampart(CustomComboPreset.NIN_Variant_Rampart))
+                    return Variant.Rampart;
 
                 if (IsEnabled(CustomComboPreset.NIN_ST_AdvancedMode_Mug) &&
                     IsEnabled(CustomComboPreset.NIN_ST_AdvancedMode_Mug_AlignBefore) &&
@@ -169,14 +166,14 @@ internal partial class NIN
                     return OriginalHook(Kassatsu);
 
                 //healing - please move if not appropriate priority
-                if (IsEnabled(CustomComboPreset.NIN_ST_AdvancedMode_SecondWind) && All.SecondWind.LevelChecked() && playerHP <= SecondWindThreshold && IsOffCooldown(All.SecondWind))
-                    return All.SecondWind;
+                if (IsEnabled(CustomComboPreset.NIN_ST_AdvancedMode_SecondWind) && Role.CanSecondWind(SecondWindThreshold))
+                    return Role.SecondWind;
 
                 if (IsEnabled(CustomComboPreset.NIN_ST_AdvancedMode_ShadeShift) && ShadeShift.LevelChecked() && playerHP <= ShadeShiftThreshold && IsOffCooldown(ShadeShift))
                     return ShadeShift;
 
-                if (IsEnabled(CustomComboPreset.NIN_ST_AdvancedMode_Bloodbath) && All.Bloodbath.LevelChecked() && playerHP <= BloodbathThreshold && IsOffCooldown(All.Bloodbath))
-                    return All.Bloodbath;
+                if (IsEnabled(CustomComboPreset.NIN_ST_AdvancedMode_Bloodbath) && Role.CanBloodBath(BloodbathThreshold))
+                    return Role.Bloodbath;
 
                 if (IsEnabled(CustomComboPreset.NIN_ST_AdvancedMode_Bhavacakra) &&
                     ((TrickDebuff && gauge.Ninki >= 50) || (useBhakaBeforeTrickWindow && gauge.Ninki >= 85)) &&
@@ -214,14 +211,14 @@ internal partial class NIN
                         return OriginalHook(TenChiJin);
                 }
 
-                if (IsEnabled(CustomComboPreset.NIN_ST_AdvancedMode_SecondWind) && All.SecondWind.LevelChecked() && playerHP <= SecondWindThreshold && IsOffCooldown(All.SecondWind))
-                    return All.SecondWind;
+                if (IsEnabled(CustomComboPreset.NIN_ST_AdvancedMode_SecondWind) && Role.CanSecondWind(SecondWindThreshold))
+                    return Role.SecondWind;
 
                 if (IsEnabled(CustomComboPreset.NIN_ST_AdvancedMode_ShadeShift) && ShadeShift.LevelChecked() && playerHP <= ShadeShiftThreshold && IsOffCooldown(ShadeShift))
                     return ShadeShift;
 
-                if (IsEnabled(CustomComboPreset.NIN_ST_AdvancedMode_Bloodbath) && All.Bloodbath.LevelChecked() && playerHP <= BloodbathThreshold && IsOffCooldown(All.Bloodbath))
-                    return All.Bloodbath;
+                if (IsEnabled(CustomComboPreset.NIN_ST_AdvancedMode_Bloodbath) && Role.CanBloodBath(BloodbathThreshold))
+                    return Role.Bloodbath;
             }
 
             if (IsEnabled(CustomComboPreset.NIN_ST_AdvancedMode_Raiju) && HasEffect(Buffs.RaijuReady))
@@ -394,8 +391,8 @@ internal partial class NIN
             if (IsEnabled(CustomComboPreset.NIN_AoE_AdvancedMode_GokaMekkyaku) && HasEffect(Buffs.Kassatsu))
                 mudraState.CurrentMudra = MudraCasting.MudraState.CastingGokaMekkyaku;
 
-            if (IsEnabled(CustomComboPreset.NIN_Variant_Cure) && IsEnabled(Variant.VariantCure) && PlayerHealthPercentageHp() <= GetOptionValue(Config.NIN_VariantCure))
-                return Variant.VariantCure;
+            if (Variant.CanCure(CustomComboPreset.NIN_Variant_Cure, Config.NIN_VariantCure))
+                return Variant.Cure;
 
             if (IsEnabled(CustomComboPreset.NIN_AoE_AdvancedMode_KunaisBane))
             {
@@ -408,10 +405,8 @@ internal partial class NIN
 
             if (canWeave && !inMudraState)
             {
-                if (IsEnabled(CustomComboPreset.NIN_Variant_Rampart) &&
-                    IsEnabled(Variant.VariantRampart) &&
-                    IsOffCooldown(Variant.VariantRampart))
-                    return Variant.VariantRampart;
+                if (Variant.CanRampart(CustomComboPreset.NIN_Variant_Rampart))
+                    return Variant.Rampart;
 
                 if (IsEnabled(CustomComboPreset.NIN_AoE_AdvancedMode_TenriJindo) && HasEffect(Buffs.TenriJendo))
                     return OriginalHook(TenriJendo);
@@ -446,14 +441,14 @@ internal partial class NIN
                     return OriginalHook(Assassinate);
 
                 // healing - please move if not appropriate priority
-                if (IsEnabled(CustomComboPreset.NIN_AoE_AdvancedMode_SecondWind) && All.SecondWind.LevelChecked() && playerHP <= SecondWindThreshold && IsOffCooldown(All.SecondWind))
-                    return All.SecondWind;
+                if (IsEnabled(CustomComboPreset.NIN_AoE_AdvancedMode_SecondWind) && Role.CanSecondWind(SecondWindThreshold))
+                    return Role.SecondWind;
 
                 if (IsEnabled(CustomComboPreset.NIN_AoE_AdvancedMode_ShadeShift) && ShadeShift.LevelChecked() && playerHP <= ShadeShiftThreshold && IsOffCooldown(ShadeShift))
                     return ShadeShift;
 
-                if (IsEnabled(CustomComboPreset.NIN_AoE_AdvancedMode_Bloodbath) && All.Bloodbath.LevelChecked() && playerHP <= BloodbathThreshold && IsOffCooldown(All.Bloodbath))
-                    return All.Bloodbath;
+                if (IsEnabled(CustomComboPreset.NIN_AoE_AdvancedMode_Bloodbath) && Role.CanBloodBath(BloodbathThreshold))
+                    return Role.Bloodbath;
 
                 if (IsEnabled(CustomComboPreset.NIN_AoE_AdvancedMode_TCJ) &&
                     IsOffCooldown(TenChiJin) &&
@@ -589,8 +584,8 @@ internal partial class NIN
                     return OriginalHook(Jin);
             }
 
-            if (IsEnabled(CustomComboPreset.NIN_Variant_Cure) && IsEnabled(Variant.VariantCure) && PlayerHealthPercentageHp() <= GetOptionValue(Config.NIN_VariantCure))
-                return Variant.VariantCure;
+            if (Variant.CanCure(CustomComboPreset.NIN_Variant_Cure, Config.NIN_VariantCure))
+                return Variant.Cure;
 
             if (InCombat() && !InMeleeRange())
             {
@@ -618,10 +613,8 @@ internal partial class NIN
 
             if (canWeave && !InMudra)
             {
-                if (IsEnabled(CustomComboPreset.NIN_Variant_Rampart) &&
-                    IsEnabled(Variant.VariantRampart) &&
-                    IsOffCooldown(Variant.VariantRampart))
-                    return Variant.VariantRampart;
+                if (Variant.CanRampart(CustomComboPreset.NIN_Variant_Rampart))
+                    return Variant.Rampart;
 
                 if (HasEffect(Buffs.ShadowWalker) &&
                     IsOffCooldown(TrickAttack) &&
@@ -639,14 +632,14 @@ internal partial class NIN
                     return OriginalHook(Kassatsu);
 
                 //healing - please move if not appropriate priority
-                if (All.SecondWind.LevelChecked() && playerHP <= SecondWindThreshold && IsOffCooldown(All.SecondWind))
-                    return All.SecondWind;
+                if (Role.CanSecondWind(SecondWindThreshold))
+                    return Role.SecondWind;
 
                 if (ShadeShift.LevelChecked() && playerHP <= ShadeShiftThreshold && IsOffCooldown(ShadeShift))
                     return ShadeShift;
 
-                if (All.Bloodbath.LevelChecked() && playerHP <= BloodbathThreshold && IsOffCooldown(All.Bloodbath))
-                    return All.Bloodbath;
+                if (Role.CanSecondWind(BloodbathThreshold))
+                    return Role.Bloodbath;
 
                 if (((TrickDebuff && gauge.Ninki >= 50) || (useBhakaBeforeTrickWindow && gauge.Ninki >= 85)) &&
                     Bhavacakra.LevelChecked())
@@ -674,14 +667,14 @@ internal partial class NIN
                         return OriginalHook(TenChiJin);
                 }
 
-                if (All.SecondWind.LevelChecked() && playerHP <= SecondWindThreshold && IsOffCooldown(All.SecondWind))
-                    return All.SecondWind;
+                if (Role.CanSecondWind(SecondWindThreshold))
+                    return Role.SecondWind;
 
                 if (ShadeShift.LevelChecked() && playerHP <= ShadeShiftThreshold && IsOffCooldown(ShadeShift))
                     return ShadeShift;
 
-                if (All.Bloodbath.LevelChecked() && playerHP <= BloodbathThreshold && IsOffCooldown(All.Bloodbath))
-                    return All.Bloodbath;
+                if (Role.CanBloodBath(BloodbathThreshold))
+                    return Role.Bloodbath;
             }
 
             if (HasEffect(Buffs.RaijuReady) && InMeleeRange())
@@ -823,8 +816,8 @@ internal partial class NIN
                 }
             }
 
-            if (IsEnabled(CustomComboPreset.NIN_Variant_Cure) && IsEnabled(Variant.VariantCure) && PlayerHealthPercentageHp() <= GetOptionValue(Config.NIN_VariantCure))
-                return Variant.VariantCure;
+            if (Variant.CanCure(CustomComboPreset.NIN_Variant_Cure, Config.NIN_VariantCure))
+                return Variant.Cure;
 
             if (!HasEffect(Buffs.ShadowWalker) && KunaisBane.LevelChecked() && GetCooldownRemainingTime(KunaisBane) < 5 && mudraState.CastHuton(ref actionID))
                 return actionID;
@@ -845,10 +838,8 @@ internal partial class NIN
 
             if (canWeave && !InMudra)
             {
-                if (IsEnabled(CustomComboPreset.NIN_Variant_Rampart) &&
-                    IsEnabled(Variant.VariantRampart) &&
-                    IsOffCooldown(Variant.VariantRampart))
-                    return Variant.VariantRampart;
+                if (Variant.CanRampart(CustomComboPreset.NIN_Variant_Rampart))
+                    return Variant.Rampart;
 
                 if (IsOffCooldown(TenChiJin) && TenChiJin.LevelChecked())
                     return OriginalHook(TenChiJin);
