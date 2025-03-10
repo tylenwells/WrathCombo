@@ -6,12 +6,14 @@ using System.Linq;
 using Dalamud.Game.ClientState.JobGauge.Types;
 using Dalamud.Game.ClientState.Objects.Types;
 using WrathCombo.AutoRotation;
+using WrathCombo.Combos.PvE.Content;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Data;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
 using Preset = WrathCombo.Combos.CustomComboPreset;
 
+// ReSharper disable AccessToStaticMemberViaDerivedType
 // ReSharper disable ConditionIsAlwaysTrueOrFalse
 // ReSharper disable ReturnTypeCanBeNotNullable
 // ReSharper disable UnusedType.Global
@@ -129,7 +131,7 @@ internal partial class DRK
     ///         </item>
     ///     </list>
     /// </remarks>
-    private class Variant : IActionProvider
+    private class VariantAction : IActionProvider
     {
         public bool TryGetAction(Combo flags, ref uint action)
         {
@@ -137,10 +139,10 @@ internal partial class DRK
 
             if ((flags.HasFlag(Combo.Simple) ||
                  (flags.HasFlag(Combo.Adv) && IsEnabled(Preset.DRK_Var_Cure))) &&
-                IsEnabled(Content.Variant.VariantCure) &&
-                ActionReady(Content.Variant.VariantCure) &&
+                IsEnabled(Variant.Cure) &&
+                ActionReady(Variant.Cure) &&
                 PlayerHealthPercentageHp() <= GetOptionValue(Config.DRK_VariantCure))
-                return (action = Content.Variant.VariantCure) != 0;
+                return (action = Variant.Cure) != 0;
 
             #endregion
 
@@ -151,22 +153,22 @@ internal partial class DRK
 
             if ((flags.HasFlag(Combo.Simple) ||
                  (flags.HasFlag(Combo.Adv) && IsEnabled(Preset.DRK_Var_Ulti))) &&
-                IsEnabled(Content.Variant.VariantUltimatum) &&
-                ActionReady(Content.Variant.VariantUltimatum))
-                return (action = Content.Variant.VariantUltimatum) != 0;
+                IsEnabled(Variant.Ultimatum) &&
+                ActionReady(Variant.Ultimatum))
+                return (action = Variant.Ultimatum) != 0;
 
             #endregion
 
             #region Damage over Time
 
             var DoTStatus =
-                FindTargetEffect(Content.Variant.Debuffs.SustainedDamage);
+                FindTargetEffect(VariantActions.Debuffs.SustainedDamage);
             if ((flags.HasFlag(Combo.Simple) ||
                  (flags.HasFlag(Combo.Adv) && IsEnabled(Preset.DRK_Var_Dart))) &&
-                IsEnabled(Content.Variant.VariantSpiritDart) &&
-                ActionReady(Content.Variant.VariantSpiritDart) &&
+                IsEnabled(Variant.SpiritDart) &&
+                ActionReady(Variant.SpiritDart) &&
                 DoTStatus?.RemainingTime <= 3)
-                return (action = Content.Variant.VariantSpiritDart) != 0;
+                return (action = Variant.SpiritDart) != 0;
 
             #endregion
 
@@ -1465,7 +1467,7 @@ internal partial class DRK
     /// <param name="action">The action to execute.</param>
     /// <returns>Whether the <c>action</c> was changed.</returns>
     /// <seealso cref="IActionProvider.TryGetAction" />
-    /// <seealso cref="Variant" />
+    /// <seealso cref="VariantAction" />
     /// <seealso cref="Mitigation" />
     /// <seealso cref="Spender" />
     /// <seealso cref="Cooldown" />
