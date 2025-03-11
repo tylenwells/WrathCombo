@@ -136,8 +136,16 @@ namespace WrathCombo.Combos.PvE
             public const ushort
                 Reprisal = 1193; //applied by Reprisal to target
         }
-        public static bool CanInterject(CustomComboPreset preset) =>
-            IsEnabled(preset) && ActionReady(Interject) && CanInterruptEnemy();
+        public static bool CanInterject() =>
+            ActionReady(Interject) && CanInterruptEnemy();
+
+        public static bool CanRampart(int healthpercent) =>
+            ActionReady(Rampart) && PlayerHealthPercentageHp() < healthpercent;
+
+        public static bool CanReprisal(int healthpercent) =>
+            ActionReady(Reprisal) && InActionRange(Reprisal) &&PlayerHealthPercentageHp() < healthpercent;
+
+
 
     }
 }

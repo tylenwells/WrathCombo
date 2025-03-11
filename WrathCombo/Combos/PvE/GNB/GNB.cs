@@ -48,8 +48,8 @@ internal partial class GNB : Tank
                     {
                         if (ActionReady(OriginalHook(Nebula)) && HPP < 60)
                             return OriginalHook(Nebula);
-                        if (ActionReady(All.Rampart) && HPP < 80)
-                            return All.Rampart;
+                        if (ActionReady(Role.Rampart) && HPP < 80)
+                            return Role.Rampart;
                         if (ActionReady(All.Reprisal) && InActionRange(All.Reprisal) && HPP < 90)
                             return All.Reprisal;
                     }
@@ -139,7 +139,7 @@ internal partial class GNB : Tank
             }
 
             //Interject
-            if (Role.CanInterject(CustomComboPreset.GNB_ST_Interrupt))
+            if (IsEnabled(CustomComboPreset.GNB_ST_Interrupt) && Role.CanInterject())
                 return Role.Interject;
 
             #region Mitigations
@@ -153,12 +153,12 @@ internal partial class GNB : Tank
                     if (IsEnabled(CustomComboPreset.GNB_ST_Nebula) && ActionReady(OriginalHook(Nebula)) && HPP < Config.GNB_ST_Nebula_Health &&
                         (Config.GNB_ST_Nebula_SubOption == 0 || TargetIsBoss() && Config.GNB_ST_Nebula_SubOption == 1))
                         return OriginalHook(Nebula);
-                    if (IsEnabled(CustomComboPreset.GNB_ST_Rampart) && ActionReady(All.Rampart) && HPP < Config.GNB_ST_Rampart_Health &&
+                    if (IsEnabled(CustomComboPreset.GNB_ST_Rampart) && Role.CanRampart(Config.GNB_ST_Rampart_Health) &&
                         (Config.GNB_ST_Rampart_SubOption == 0 || TargetIsBoss() && Config.GNB_ST_Rampart_SubOption == 1))
-                        return All.Rampart;
-                    if (IsEnabled(CustomComboPreset.GNB_ST_Reprisal) && ActionReady(All.Reprisal) && InActionRange(All.Reprisal) && HPP < Config.GNB_ST_Reprisal_Health &&
+                        return Role.Rampart;
+                    if (IsEnabled(CustomComboPreset.GNB_ST_Reprisal) && Role.CanReprisal(Config.GNB_ST_Reprisal_Health) &&
                         (Config.GNB_ST_Reprisal_SubOption == 0 || TargetIsBoss() && Config.GNB_ST_Reprisal_SubOption == 1))
-                        return All.Reprisal;
+                        return Role.Reprisal;
                     if (IsEnabled(CustomComboPreset.GNB_ST_ArmsLength) && ActionReady(All.ArmsLength) && HPP < Config.GNB_ST_ArmsLength_Health && !InBossEncounter())
                         return All.ArmsLength;
                 }
