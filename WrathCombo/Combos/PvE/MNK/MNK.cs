@@ -52,10 +52,10 @@ internal partial class MNK : MeleeDPS
                 if (UsePerfectBalance())
                     return PerfectBalance;
 
-                if (Role.CanSecondWind(CustomComboPreset.MNK_ST_SimpleMode, 25))
+                if (IsEnabled(25) && Role.CanSecondWind(25))
                     return Role.SecondWind;
 
-                if (Role.CanBloodBath(CustomComboPreset.MNK_ST_SimpleMode, 40))
+                if (Role.CanBloodBath(40))
                     return Role.Bloodbath;
 
                 if (Gauge.Chakra >= 5 && InCombat() && LevelChecked(SteeledMeditation))

@@ -1,8 +1,7 @@
-using WrathCombo.Combos.PvE.Content;
 using WrathCombo.CustomComboNS;
 namespace WrathCombo.Combos.PvE;
 
-internal partial class RPR
+internal partial class RPR : MeleeDPS
 {
     internal class RPR_ST_SimpleMode : CustomCombo
     {
@@ -21,17 +20,12 @@ internal partial class RPR
                 return Soulsow;
 
             //Variant Cure
-            if (IsEnabled(CustomComboPreset.RPR_Variant_Cure) &&
-                IsEnabled(Variant.VariantCure) &&
-                PlayerHealthPercentageHp() <= GetOptionValue(Config.RPR_VariantCure))
-                return Variant.VariantCure;
+            if (Variant.CanCure(CustomComboPreset.RPR_Variant_Cure, Config.RPR_VariantCure))
+                return Variant.Cure;
 
             //Variant Rampart
-            if (IsEnabled(CustomComboPreset.RPR_Variant_Rampart) &&
-                IsEnabled(Variant.VariantRampart) &&
-                IsOffCooldown(Variant.VariantRampart) &&
-                CanWeave())
-                return Variant.VariantRampart;
+            if (Variant.CanRampart(CustomComboPreset.RPR_Variant_Rampart, WeaveTypes.Weave))
+                return Variant.Rampart;
 
             //All Weaves
             if (CanWeave())
@@ -201,17 +195,12 @@ internal partial class RPR
                 return Soulsow;
 
             //Variant Cure
-            if (IsEnabled(CustomComboPreset.RPR_Variant_Cure) &&
-                IsEnabled(Variant.VariantCure) &&
-                PlayerHealthPercentageHp() <= GetOptionValue(Config.RPR_VariantCure))
-                return Variant.VariantCure;
+            if (Variant.CanCure(CustomComboPreset.RPR_Variant_Cure, Config.RPR_VariantCure))
+                return Variant.Cure;
 
             //Variant Rampart
-            if (IsEnabled(CustomComboPreset.RPR_Variant_Rampart) &&
-                IsEnabled(Variant.VariantRampart) &&
-                IsOffCooldown(Variant.VariantRampart) &&
-                CanWeave())
-                return Variant.VariantRampart;
+            if (Variant.CanRampart(CustomComboPreset.RPR_Variant_Rampart, WeaveTypes.Weave))
+                return Variant.Rampart;
 
             //RPR Opener
             if (IsEnabled(CustomComboPreset.RPR_ST_Opener))
@@ -418,16 +407,11 @@ internal partial class RPR
                 !HasEffect(Buffs.Soulsow) && !PartyInCombat())
                 return Soulsow;
 
-            if (IsEnabled(CustomComboPreset.RPR_Variant_Cure) &&
-                IsEnabled(Variant.VariantCure) &&
-                PlayerHealthPercentageHp() <= GetOptionValue(Config.RPR_VariantCure))
-                return Variant.VariantCure;
+            if (Variant.CanCure(CustomComboPreset.RPR_Variant_Cure, Config.RPR_VariantCure))
+                return Variant.Cure;
 
-            if (IsEnabled(CustomComboPreset.RPR_Variant_Rampart) &&
-                IsEnabled(Variant.VariantRampart) &&
-                IsOffCooldown(Variant.VariantRampart) &&
-                CanWeave())
-                return Variant.VariantRampart;
+            if (Variant.CanRampart(CustomComboPreset.RPR_Variant_Rampart, WeaveTypes.Weave))
+                return Variant.Rampart;
 
             if (LevelChecked(WhorlOfDeath) &&
                 GetDebuffRemainingTime(Debuffs.DeathsDesign) < 6 && !HasEffect(Buffs.SoulReaver) &&
@@ -515,16 +499,11 @@ internal partial class RPR
                 !HasEffect(Buffs.Soulsow) && !PartyInCombat())
                 return Soulsow;
 
-            if (IsEnabled(CustomComboPreset.RPR_Variant_Cure) &&
-                IsEnabled(Variant.VariantCure) &&
-                PlayerHealthPercentageHp() <= GetOptionValue(Config.RPR_VariantCure))
-                return Variant.VariantCure;
+            if (Variant.CanCure(CustomComboPreset.RPR_Variant_Cure, Config.RPR_VariantCure))
+                return Variant.Cure;
 
-            if (IsEnabled(CustomComboPreset.RPR_Variant_Rampart) &&
-                IsEnabled(Variant.VariantRampart) &&
-                IsOffCooldown(Variant.VariantRampart) &&
-                CanWeave())
-                return Variant.VariantRampart;
+            if (Variant.CanRampart(CustomComboPreset.RPR_Variant_Rampart, WeaveTypes.Weave))
+                return Variant.Rampart;
 
             if (IsEnabled(CustomComboPreset.RPR_AoE_WoD) &&
                 LevelChecked(WhorlOfDeath) &&

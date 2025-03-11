@@ -1,13 +1,12 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
 using Dalamud.Game.ClientState.Statuses;
 using System.Linq;
-using WrathCombo.Combos.PvE.Content;
 using WrathCombo.CustomComboNS;
 using WrathCombo.Data;
 
 namespace WrathCombo.Combos.PvE;
 
-internal partial class WAR
+internal partial class WAR : Tank
 {
     #region Simple Mode - Single Target
     internal class WAR_ST_Simple : CustomCombo
@@ -32,23 +31,14 @@ internal partial class WAR
                 return All.Interject;
 
             #region Variant
-            Status? sustainedDamage = FindTargetEffect(Variant.Debuffs.SustainedDamage);
-            if (IsEnabled(CustomComboPreset.WAR_Variant_SpiritDart) &&
-                IsEnabled(Variant.VariantSpiritDart) &&
-                (sustainedDamage is null || sustainedDamage?.RemainingTime <= 3))
-                return Variant.VariantSpiritDart;
+            if (Variant.CanSpiritDart(CustomComboPreset.WAR_Variant_SpiritDart))
+                return Variant.SpiritDart;
 
-            if (IsEnabled(CustomComboPreset.WAR_Variant_Ultimatum) &&
-                IsEnabled(Variant.VariantUltimatum) &&
-                CanWeave() &&
-                ActionReady(Variant.VariantUltimatum))
-                return Variant.VariantUltimatum;
+            if (Variant.CanUltimatum(CustomComboPreset.WAR_Variant_Ultimatum, WeaveTypes.Weave))
+                return Variant.Ultimatum;
 
-            if (IsEnabled(CustomComboPreset.WAR_Variant_Cure) &&
-                IsEnabled(Variant.VariantCure) &&
-                CanWeave() &&
-                PlayerHealthPercentageHp() <= GetOptionValue(Config.WAR_VariantCure))
-                return Variant.VariantCure;
+            if (Variant.CanCure(CustomComboPreset.WAR_Variant_Cure, Config.WAR_VariantCure))
+                return Variant.Cure;
             #endregion
 
             #region Mitigations
@@ -217,23 +207,14 @@ internal partial class WAR
                 return All.Interject;
 
             #region Variant
-            Status? sustainedDamage = FindTargetEffect(Variant.Debuffs.SustainedDamage);
-            if (IsEnabled(CustomComboPreset.WAR_Variant_SpiritDart) &&
-                IsEnabled(Variant.VariantSpiritDart) &&
-                (sustainedDamage is null || sustainedDamage?.RemainingTime <= 3))
-                return Variant.VariantSpiritDart;
+            if (Variant.CanSpiritDart(CustomComboPreset.WAR_Variant_SpiritDart))
+                return Variant.SpiritDart;
 
-            if (IsEnabled(CustomComboPreset.WAR_Variant_Ultimatum) &&
-                IsEnabled(Variant.VariantUltimatum) &&
-                CanWeave() &&
-                ActionReady(Variant.VariantUltimatum))
-                return Variant.VariantUltimatum;
+            if (Variant.CanUltimatum(CustomComboPreset.WAR_Variant_Ultimatum, WeaveTypes.Weave))
+                return Variant.Ultimatum;
 
-            if (IsEnabled(CustomComboPreset.WAR_Variant_Cure) &&
-                IsEnabled(Variant.VariantCure) &&
-                CanWeave() &&
-                PlayerHealthPercentageHp() <= GetOptionValue(Config.WAR_VariantCure))
-                return Variant.VariantCure;
+            if (Variant.CanCure(CustomComboPreset.WAR_Variant_Cure, Config.WAR_VariantCure))
+                return Variant.Cure;
             #endregion
 
             #region Mitigations
@@ -468,23 +449,14 @@ internal partial class WAR
             #endregion
 
             #region Variant
-            Status? sustainedDamage = FindTargetEffect(Variant.Debuffs.SustainedDamage);
-            if (IsEnabled(CustomComboPreset.WAR_Variant_SpiritDart) &&
-                IsEnabled(Variant.VariantSpiritDart) &&
-                (sustainedDamage is null || sustainedDamage?.RemainingTime <= 3))
-                return Variant.VariantSpiritDart;
+            if (Variant.CanSpiritDart(CustomComboPreset.WAR_Variant_SpiritDart))
+                return Variant.SpiritDart;
 
-            if (IsEnabled(CustomComboPreset.WAR_Variant_Ultimatum) &&
-                IsEnabled(Variant.VariantUltimatum) &&
-                CanWeave() &&
-                ActionReady(Variant.VariantUltimatum))
-                return Variant.VariantUltimatum;
+            if (Variant.CanUltimatum(CustomComboPreset.WAR_Variant_Ultimatum, WeaveTypes.Weave))
+                return Variant.Ultimatum;
 
-            if (IsEnabled(CustomComboPreset.WAR_Variant_Cure) &&
-                IsEnabled(Variant.VariantCure) &&
-                CanWeave() &&
-                PlayerHealthPercentageHp() <= GetOptionValue(Config.WAR_VariantCure))
-                return Variant.VariantCure;
+            if (Variant.CanCure(CustomComboPreset.WAR_Variant_Cure, Config.WAR_VariantCure))
+                return Variant.Cure;
             #endregion
 
             #region Mitigations
@@ -625,23 +597,15 @@ internal partial class WAR
             #endregion
 
             #region Variant
-            Status? sustainedDamage = FindTargetEffect(Variant.Debuffs.SustainedDamage);
-            if (IsEnabled(CustomComboPreset.WAR_Variant_SpiritDart) &&
-                IsEnabled(Variant.VariantSpiritDart) &&
-                (sustainedDamage is null || sustainedDamage?.RemainingTime <= 3))
-                return Variant.VariantSpiritDart;
+            if (Variant.CanSpiritDart(CustomComboPreset.WAR_Variant_SpiritDart))
+                return Variant.SpiritDart;
 
-            if (IsEnabled(CustomComboPreset.WAR_Variant_Ultimatum) &&
-                IsEnabled(Variant.VariantUltimatum) &&
-                CanWeave() &&
-                ActionReady(Variant.VariantUltimatum))
-                return Variant.VariantUltimatum;
+            if (Variant.CanUltimatum(CustomComboPreset.WAR_Variant_Ultimatum, WeaveTypes.Weave))
+                return Variant.Ultimatum;
 
-            if (IsEnabled(CustomComboPreset.WAR_Variant_Cure) &&
-                IsEnabled(Variant.VariantCure) &&
-                CanWeave() &&
-                PlayerHealthPercentageHp() <= GetOptionValue(Config.WAR_VariantCure))
-                return Variant.VariantCure;
+            if (Variant.CanCure(CustomComboPreset.WAR_Variant_Cure, Config.WAR_VariantCure))
+                return Variant.Cure;
+
             #endregion
 
             #region Mitigations

@@ -1,12 +1,10 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
-using ECommons.DalamudServices;
-using WrathCombo.Combos.PvE.Content;
 using WrathCombo.Core;
 using WrathCombo.CustomComboNS;
 
 namespace WrathCombo.Combos.PvE;
 
-internal partial class SMN
+internal partial class SMN : MagicDPS
 {
     internal class SMN_Raise : CustomCombo
     {
@@ -17,8 +15,8 @@ internal partial class SMN
             if (actionID != All.Swiftcast)
                 return actionID;
 
-            if (HasEffect(All.Buffs.Swiftcast) && IsEnabled(CustomComboPreset.SMN_Variant_Raise) && IsEnabled(Variant.VariantRaise))
-                return Variant.VariantRaise;
+            if (Variant.CanRaise(CustomComboPreset.SMN_Variant_Raise))
+                return Variant.Raise;
 
             if (IsOnCooldown(All.Swiftcast))
                 return Resurrection;
@@ -98,14 +96,11 @@ internal partial class SMN
             if (actionID is not (Ruin or Ruin2))
                 return actionID;
 
-            if (IsEnabled(CustomComboPreset.SMN_Variant_Cure) && IsEnabled(Variant.VariantCure) && PlayerHealthPercentageHp() <= GetOptionValue(Config.SMN_VariantCure))
-                return Variant.VariantCure;
+            if (Variant.CanCure(CustomComboPreset.SMN_Variant_Cure, Config.SMN_VariantCure))
+                return Variant.Cure;
 
-            if (IsEnabled(CustomComboPreset.SMN_Variant_Rampart) &&
-                IsEnabled(Variant.VariantRampart) &&
-                IsOffCooldown(Variant.VariantRampart) &&
-                CanSpellWeave())
-                return Variant.VariantRampart;
+            if (Variant.CanRampart(CustomComboPreset.SMN_Variant_Rampart, WeaveTypes.SpellWeave))
+                return Variant.Rampart;
 
             if (NeedToSummon && ActionReady(SummonCarbuncle))
                 return SummonCarbuncle;
@@ -200,14 +195,11 @@ internal partial class SMN
             if (actionID is not Outburst)
                 return actionID;
 
-            if (IsEnabled(CustomComboPreset.SMN_Variant_Cure) && IsEnabled(Variant.VariantCure) && PlayerHealthPercentageHp() <= GetOptionValue(Config.SMN_VariantCure))
-                return Variant.VariantCure;
+            if (Variant.CanCure(CustomComboPreset.SMN_Variant_Cure, Config.SMN_VariantCure))
+                return Variant.Cure;
 
-            if (IsEnabled(CustomComboPreset.SMN_Variant_Rampart) &&
-                IsEnabled(Variant.VariantRampart) &&
-                IsOffCooldown(Variant.VariantRampart) &&
-                CanSpellWeave())
-                return Variant.VariantRampart;
+            if (Variant.CanRampart(CustomComboPreset.SMN_Variant_Rampart, WeaveTypes.SpellWeave))
+                return Variant.Rampart;
 
             if (NeedToSummon && ActionReady(SummonCarbuncle))
                 return SummonCarbuncle;
@@ -322,17 +314,14 @@ internal partial class SMN
 
             DemiAttackCount = CurrentDemiSummon is not DemiSummon.None ? TimesUsedSinceOtherAction(OriginalHook(Aethercharge), [AstralImpulse, UmbralImpulse, FountainOfFire, AstralFlare, UmbralFlare, BrandOfPurgatory]) : 0;
 
-            if (IsEnabled(CustomComboPreset.SMN_Variant_Cure) && IsEnabled(Variant.VariantCure) && PlayerHealthPercentageHp() <= GetOptionValue(Config.SMN_VariantCure))
-                return Variant.VariantCure;
+            if (Variant.CanCure(CustomComboPreset.SMN_Variant_Cure, Config.SMN_VariantCure))
+                return Variant.Cure;
 
             if (IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_Balance_Opener) && Opener().FullOpener(ref actionID))
                 return actionID;
 
-            if (IsEnabled(CustomComboPreset.SMN_Variant_Rampart) &&
-                IsEnabled(Variant.VariantRampart) &&
-                IsOffCooldown(Variant.VariantRampart) &&
-                CanSpellWeave())
-                return Variant.VariantRampart;
+            if (Variant.CanRampart(CustomComboPreset.SMN_Variant_Rampart, WeaveTypes.SpellWeave))
+                return Variant.Rampart;
 
             // Emergency priority Demi Nuke to prevent waste if you can't get demi attacks out to satisfy the slider check.
             if (CurrentDemiSummon is not DemiSummon.None && IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_DemiSummons_Attacks) && Gauge.SummonTimerRemaining <= 2500)
@@ -519,14 +508,11 @@ internal partial class SMN
 
             DemiAttackCount = CurrentDemiSummon is not DemiSummon.None ? TimesUsedSinceOtherAction(OriginalHook(Aethercharge), [AstralImpulse, UmbralImpulse, FountainOfFire, AstralFlare, UmbralFlare, BrandOfPurgatory]) : 0;
 
-            if (IsEnabled(CustomComboPreset.SMN_Variant_Cure) && IsEnabled(Variant.VariantCure) && PlayerHealthPercentageHp() <= GetOptionValue(Config.SMN_VariantCure))
-                return Variant.VariantCure;
+            if (Variant.CanCure(CustomComboPreset.SMN_Variant_Cure, Config.SMN_VariantCure))
+                return Variant.Cure;
 
-            if (IsEnabled(CustomComboPreset.SMN_Variant_Rampart) &&
-                IsEnabled(Variant.VariantRampart) &&
-                IsOffCooldown(Variant.VariantRampart) &&
-                CanSpellWeave())
-                return Variant.VariantRampart;
+            if (Variant.CanRampart(CustomComboPreset.SMN_Variant_Rampart, WeaveTypes.SpellWeave))
+                return Variant.Rampart;
 
             // Emergency priority Demi Nuke to prevent waste if you can't get demi attacks out to satisfy the slider check.
             if (CurrentDemiSummon is not DemiSummon.None && IsEnabled(CustomComboPreset.SMN_AoE_Advanced_Combo_DemiSummons_Attacks) && Gauge.SummonTimerRemaining <= 2500)

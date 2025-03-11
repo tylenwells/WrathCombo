@@ -1,8 +1,7 @@
-using WrathCombo.Combos.PvE.Content;
 using WrathCombo.CustomComboNS;
 namespace WrathCombo.Combos.PvE;
 
-internal partial class VPR
+internal partial class VPR : MeleeDPS
 {
     internal class VPR_ST_SimpleMode : CustomCombo
     {
@@ -14,17 +13,12 @@ internal partial class VPR
                 return actionID;
 
             // Variant Cure
-            if (IsEnabled(CustomComboPreset.VPR_Variant_Cure) &&
-                IsEnabled(Variant.VariantCure) &&
-                PlayerHealthPercentageHp() <= GetOptionValue(Config.VPR_VariantCure))
-                return Variant.VariantCure;
+            if (Variant.CanCure(CustomComboPreset.VPR_Variant_Cure, Config.VPR_VariantCure))
+                return Variant.Cure;
 
             // Variant Rampart
-            if (IsEnabled(CustomComboPreset.VPR_Variant_Rampart) &&
-                IsEnabled(Variant.VariantRampart) &&
-                IsOffCooldown(Variant.VariantRampart) &&
-                CanWeave())
-                return Variant.VariantRampart;
+            if (Variant.CanRampart(CustomComboPreset.VPR_Variant_Rampart, WeaveTypes.Weave))
+                return Variant.Rampart;
 
             //oGCDs
             if (CanWeave())
@@ -225,17 +219,12 @@ internal partial class VPR
                 return actionID;
 
             // Variant Cure
-            if (IsEnabled(CustomComboPreset.VPR_Variant_Cure) &&
-                IsEnabled(Variant.VariantCure) &&
-                PlayerHealthPercentageHp() <= GetOptionValue(Config.VPR_VariantCure))
-                return Variant.VariantCure;
+            if (Variant.CanCure(CustomComboPreset.VPR_Variant_Cure, Config.VPR_VariantCure))
+                return Variant.Cure;
 
             // Variant Rampart
-            if (IsEnabled(CustomComboPreset.VPR_Variant_Rampart) &&
-                IsEnabled(Variant.VariantRampart) &&
-                IsOffCooldown(Variant.VariantRampart) &&
-                CanWeave())
-                return Variant.VariantRampart;
+            if (Variant.CanRampart(CustomComboPreset.VPR_Variant_Rampart, WeaveTypes.Weave))
+                return Variant.Rampart;
 
             // Opener for VPR
             if (IsEnabled(CustomComboPreset.VPR_ST_Opener))
@@ -475,17 +464,12 @@ internal partial class VPR
             if (CanWeave())
             {
                 // Variant Cure
-                if (IsEnabled(CustomComboPreset.VPR_Variant_Cure) &&
-                    IsEnabled(Variant.VariantCure) &&
-                    PlayerHealthPercentageHp() <= GetOptionValue(Config.VPR_VariantCure))
-                    return Variant.VariantCure;
+                if (Variant.CanCure(CustomComboPreset.VPR_Variant_Cure, Config.VPR_VariantCure))
+                    return Variant.Cure;
 
                 // Variant Rampart
-                if (IsEnabled(CustomComboPreset.VPR_Variant_Rampart) &&
-                    IsEnabled(Variant.VariantRampart) &&
-                    IsOffCooldown(Variant.VariantRampart) &&
-                    CanWeave())
-                    return Variant.VariantRampart;
+                if (Variant.CanRampart(CustomComboPreset.VPR_Variant_Rampart, WeaveTypes.Weave))
+                    return Variant.Rampart;
 
                 // Death Rattle
                 if (LevelChecked(SerpentsTail) && OriginalHook(SerpentsTail) is LastLash)
@@ -659,17 +643,12 @@ internal partial class VPR
                 return actionID;
 
             // Variant Cure
-            if (IsEnabled(CustomComboPreset.VPR_Variant_Cure) &&
-                IsEnabled(Variant.VariantCure) &&
-                PlayerHealthPercentageHp() <= GetOptionValue(Config.VPR_VariantCure))
-                return Variant.VariantCure;
+            if (Variant.CanCure(CustomComboPreset.VPR_Variant_Cure, Config.VPR_VariantCure))
+                return Variant.Cure;
 
             // Variant Rampart
-            if (IsEnabled(CustomComboPreset.VPR_Variant_Rampart) &&
-                IsEnabled(Variant.VariantRampart) &&
-                IsOffCooldown(Variant.VariantRampart) &&
-                CanWeave())
-                return Variant.VariantRampart;
+            if (Variant.CanRampart(CustomComboPreset.VPR_Variant_Rampart, WeaveTypes.Weave))
+                return Variant.Rampart;
 
             if (CanWeave())
             {

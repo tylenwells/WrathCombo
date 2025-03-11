@@ -33,7 +33,7 @@ internal partial class MCH : PhysRangedDPS
             // All weaves
             if (CanWeave())
             {
-                if (Variant.CanRampart(CustomComboPreset.MCH_Variant_Rampart, false))
+                if (Variant.CanRampart(CustomComboPreset.MCH_Variant_Rampart, WeaveTypes.None))
                     return Variant.Rampart;
 
                 if (!ActionWatching.HasDoubleWeaved())
@@ -183,7 +183,7 @@ internal partial class MCH : PhysRangedDPS
             // All weaves
             if (CanWeave())
             {
-                if (Variant.CanRampart(CustomComboPreset.MCH_Variant_Rampart, false))
+                if (Variant.CanRampart(CustomComboPreset.MCH_Variant_Rampart, WeaveTypes.None))
                     return Variant.Rampart;
 
                 if (!ActionWatching.HasDoubleWeaved())
@@ -347,7 +347,7 @@ internal partial class MCH : PhysRangedDPS
             // All weaves
             if (CanWeave())
             {
-                if (Variant.CanRampart(CustomComboPreset.MCH_Variant_Rampart, false))
+                if (Variant.CanRampart(CustomComboPreset.MCH_Variant_Rampart, WeaveTypes.None))
                     return Variant.Rampart;
 
                 if (!ActionWatching.HasDoubleWeaved() && !Gauge.IsOverheated)
@@ -479,7 +479,7 @@ internal partial class MCH : PhysRangedDPS
             // All weaves
             if (CanWeave())
             {
-                if (Variant.CanRampart(CustomComboPreset.MCH_Variant_Rampart, false))
+                if (Variant.CanRampart(CustomComboPreset.MCH_Variant_Rampart, WeaveTypes.None))
                     return Variant.Rampart;
 
                 if (!ActionWatching.HasDoubleWeaved() && !Gauge.IsOverheated)
@@ -527,7 +527,7 @@ internal partial class MCH : PhysRangedDPS
                             return OriginalHook(Ricochet);
                     }
 
-                    if (Role.CanSecondWind(CustomComboPreset.MCH_AoE_Adv_SecondWind, Config.MCH_AoE_SecondWindThreshold))
+                    if (IsEnabled(CustomComboPreset.MCH_AoE_Adv_SecondWind) && Role.CanSecondWind(Config.MCH_AoE_SecondWindThreshold))
                         return Role.SecondWind;
                 }
 

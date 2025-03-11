@@ -55,9 +55,8 @@ internal partial class PLD : Tank
                 return All.Interject;
 
             // Variant Cure
-            if (IsEnabled(CustomComboPreset.PLD_Variant_Cure) && IsEnabled(Variant.VariantCure) &&
-                PlayerHealthPercentageHp() <= Config.PLD_VariantCure)
-                return Variant.VariantCure;
+            if (Variant.CanCure(CustomComboPreset.PLD_Variant_Cure, Config.PLD_VariantCure))
+                return Variant.Cure;
 
             #region Mitigations
 
@@ -105,9 +104,6 @@ internal partial class PLD : Tank
 
             if (HasBattleTarget())
             {
-                // Variant DoT Check
-                Status? sustainedDamage = FindTargetEffect(Variant.Debuffs.SustainedDamage);
-
                 // Weavables
                 if (canWeave)
                 {
@@ -140,9 +136,8 @@ internal partial class PLD : Tank
                         }
 
                         // Variant Ultimatum
-                        if (IsEnabled(CustomComboPreset.PLD_Variant_Ultimatum) && IsEnabled(Variant.VariantUltimatum) &&
-                            IsOffCooldown(Variant.VariantUltimatum))
-                            return Variant.VariantUltimatum;
+                        if (Variant.CanUltimatum(CustomComboPreset.PLD_Variant_Ultimatum))
+                            return Variant.Ultimatum;
 
                         // Circle of Scorn / Spirits Within
                         if (cooldownFightOrFlight > 15)
@@ -156,9 +151,8 @@ internal partial class PLD : Tank
                     }
 
                     // Variant Spirit Dart
-                    if (IsEnabled(CustomComboPreset.PLD_Variant_SpiritDart) && IsEnabled(Variant.VariantSpiritDart) &&
-                        (sustainedDamage is null || sustainedDamage?.RemainingTime <= 3))
-                        return Variant.VariantSpiritDart;
+                    if (Variant.CanSpiritDart(CustomComboPreset.PLD_Variant_SpiritDart))
+                        return Variant.SpiritDart;
 
                     // Blade of Honor
                     if (LevelChecked(BladeOfHonor) && OriginalHook(Requiescat) == BladeOfHonor)
@@ -259,9 +253,8 @@ internal partial class PLD : Tank
                     return All.LowBlow;
 
             // Variant Cure
-            if (IsEnabled(CustomComboPreset.PLD_Variant_Cure) && IsEnabled(Variant.VariantCure) &&
-                PlayerHealthPercentageHp() <= Config.PLD_VariantCure)
-                return Variant.VariantCure;
+            if (Variant.CanCure(CustomComboPreset.PLD_Variant_Cure, Config.PLD_VariantCure))
+                return Variant.Cure;
 
             if (Config.PLD_AoE_MitsOptions != 1)
             {
@@ -306,9 +299,6 @@ internal partial class PLD : Tank
 
             if (HasBattleTarget())
             {
-                // Variant DoT Check
-                Status? sustainedDamage = FindTargetEffect(Variant.Debuffs.SustainedDamage);
-
                 // Weavables
                 if (canWeave)
                 {
@@ -323,9 +313,8 @@ internal partial class PLD : Tank
                             return FightOrFlight;
 
                         // Variant Ultimatum
-                        if (IsEnabled(CustomComboPreset.PLD_Variant_Ultimatum) && IsEnabled(Variant.VariantUltimatum) &&
-                            IsOffCooldown(Variant.VariantUltimatum))
-                            return Variant.VariantUltimatum;
+                        if (Variant.CanUltimatum(CustomComboPreset.PLD_Variant_Ultimatum))
+                            return Variant.Ultimatum;
 
                         // Circle of Scorn / Spirits Within
                         if (cooldownFightOrFlight > 15)
@@ -339,9 +328,8 @@ internal partial class PLD : Tank
                     }
 
                     // Variant Spirit Dart
-                    if (IsEnabled(CustomComboPreset.PLD_Variant_SpiritDart) && IsEnabled(Variant.VariantSpiritDart) &&
-                        (sustainedDamage is null || sustainedDamage?.RemainingTime <= 3))
-                        return Variant.VariantSpiritDart;
+                    if (Variant.CanSpiritDart(CustomComboPreset.PLD_Variant_SpiritDart))
+                        return Variant.SpiritDart;
 
                     // Blade of Honor
                     if (LevelChecked(BladeOfHonor) && OriginalHook(Requiescat) == BladeOfHonor)
@@ -410,9 +398,8 @@ internal partial class PLD : Tank
                 return All.Interject;
 
             // Variant Cure
-            if (IsEnabled(CustomComboPreset.PLD_Variant_Cure) && IsEnabled(Variant.VariantCure) &&
-                PlayerHealthPercentageHp() <= Config.PLD_VariantCure)
-                return Variant.VariantCure;
+            if (Variant.CanCure(CustomComboPreset.PLD_Variant_Cure, Config.PLD_VariantCure))
+                return Variant.Cure;
 
             if (IsEnabled(CustomComboPreset.PLD_ST_AdvancedMode_BalanceOpener) &&
                 Opener().FullOpener(ref actionID))
@@ -420,9 +407,6 @@ internal partial class PLD : Tank
 
             if (HasBattleTarget())
             {
-                // Variant DoT Check
-                Status? sustainedDamage = FindTargetEffect(Variant.Debuffs.SustainedDamage);
-
                 // Weavables
                 if (canWeave)
                 {
@@ -455,9 +439,8 @@ internal partial class PLD : Tank
                         }
 
                         // Variant Ultimatum
-                        if (IsEnabled(CustomComboPreset.PLD_Variant_Ultimatum) && IsEnabled(Variant.VariantUltimatum) &&
-                            IsOffCooldown(Variant.VariantUltimatum))
-                            return Variant.VariantUltimatum;
+                        if (Variant.CanUltimatum(CustomComboPreset.PLD_Variant_Ultimatum))
+                            return Variant.Ultimatum;
 
                         // Circle of Scorn / Spirits Within
                         if (cooldownFightOrFlight > 15)
@@ -471,9 +454,8 @@ internal partial class PLD : Tank
                     }
 
                     // Variant Spirit Dart
-                    if (IsEnabled(CustomComboPreset.PLD_Variant_SpiritDart) && IsEnabled(Variant.VariantSpiritDart) &&
-                        (sustainedDamage is null || sustainedDamage?.RemainingTime <= 3))
-                        return Variant.VariantSpiritDart;
+                    if (Variant.CanSpiritDart(CustomComboPreset.PLD_Variant_SpiritDart))
+                        return Variant.SpiritDart;
 
                     // Intervene
                     if (IsEnabled(CustomComboPreset.PLD_ST_AdvancedMode_Intervene) && LevelChecked(Intervene) && TimeMoving.Ticks == 0 &&
@@ -620,15 +602,11 @@ internal partial class PLD : Tank
                     return All.LowBlow;
 
             // Variant Cure
-            if (IsEnabled(CustomComboPreset.PLD_Variant_Cure) && IsEnabled(Variant.VariantCure) &&
-                PlayerHealthPercentageHp() <= Config.PLD_VariantCure)
-                return Variant.VariantCure;
+            if (Variant.CanCure(CustomComboPreset.PLD_Variant_Cure, Config.PLD_VariantCure))
+                return Variant.Cure;
 
             if (HasBattleTarget())
             {
-                // Variant DoT Check
-                Status? sustainedDamage = FindTargetEffect(Variant.Debuffs.SustainedDamage);
-
                 // Weavables
                 if (canWeave)
                 {
@@ -644,9 +622,8 @@ internal partial class PLD : Tank
                             return FightOrFlight;
 
                         // Variant Ultimatum
-                        if (IsEnabled(CustomComboPreset.PLD_Variant_Ultimatum) && IsEnabled(Variant.VariantUltimatum) &&
-                            IsOffCooldown(Variant.VariantUltimatum))
-                            return Variant.VariantUltimatum;
+                        if (Variant.CanUltimatum(CustomComboPreset.PLD_Variant_Ultimatum))
+                            return Variant.Ultimatum;
 
                         // Circle of Scorn / Spirits Within
                         if (cooldownFightOrFlight > 15)
@@ -660,9 +637,8 @@ internal partial class PLD : Tank
                     }
 
                     // Variant Spirit Dart
-                    if (IsEnabled(CustomComboPreset.PLD_Variant_SpiritDart) && IsEnabled(Variant.VariantSpiritDart) &&
-                        (sustainedDamage is null || sustainedDamage?.RemainingTime <= 3))
-                        return Variant.VariantSpiritDart;
+                    if (Variant.CanSpiritDart(CustomComboPreset.PLD_Variant_SpiritDart))
+                        return Variant.SpiritDart;
 
                     // Intervene
                     if (IsEnabled(CustomComboPreset.PLD_AoE_AdvancedMode_Intervene) && LevelChecked(Intervene) && TimeMoving.Ticks == 0 &&

@@ -25,7 +25,7 @@ internal partial class DRG
         WyrmwindThrust,
         RiseOfTheDragon,
         Starcross,
-        Variant.VariantRampart,
+        Variant.Rampart,
         All.TrueNorth
     ];
 

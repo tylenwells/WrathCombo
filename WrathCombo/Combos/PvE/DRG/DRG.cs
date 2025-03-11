@@ -162,10 +162,10 @@ internal partial class DRG : MeleeDPS
                     return MirageDive;
             }
 
-            if (Role.CanSecondWind(CustomComboPreset.DRG_ST_SimpleMode, 25))
+            if (Role.CanSecondWind(25))
                 return Role.SecondWind;
 
-            if (Role.CanBloodBath(CustomComboPreset.DRG_ST_SimpleMode, 40))
+            if (Role.CanBloodBath(40))
                 return Role.Bloodbath;
 
             //1-2-3 Combo
@@ -349,11 +349,14 @@ internal partial class DRG : MeleeDPS
             }
 
             // healing
-            if (Role.CanSecondWind(CustomComboPreset.DRG_ST_ComboHeals, Config.DRG_ST_SecondWind_Threshold))
-                return Role.SecondWind;
+            if (IsEnabled(CustomComboPreset.DRG_ST_ComboHeals))
+            { 
+                if (Role.CanSecondWind(Config.DRG_ST_SecondWind_Threshold))
+                    return Role.SecondWind;
 
-            if (Role.CanBloodBath(CustomComboPreset.DRG_ST_ComboHeals, Config.DRG_ST_Bloodbath_Threshold))
-                return Role.Bloodbath;
+                if (Role.CanBloodBath(Config.DRG_ST_Bloodbath_Threshold))
+                    return Role.Bloodbath;
+            }
 
             //1-2-3 Combo
             if (ComboTimer > 0)
@@ -508,10 +511,10 @@ internal partial class DRG : MeleeDPS
                     Gauge.IsLOTDActive)
                     return Nastrond;
             }
-            if (Role.CanSecondWind(CustomComboPreset.DRG_ST_SimpleMode, 25))
+            if (Role.CanSecondWind(25))
                 return Role.SecondWind;
 
-            if (Role.CanBloodBath(CustomComboPreset.DRG_ST_SimpleMode, 40))
+            if (Role.CanBloodBath(40))
                 return Role.Bloodbath;
 
             if (ComboTimer > 0)
@@ -672,12 +675,14 @@ internal partial class DRG : MeleeDPS
             }
 
             // healing
-            if (Role.CanSecondWind(CustomComboPreset.DRG_AoE_ComboHeals, Config.DRG_AoE_SecondWind_Threshold))
-                return Role.SecondWind;
+            if (IsEnabled(CustomComboPreset.DRG_AoE_ComboHeals))
+            {
+                if (Role.CanSecondWind(Config.DRG_AoE_SecondWind_Threshold))
+                    return Role.SecondWind;
 
-            if (Role.CanBloodBath(CustomComboPreset.DRG_AoE_ComboHeals, Config.DRG_AoE_Bloodbath_Threshold))
-                return Role.Bloodbath;
-
+                if (Role.CanBloodBath(Config.DRG_AoE_Bloodbath_Threshold))
+                    return Role.Bloodbath;
+            }
             if (ComboTimer > 0)
             {
                 if (IsEnabled(CustomComboPreset.DRG_AoE_Disembowel) &&
