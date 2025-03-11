@@ -232,9 +232,9 @@ namespace WrathCombo.AutoRotation
                 {
                     if (Player.Job is Job.RDM)
                     {
-                        if (ActionReady(All.Swiftcast) && !HasEffect(RDM.Buffs.Dualcast))
+                        if (ActionReady(MagicRole.Swiftcast) && !HasEffect(RDM.Buffs.Dualcast))
                         {
-                            ActionManager.Instance()->UseAction(ActionType.Action, All.Swiftcast);
+                            ActionManager.Instance()->UseAction(ActionType.Action, MagicRole.Swiftcast);
                             return;
                         }
 
@@ -246,16 +246,16 @@ namespace WrathCombo.AutoRotation
                     }
                     else
                     {
-                        if (ActionReady(All.Swiftcast))
+                        if (ActionReady(MagicRole.Swiftcast))
                         {
-                            if (ActionManager.Instance()->GetActionStatus(ActionType.Action, All.Swiftcast) == 0)
+                            if (ActionManager.Instance()->GetActionStatus(ActionType.Action, MagicRole.Swiftcast) == 0)
                             {
-                                ActionManager.Instance()->UseAction(ActionType.Action, All.Swiftcast);
+                                ActionManager.Instance()->UseAction(ActionType.Action, MagicRole.Swiftcast);
                                 return;
                             }
                         }
 
-                        if (!IsMoving() || HasEffect(All.Buffs.Swiftcast))
+                        if (!IsMoving() || HasEffect(MagicRole.Buffs.Swiftcast))
                         {
                             if ((cfg.HealerSettings.AutoRezRequireSwift && ActionManager.GetAdjustedCastTime(ActionType.Action, resSpell) == 0) || !cfg.HealerSettings.AutoRezRequireSwift)
                                 ActionManager.Instance()->UseAction(ActionType.Action, resSpell, member.BattleChara.GameObjectId);

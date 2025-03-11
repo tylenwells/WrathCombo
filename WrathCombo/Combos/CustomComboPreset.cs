@@ -325,7 +325,7 @@ public enum CustomComboPreset
 
     #region Utility
 
-    [ReplaceSkill(All.Swiftcast)]
+    [ReplaceSkill(MagicRole.Swiftcast)]
     [ConflictingCombos(ALL_Healer_Raise)]
     [CustomComboInfo("Alternative Raise Feature", "Changes Swiftcast to Ascend", AST.JobID)]
     AST_Raise_Alternative = 1003,
@@ -4532,7 +4532,7 @@ public enum CustomComboPreset
 
     #region QoL
 
-    [ReplaceSkill(All.Swiftcast)]
+    [ReplaceSkill(MagicRole.Swiftcast)]
     [ConflictingCombos(ALL_Caster_Raise)]
     [CustomComboInfo("Verraise Feature",
         "Changes Swiftcast to Verraise when under the effect of Swiftcast or Dualcast.", RDM.JobID)]
@@ -4830,7 +4830,7 @@ public enum CustomComboPreset
 
     #region Utility
 
-    [ReplaceSkill(All.Swiftcast)]
+    [ReplaceSkill(MagicRole.Swiftcast)]
     [ConflictingCombos(ALL_Healer_Raise)]
     [CustomComboInfo("Swiftcast Raise Feature", "Changes Swiftcast to Egeiro while Swiftcast is on cooldown.",
         SGE.JobID)]
@@ -5405,7 +5405,7 @@ public enum CustomComboPreset
     [CustomComboInfo("Dissipation Option", "If Aetherflow is on cooldown, show Dissipation instead.", SCH.JobID)]
     SCH_Aetherflow_Dissipation = 16031,
 
-    [ReplaceSkill(All.Swiftcast)]
+    [ReplaceSkill(MagicRole.Swiftcast)]
     [ConflictingCombos(ALL_Healer_Raise)]
     [CustomComboInfo("Swiftcast Raise Combo Feature",
         "Changes Swiftcast to Resurrection while Swiftcast is on cooldown.", SCH.JobID)]
@@ -6468,7 +6468,7 @@ SMN.JobID)]
     [CustomComboInfo("Cure II Sync Feature", "Changes Cure II to Cure when synced below Lv.30.", WHM.JobID)]
     WHM_CureSync = 19002,
 
-    [ReplaceSkill(All.Swiftcast)]
+    [ReplaceSkill(MagicRole.Swiftcast)]
     [ConflictingCombos(ALL_Healer_Raise)]
     [CustomComboInfo("Alternative Raise Feature", "Changes Swiftcast to Raise.", WHM.JobID)]
     WHM_Raise = 19004,

@@ -381,8 +381,8 @@ internal partial class VPR : MeleeDPS
             // healing
             if (IsEnabled(CustomComboPreset.VPR_ST_ComboHeals))
             {
-                if (PlayerHealthPercentageHp() <= Config.VPR_ST_SecondWind_Threshold && ActionReady(All.SecondWind))
-                    return All.SecondWind;
+                if (Role.CanSecondWind(Config.VPR_ST_SecondWind_Threshold))
+                    return Role.SecondWind;
 
                 if (PlayerHealthPercentageHp() <= Config.VPR_ST_Bloodbath_Threshold && ActionReady(All.Bloodbath))
                     return All.Bloodbath;
@@ -589,8 +589,8 @@ internal partial class VPR : MeleeDPS
             }
 
             // healing
-            if (PlayerHealthPercentageHp() <= 25 && ActionReady(All.SecondWind))
-                return All.SecondWind;
+            if (Role.CanSecondWind(25))
+                return Role.SecondWind;
 
             if (PlayerHealthPercentageHp() <= 40 && ActionReady(All.Bloodbath))
                 return All.Bloodbath;
@@ -792,9 +792,8 @@ internal partial class VPR : MeleeDPS
             // healing
             if (IsEnabled(CustomComboPreset.VPR_AoE_ComboHeals))
             {
-                if (PlayerHealthPercentageHp() <= Config.VPR_AoE_SecondWind_Threshold &&
-                    ActionReady(All.SecondWind))
-                    return All.SecondWind;
+                if (Role.CanSecondWind(Config.VPR_AoE_SecondWind_Threshold))
+                    return Role.SecondWind;
 
                 if (PlayerHealthPercentageHp() <= Config.VPR_AoE_Bloodbath_Threshold && ActionReady(All.Bloodbath))
                     return All.Bloodbath;

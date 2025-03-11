@@ -220,8 +220,8 @@ internal partial class SAM : MeleeDPS
             }
 
             // healing
-            if (PlayerHealthPercentageHp() <= 40 && ActionReady(All.SecondWind))
-                return All.SecondWind;
+            if (Role.CanSecondWind(40))
+                return Role.SecondWind;
 
             if (PlayerHealthPercentageHp() <= 25 && ActionReady(All.Bloodbath))
                 return All.Bloodbath;
@@ -431,8 +431,8 @@ internal partial class SAM : MeleeDPS
             // healing
             if (IsEnabled(CustomComboPreset.SAM_ST_ComboHeals))
             {
-                if (PlayerHealthPercentageHp() <= Config.SAM_STSecondWindThreshold && ActionReady(All.SecondWind))
-                    return All.SecondWind;
+                if (Role.CanSecondWind(Config.SAM_STSecondWindThreshold))
+                    return Role.SecondWind;
 
                 if (PlayerHealthPercentageHp() <= Config.SAM_STBloodbathThreshold && ActionReady(All.Bloodbath))
                     return All.Bloodbath;
@@ -603,8 +603,8 @@ internal partial class SAM : MeleeDPS
             }
 
             // healing - please move if not appropriate this high priority
-            if (PlayerHealthPercentageHp() <= 25 && ActionReady(All.SecondWind))
-                return All.SecondWind;
+            if (Role.CanSecondWind(25))
+                return Role.SecondWind;
 
             if (PlayerHealthPercentageHp() <= 40 && ActionReady(All.Bloodbath))
                 return All.Bloodbath;
@@ -718,8 +718,8 @@ internal partial class SAM : MeleeDPS
 
             if (IsEnabled(CustomComboPreset.SAM_AoE_ComboHeals))
             {
-                if (PlayerHealthPercentageHp() <= Config.SAM_AoESecondWindThreshold && ActionReady(All.SecondWind))
-                    return All.SecondWind;
+                if (Role.CanSecondWind(Config.SAM_AoESecondWindThreshold))
+                    return Role.SecondWind;
 
                 if (PlayerHealthPercentageHp() <= Config.SAM_AoEBloodbathThreshold && ActionReady(All.Bloodbath))
                     return All.Bloodbath;

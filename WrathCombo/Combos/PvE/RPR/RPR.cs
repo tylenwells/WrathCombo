@@ -157,8 +157,8 @@ internal partial class RPR : MeleeDPS
                 return SoulSlice;
 
             //Healing
-            if (PlayerHealthPercentageHp() <= 25 && ActionReady(All.SecondWind))
-                return All.SecondWind;
+            if (Role.CanSecondWind(25))
+                return Role.SecondWind;
 
             if (PlayerHealthPercentageHp() <= 40 && ActionReady(All.Bloodbath))
                 return All.Bloodbath;
@@ -372,8 +372,8 @@ internal partial class RPR : MeleeDPS
             //Healing
             if (IsEnabled(CustomComboPreset.RPR_ST_ComboHeals))
             {
-                if (PlayerHealthPercentageHp() <= Config.RPR_STSecondWindThreshold && ActionReady(All.SecondWind))
-                    return All.SecondWind;
+                if (Role.CanSecondWind(Config.RPR_STSecondWindThreshold))
+                    return Role.SecondWind;
 
                 if (PlayerHealthPercentageHp() <= Config.RPR_STBloodbathThreshold && ActionReady(All.Bloodbath))
                     return All.Bloodbath;
@@ -579,8 +579,8 @@ internal partial class RPR : MeleeDPS
 
             if (IsEnabled(CustomComboPreset.RPR_AoE_ComboHeals))
             {
-                if (PlayerHealthPercentageHp() <= Config.RPR_AoESecondWindThreshold && ActionReady(All.SecondWind))
-                    return All.SecondWind;
+                if (Role.CanSecondWind(Config.RPR_AoESecondWindThreshold))
+                    return Role.SecondWind;
 
                 if (PlayerHealthPercentageHp() <= Config.RPR_AoEBloodbathThreshold && ActionReady(All.Bloodbath))
                     return All.Bloodbath;

@@ -1,7 +1,5 @@
 ﻿using ECommons.DalamudServices;
-using System.Reflection.Metadata;
 using WrathCombo.CustomComboNS;
-using WrathCombo.CustomComboNS.Functions;
 
 namespace WrathCombo.Combos.PvE;
 
@@ -53,16 +51,16 @@ internal partial class All
         Sleep = 25880, //Lv10 BLM/SMN/RDM/BLU, 2.5s cast, GCD, range 30, AOE 5 circle, targets=hostile
 
         //Multi-role actions
-        SecondWind =
-            7541, //Lv8 MNK/DRG/BRD/NIN/MCH/SAM/DNC/RPR, instant, 120.0s CD (group 49), range 0, single-target, targets=self
+        //SecondWind =
+        //    7541, //Lv8 MNK/DRG/BRD/NIN/MCH/SAM/DNC/RPR, instant, 120.0s CD (group 49), range 0, single-target, targets=self
         //LucidDreaming =
         //    7562, //Lv14 WHM/BLM/SMN/SCH/AST/RDM/BLU/SGE, instant, 60.0s CD (group 45), range 0, single-target, targets=self
-        Swiftcast =
-            7561, //Lv18 WHM/BLM/SMN/SCH/AST/RDM/BLU/SGE, instant, 60.0s CD (group 44), range 0, single-target, targets=self
+        //Swiftcast =
+        //    7561, //Lv18 WHM/BLM/SMN/SCH/AST/RDM/BLU/SGE, instant, 60.0s CD (group 44), range 0, single-target, targets=self
         ArmsLength =
             7548, //Lv32 PLD/MNK/WAR/DRG/BRD/NIN/MCH/DRK/SAM/GNB/DNC/RPR, instant, 120.0s CD (group 48), range 0, single-target, targets=self
-        Surecast =
-            7559, //Lv44 WHM/BLM/SMN/SCH/AST/RDM/BLU/SGE, instant, 120.0s CD (group 48), range 0, single-target, targets=self
+        //Surecast =
+        //    7559, //Lv44 WHM/BLM/SMN/SCH/AST/RDM/BLU/SGE, instant, 120.0s CD (group 48), range 0, single-target, targets=self
 
         //Misc
         Resurrection = 173, //Lv12 SMN/SCH, 8.0s cast, GCD, range 30, single-target, targets=party/alliance/friendly
@@ -89,11 +87,11 @@ internal partial class All
             WellFed = 48,
             Medicated = 49,
             Bloodbath = 84,
-            Surecast = 160,
-            Swiftcast = 167,
+            //Surecast = 160,
+            //Swiftcast = 167,
             Rampart = 1191,
             Peloton = 1199,
-            LucidDreaming = 1204,
+            //LucidDreaming = 1204,
             ArmsLength = 1209,
             TrueNorth = 1250,
             Sprint = 50;
@@ -175,8 +173,8 @@ internal partial class All
                 case WHM.Raise or AST.Ascend or SGE.Egeiro:
                 case SCH.Resurrection when LocalPlayer.ClassJob.Value.RowId is SCH.JobID:
                 {
-                    if (ActionReady(Swiftcast))
-                        return Swiftcast;
+                    if (ActionReady(MagicRole.Swiftcast))
+                        return MagicRole.Swiftcast;
 
                     if (actionID == WHM.Raise && IsEnabled(CustomComboPreset.WHM_ThinAirRaise) &&
                         ActionReady(WHM.ThinAir) && !HasEffect(WHM.Buffs.ThinAir))
@@ -213,11 +211,11 @@ internal partial class All
                 case BLU.AngelWhisper or RDM.Verraise:
                 case SMN.Resurrection when LocalPlayer.ClassJob.RowId is SMN.JobID:
                 {
-                    if (HasEffect(Buffs.Swiftcast) || HasEffect(RDM.Buffs.Dualcast))
+                    if (HasEffect(MagicRole.Buffs.Swiftcast) || HasEffect(RDM.Buffs.Dualcast))
                         return actionID;
 
-                    if (IsOffCooldown(Swiftcast))
-                        return Swiftcast;
+                    if (IsOffCooldown(MagicRole.Swiftcast))
+                        return MagicRole.Swiftcast;
 
                     if (LocalPlayer.ClassJob.RowId is RDM.JobID &&
                         ActionReady(RDM.Vercure))

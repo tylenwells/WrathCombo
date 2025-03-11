@@ -20,10 +20,13 @@ namespace WrathCombo.Combos.PvE
                 Surecast = 160;
         }
 
-        public static bool CanLucid(int MPThreshold, bool weave = true) =>
+        public static bool CanLucid(int MPThreshold, bool spellweave = true) =>
             ActionReady(LucidDreaming)
             && LocalPlayer.CurrentMp <= MPThreshold
-            && (!weave || CanSpellWeave());
+            && (!spellweave || CanSpellWeave());
+
+        public static bool CanSwiftcast(bool spellweave = true) =>
+            ActionReady(Swiftcast) && (!spellweave || CanSpellWeave());
 
     }
     class CasterRole : MagicRole //Offensive Magic
