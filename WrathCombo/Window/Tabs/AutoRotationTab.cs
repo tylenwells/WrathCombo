@@ -234,8 +234,8 @@ namespace WrathCombo.Window.Tabs
 
                 P.UIHelper.ShowIPCControlledIndicatorIfNeeded("AutoCleanse");
                 changed |= P.UIHelper.ShowIPCControlledCheckboxIfNeeded(
-                    $"Auto-{All.Esuna.ActionName()}", ref cfg.HealerSettings.AutoCleanse, "AutoCleanse");
-                ImGuiComponents.HelpMarker($"Will {All.Esuna.ActionName()} any cleansable debuffs (Healing takes priority).");
+                    $"Auto-{HealerRole.Esuna.ActionName()}", ref cfg.HealerSettings.AutoCleanse, "AutoCleanse");
+                ImGuiComponents.HelpMarker($"Will {HealerRole.Esuna.ActionName()} any cleansable debuffs (Healing takes priority).");
 
                 P.UIHelper.ShowIPCControlledIndicatorIfNeeded("ManageKardia");
                 changed |= P.UIHelper.ShowIPCControlledCheckboxIfNeeded(

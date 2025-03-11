@@ -72,7 +72,7 @@ public enum CustomComboPreset
     ALL_Caster_Menu = 100097,
 
     [Role(JobRole.MagicalDPS)]
-    [ReplaceSkill(All.Addle)]
+    [ReplaceSkill(CasterRole.Addle)]
     [ParentCombo(ALL_Caster_Menu)]
     [CustomComboInfo("Magical Ranged DPS: Double Addle Protection",
         "Prevents the use of Addle when target already has the effect by replacing it with Savage Blade.", ADV.JobID)]

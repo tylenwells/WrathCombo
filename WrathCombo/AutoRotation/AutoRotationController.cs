@@ -267,13 +267,13 @@ namespace WrathCombo.AutoRotation
 
         private static void CleanseParty()
         {
-            if (ActionManager.Instance()->QueuedActionId == All.Esuna)
+            if (ActionManager.Instance()->QueuedActionId == HealerRole.Esuna)
                 ActionManager.Instance()->QueuedActionId = 0;
 
             if (GetPartyMembers().FindFirst(x => HasCleansableDebuff(x.BattleChara), out var member))
             {
-                if (InActionRange(All.Esuna, member.BattleChara) && IsInLineOfSight(member.BattleChara))
-                    ActionManager.Instance()->UseAction(ActionType.Action, All.Esuna, member.BattleChara.GameObjectId);
+                if (InActionRange(HealerRole.Esuna, member.BattleChara) && IsInLineOfSight(member.BattleChara))
+                    ActionManager.Instance()->UseAction(ActionType.Action, HealerRole.Esuna, member.BattleChara.GameObjectId);
             }
         }
 

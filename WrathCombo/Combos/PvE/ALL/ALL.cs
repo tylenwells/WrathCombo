@@ -22,11 +22,11 @@ internal partial class All
         Shirk = 7537, //Lv48, instant, 120.0s CD (group 49), range 25, single-target, targets=party
 
         //Healer
-        HealingWind = 206, //LB1, 2.0s cast, range 0, AOE 50 circle, targets=self, castAnimLock=2.100
-        BreathOfTheEarth = 207, //LB2, 2.0s cast, range 0, AOE 50 circle, targets=self, castAnimLock=5.130
-        Repose = 16560, //Lv8, 2.5s cast, GCD, range 30, single-target, targets=hostile
-        Esuna = 7568, //Lv10, 1.0s cast, GCD, range 30, single-target, targets=self/party/alliance/friendly
-        Rescue = 7571, //Lv48, instant, 120.0s CD (group 49), range 30, single-target, targets=party
+        //HealingWind = 206, //LB1, 2.0s cast, range 0, AOE 50 circle, targets=self, castAnimLock=2.100
+        //BreathOfTheEarth = 207, //LB2, 2.0s cast, range 0, AOE 50 circle, targets=self, castAnimLock=5.130
+        //Repose = 16560, //Lv8, 2.5s cast, GCD, range 30, single-target, targets=hostile
+        //Esuna = 7568, //Lv10, 1.0s cast, GCD, range 30, single-target, targets=self/party/alliance/friendly
+        //Rescue = 7571, //Lv48, instant, 120.0s CD (group 49), range 30, single-target, targets=party
 
         //Melee
         Braver = 200, //LB1, 2.0s cast, range 8, single-target, targets=hostile, castAnimLock=3.860
@@ -47,7 +47,7 @@ internal partial class All
         //Caster
         Skyshard = 203, //LB1, 2.0s cast, range 25, AOE 8 circle, targets=area, castAnimLock=3.100
         Starstorm = 204, //LB2, 3.0s cast, range 25, AOE 10 circle, targets=area, castAnimLock=5.100
-        Addle = 7560, //Lv8 BLM/SMN/RDM/BLU, instant, 90.0s CD (group 46), range 25, single-target, targets=hostile
+        //Addle = 7560, //Lv8 BLM/SMN/RDM/BLU, instant, 90.0s CD (group 46), range 25, single-target, targets=hostile
         Sleep = 25880, //Lv10 BLM/SMN/RDM/BLU, 2.5s cast, GCD, range 30, AOE 5 circle, targets=hostile
 
         //Multi-role actions
@@ -111,12 +111,12 @@ internal partial class All
             TrueNorth = 1250, //applied by True North to self
 
             //PhysRanged
-            Peloton = 1199, //applied by Peloton to self/party
+            Peloton = 1199; //applied by Peloton to self/party
 
             //Caster/Healer
-            Addle = 1203, //applied by Addle to target
-            Swiftcast = 167, //applied by Swiftcast to self
-            Raise = 148; //applied by Raise to target
+            //Addle = 1203, //applied by Addle to target
+            //Swiftcast = 167, //applied by Swiftcast to self
+            //Raise = 148; //applied by Raise to target
     }
 
     internal class ALL_IslandSanctuary_Sprint : CustomCombo
@@ -195,7 +195,7 @@ internal partial class All
         protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.ALL_Caster_Addle;
 
         protected override uint Invoke(uint actionID) =>
-            actionID is Addle && TargetHasEffectAny(Debuffs.Addle) && IsOffCooldown(Addle)
+            actionID is CasterRole.Addle && TargetHasEffectAny(CasterRole.Debuffs.Addle) && IsOffCooldown(CasterRole.Addle)
                 ? SavageBlade
                 : actionID;
     }
