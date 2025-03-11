@@ -60,7 +60,7 @@ internal partial class AST : Healer
             {
                 //Variant stuff
                 if (Variant.CanSpiritDart(CustomComboPreset.AST_Variant_Rampart))
-                    return Variant.Rampart;
+                    return Variant.SpiritDart;
 
                 if (IsEnabled(CustomComboPreset.AST_DPS_LightSpeed) &&
                     ActionReady(Lightspeed) &&

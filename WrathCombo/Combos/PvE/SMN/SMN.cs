@@ -134,8 +134,8 @@ internal partial class SMN : MagicDPS
                         return OriginalHook(Fester);
                 }
 
-                if (ActionReady(All.LucidDreaming) && LocalPlayer.CurrentMp <= 4000)
-                    return All.LucidDreaming;
+                if (Role.CanLucid(4000))
+                    return Role.LucidDreaming;
             }
 
             if (ActionReady(Aethercharge))
@@ -239,8 +239,8 @@ internal partial class SMN : MagicDPS
                         return Painflare;
                 }
 
-                if (ActionReady(All.LucidDreaming) && LocalPlayer.CurrentMp <= 4000)
-                    return All.LucidDreaming;
+                if (Role.CanLucid(4000))
+                    return Role.LucidDreaming;
             }
 
             if (ActionReady(Aethercharge))
@@ -403,8 +403,8 @@ internal partial class SMN : MagicDPS
                 }
 
                 // Lucid Dreaming
-                if (IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_Lucid) && ActionReady(All.LucidDreaming) && LocalPlayer.CurrentMp <= lucidThreshold)
-                    return All.LucidDreaming;
+                if (IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_Lucid) && Role.CanLucid(lucidThreshold))
+                    return Role.LucidDreaming;
             }
 
             // Demi
@@ -594,8 +594,8 @@ internal partial class SMN : MagicDPS
                 }
 
                 // Lucid Dreaming
-                if (IsEnabled(CustomComboPreset.SMN_AoE_Advanced_Combo_Lucid) && ActionReady(All.LucidDreaming) && LocalPlayer.CurrentMp <= lucidThreshold)
-                    return All.LucidDreaming;
+                if (IsEnabled(CustomComboPreset.SMN_AoE_Advanced_Combo_Lucid) && Role.CanLucid(lucidThreshold))
+                    return Role.LucidDreaming;
             }
 
             // Demi

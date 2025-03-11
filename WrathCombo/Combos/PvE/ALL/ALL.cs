@@ -55,8 +55,8 @@ internal partial class All
         //Multi-role actions
         SecondWind =
             7541, //Lv8 MNK/DRG/BRD/NIN/MCH/SAM/DNC/RPR, instant, 120.0s CD (group 49), range 0, single-target, targets=self
-        LucidDreaming =
-            7562, //Lv14 WHM/BLM/SMN/SCH/AST/RDM/BLU/SGE, instant, 60.0s CD (group 45), range 0, single-target, targets=self
+        //LucidDreaming =
+        //    7562, //Lv14 WHM/BLM/SMN/SCH/AST/RDM/BLU/SGE, instant, 60.0s CD (group 45), range 0, single-target, targets=self
         Swiftcast =
             7561, //Lv18 WHM/BLM/SMN/SCH/AST/RDM/BLU/SGE, instant, 60.0s CD (group 44), range 0, single-target, targets=self
         ArmsLength =
@@ -82,17 +82,6 @@ internal partial class All
 
     private const uint
         IsleSprint = 31314;
-
-    /// <summary>
-    ///     Quick Level, Offcooldown, spellweave, and MP check of Lucid Dreaming
-    /// </summary>
-    /// <param name="MPThreshold">Player MP less than Threshold check</param>
-    /// <param name="weave">Spell Weave check by default</param>
-    /// <returns></returns>
-    public static bool CanUseLucid(int MPThreshold, bool weave = true) => 
-        CustomComboFunctions.ActionReady(LucidDreaming)
-        && CustomComboFunctions.LocalPlayer.CurrentMp <= MPThreshold
-        && (!weave || CustomComboFunctions.CanSpellWeave());
 
     public static class Buffs
     {
@@ -285,18 +274,5 @@ internal partial class All
             actionID is FootGraze && CanInterruptEnemy() && ActionReady(HeadGraze)
                 ? HeadGraze
                 : actionID;
-    }
-
-    public class ClassHealer
-    {
-        public const uint
-            Repose = All.Repose,
-            Esuna = All.Esuna,
-            LucidDreaming = All.LucidDreaming,
-            Rescue = All.Rescue,
-            Swiftcast = All.Swiftcast,
-            SureCast = All.Surecast;
-
-        public static bool CanLucid(int MPThreshold, bool weave = true) => All.CanUseLucid(MPThreshold, weave);
     }
 }
