@@ -672,4 +672,14 @@ internal partial class MNK
             return actionID;
         }
     }
+
+    internal class MNK_PerfectBalanceProtection : CustomCombo
+    {
+        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.MNK_PerfectBalanceProtection;
+
+        protected override uint Invoke(uint actionID) =>
+            actionID is PerfectBalance && HasEffect(Buffs.PerfectBalance) && LevelChecked(PerfectBalance)
+                ? All.SavageBlade
+                : actionID;
+    }
 }
