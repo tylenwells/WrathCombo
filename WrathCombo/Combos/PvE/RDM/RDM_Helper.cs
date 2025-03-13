@@ -235,7 +235,7 @@ internal partial class RDM
     }
 
     private static bool TryLucidDreaming(int MPThreshold, uint ComboAction) =>
-        Role.CanLucid(MPThreshold)
+        Role.CanLucidDream(MPThreshold)
         && InCombat()
         && !HasEffect(Buffs.Dualcast)
         && ComboAction != EnchantedRiposte

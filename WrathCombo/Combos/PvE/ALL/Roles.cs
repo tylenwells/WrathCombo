@@ -20,7 +20,7 @@ namespace WrathCombo.Combos.PvE
                 Surecast = 160;
         }
 
-        public static bool CanLucid(int MPThreshold, bool spellweave = true) =>
+        public static bool CanLucidDream(int MPThreshold, bool spellweave = true) =>
             ActionReady(LucidDreaming)
             && LocalPlayer.CurrentMp <= MPThreshold
             && (!spellweave || CanSpellWeave());

@@ -134,7 +134,7 @@ internal partial class SMN : MagicDPS
                         return OriginalHook(Fester);
                 }
 
-                if (Role.CanLucid(4000))
+                if (Role.CanLucidDream(4000))
                     return Role.LucidDreaming;
             }
 
@@ -239,7 +239,7 @@ internal partial class SMN : MagicDPS
                         return Painflare;
                 }
 
-                if (Role.CanLucid(4000))
+                if (Role.CanLucidDream(4000))
                     return Role.LucidDreaming;
             }
 
@@ -403,7 +403,7 @@ internal partial class SMN : MagicDPS
                 }
 
                 // Lucid Dreaming
-                if (IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_Lucid) && Role.CanLucid(lucidThreshold))
+                if (IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_Lucid) && Role.CanLucidDream(lucidThreshold))
                     return Role.LucidDreaming;
             }
 
@@ -594,7 +594,7 @@ internal partial class SMN : MagicDPS
                 }
 
                 // Lucid Dreaming
-                if (IsEnabled(CustomComboPreset.SMN_AoE_Advanced_Combo_Lucid) && Role.CanLucid(lucidThreshold))
+                if (IsEnabled(CustomComboPreset.SMN_AoE_Advanced_Combo_Lucid) && Role.CanLucidDream(lucidThreshold))
                     return Role.LucidDreaming;
             }
 
