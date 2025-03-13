@@ -86,7 +86,7 @@ internal partial class VPR
                         $"HP percent threshold to use {Role.SecondWind.ActionName()} (0 = Disabled)");
 
                     DrawSliderInt(0, 100, VPR_AoE_Bloodbath_Threshold,
-                        $"HP percent threshold to use {All.Bloodbath.ActionName()} (0 = Disabled)");
+                        $"HP percent threshold to use {Role.Bloodbath.ActionName()} (0 = Disabled)");
 
                     break;
 

@@ -160,8 +160,8 @@ internal partial class RPR : MeleeDPS
             if (Role.CanSecondWind(25))
                 return Role.SecondWind;
 
-            if (PlayerHealthPercentageHp() <= 40 && ActionReady(All.Bloodbath))
-                return All.Bloodbath;
+            if (Role.CanBloodBath(40))
+                return Role.Bloodbath;
 
             //1-2-3 Combo
             if (ComboTimer > 0)
@@ -375,8 +375,8 @@ internal partial class RPR : MeleeDPS
                 if (Role.CanSecondWind(Config.RPR_STSecondWindThreshold))
                     return Role.SecondWind;
 
-                if (PlayerHealthPercentageHp() <= Config.RPR_STBloodbathThreshold && ActionReady(All.Bloodbath))
-                    return All.Bloodbath;
+                if (Role.CanBloodBath(Config.RPR_STBloodbathThreshold))
+                    return Role.Bloodbath;
             }
 
             //1-2-3 Combo
@@ -582,8 +582,8 @@ internal partial class RPR : MeleeDPS
                 if (Role.CanSecondWind(Config.RPR_AoESecondWindThreshold))
                     return Role.SecondWind;
 
-                if (PlayerHealthPercentageHp() <= Config.RPR_AoEBloodbathThreshold && ActionReady(All.Bloodbath))
-                    return All.Bloodbath;
+                if (Role.CanBloodBath(Config.RPR_AoEBloodbathThreshold))
+                    return Role.Bloodbath;
             }
 
             if (IsEnabled(CustomComboPreset.RPR_AoE_Guillotine) &&

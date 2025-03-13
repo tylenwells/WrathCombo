@@ -43,7 +43,7 @@ internal partial class DRG
 
     internal static bool TrueNorthReady =>
         TargetNeedsPositionals() && ActionReady(All.TrueNorth) &&
-        !HasEffect(All.Buffs.TrueNorth);
+        !HasEffect(Role.Buffs.TrueNorth);
 
     internal static uint SlowLock => Stardiver;
 

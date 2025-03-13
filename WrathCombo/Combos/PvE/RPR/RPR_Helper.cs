@@ -17,7 +17,7 @@ internal partial class RPR
     internal static bool TrueNorthReady =>
         TargetNeedsPositionals() &&
         ActionReady(All.TrueNorth) &&
-        !HasEffect(All.Buffs.TrueNorth);
+        !HasEffect(Role.Buffs.TrueNorth);
 
     internal static WrathOpener Opener()
     {

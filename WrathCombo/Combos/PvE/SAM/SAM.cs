@@ -223,8 +223,8 @@ internal partial class SAM : MeleeDPS
             if (Role.CanSecondWind(40))
                 return Role.SecondWind;
 
-            if (PlayerHealthPercentageHp() <= 25 && ActionReady(All.Bloodbath))
-                return All.Bloodbath;
+            if (Role.CanBloodBath(25))
+                return Role.Bloodbath;
 
             if (ComboTimer > 0)
             {
@@ -434,8 +434,8 @@ internal partial class SAM : MeleeDPS
                 if (Role.CanSecondWind(Config.SAM_STSecondWindThreshold))
                     return Role.SecondWind;
 
-                if (PlayerHealthPercentageHp() <= Config.SAM_STBloodbathThreshold && ActionReady(All.Bloodbath))
-                    return All.Bloodbath;
+                if (Role.CanBloodBath(Config.SAM_STBloodbathThreshold))
+                    return Role.Bloodbath;
             }
 
             if (ComboTimer > 0)
@@ -606,8 +606,8 @@ internal partial class SAM : MeleeDPS
             if (Role.CanSecondWind(25))
                 return Role.SecondWind;
 
-            if (PlayerHealthPercentageHp() <= 40 && ActionReady(All.Bloodbath))
-                return All.Bloodbath;
+            if (Role.CanBloodBath(40))
+                return Role.Bloodbath;
 
             if (ComboTimer > 0 &&
                 ComboAction is Fuko or Fuga && LevelChecked(Mangetsu))
@@ -721,8 +721,8 @@ internal partial class SAM : MeleeDPS
                 if (Role.CanSecondWind(Config.SAM_AoESecondWindThreshold))
                     return Role.SecondWind;
 
-                if (PlayerHealthPercentageHp() <= Config.SAM_AoEBloodbathThreshold && ActionReady(All.Bloodbath))
-                    return All.Bloodbath;
+                if (Role.CanBloodBath(Config.SAM_AoEBloodbathThreshold))
+                    return Role.Bloodbath;
             }
 
             if (ComboTimer > 0 &&

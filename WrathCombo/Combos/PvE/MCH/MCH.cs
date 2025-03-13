@@ -178,7 +178,7 @@ internal partial class MCH : PhysRangedDPS
 
             // Interrupt
             if (Role.CanHeadGraze(CustomComboPreset.MCH_ST_Adv_Interrupt, WeaveTypes.DelayWeave))
-                return All.HeadGraze;
+                return Role.HeadGraze;
 
             // All weaves
             if (CanWeave())

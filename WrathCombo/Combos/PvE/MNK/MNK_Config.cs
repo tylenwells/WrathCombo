@@ -33,7 +33,7 @@ internal partial class MNK
                         $"HP percent threshold to use {Role.SecondWind.ActionName()} (0 = Disabled)");
 
                     DrawSliderInt(0, 100, MNK_ST_Bloodbath_Threshold,
-                        $"HP percent threshold to use {All.Bloodbath.ActionName()} (0 = Disabled)");
+                        $"HP percent threshold to use {Role.Bloodbath.ActionName()} (0 = Disabled)");
 
                     break;
 
@@ -42,7 +42,7 @@ internal partial class MNK
                         $"HP percent threshold to use {Role.SecondWind.ActionName()} (0 = Disabled)");
 
                     DrawSliderInt(0, 100, MNK_AoE_Bloodbath_Threshold,
-                        $"HP percent threshold to use {All.Bloodbath.ActionName()} (0 = Disabled)");
+                        $"HP percent threshold to use {Role.Bloodbath.ActionName()} (0 = Disabled)");
 
                     break;
 

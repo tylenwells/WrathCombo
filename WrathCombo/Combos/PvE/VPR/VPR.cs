@@ -384,8 +384,8 @@ internal partial class VPR : MeleeDPS
                 if (Role.CanSecondWind(Config.VPR_ST_SecondWind_Threshold))
                     return Role.SecondWind;
 
-                if (PlayerHealthPercentageHp() <= Config.VPR_ST_Bloodbath_Threshold && ActionReady(All.Bloodbath))
-                    return All.Bloodbath;
+                if (Role.CanBloodBath(Config.VPR_ST_Bloodbath_Threshold))
+                    return Role.Bloodbath;
             }
 
             //1-2-3 (4-5-6) Combo
@@ -592,8 +592,8 @@ internal partial class VPR : MeleeDPS
             if (Role.CanSecondWind(25))
                 return Role.SecondWind;
 
-            if (PlayerHealthPercentageHp() <= 40 && ActionReady(All.Bloodbath))
-                return All.Bloodbath;
+            if (Role.CanBloodBath(40))
+                return Role.Bloodbath;
 
             //1-2-3 (4-5-6) Combo
             if (ComboTimer > 0 && !HasEffect(Buffs.Reawakened))
@@ -795,8 +795,8 @@ internal partial class VPR : MeleeDPS
                 if (Role.CanSecondWind(Config.VPR_AoE_SecondWind_Threshold))
                     return Role.SecondWind;
 
-                if (PlayerHealthPercentageHp() <= Config.VPR_AoE_Bloodbath_Threshold && ActionReady(All.Bloodbath))
-                    return All.Bloodbath;
+                if (Role.CanBloodBath(Config.VPR_AoE_Bloodbath_Threshold))
+                    return Role.Bloodbath;
             }
 
             //1-2-3 (4-5-6) Combo

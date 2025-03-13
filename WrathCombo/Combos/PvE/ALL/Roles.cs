@@ -145,8 +145,8 @@ namespace WrathCombo.Combos.PvE
         public static bool CanRampart(int healthpercent) =>
             ActionReady(Rampart) && PlayerHealthPercentageHp() < healthpercent;
 
-        public static bool CanReprisal(int healthpercent) =>
-            ActionReady(Reprisal) && InActionRange(Reprisal) &&PlayerHealthPercentageHp() < healthpercent;
+        public static bool CanReprisal(int healthpercent) => //? May need more fleshing out by tank masters
+            ActionReady(Reprisal) && InActionRange(Reprisal) && PlayerHealthPercentageHp() < healthpercent;
 
 
 

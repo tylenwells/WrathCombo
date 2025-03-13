@@ -19,7 +19,7 @@ internal partial class VPR
 
     internal static bool In5Y => HasBattleTarget() && GetTargetDistance() <= 5;
 
-    internal static bool TrueNorthReady => TargetNeedsPositionals() && ActionReady(All.TrueNorth) && !HasEffect(All.Buffs.TrueNorth);
+    internal static bool TrueNorthReady => TargetNeedsPositionals() && ActionReady(All.TrueNorth) && !HasEffect(Role.Buffs.TrueNorth);
 
     internal static bool CappedOnCoils =>
         TraitLevelChecked(Traits.EnhancedVipersRattle) && Gauge.RattlingCoilStacks > 2 ||
