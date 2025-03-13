@@ -120,6 +120,8 @@ namespace WrathCombo.Combos.PvE
 
         public static bool CanBloodBath(int healthpercent) =>
             ActionReady(Bloodbath) && PlayerHealthPercentageHp() <= healthpercent;
+        public static bool CanTrueNorth() =>
+            ActionReady(TrueNorth) && TargetNeedsPositionals() && !HasEffect(Buffs.TrueNorth);
     }
 
     class TankRole : PhysicalRole

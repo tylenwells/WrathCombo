@@ -202,8 +202,8 @@ internal partial class SAM : MeleeDPS
 
             if (HasEffect(Buffs.MeikyoShisui))
             {
-                if (TrueNorthReady && CanDelayedWeave())
-                    return All.TrueNorth;
+                if (Role.CanTrueNorth() && CanDelayedWeave())
+                    return Role.TrueNorth;
 
                 if (LevelChecked(Gekko) &&
                     (!HasEffect(Buffs.Fugetsu) ||
@@ -409,8 +409,8 @@ internal partial class SAM : MeleeDPS
             if (HasEffect(Buffs.MeikyoShisui))
             {
                 if (IsEnabled(CustomComboPreset.SAM_ST_TrueNorth) &&
-                    TrueNorthReady && CanDelayedWeave())
-                    return All.TrueNorth;
+                    Role.CanTrueNorth() && CanDelayedWeave())
+                    return Role.TrueNorth;
 
                 if (LevelChecked(Gekko) &&
                     (!HasEffect(Buffs.Fugetsu) ||

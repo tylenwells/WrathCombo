@@ -50,8 +50,8 @@ internal partial class RPR : MeleeDPS
                     //Gluttony
                     if (ActionReady(Gluttony) &&
                         (GetCooldownRemainingTime(ArcaneCircle) > GCD * 3 || !LevelChecked(ArcaneCircle)))
-                        return TrueNorthReady
-                            ? All.TrueNorth
+                        return Role.CanTrueNorth()
+                            ? Role.TrueNorth
                             : Gluttony;
 
                     //Bloodstalk
@@ -105,9 +105,9 @@ internal partial class RPR : MeleeDPS
                 //Gibbet
                 if (HasEffect(Buffs.EnhancedGibbet))
                 {
-                    if (TrueNorthReady && !OnTargetsFlank() &&
+                    if (Role.CanTrueNorth() && !OnTargetsFlank() &&
                         CanDelayedWeave())
-                        return All.TrueNorth;
+                        return Role.TrueNorth;
 
                     return OriginalHook(Gibbet);
                 }
@@ -116,9 +116,9 @@ internal partial class RPR : MeleeDPS
                 if (HasEffect(Buffs.EnhancedGallows) ||
                     !HasEffect(Buffs.EnhancedGibbet) && !HasEffect(Buffs.EnhancedGallows))
                 {
-                    if (TrueNorthReady && !OnTargetsRear() &&
+                    if (Role.CanTrueNorth() && !OnTargetsRear() &&
                         CanDelayedWeave())
-                        return All.TrueNorth;
+                        return Role.TrueNorth;
 
                     return OriginalHook(Gallows);
                 }
@@ -237,8 +237,8 @@ internal partial class RPR : MeleeDPS
                         (GetCooldownRemainingTime(ArcaneCircle) > GCD * 3 || !LevelChecked(ArcaneCircle)))
                     {
                         if (IsEnabled(CustomComboPreset.RPR_ST_TrueNorthDynamic) &&
-                            TrueNorthReady)
-                            return All.TrueNorth;
+                            Role.CanTrueNorth())
+                            return Role.TrueNorth;
 
                         return Gluttony;
                     }
@@ -306,11 +306,11 @@ internal partial class RPR : MeleeDPS
                 {
                     if (IsEnabled(CustomComboPreset.RPR_ST_TrueNorthDynamic) &&
                         (IsEnabled(CustomComboPreset.RPR_ST_TrueNorthDynamic_HoldCharge) &&
-                         GetRemainingCharges(All.TrueNorth) < 2 ||
+                         GetRemainingCharges(Role.TrueNorth) < 2 ||
                          IsNotEnabled(CustomComboPreset.RPR_ST_TrueNorthDynamic_HoldCharge)) &&
-                        TrueNorthReady && !OnTargetsFlank() &&
+                        Role.CanTrueNorth() && !OnTargetsFlank() &&
                         CanDelayedWeave())
-                        return All.TrueNorth;
+                        return Role.TrueNorth;
 
                     return OriginalHook(Gibbet);
                 }
@@ -322,11 +322,11 @@ internal partial class RPR : MeleeDPS
                 {
                     if (IsEnabled(CustomComboPreset.RPR_ST_TrueNorthDynamic) &&
                         (IsEnabled(CustomComboPreset.RPR_ST_TrueNorthDynamic_HoldCharge) &&
-                         GetRemainingCharges(All.TrueNorth) < 2 ||
+                         GetRemainingCharges(Role.TrueNorth) < 2 ||
                          IsNotEnabled(CustomComboPreset.RPR_ST_TrueNorthDynamic_HoldCharge)) &&
-                        TrueNorthReady && !OnTargetsRear() &&
+                        Role.CanTrueNorth() && !OnTargetsRear() &&
                         CanDelayedWeave())
-                        return All.TrueNorth;
+                        return Role.TrueNorth;
 
                     return OriginalHook(Gallows);
                 }
@@ -662,8 +662,8 @@ internal partial class RPR : MeleeDPS
                     break;
                 }
 
-                case BloodStalk when IsEnabled(CustomComboPreset.RPR_TrueNorthGluttony) && TrueNorthReady:
-                    return All.TrueNorth;
+                case BloodStalk when IsEnabled(CustomComboPreset.RPR_TrueNorthGluttony) && Role.CanTrueNorth():
+                    return Role.TrueNorth;
 
                 case BloodStalk:
                 {
@@ -795,8 +795,8 @@ internal partial class RPR : MeleeDPS
             switch (actionID)
             {
                 case Enshroud when IsEnabled(CustomComboPreset.RPR_TrueNorthEnshroud) &&
-                                   GetBuffStacks(Buffs.SoulReaver) is 2 && TrueNorthReady && CanDelayedWeave():
-                    return All.TrueNorth;
+                                   GetBuffStacks(Buffs.SoulReaver) is 2 && Role.CanTrueNorth() && CanDelayedWeave():
+                    return Role.TrueNorth;
 
                 case Enshroud:
                 {

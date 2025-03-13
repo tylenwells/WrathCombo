@@ -105,7 +105,7 @@ public enum CustomComboPreset
     ALL_Melee_Feint = 100030,
 
     [Role(JobRole.MeleeDPS)]
-    [ReplaceSkill(All.TrueNorth)]
+    [ReplaceSkill(MeleeRole.TrueNorth)]
     [ParentCombo(ALL_Melee_Menu)]
     [CustomComboInfo("Melee DPS: True North Protection",
         "Prevents the use of True North when its buff is already active by replacing it with Savage Blade.", ADV.JobID)]

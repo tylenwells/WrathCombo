@@ -245,7 +245,7 @@ internal partial class All
         protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.ALL_Melee_TrueNorth;
 
         protected override uint Invoke(uint actionID) =>
-            actionID is TrueNorth && HasEffect(MeleeRole.Buffs.TrueNorth)
+            actionID is MeleeRole.TrueNorth && HasEffect(MeleeRole.Buffs.TrueNorth)
                 ? SavageBlade
                 : actionID;
     }
