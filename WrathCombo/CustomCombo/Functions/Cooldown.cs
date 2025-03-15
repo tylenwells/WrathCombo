@@ -46,8 +46,23 @@ namespace WrathCombo.CustomComboNS.Functions
         /// <returns> True or false. </returns>
         public static bool JustUsed(uint actionID, float variance = 3f) => GetMaxCharges(actionID) == 0 ? IsOnCooldown(actionID) && GetCooldownElapsed(actionID) <= variance : ActionWatching.ChargeTimestamps.ContainsKey(actionID) ? (Environment.TickCount64 - ActionWatching.ChargeTimestamps[actionID]) / 1000f <= variance : false;
 
+
+        /// <summary>
+        /// Checks if an action has just been used on a given target
+        /// </summary>
+        /// <param name="actionID"></param>
+        /// <param name="target"></param>
+        /// <param name="variance"></param>
+        /// <returns></returns>
         public static bool JustUsedOn(uint actionID, IGameObject? target, float variance = 3f) => target is null ? false : JustUsedOn(actionID, target.GameObjectId, variance);
 
+        /// <summary>
+        /// See <see cref="JustUsedOn(uint, IGameObject?, float)"/>
+        /// </summary>
+        /// <param name="actionID"></param>
+        /// <param name="targetGameobjectId"></param>
+        /// <param name="variance"></param>
+        /// <returns></returns>
         public static bool JustUsedOn(uint actionID, ulong targetGameobjectId, float variance = 3f)
         {
             if (!ActionWatching.UsedOnDict.ContainsKey((actionID, targetGameobjectId)))
@@ -56,8 +71,6 @@ namespace WrathCombo.CustomComboNS.Functions
             var timestamp = ActionWatching.UsedOnDict[(actionID, targetGameobjectId)];
 
             var timeDiff = (Environment.TickCount64 - timestamp) / 1000f;
-
-            Svc.Log.Debug($"{timeDiff}");
 
             return timeDiff <= variance;
         }
