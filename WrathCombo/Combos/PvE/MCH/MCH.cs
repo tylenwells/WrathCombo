@@ -764,7 +764,7 @@ internal partial class MCH
 
         protected override uint Invoke(uint actionID) =>
             actionID is Dismantle &&
-            (IsOnCooldown(Dismantle) || !LevelChecked(Dismantle) || !HasBattleTarget()) &&
+            (IsOnCooldown(Dismantle) || !LevelChecked(Dismantle) || !TargetIsHostile()) &&
             ActionReady(Tactician) && !HasEffect(Buffs.Tactician)
                 ? Tactician
                 : actionID;
