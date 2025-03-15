@@ -236,8 +236,8 @@ internal partial class MCH
                             // Only Hypercharge when tools are on cooldown
                             if (DrillCD && AnchorCD && SawCD &&
                                 (!LevelChecked(Wildfire) ||
-                                 LevelChecked(Wildfire) && 
-                                 (GetCooldownRemainingTime(Wildfire) > 40 || 
+                                 LevelChecked(Wildfire) &&
+                                 (GetCooldownRemainingTime(Wildfire) > 40 ||
                                   IsOffCooldown(Wildfire) && !HasEffect(Buffs.FullMetalMachinist))))
                                 return Hypercharge;
                         }
@@ -763,7 +763,7 @@ internal partial class MCH
         protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.MCH_DismantleTactician;
 
         protected override uint Invoke(uint actionID) =>
-            actionID is Dismantle && 
+            actionID is Dismantle &&
             (IsOnCooldown(Dismantle) || !LevelChecked(Dismantle) || !HasBattleTarget()) &&
             ActionReady(Tactician) && !HasEffect(Buffs.Tactician)
                 ? Tactician
