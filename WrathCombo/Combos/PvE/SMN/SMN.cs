@@ -1,4 +1,5 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
+using ECommons.DalamudServices;
 using WrathCombo.Combos.PvE.Content;
 using WrathCombo.Core;
 using WrathCombo.CustomComboNS;
@@ -317,6 +318,8 @@ internal partial class SMN
             bool IfritAstralFlow = IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_Egi_AstralFlow) && Config.SMN_ST_Egi_AstralFlow[1];
             bool GarudaAstralFlow = IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_Egi_AstralFlow) && Config.SMN_ST_Egi_AstralFlow[2];
 
+            var searingInSummon = GetCooldownRemainingTime(SearingLight) > (Gauge.SummonTimerRemaining / 1000f) + GCDTotal;
+
             DemiAttackCount = CurrentDemiSummon is not DemiSummon.None ? TimesUsedSinceOtherAction(OriginalHook(Aethercharge), [AstralImpulse, UmbralImpulse, FountainOfFire, AstralFlare, UmbralFlare, BrandOfPurgatory]) : 0;
 
             if (IsEnabled(CustomComboPreset.SMN_Variant_Cure) && IsEnabled(Variant.VariantCure) && PlayerHealthPercentageHp() <= GetOptionValue(Config.SMN_VariantCure))
@@ -377,7 +380,7 @@ internal partial class SMN
                     return SearingFlash;
 
                 // Demi Nuke
-                if (CurrentDemiSummon is not DemiSummon.None && IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_DemiSummons_Attacks) && DemiAttackCount >= burstDelay && (IsNotEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_SearingLight_Burst) || HasEffect(Buffs.SearingLight)))
+                if (CurrentDemiSummon is not DemiSummon.None && IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_DemiSummons_Attacks) && DemiAttackCount >= burstDelay && (IsNotEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_SearingLight_Burst) || HasEffect(Buffs.SearingLight) || searingInSummon))
                 {
                     if (ActionReady(OriginalHook(EnkindleBahamut)))
                         return OriginalHook(EnkindleBahamut);
@@ -416,7 +419,7 @@ internal partial class SMN
             }
 
             // Demi
-            if (IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_DemiSummons) && ActionReady(OriginalHook(Aethercharge)))
+            if (IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_DemiSummons) && PartyInCombat() && ActionReady(OriginalHook(Aethercharge)))
                 return OriginalHook(Aethercharge);
 
             //Ruin4 in Egi Phases
@@ -512,6 +515,8 @@ internal partial class SMN
             bool IfritAstralFlow = IsEnabled(CustomComboPreset.SMN_AoE_Advanced_Combo_Egi_AstralFlow) && Config.SMN_AoE_Egi_AstralFlow[1];
             bool GarudaAstralFlow = IsEnabled(CustomComboPreset.SMN_AoE_Advanced_Combo_Egi_AstralFlow) && Config.SMN_AoE_Egi_AstralFlow[2];
 
+            var searingInSummon = GetCooldownRemainingTime(SearingLight) > (Gauge.SummonTimerRemaining / 1000f) + GCDTotal;
+
             DemiAttackCount = CurrentDemiSummon is not DemiSummon.None ? TimesUsedSinceOtherAction(OriginalHook(Aethercharge), [AstralImpulse, UmbralImpulse, FountainOfFire, AstralFlare, UmbralFlare, BrandOfPurgatory]) : 0;
 
             if (IsEnabled(CustomComboPreset.SMN_Variant_Cure) && IsEnabled(Variant.VariantCure) && PlayerHealthPercentageHp() <= GetOptionValue(Config.SMN_VariantCure))
@@ -569,7 +574,7 @@ internal partial class SMN
                     return SearingFlash;
 
                 // Demi Nuke
-                if (CurrentDemiSummon is not DemiSummon.None && IsEnabled(CustomComboPreset.SMN_AoE_Advanced_Combo_DemiSummons_Attacks) && DemiAttackCount >= burstDelay && (IsNotEnabled(CustomComboPreset.SMN_AoE_Advanced_Combo_SearingLight_Burst) || HasEffect(Buffs.SearingLight)))
+                if (CurrentDemiSummon is not DemiSummon.None && IsEnabled(CustomComboPreset.SMN_AoE_Advanced_Combo_DemiSummons_Attacks) && DemiAttackCount >= burstDelay && (IsNotEnabled(CustomComboPreset.SMN_AoE_Advanced_Combo_SearingLight_Burst) || HasEffect(Buffs.SearingLight) || searingInSummon))
                 {
                     if (ActionReady(OriginalHook(EnkindleBahamut)))
                         return OriginalHook(EnkindleBahamut);
@@ -608,7 +613,7 @@ internal partial class SMN
             }
 
             // Demi
-            if (IsEnabled(CustomComboPreset.SMN_AoE_Advanced_Combo_DemiSummons) && ActionReady(OriginalHook(Aethercharge)))
+            if (IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_DemiSummons) && PartyInCombat() && ActionReady(OriginalHook(Aethercharge)))
                 return OriginalHook(Aethercharge);
 
             //Ruin4 in Egi Phases
