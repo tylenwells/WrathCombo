@@ -6,6 +6,7 @@ using WrathCombo.Combos.PvE.Content;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
+using PartyRequirement = WrathCombo.Combos.PvE.All.Enums.PartyRequirement;
 #endregion
 
 namespace WrathCombo.Combos.PvE;
@@ -442,7 +443,7 @@ internal partial class GNB : Tank
         //Heart of Light
         (HeartOfLight, CustomComboPreset.GNB_Mit_HeartOfLight,
             () => Config.GNB_Mit_HeartOfLight_PartyRequirement ==
-                  (int)Config.PartyRequirement.No ||
+                  (int)PartyRequirement.No ||
                   IsInParty()),
         //Rampart
         (Role.Rampart, CustomComboPreset.GNB_Mit_Rampart,

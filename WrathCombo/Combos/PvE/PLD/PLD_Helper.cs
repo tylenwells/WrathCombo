@@ -3,6 +3,7 @@ using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Data;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
+using PartyRequirement = WrathCombo.Combos.PvE.All.Enums.PartyRequirement;
 
 namespace WrathCombo.Combos.PvE;
 
@@ -118,7 +119,7 @@ internal partial class PLD
         //Divine Veil
         (DivineVeil, CustomComboPreset.PLD_Mit_DivineVeil,
             () => Config.PLD_Mit_DivineVeil_PartyRequirement ==
-                  (int)Config.PartyRequirement.No ||
+                  (int)PartyRequirement.No ||
                   IsInParty()),
         //Rampart
         (Role.Rampart, CustomComboPreset.PLD_Mit_Rampart,

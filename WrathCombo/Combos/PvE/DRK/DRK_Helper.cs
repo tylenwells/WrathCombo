@@ -12,6 +12,8 @@ using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Data;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
 using Preset = WrathCombo.Combos.CustomComboPreset;
+using BossAvoidance = WrathCombo.Combos.PvE.All.Enums.BossAvoidance;
+using PartyRequirement = WrathCombo.Combos.PvE.All.Enums.PartyRequirement;
 
 // ReSharper disable AccessToStaticMemberViaDerivedType
 // ReSharper disable ConditionIsAlwaysTrueOrFalse
@@ -505,7 +507,7 @@ internal partial class DRK
 
             var bossRestrictionLivingDead = flags.HasFlag(Combo.Adv)
                 ? (int)Config.DRK_ST_LivingDeadBossRestriction
-                : (int)Config.BossAvoidance.Off;
+                : (int)BossAvoidance.Off;
             var livingDeadSelfThreshold = flags.HasFlag(Combo.Adv) ?
                 flags.HasFlag(Combo.ST)
                     ? Config.DRK_ST_LivingDeadSelfThreshold
@@ -528,9 +530,9 @@ internal partial class DRK
                 PlayerHealthPercentageHp() <= livingDeadSelfThreshold &&
                 GetTargetHPPercent(Target(flags)) >= livingDeadTargetThreshold &&
                 // Checking if the target matches the boss avoidance option
-                ((bossRestrictionLivingDead is (int)Config.BossAvoidance.On &&
+                ((bossRestrictionLivingDead is (int)BossAvoidance.On &&
                   InBossEncounter()) ||
-                 bossRestrictionLivingDead is (int)Config.BossAvoidance.Off))
+                 bossRestrictionLivingDead is (int)BossAvoidance.Off))
                 return (action = LivingDead) != 0;
 
             #endregion
@@ -1114,10 +1116,10 @@ internal partial class DRK
         var targetIsBoss = TargetIsBoss();
         var bossRestriction = !aoe
             ? (int)Config.DRK_ST_TBNBossRestriction
-            : (int)Config.BossAvoidance.Off; // Don't avoid bosses in AoE
+            : (int)BossAvoidance.Off; // Don't avoid bosses in AoE
 
         // Bail if we're trying to avoid bosses and the target is one
-        if (bossRestriction is (int)Config.BossAvoidance.On
+        if (bossRestriction is (int)BossAvoidance.On
             && targetIsBoss)
             return false;
 
@@ -1164,8 +1166,7 @@ internal partial class DRK
             () => InActionRange(Role.Reprisal)),
         (DarkMissionary, Preset.DRK_Mit_DarkMissionary,
             () => Config.DRK_Mit_DarkMissionary_PartyRequirement ==
-                  (int)Config.PartyRequirement.No ||
-                  IsInParty()),
+                  (int)PartyRequirement.No || IsInParty()),
         (Role.Rampart, Preset.DRK_Mit_Rampart,
             () => Role.CanRampart(Config.DRK_Mit_Rampart_Health)),
         (DarkMind, Preset.DRK_Mit_DarkMind, () => true),

@@ -5,6 +5,9 @@ using WrathCombo.Data;
 using WrathCombo.Extensions;
 using WrathCombo.Window.Functions;
 using static WrathCombo.Window.Functions.UserConfig;
+using BossAvoidance = WrathCombo.Combos.PvE.All.Enums.BossAvoidance;
+using PartyRequirement = WrathCombo.Combos.PvE.All.Enums.PartyRequirement;
+
 namespace WrathCombo.Combos.PvE;
 
 internal partial class GNB
@@ -518,18 +521,6 @@ internal partial class GNB
                         itemWidth: 150f, sliderIncrement: SliderIncrements.Fives);
                     break;
             }
-        }
-
-        internal enum PartyRequirement
-        {
-            No,
-            Yes
-        }
-
-        internal enum BossAvoidance
-        {
-            Off = 1,
-            On = 2
         }
     }
 }

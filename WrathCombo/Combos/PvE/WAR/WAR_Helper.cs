@@ -2,6 +2,7 @@
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
+using PartyRequirement = WrathCombo.Combos.PvE.All.Enums.PartyRequirement;
 
 namespace WrathCombo.Combos.PvE;
 
@@ -154,7 +155,7 @@ internal partial class WAR
         (ShakeItOff, CustomComboPreset.WAR_Mit_ShakeItOff,
             () => (FindEffect(Buffs.ShakeItOff) is null &&
                   Config.WAR_Mit_ShakeItOff_PartyRequirement ==
-                  (int)Config.PartyRequirement.No) ||
+                  (int)PartyRequirement.No) ||
                   IsInParty()),
         //Arm's Length
         (All.ArmsLength, CustomComboPreset.WAR_Mit_ArmsLength,

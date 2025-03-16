@@ -81,6 +81,27 @@ internal partial class All
     private const uint
         IsleSprint = 31314;
 
+    public static class Enums
+    {
+        /// <summary>
+        ///     Whether abilities should be restricted to Bosses or not.
+        /// </summary>
+        internal enum BossAvoidance
+        {
+            Off = 1,
+            On = 2,
+        }
+
+        /// <summary>
+        ///     Whether abilities should be restricted to while in a party or not.
+        /// </summary>
+        internal enum PartyRequirement
+        {
+            No,
+            Yes,
+        }
+    }
+
     public static class Buffs
     {
         //public const ushort
