@@ -315,7 +315,8 @@ internal partial class SMN
             int burstDelay = IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_DemiEgiMenu_oGCDPooling) ? PluginConfiguration.GetCustomIntValue(Config.SMN_ST_Burst_Delay) : 0;
 
             bool TitanAstralFlow = IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_Egi_AstralFlow) && Config.SMN_ST_Egi_AstralFlow[0];
-            bool IfritAstralFlow = IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_Egi_AstralFlow) && Config.SMN_ST_Egi_AstralFlow[1];
+            bool IfritAstralFlowCyclone = IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_Egi_AstralFlow) && Config.SMN_ST_Egi_AstralFlow[1];
+            bool IfritAstralFlowStrike = IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_Egi_AstralFlow) && Config.SMN_ST_Egi_AstralFlow[3];
             bool GarudaAstralFlow = IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_Egi_AstralFlow) && Config.SMN_ST_Egi_AstralFlow[2];
 
             var searingInSummon = GetCooldownRemainingTime(SearingLight) > (Gauge.SummonTimerRemaining / 1000f) + GCDTotal;
@@ -457,7 +458,8 @@ internal partial class SMN
 
             if ((GarudaAstralFlow && HasEffect(Buffs.GarudasFavor)) ||
                 (TitanAstralFlow && HasEffect(Buffs.TitansFavor) && CanSpellWeave()) ||
-                (IfritAstralFlow && (HasEffect(Buffs.IfritsFavor) && ((!Config.SMN_ST_CrimsonCycloneMelee) || (Config.SMN_ST_CrimsonCycloneMelee && InMeleeRange())))) || (HasEffect(Buffs.CrimsonStrike) && InMeleeRange()))
+                (IfritAstralFlowCyclone && HasEffect(Buffs.IfritsFavor) && ((!Config.SMN_ST_CrimsonCycloneMelee) || (Config.SMN_ST_CrimsonCycloneMelee && InMeleeRange()))) ||
+                (IfritAstralFlowStrike && HasEffect(Buffs.CrimsonStrike) && InMeleeRange()))
                 return OriginalHook(AstralFlow);
 
             if (IsGarudaAttuned)
@@ -512,7 +514,8 @@ internal partial class SMN
             int burstDelay = IsEnabled(CustomComboPreset.SMN_AoE_Advanced_Combo_DemiEgiMenu_oGCDPooling) ? PluginConfiguration.GetCustomIntValue(Config.SMN_AoE_Burst_Delay) : 0;
 
             bool TitanAstralFlow = IsEnabled(CustomComboPreset.SMN_AoE_Advanced_Combo_Egi_AstralFlow) && Config.SMN_AoE_Egi_AstralFlow[0];
-            bool IfritAstralFlow = IsEnabled(CustomComboPreset.SMN_AoE_Advanced_Combo_Egi_AstralFlow) && Config.SMN_AoE_Egi_AstralFlow[1];
+            bool IfritAstralFlowCyclone = IsEnabled(CustomComboPreset.SMN_AoE_Advanced_Combo_Egi_AstralFlow) && Config.SMN_AoE_Egi_AstralFlow[1];
+            bool IfritAstralFlowStrike = IsEnabled(CustomComboPreset.SMN_AoE_Advanced_Combo_Egi_AstralFlow) && Config.SMN_AoE_Egi_AstralFlow[3];
             bool GarudaAstralFlow = IsEnabled(CustomComboPreset.SMN_AoE_Advanced_Combo_Egi_AstralFlow) && Config.SMN_AoE_Egi_AstralFlow[2];
 
             var searingInSummon = GetCooldownRemainingTime(SearingLight) > (Gauge.SummonTimerRemaining / 1000f) + GCDTotal;
@@ -651,7 +654,8 @@ internal partial class SMN
 
             if ((GarudaAstralFlow && HasEffect(Buffs.GarudasFavor)) ||
                 (TitanAstralFlow && HasEffect(Buffs.TitansFavor) && CanSpellWeave()) ||
-                (IfritAstralFlow && HasEffect(Buffs.IfritsFavor) && ((!Config.SMN_AoE_CrimsonCycloneMelee) || (Config.SMN_AoE_CrimsonCycloneMelee && InMeleeRange()))))
+                (IfritAstralFlowCyclone && HasEffect(Buffs.IfritsFavor) && ((!Config.SMN_AoE_CrimsonCycloneMelee) || (Config.SMN_AoE_CrimsonCycloneMelee && InMeleeRange()))) ||
+                (IfritAstralFlowStrike && HasEffect(Buffs.CrimsonStrike) && InMeleeRange()))
                 return OriginalHook(AstralFlow);
 
             // Precious Brilliance
