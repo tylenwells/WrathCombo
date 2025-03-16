@@ -5,7 +5,7 @@ using WrathCombo.Extensions;
 
 namespace WrathCombo.Combos.PvE;
 
-internal partial class PCT : MagicDPS
+internal partial class PCT : CasterJob
 {
     internal class PCT_ST_SimpleMode : CustomCombo
     {

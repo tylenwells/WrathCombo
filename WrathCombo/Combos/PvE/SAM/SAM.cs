@@ -3,7 +3,7 @@ using WrathCombo.CustomComboNS;
 using WrathCombo.Extensions;
 namespace WrathCombo.Combos.PvE;
 
-internal partial class SAM : MeleeDPS
+internal partial class SAM : MeleeJob
 {
     internal class SAM_ST_YukikazeCombo : CustomCombo
     {

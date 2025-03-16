@@ -7,7 +7,7 @@ using WrathCombo.Extensions;
 
 namespace WrathCombo.Combos.PvE;
 
-internal partial class NIN : MeleeDPS
+internal partial class NIN : MeleeJob
 {
     internal class NIN_ST_AdvancedMode : CustomCombo
     {

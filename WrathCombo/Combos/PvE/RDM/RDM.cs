@@ -3,7 +3,7 @@ using WrathCombo.Data;
 
 namespace WrathCombo.Combos.PvE;
 
-internal partial class RDM : MagicDPS
+internal partial class RDM : CasterJob
 {
     internal class RDM_VariantVerCure : CustomCombo
     {

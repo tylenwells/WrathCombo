@@ -11,7 +11,7 @@ using PartyRequirement = WrathCombo.Combos.PvE.All.Enums.PartyRequirement;
 
 namespace WrathCombo.Combos.PvE;
 
-internal partial class GNB : Tank
+internal partial class GNB : TankJob
 {
     #region Variables
     internal static byte Ammo => GetJobGauge<GNBGauge>().Ammo;

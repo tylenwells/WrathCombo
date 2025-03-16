@@ -65,13 +65,13 @@ internal partial class All
         {
             switch (actionID)
             {
-                case TankRole.LowBlow or PLD.ShieldBash when CanInterruptEnemy() && ActionReady(TankRole.Interject):
-                    return TankRole.Interject;
+                case Tank.LowBlow or PLD.ShieldBash when CanInterruptEnemy() && ActionReady(Tank.Interject):
+                    return Tank.Interject;
 
-                case TankRole.LowBlow or PLD.ShieldBash when TargetIsCasting() && ActionReady(TankRole.LowBlow):
-                    return TankRole.LowBlow;
+                case Tank.LowBlow or PLD.ShieldBash when TargetIsCasting() && ActionReady(Tank.LowBlow):
+                    return Tank.LowBlow;
 
-                case PLD.ShieldBash when IsOnCooldown(TankRole.LowBlow):
+                case PLD.ShieldBash when IsOnCooldown(Tank.LowBlow):
                 default:
                     return actionID;
             }
@@ -83,7 +83,7 @@ internal partial class All
         protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.ALL_Tank_Reprisal;
 
         protected override uint Invoke(uint actionID) =>
-            actionID is TankRole.Reprisal && TargetHasEffectAny(TankRole.Debuffs.Reprisal) && IsOffCooldown(TankRole.Reprisal)
+            actionID is Tank.Reprisal && TargetHasEffectAny(Tank.Debuffs.Reprisal) && IsOffCooldown(Tank.Reprisal)
                 ? SavageBlade
                 : actionID;
     }
@@ -122,7 +122,7 @@ internal partial class All
         protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.ALL_Caster_Addle;
 
         protected override uint Invoke(uint actionID) =>
-            actionID is CasterRole.Addle && TargetHasEffectAny(CasterRole.Debuffs.Addle) && IsOffCooldown(CasterRole.Addle)
+            actionID is Caster.Addle && TargetHasEffectAny(Caster.Debuffs.Addle) && IsOffCooldown(Caster.Addle)
                 ? SavageBlade
                 : actionID;
     }
@@ -162,7 +162,7 @@ internal partial class All
         protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.ALL_Melee_Feint;
 
         protected override uint Invoke(uint actionID) =>
-            actionID is MeleeRole.Feint && TargetHasEffectAny(MeleeRole.Debuffs.Feint) && IsOffCooldown(MeleeRole.Feint)
+            actionID is Melee.Feint && TargetHasEffectAny(Melee.Debuffs.Feint) && IsOffCooldown(Melee.Feint)
                 ? SavageBlade
                 : actionID;
     }
@@ -172,7 +172,7 @@ internal partial class All
         protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.ALL_Melee_TrueNorth;
 
         protected override uint Invoke(uint actionID) =>
-            actionID is MeleeRole.TrueNorth && HasEffect(MeleeRole.Buffs.TrueNorth)
+            actionID is Melee.TrueNorth && HasEffect(Melee.Buffs.TrueNorth)
                 ? SavageBlade
                 : actionID;
     }
@@ -196,8 +196,8 @@ internal partial class All
         protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.ALL_Ranged_Interrupt;
 
         protected override uint Invoke(uint actionID) =>
-            actionID is RangedRole.FootGraze && CanInterruptEnemy() && ActionReady(RangedRole.HeadGraze)
-                ? RangedRole.HeadGraze
+            actionID is PhysRanged.FootGraze && CanInterruptEnemy() && ActionReady(PhysRanged.HeadGraze)
+                ? PhysRanged.HeadGraze
                 : actionID;
     }
 }

@@ -3,7 +3,7 @@ using WrathCombo.CustomComboNS;
 
 namespace WrathCombo.Combos.PvE;
 
-internal partial class BLU : MagicDPS
+internal partial class BLU : CasterJob
 {
     public const byte JobID = 36;
 

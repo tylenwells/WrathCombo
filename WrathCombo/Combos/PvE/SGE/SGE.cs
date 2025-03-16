@@ -3,7 +3,7 @@ using System;
 using WrathCombo.CustomComboNS;
 namespace WrathCombo.Combos.PvE;
 
-internal partial class SGE : Healer
+internal partial class SGE : HealerJob
 {
     /*
      * SGE_Kardia

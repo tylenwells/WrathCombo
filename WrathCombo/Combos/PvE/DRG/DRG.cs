@@ -2,7 +2,7 @@ using WrathCombo.CustomComboNS;
 using WrathCombo.Extensions;
 namespace WrathCombo.Combos.PvE;
 
-internal partial class DRG : MeleeDPS
+internal partial class DRG : MeleeJob
 {
     internal class DRG_ST_FullThrustCombo : CustomCombo
     {

@@ -14,7 +14,7 @@ using WrathCombo.Data;
 
 namespace WrathCombo.Combos.PvE;
 
-internal partial class DRK : Tank
+internal partial class DRK : TankJob
 {
     internal class DRK_ST_Advanced : CustomCombo
     {

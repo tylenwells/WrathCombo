@@ -1,7 +1,7 @@
 using WrathCombo.CustomComboNS;
 namespace WrathCombo.Combos.PvE;
 
-internal partial class RPR : MeleeDPS
+internal partial class RPR : MeleeJob
 {
     internal class RPR_ST_SimpleMode : CustomCombo
     {

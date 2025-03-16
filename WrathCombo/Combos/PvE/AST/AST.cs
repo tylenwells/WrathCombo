@@ -7,7 +7,7 @@ using WrathCombo.Data;
 using WrathCombo.Extensions;
 namespace WrathCombo.Combos.PvE;
 
-internal partial class AST : Healer
+internal partial class AST : HealerJob
 {
     internal class AST_Benefic : CustomCombo
     {

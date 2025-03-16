@@ -4,7 +4,7 @@ using WrathCombo.Extensions;
 namespace WrathCombo.Combos.PvE;
 
 //TODO Cleanup weaves + reorder everything
-internal partial class BLM : MagicDPS
+internal partial class BLM : CasterJob
 {
     internal class BLM_ST_SimpleMode : CustomCombo
     {

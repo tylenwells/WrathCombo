@@ -8,7 +8,7 @@ using WrathCombo.Data;
 
 namespace WrathCombo.Combos.PvE;
 
-internal partial class BRD : PhysRangedDPS
+internal partial class BRD : PhysRangedJob
 {
     #region Song status
     internal static bool SongIsNotNone(Song value) => value != Song.NONE;

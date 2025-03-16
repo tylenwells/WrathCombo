@@ -4,7 +4,7 @@ using WrathCombo.CustomComboNS;
 
 namespace WrathCombo.Combos.PvE;
 
-internal partial class SMN : MagicDPS
+internal partial class SMN : CasterJob
 {
     internal class SMN_Raise : CustomCombo
     {

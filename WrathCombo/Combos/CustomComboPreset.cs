@@ -30,7 +30,7 @@ public enum CustomComboPreset
     ALL_Tank_Menu = 100099,
 
     [Role(JobRole.Tank)]
-    [ReplaceSkill(TankRole.LowBlow, PLD.ShieldBash)]
+    [ReplaceSkill(Tank.LowBlow, PLD.ShieldBash)]
     [ParentCombo(ALL_Tank_Menu)]
     [CustomComboInfo("Tank: Interrupt Feature",
         "Replaces Low Blow (Stun) with Interject (Interrupt) when the target can be interrupted.\nPLDs can slot Shield Bash to have the feature to work with Shield Bash.",
@@ -38,7 +38,7 @@ public enum CustomComboPreset
     ALL_Tank_Interrupt = 100000,
 
     [Role(JobRole.Tank)]
-    [ReplaceSkill(TankRole.Reprisal)]
+    [ReplaceSkill(Tank.Reprisal)]
     [ParentCombo(ALL_Tank_Menu)]
     [CustomComboInfo("Tank: Double Reprisal Protection",
         "Prevents the use of Reprisal when target already has the effect by replacing it with Savage Blade.", ADV.JobID)]
@@ -72,7 +72,7 @@ public enum CustomComboPreset
     ALL_Caster_Menu = 100097,
 
     [Role(JobRole.MagicalDPS)]
-    [ReplaceSkill(CasterRole.Addle)]
+    [ReplaceSkill(Caster.Addle)]
     [ParentCombo(ALL_Caster_Menu)]
     [CustomComboInfo("Magical Ranged DPS: Double Addle Protection",
         "Prevents the use of Addle when target already has the effect by replacing it with Savage Blade.", ADV.JobID)]
@@ -98,14 +98,14 @@ public enum CustomComboPreset
     ALL_Melee_Menu = 100096,
 
     [Role(JobRole.MeleeDPS)]
-    [ReplaceSkill(MeleeRole.Feint)]
+    [ReplaceSkill(Melee.Feint)]
     [ParentCombo(ALL_Melee_Menu)]
     [CustomComboInfo("Melee DPS: Double Feint Protection",
         "Prevents the use of Feint when target already has the effect by replacing it with Savage Blade.", ADV.JobID)]
     ALL_Melee_Feint = 100030,
 
     [Role(JobRole.MeleeDPS)]
-    [ReplaceSkill(MeleeRole.TrueNorth)]
+    [ReplaceSkill(Melee.TrueNorth)]
     [ParentCombo(ALL_Melee_Menu)]
     [CustomComboInfo("Melee DPS: True North Protection",
         "Prevents the use of True North when its buff is already active by replacing it with Savage Blade.", ADV.JobID)]
@@ -130,7 +130,7 @@ public enum CustomComboPreset
     ALL_Ranged_Mitigation = 100040,
 
     [Role(JobRole.RangedDPS)]
-    [ReplaceSkill(RangedRole.FootGraze)]
+    [ReplaceSkill(PhysRanged.FootGraze)]
     [ParentCombo(ALL_Ranged_Menu)]
     [CustomComboInfo("Physical Ranged DPS: Ranged Interrupt Feature",
         "Replaces Foot Graze with Head Graze when target can be interrupted.", ADV.JobID)]

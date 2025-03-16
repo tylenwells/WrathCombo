@@ -7,7 +7,7 @@ using WrathCombo.Data;
 
 namespace WrathCombo.Combos.PvE;
 
-internal partial class PLD : Tank
+internal partial class PLD : TankJob
 {
     private static PLDGauge Gauge => CustomComboFunctions.GetJobGauge<PLDGauge>();
 

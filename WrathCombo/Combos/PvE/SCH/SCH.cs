@@ -5,7 +5,7 @@ using WrathCombo.Data;
 using WrathCombo.Extensions;
 namespace WrathCombo.Combos.PvE;
 
-internal partial class SCH : Healer
+internal partial class SCH : HealerJob
 {
     /*
      * SCH_Consolation

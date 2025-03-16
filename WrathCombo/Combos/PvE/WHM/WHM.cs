@@ -5,7 +5,7 @@ using WrathCombo.CustomComboNS;
 using WrathCombo.Data;
 namespace WrathCombo.Combos.PvE;
 
-internal partial class WHM : Healer
+internal partial class WHM : HealerJob
 {
     internal class WHM_SolaceMisery : CustomCombo
     {
