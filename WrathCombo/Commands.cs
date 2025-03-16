@@ -190,9 +190,17 @@ public partial class WrathCombo
         if (target != all)
         {
             var presetCanNumber = int.TryParse(target, out var targetNumber);
-            preset = presetCanNumber
-                ? (CustomComboPreset)targetNumber
-                : Enum.Parse<CustomComboPreset>(target, true);
+            try
+            {
+                preset = presetCanNumber
+                    ? (CustomComboPreset)targetNumber
+                    : Enum.Parse<CustomComboPreset>(target, true);
+            }
+            catch
+            {
+                DuoLog.Error($"Could not find preset '{target}'");
+                return;
+            }
         }
 
         // Give the correct method for the action
