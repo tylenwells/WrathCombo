@@ -26,9 +26,8 @@ internal partial class WAR : Tank
                               JustUsed(Holmgang, 9f);
 
             // Interrupt
-            if (ActionReady(All.Interject)
-                && CanInterruptEnemy())
-                return All.Interject;
+            if (Role.CanInterject())
+                return Role.Interject;
 
             #region Variant
             if (Variant.CanSpiritDart(CustomComboPreset.WAR_Variant_SpiritDart))
@@ -199,9 +198,8 @@ internal partial class WAR : Tank
 
             // Interrupt
             if (IsEnabled(CustomComboPreset.WAR_ST_Interrupt)
-                && ActionReady(All.Interject)
-                && CanInterruptEnemy())
-                return All.Interject;
+                && Role.CanInterject())
+                return Role.Interject;
 
             #region Variant
             if (Variant.CanSpiritDart(CustomComboPreset.WAR_Variant_SpiritDart))
@@ -430,9 +428,8 @@ internal partial class WAR : Tank
             #region Stuns
 
             // Interrupt
-            if (ActionReady(All.Interject)
-                && CanInterruptEnemy())
-                return All.Interject;
+            if (Role.CanInterject())
+                return Role.Interject;
 
             // Stun
             if (Role.CanLowBlow())
@@ -573,9 +570,8 @@ internal partial class WAR : Tank
 
             // Interrupt
             if (IsEnabled(CustomComboPreset.WAR_AoE_Interrupt)
-                && ActionReady(All.Interject)
-                && CanInterruptEnemy())
-                return All.Interject;
+                && Role.CanInterject())
+                return Role.Interject;
 
             // Stun
             if (IsEnabled(CustomComboPreset.WAR_AoE_Stun)

@@ -280,9 +280,8 @@ internal partial class DRK
                    IsEnabled(Preset.DRK_ST_CD_Interrupt)) ||
                   flags.HasFlag(Combo.AoE) &&
                   IsEnabled(Preset.DRK_AoE_Interrupt))) &&
-                ActionReady(All.Interject) &&
-                CanInterruptEnemy())
-                return (action = All.Interject) != 0;
+                Role.CanInterject())
+                return (action = Role.Interject) != 0;
 
             if (flags.HasFlag(Combo.AoE) &&
                 (flags.HasFlag(Combo.Simple) ||

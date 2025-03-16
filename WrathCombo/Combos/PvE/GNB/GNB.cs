@@ -34,8 +34,8 @@ internal partial class GNB : Tank
             }
 
             //Interject
-            if (ActionReady(All.Interject) && CanInterruptEnemy())
-                return All.Interject;
+            if (Role.CanInterject())
+                return Role.Interject;
 
             #region Mitigations
             if (Config.GNB_ST_MitsOptions != 1)
@@ -263,8 +263,8 @@ internal partial class GNB : Tank
             }
 
             #region Stuns
-            if (ActionReady(All.Interject) && CanInterruptEnemy())
-                return All.Interject;
+            if (Role.CanInterject())
+                return Role.Interject;
             if (Role.CanLowBlow())
                 return Role.LowBlow;
             #endregion
@@ -372,8 +372,8 @@ internal partial class GNB : Tank
             }
 
             #region Stuns
-            if (IsEnabled(CustomComboPreset.GNB_AoE_Interrupt) && ActionReady(All.Interject) && CanInterruptEnemy())
-                return All.Interject;
+            if (IsEnabled(CustomComboPreset.GNB_AoE_Interrupt) && Role.CanInterject())
+                return Role.Interject;
             if (IsEnabled(CustomComboPreset.GNB_AoE_Stun) && Role.CanLowBlow())
                 return Role.LowBlow;
             #endregion

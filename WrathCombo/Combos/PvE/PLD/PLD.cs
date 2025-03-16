@@ -50,9 +50,8 @@ internal partial class PLD : Tank
             #endregion
 
             // Interrupt
-            if (ActionReady(All.Interject)
-                && CanInterruptEnemy())
-                return All.Interject;
+            if (Role.CanInterject())
+                return Role.Interject;
 
             // Variant Cure
             if (Variant.CanCure(CustomComboPreset.PLD_Variant_Cure, Config.PLD_VariantCure))
@@ -238,9 +237,8 @@ internal partial class PLD : Tank
             #endregion
 
             // Interrupt
-            if (ActionReady(All.Interject)
-                && CanInterruptEnemy())
-                return All.Interject;
+            if (Role.CanInterject())
+                return Role.Interject;
 
             // Stun
             if (TargetIsCasting())
@@ -387,9 +385,8 @@ internal partial class PLD : Tank
 
             // Interrupt
             if (IsEnabled(CustomComboPreset.PLD_ST_Interrupt)
-                && ActionReady(All.Interject)
-                && CanInterruptEnemy())
-                return All.Interject;
+                && Role.CanInterject())
+                return Role.Interject;
 
             // Variant Cure
             if (Variant.CanCure(CustomComboPreset.PLD_Variant_Cure, Config.PLD_VariantCure))
@@ -585,9 +582,8 @@ internal partial class PLD : Tank
 
             // Interrupt
             if (IsEnabled(CustomComboPreset.PLD_AoE_Interrupt)
-                && ActionReady(All.Interject)
-                && CanInterruptEnemy())
-                return All.Interject;
+                && Role.CanInterject())
+                return Role.Interject;
 
             // Stun
             if (IsEnabled(CustomComboPreset.PLD_AoE_Stun) && TargetIsCasting())

@@ -146,6 +146,9 @@ namespace WrathCombo.Combos.PvE
         public static bool CanInterject() =>
             ActionReady(Interject) && CanInterruptEnemy();
 
+        public static bool CanLowBlow() =>
+            ActionReady(LowBlow) && TargetIsCasting();
+
         public static bool CanRampart(int healthPercent) =>
             ActionReady(Rampart) && PlayerHealthPercentageHp() < healthPercent;
 
@@ -196,8 +199,5 @@ namespace WrathCombo.Combos.PvE
                 ? InActionRange(Reprisal)
                 : CanCircleAoe(5) >= enemyCount) &&
             ActionReady(Reprisal) && PlayerHealthPercentageHp() < healthPercent;
-
-        public static bool CanLowBlow() =>
-            ActionReady(LowBlow) && TargetIsCasting();
     }
 }
