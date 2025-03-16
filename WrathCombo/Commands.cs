@@ -224,6 +224,13 @@ public partial class WrathCombo
             var usablePreset = (CustomComboPreset)preset!;
             method(usablePreset, false);
 
+            if (action == toggle)
+                action =
+                    Service.Configuration.EnabledActions
+                        .TryGetValue(usablePreset, out _)
+                        ? set
+                        : unset;
+
             var ctrlText = P.UIHelper.PresetControlled(usablePreset) is not null
                 ? " " + OptionControlledByIPC
                 : "";
