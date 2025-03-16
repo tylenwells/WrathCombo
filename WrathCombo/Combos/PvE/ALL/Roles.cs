@@ -141,14 +141,15 @@ namespace WrathCombo.Combos.PvE
             public const ushort
                 Reprisal = 1193; //applied by Reprisal to target
         }
+
         public static bool CanInterject() =>
             ActionReady(Interject) && CanInterruptEnemy();
 
-        public static bool CanRampart(int healthpercent) =>
-            ActionReady(Rampart) && PlayerHealthPercentageHp() < healthpercent;
+        public static bool CanRampart(int healthPercent) =>
+            ActionReady(Rampart) && PlayerHealthPercentageHp() < healthPercent;
 
-        public static bool CanReprisal(int healthpercent) => //? May need more fleshing out by tank masters
-            ActionReady(Reprisal) && InActionRange(Reprisal) && PlayerHealthPercentageHp() < healthpercent;
+        public static bool CanReprisal(int healthPercent) =>
+            ActionReady(Reprisal) && InActionRange(Reprisal) && PlayerHealthPercentageHp() < healthPercent;
 
 
 
