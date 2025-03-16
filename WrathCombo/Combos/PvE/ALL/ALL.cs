@@ -18,6 +18,27 @@ internal partial class All
 
     public static class Buffs{}
 
+    public static class Enums
+    {
+        /// <summary>
+        ///     Whether abilities should be restricted to Bosses or not.
+        /// </summary>
+        internal enum BossAvoidance
+        {
+            Off = 1,
+            On = 2,
+        }
+
+        /// <summary>
+        ///     Whether abilities should be restricted to while in a party or not.
+        /// </summary>
+        internal enum PartyRequirement
+        {
+            No,
+            Yes,
+        }
+    }
+
     public static class Debuffs
     {
         public const ushort
@@ -47,10 +68,10 @@ internal partial class All
                 case TankRole.LowBlow or PLD.ShieldBash when CanInterruptEnemy() && ActionReady(TankRole.Interject):
                     return TankRole.Interject;
 
-                case TankRole.LowBlow or PLD.ShieldBash when ActionReady(TankRole.LowBlow):
+                case TankRole.LowBlow or PLD.ShieldBash when TargetIsCasting() && ActionReady(TankRole.LowBlow):
                     return TankRole.LowBlow;
 
-                case TankRole.LowBlow or PLD.ShieldBash when actionID == PLD.ShieldBash && IsOnCooldown(TankRole.LowBlow):
+                case PLD.ShieldBash when IsOnCooldown(TankRole.LowBlow):
                 default:
                     return actionID;
             }

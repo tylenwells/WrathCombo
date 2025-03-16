@@ -50,9 +50,8 @@ internal partial class PLD : Tank
             #endregion
 
             // Interrupt
-            if (ActionReady(All.Interject)
-                && CanInterruptEnemy())
-                return All.Interject;
+            if (Role.CanInterject())
+                return Role.Interject;
 
             // Variant Cure
             if (Variant.CanCure(CustomComboPreset.PLD_Variant_Cure, Config.PLD_VariantCure))
@@ -238,16 +237,15 @@ internal partial class PLD : Tank
             #endregion
 
             // Interrupt
-            if (ActionReady(All.Interject)
-                && CanInterruptEnemy())
-                return All.Interject;
+            if (Role.CanInterject())
+                return Role.Interject;
 
             // Stun
             if (TargetIsCasting())
                 if (ActionReady(ShieldBash))
                     return ShieldBash;
-                else if (ActionReady(All.LowBlow))
-                    return All.LowBlow;
+                else if (Role.CanLowBlow())
+                    return Role.LowBlow;
 
             // Variant Cure
             if (Variant.CanCure(CustomComboPreset.PLD_Variant_Cure, Config.PLD_VariantCure))
@@ -275,7 +273,7 @@ internal partial class PLD : Tank
                             return Role.Rampart;
 
                         //Reprisal
-                        if (Role.CanReprisal(90)) //Player's health is below 80%
+                        if (Role.CanReprisal(90, checkTargetForDebuff:false))
                             return Role.Reprisal;
                     }
 
@@ -387,9 +385,8 @@ internal partial class PLD : Tank
 
             // Interrupt
             if (IsEnabled(CustomComboPreset.PLD_ST_Interrupt)
-                && ActionReady(All.Interject)
-                && CanInterruptEnemy())
-                return All.Interject;
+                && Role.CanInterject())
+                return Role.Interject;
 
             // Variant Cure
             if (Variant.CanCure(CustomComboPreset.PLD_Variant_Cure, Config.PLD_VariantCure))
@@ -585,16 +582,15 @@ internal partial class PLD : Tank
 
             // Interrupt
             if (IsEnabled(CustomComboPreset.PLD_AoE_Interrupt)
-                && ActionReady(All.Interject)
-                && CanInterruptEnemy())
-                return All.Interject;
+                && Role.CanInterject())
+                return Role.Interject;
 
             // Stun
             if (IsEnabled(CustomComboPreset.PLD_AoE_Stun) && TargetIsCasting())
                 if (ActionReady(ShieldBash))
                     return ShieldBash;
-                else if (ActionReady(All.LowBlow))
-                    return All.LowBlow;
+                else if (Role.CanLowBlow())
+                    return Role.LowBlow;
 
             // Variant Cure
             if (Variant.CanCure(CustomComboPreset.PLD_Variant_Cure, Config.PLD_VariantCure))

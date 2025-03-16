@@ -26,9 +26,8 @@ internal partial class WAR : Tank
                               JustUsed(Holmgang, 9f);
 
             // Interrupt
-            if (ActionReady(All.Interject)
-                && CanInterruptEnemy())
-                return All.Interject;
+            if (Role.CanInterject())
+                return Role.Interject;
 
             #region Variant
             if (Variant.CanSpiritDart(CustomComboPreset.WAR_Variant_SpiritDart))
@@ -199,9 +198,8 @@ internal partial class WAR : Tank
 
             // Interrupt
             if (IsEnabled(CustomComboPreset.WAR_ST_Interrupt)
-                && ActionReady(All.Interject)
-                && CanInterruptEnemy())
-                return All.Interject;
+                && Role.CanInterject())
+                return Role.Interject;
 
             #region Variant
             if (Variant.CanSpiritDart(CustomComboPreset.WAR_Variant_SpiritDart))
@@ -252,11 +250,10 @@ internal partial class WAR : Tank
                         return Role.Reprisal;
 
                     //Arms Length
-                    if (IsEnabled(CustomComboPreset.WAR_ST_Advanced_ArmsLength) && //Arms Length option is enabled
-                        ActionReady(All.ArmsLength) && //Arms Length is ready
-                        PlayerHealthPercentageHp() <= Config.WAR_ST_ArmsLength_Health && //Player's health is below selected threshold
-                        !InBossEncounter()) //target is not a boss
-                        return All.ArmsLength;
+                    if (IsEnabled(CustomComboPreset.WAR_ST_Advanced_ArmsLength) &&
+                        PlayerHealthPercentageHp() <= Config.WAR_ST_ArmsLength_Health &&
+                        Role.CanArmsLength())
+                        return Role.ArmsLength;
                 }
 
                 //Thrill
@@ -431,14 +428,12 @@ internal partial class WAR : Tank
             #region Stuns
 
             // Interrupt
-            if (ActionReady(All.Interject)
-                && CanInterruptEnemy())
-                return All.Interject;
+            if (Role.CanInterject())
+                return Role.Interject;
 
             // Stun
-            if (ActionReady(All.LowBlow)
-                && TargetIsCasting())
-                return All.LowBlow;
+            if (Role.CanLowBlow())
+                return Role.LowBlow;
 
             #endregion
 
@@ -476,7 +471,7 @@ internal partial class WAR : Tank
                             return Role.Rampart;
 
                         //Reprisal
-                        if (Role.CanReprisal(90)) //Player's health is below 90%
+                        if (Role.CanReprisal(90, checkTargetForDebuff:false))
                             return Role.Reprisal;
                     }
 
@@ -575,15 +570,13 @@ internal partial class WAR : Tank
 
             // Interrupt
             if (IsEnabled(CustomComboPreset.WAR_AoE_Interrupt)
-                && ActionReady(All.Interject)
-                && CanInterruptEnemy())
-                return All.Interject;
+                && Role.CanInterject())
+                return Role.Interject;
 
             // Stun
             if (IsEnabled(CustomComboPreset.WAR_AoE_Stun)
-                && ActionReady(All.LowBlow)
-                && TargetIsCasting())
-                return All.LowBlow;
+                && Role.CanLowBlow())
+                return Role.LowBlow;
 
             #endregion
 
@@ -631,17 +624,16 @@ internal partial class WAR : Tank
 
                     //Reprisal
                     if (IsEnabled(CustomComboPreset.WAR_AoE_Advanced_Reprisal) && //Reprisal option is enabled
-                        Role.CanReprisal(Config.WAR_AoE_Reprisal_Health) && //Player's health is below selected threshold
+                        Role.CanReprisal(Config.WAR_AoE_Reprisal_Health, checkTargetForDebuff:false) && //Player's health is below selected threshold
                         (Config.WAR_AoE_Reprisal_SubOption == 0 || //Reprisal is enabled for all targets
                          (TargetIsBoss() && Config.WAR_AoE_Reprisal_SubOption == 1))) //Reprisal is enabled for bosses only
                         return Role.Reprisal;
 
                     //Arms Length
-                    if (IsEnabled(CustomComboPreset.WAR_AoE_Advanced_ArmsLength) && //Arms Length option is enabled
-                        ActionReady(All.ArmsLength) && //Arms Length is ready
-                        PlayerHealthPercentageHp() <= Config.WAR_AoE_ArmsLength_Health && //Player's health is below selected threshold
-                        !InBossEncounter()) //target is not a boss
-                        return All.ArmsLength;
+                    if (IsEnabled(CustomComboPreset.WAR_AoE_Advanced_ArmsLength) &&
+                        PlayerHealthPercentageHp() <= Config.WAR_AoE_ArmsLength_Health &&
+                        Role.CanArmsLength())
+                        return Role.ArmsLength;
                 }
                 //Thrill
                 if (IsEnabled(CustomComboPreset.WAR_AoE_Advanced_Thrill) && //Thrill option is enabled

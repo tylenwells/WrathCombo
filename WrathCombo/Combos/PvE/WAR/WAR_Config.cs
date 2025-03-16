@@ -6,6 +6,8 @@ using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Data;
 using WrathCombo.Extensions;
 using WrathCombo.Window.Functions;
+using BossAvoidance = WrathCombo.Combos.PvE.All.Enums.BossAvoidance;
+using PartyRequirement = WrathCombo.Combos.PvE.All.Enums.PartyRequirement;
 
 namespace WrathCombo.Combos.PvE;
 
@@ -14,17 +16,6 @@ internal partial class WAR
     internal static class Config
     {
         private const int numberMitigationOptions = 8;
-
-        internal enum PartyRequirement
-        {
-            No,
-            Yes
-        }
-        internal enum BossAvoidance
-        {
-            Off = 1,
-            On = 2
-        }
 
         public static UserInt
             WAR_InfuriateRange = new("WAR_InfuriateRange", 40),

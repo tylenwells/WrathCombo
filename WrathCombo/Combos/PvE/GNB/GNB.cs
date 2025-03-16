@@ -34,8 +34,8 @@ internal partial class GNB : Tank
             }
 
             //Interject
-            if (ActionReady(All.Interject) && CanInterruptEnemy())
-                return All.Interject;
+            if (Role.CanInterject())
+                return Role.Interject;
 
             #region Mitigations
             if (Config.GNB_ST_MitsOptions != 1)
@@ -159,8 +159,10 @@ internal partial class GNB : Tank
                     if (IsEnabled(CustomComboPreset.GNB_ST_Reprisal) && Role.CanReprisal(Config.GNB_ST_Reprisal_Health) &&
                         (Config.GNB_ST_Reprisal_SubOption == 0 || TargetIsBoss() && Config.GNB_ST_Reprisal_SubOption == 1))
                         return Role.Reprisal;
-                    if (IsEnabled(CustomComboPreset.GNB_ST_ArmsLength) && ActionReady(All.ArmsLength) && HPP < Config.GNB_ST_ArmsLength_Health && !InBossEncounter())
-                        return All.ArmsLength;
+                    if (IsEnabled(CustomComboPreset.GNB_ST_ArmsLength) &&
+                        HPP < Config.GNB_AoE_ArmsLength_Health &&
+                        Role.CanArmsLength())
+                        return Role.ArmsLength;
                 }
                 if (IsEnabled(CustomComboPreset.GNB_ST_Camouflage) && ActionReady(Camouflage) && HPP < Config.GNB_ST_Camouflage_Health &&
                     (Config.GNB_ST_Camouflage_SubOption == 0 || TargetIsBoss() && Config.GNB_ST_Camouflage_SubOption == 1))
@@ -261,10 +263,10 @@ internal partial class GNB : Tank
             }
 
             #region Stuns
-            if (ActionReady(All.Interject) && CanInterruptEnemy())
-                return All.Interject;
-            if (ActionReady(All.LowBlow) && TargetIsCasting())
-                return All.LowBlow;
+            if (Role.CanInterject())
+                return Role.Interject;
+            if (Role.CanLowBlow())
+                return Role.LowBlow;
             #endregion
 
             #region Mitigations
@@ -280,7 +282,7 @@ internal partial class GNB : Tank
                             return OriginalHook(Nebula);
                         if (Role.CanRampart(80))
                             return Role.Rampart;
-                        if (Role.CanReprisal(90))
+                        if (Role.CanReprisal(90, checkTargetForDebuff:false))
                             return Role.Reprisal;
                     }
                     if (ActionReady(Camouflage) && HPP < 70)
@@ -370,10 +372,10 @@ internal partial class GNB : Tank
             }
 
             #region Stuns
-            if (IsEnabled(CustomComboPreset.GNB_AoE_Interrupt) && ActionReady(All.Interject) && CanInterruptEnemy())
-                return All.Interject;
-            if (IsEnabled(CustomComboPreset.GNB_AoE_Stun) && ActionReady(All.LowBlow) && TargetIsCasting())
-                return All.LowBlow;
+            if (IsEnabled(CustomComboPreset.GNB_AoE_Interrupt) && Role.CanInterject())
+                return Role.Interject;
+            if (IsEnabled(CustomComboPreset.GNB_AoE_Stun) && Role.CanLowBlow())
+                return Role.LowBlow;
             #endregion
 
             #region Mitigations
@@ -390,11 +392,13 @@ internal partial class GNB : Tank
                     if (IsEnabled(CustomComboPreset.GNB_AoE_Rampart) && Role.CanRampart(Config.GNB_AoE_Rampart_Health) &&
                         (Config.GNB_AoE_Rampart_SubOption == 0 || (TargetIsBoss() && Config.GNB_AoE_Rampart_SubOption == 1)))
                         return Role.Rampart;
-                    if (IsEnabled(CustomComboPreset.GNB_AoE_Reprisal) && Role.CanReprisal(Config.GNB_AoE_Reprisal_Health) &&
+                    if (IsEnabled(CustomComboPreset.GNB_AoE_Reprisal) && Role.CanReprisal(Config.GNB_AoE_Reprisal_Health, checkTargetForDebuff:false) &&
                         (Config.GNB_AoE_Reprisal_SubOption == 0 || (TargetIsBoss() && Config.GNB_AoE_Reprisal_SubOption == 1)))
                         return Role.Reprisal;
-                    if (IsEnabled(CustomComboPreset.GNB_AoE_ArmsLength) && ActionReady(All.ArmsLength) && HPP < Config.GNB_AoE_ArmsLength_Health && !InBossEncounter())
-                        return All.ArmsLength;
+                    if (IsEnabled(CustomComboPreset.GNB_AoE_ArmsLength) &&
+                        HPP < Config.GNB_AoE_ArmsLength_Health &&
+                        Role.CanArmsLength())
+                        return Role.ArmsLength;
                 }
 
                 if (IsEnabled(CustomComboPreset.GNB_AoE_Camouflage) && ActionReady(Camouflage) && HPP < Config.GNB_AoE_Camouflage_Health &&
