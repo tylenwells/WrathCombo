@@ -88,7 +88,6 @@ internal partial class WAR
             BloodwhettingDefenseLong = 2678, //applied by Bloodwhetting to self, -10% damage taken + heal on hit for 8 sec
             BloodwhettingDefenseShort = 2679, //applied by Bloodwhetting, Nascent Flash to self/target, -10% damage taken for 4 sec
             BloodwhettingShield = 2680, //applied by Bloodwhetting, Nascent Flash to self/target, damage shield
-            ArmsLength = 1209, //applied by Arm's Length to self
             Defiance = 91, //applied by Defiance to self, tank stance
             ShieldWall = 194, //applied by Shield Wall to self/target
             Stronghold = 195, //applied by Stronghold to self/target
@@ -158,10 +157,9 @@ internal partial class WAR
                   (int)PartyRequirement.No) ||
                   IsInParty()),
         //Arm's Length
-        (All.ArmsLength, CustomComboPreset.WAR_Mit_ArmsLength,
-            () => CanCircleAoe(7) >= Config.WAR_Mit_ArmsLength_EnemyCount &&
-                  (Config.WAR_Mit_ArmsLength_Boss == (int)Config.BossAvoidance.Off ||
-                   InBossEncounter())),
+        (Role.ArmsLength, CustomComboPreset.WAR_Mit_ArmsLength,
+            () => Role.CanArmsLength(Config.WAR_Mit_ArmsLength_EnemyCount,
+                Config.WAR_Mit_ArmsLength_Boss)),
         //Vengeance
         (OriginalHook(Vengeance), CustomComboPreset.WAR_Mit_Vengeance,
             () => PlayerHealthPercentageHp() <= Config.WAR_Mit_Vengeance_Health),

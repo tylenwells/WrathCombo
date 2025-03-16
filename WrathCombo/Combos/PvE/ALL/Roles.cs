@@ -1,4 +1,5 @@
-﻿using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
+﻿using WrathCombo.CustomComboNS.Functions;
+using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
 
 namespace WrathCombo.Combos.PvE
 {
@@ -148,10 +149,45 @@ namespace WrathCombo.Combos.PvE
         public static bool CanRampart(int healthPercent) =>
             ActionReady(Rampart) && PlayerHealthPercentageHp() < healthPercent;
 
+        /// <see cref="CanArmsLength(int, UserInt?)">CanArmsLength</see> with default values.
+        /// <seealso cref="CanArmsLength(int, UserInt?)"/>
+        public static bool CanArmsLength() =>
+            CanArmsLength(3, All.Enums.BossAvoidance.On);
+
+        /// <summary>
+        ///     Logic for <see cref="PhysicalRole.ArmsLength"/>.
+        /// </summary>
+        /// <param name="enemyCount">
+        ///     The minimum number of enemies within range.
+        /// </param>
+        /// <param name="avoidanceSetting">
+        ///     Whether to avoid boss fights.<br />
+        ///     Defaults to <see cref="All.Enums.BossAvoidance.Off">Off</see>.
+        /// </param>
+        /// <returns>
+        ///     If <see cref="PhysicalRole.ArmsLength"/> is ready and passes the
+        ///     provided requirements.
+        /// </returns>
+        public static bool CanArmsLength
+            (int enemyCount, UserInt? avoidanceSetting = null) =>
+            CanArmsLength(enemyCount,
+                (All.Enums.BossAvoidance)
+                (avoidanceSetting ?? (int)All.Enums.BossAvoidance.Off));
+
+        /// <see cref="CanArmsLength(int, UserInt?)">CanArmsLength</see> with direct Enum values for <paramref name="avoidanceSetting"/>.
+        /// <remarks>
+        ///     You should probably use <see cref="CanArmsLength(int, UserInt?)"/>
+        ///     instead (as in, just add an extra user-config for the boss avoidance).
+        /// </remarks>
+        /// <seealso cref="CanArmsLength(int, UserInt?)"/>
+        internal static bool CanArmsLength
+            (int enemyCount, All.Enums.BossAvoidance avoidanceSetting) =>
+            ActionReady(ArmsLength) && CanCircleAoe(7) >= enemyCount &&
+            ((int)avoidanceSetting == (int)All.Enums.BossAvoidance.Off ||
+             !InBossEncounter());
+
         public static bool CanReprisal(int healthPercent) =>
             ActionReady(Reprisal) && InActionRange(Reprisal) && PlayerHealthPercentageHp() < healthPercent;
-
-
 
     }
 }

@@ -159,8 +159,10 @@ internal partial class GNB : Tank
                     if (IsEnabled(CustomComboPreset.GNB_ST_Reprisal) && Role.CanReprisal(Config.GNB_ST_Reprisal_Health) &&
                         (Config.GNB_ST_Reprisal_SubOption == 0 || TargetIsBoss() && Config.GNB_ST_Reprisal_SubOption == 1))
                         return Role.Reprisal;
-                    if (IsEnabled(CustomComboPreset.GNB_ST_ArmsLength) && ActionReady(All.ArmsLength) && HPP < Config.GNB_ST_ArmsLength_Health && !InBossEncounter())
-                        return All.ArmsLength;
+                    if (IsEnabled(CustomComboPreset.GNB_ST_ArmsLength) &&
+                        HPP < Config.GNB_AoE_ArmsLength_Health &&
+                        Role.CanArmsLength())
+                        return Role.ArmsLength;
                 }
                 if (IsEnabled(CustomComboPreset.GNB_ST_Camouflage) && ActionReady(Camouflage) && HPP < Config.GNB_ST_Camouflage_Health &&
                     (Config.GNB_ST_Camouflage_SubOption == 0 || TargetIsBoss() && Config.GNB_ST_Camouflage_SubOption == 1))
@@ -393,8 +395,10 @@ internal partial class GNB : Tank
                     if (IsEnabled(CustomComboPreset.GNB_AoE_Reprisal) && Role.CanReprisal(Config.GNB_AoE_Reprisal_Health) &&
                         (Config.GNB_AoE_Reprisal_SubOption == 0 || (TargetIsBoss() && Config.GNB_AoE_Reprisal_SubOption == 1)))
                         return Role.Reprisal;
-                    if (IsEnabled(CustomComboPreset.GNB_AoE_ArmsLength) && ActionReady(All.ArmsLength) && HPP < Config.GNB_AoE_ArmsLength_Health && !InBossEncounter())
-                        return All.ArmsLength;
+                    if (IsEnabled(CustomComboPreset.GNB_AoE_ArmsLength) &&
+                        HPP < Config.GNB_AoE_ArmsLength_Health &&
+                        Role.CanArmsLength())
+                        return Role.ArmsLength;
                 }
 
                 if (IsEnabled(CustomComboPreset.GNB_AoE_Camouflage) && ActionReady(Camouflage) && HPP < Config.GNB_AoE_Camouflage_Health &&

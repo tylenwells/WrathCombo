@@ -252,11 +252,10 @@ internal partial class WAR : Tank
                         return Role.Reprisal;
 
                     //Arms Length
-                    if (IsEnabled(CustomComboPreset.WAR_ST_Advanced_ArmsLength) && //Arms Length option is enabled
-                        ActionReady(All.ArmsLength) && //Arms Length is ready
-                        PlayerHealthPercentageHp() <= Config.WAR_ST_ArmsLength_Health && //Player's health is below selected threshold
-                        !InBossEncounter()) //target is not a boss
-                        return All.ArmsLength;
+                    if (IsEnabled(CustomComboPreset.WAR_ST_Advanced_ArmsLength) &&
+                        PlayerHealthPercentageHp() <= Config.WAR_ST_ArmsLength_Health &&
+                        Role.CanArmsLength())
+                        return Role.ArmsLength;
                 }
 
                 //Thrill
@@ -637,11 +636,10 @@ internal partial class WAR : Tank
                         return Role.Reprisal;
 
                     //Arms Length
-                    if (IsEnabled(CustomComboPreset.WAR_AoE_Advanced_ArmsLength) && //Arms Length option is enabled
-                        ActionReady(All.ArmsLength) && //Arms Length is ready
-                        PlayerHealthPercentageHp() <= Config.WAR_AoE_ArmsLength_Health && //Player's health is below selected threshold
-                        !InBossEncounter()) //target is not a boss
-                        return All.ArmsLength;
+                    if (IsEnabled(CustomComboPreset.WAR_AoE_Advanced_ArmsLength) &&
+                        PlayerHealthPercentageHp() <= Config.WAR_AoE_ArmsLength_Health &&
+                        Role.CanArmsLength())
+                        return Role.ArmsLength;
                 }
                 //Thrill
                 if (IsEnabled(CustomComboPreset.WAR_AoE_Advanced_Thrill) && //Thrill option is enabled

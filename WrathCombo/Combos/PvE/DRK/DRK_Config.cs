@@ -10,6 +10,7 @@ using WrathCombo.Window.Functions;
 using BossAvoidance = WrathCombo.Combos.PvE.All.Enums.BossAvoidance;
 using PartyRequirement = WrathCombo.Combos.PvE.All.Enums.PartyRequirement;
 
+// ReSharper disable AccessToStaticMemberViaDerivedType
 // ReSharper disable once GrammarMistakeInComment
 // ReSharper disable SwitchStatementMissingSomeEnumCasesNoDefault
 // ReSharper disable InconsistentNaming

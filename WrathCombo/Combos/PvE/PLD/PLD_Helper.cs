@@ -128,10 +128,9 @@ internal partial class PLD
         (OriginalHook(Sentinel), CustomComboPreset.PLD_Mit_Sentinel,
             () => PlayerHealthPercentageHp() <= Config.PLD_Mit_Sentinel_Health),
         //Arm's Length
-        (All.ArmsLength, CustomComboPreset.PLD_Mit_ArmsLength,
-            () => CanCircleAoe(7) >= Config.PLD_Mit_ArmsLength_EnemyCount &&
-                  (Config.PLD_Mit_ArmsLength_Boss == (int)Config.BossAvoidance.Off ||
-                   InBossEncounter())),
+        (Role.ArmsLength, CustomComboPreset.PLD_Mit_ArmsLength,
+            () => Role.CanArmsLength(Config.PLD_Mit_ArmsLength_EnemyCount,
+                Config.PLD_Mit_ArmsLength_Boss)),
         //Bulwark
         (Bulwark, CustomComboPreset.PLD_Mit_Bulwark,
             () => PlayerHealthPercentageHp() <= Config.PLD_Mit_Bulwark_Health),

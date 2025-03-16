@@ -447,7 +447,7 @@ internal partial class DRK
         JustUsed(Role.Reprisal, 4f) ||
         JustUsed(DarkMissionary, 5f) ||
         JustUsed(Role.Rampart, 6f) ||
-        JustUsed(All.ArmsLength, 4f) ||
+        JustUsed(Role.ArmsLength, 4f) ||
         JustUsed(ShadowedVigil, 6f) ||
         JustUsed(LivingDead, 7f);
 
@@ -675,9 +675,8 @@ internal partial class DRK
             if (flags.HasFlag(Combo.AoE) &&
                 (flags.HasFlag(Combo.Simple) ||
                  IsEnabled(Preset.DRK_AoE_Mit_ArmsLength)) &&
-                ActionReady(All.ArmsLength) &&
-                CanCircleAoe(7) >= armsLengthEnemyCount)
-                return (action = All.ArmsLength) != 0;
+                Role.CanArmsLength(armsLengthEnemyCount))
+                return (action = Role.ArmsLength) != 0;
 
             #endregion
 
@@ -1170,10 +1169,8 @@ internal partial class DRK
         (Role.Rampart, Preset.DRK_Mit_Rampart,
             () => Role.CanRampart(Config.DRK_Mit_Rampart_Health)),
         (DarkMind, Preset.DRK_Mit_DarkMind, () => true),
-        (All.ArmsLength, Preset.DRK_Mit_ArmsLength,
-            () => CanCircleAoe(7) >= Config.DRK_Mit_ArmsLength_EnemyCount &&
-                  (Config.DRK_Mit_ArmsLength_Boss == (int)Config.BossAvoidance.Off ||
-                   InBossEncounter())),
+        (Role.ArmsLength, Preset.DRK_Mit_ArmsLength,
+            () => Role.CanArmsLength(Config.DRK_Mit_ArmsLength_EnemyCount, Config.DRK_Mit_ArmsLength_Boss)),
         (OriginalHook(ShadowWall), Preset.DRK_Mit_ShadowWall,
             () => PlayerHealthPercentageHp() <= Config.DRK_Mit_ShadowWall_Health),
     ];

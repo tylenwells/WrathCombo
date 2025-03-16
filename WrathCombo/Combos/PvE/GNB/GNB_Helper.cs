@@ -378,7 +378,6 @@ internal partial class GNB : Tank
             Nebula = 1834, //applied by Nebula to self
             Rampart = 1191, //applied by Rampart to self
             Camouflage = 1832, //applied by Camouflage to self
-            ArmsLength = 1209, //applied by Arm's Length to self
             HeartOfLight = 1839, //applied by Heart of Light to self
             Aurora = 1835, //applied by Aurora to self
             Superbolide = 1836, //applied by Superbolide to self
@@ -449,10 +448,9 @@ internal partial class GNB : Tank
         (Role.Rampart, CustomComboPreset.GNB_Mit_Rampart,
             () => Role.CanRampart(Config.GNB_Mit_Rampart_Health)),
         //Arm's Length
-        (All.ArmsLength, CustomComboPreset.GNB_Mit_ArmsLength,
-            () => CanCircleAoe(7) >= Config.GNB_Mit_ArmsLength_EnemyCount &&
-                  (Config.GNB_Mit_ArmsLength_Boss == (int)Config.BossAvoidance.Off ||
-                   InBossEncounter())),
+        (Role.ArmsLength, CustomComboPreset.GNB_Mit_ArmsLength,
+            () => Role.CanArmsLength(Config.GNB_Mit_ArmsLength_EnemyCount,
+                Config.GNB_Mit_ArmsLength_Boss)),
         //Nebula
         (OriginalHook(Nebula), CustomComboPreset.GNB_Mit_Nebula,
             () => PlayerHealthPercentageHp() <= Config.GNB_Mit_Nebula_Health)
