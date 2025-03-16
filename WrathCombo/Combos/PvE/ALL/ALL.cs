@@ -68,10 +68,10 @@ internal partial class All
                 case TankRole.LowBlow or PLD.ShieldBash when CanInterruptEnemy() && ActionReady(TankRole.Interject):
                     return TankRole.Interject;
 
-                case TankRole.LowBlow or PLD.ShieldBash when ActionReady(TankRole.LowBlow):
+                case TankRole.LowBlow or PLD.ShieldBash when TargetIsCasting() && ActionReady(TankRole.LowBlow):
                     return TankRole.LowBlow;
 
-                case TankRole.LowBlow or PLD.ShieldBash when actionID == PLD.ShieldBash && IsOnCooldown(TankRole.LowBlow):
+                case PLD.ShieldBash when IsOnCooldown(TankRole.LowBlow):
                 default:
                     return actionID;
             }

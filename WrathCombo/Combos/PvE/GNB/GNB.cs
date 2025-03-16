@@ -265,8 +265,8 @@ internal partial class GNB : Tank
             #region Stuns
             if (ActionReady(All.Interject) && CanInterruptEnemy())
                 return All.Interject;
-            if (ActionReady(All.LowBlow) && TargetIsCasting())
-                return All.LowBlow;
+            if (Role.CanLowBlow())
+                return Role.LowBlow;
             #endregion
 
             #region Mitigations
@@ -374,8 +374,8 @@ internal partial class GNB : Tank
             #region Stuns
             if (IsEnabled(CustomComboPreset.GNB_AoE_Interrupt) && ActionReady(All.Interject) && CanInterruptEnemy())
                 return All.Interject;
-            if (IsEnabled(CustomComboPreset.GNB_AoE_Stun) && ActionReady(All.LowBlow) && TargetIsCasting())
-                return All.LowBlow;
+            if (IsEnabled(CustomComboPreset.GNB_AoE_Stun) && Role.CanLowBlow())
+                return Role.LowBlow;
             #endregion
 
             #region Mitigations

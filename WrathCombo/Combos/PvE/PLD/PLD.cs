@@ -246,8 +246,8 @@ internal partial class PLD : Tank
             if (TargetIsCasting())
                 if (ActionReady(ShieldBash))
                     return ShieldBash;
-                else if (ActionReady(All.LowBlow))
-                    return All.LowBlow;
+                else if (Role.CanLowBlow())
+                    return Role.LowBlow;
 
             // Variant Cure
             if (Variant.CanCure(CustomComboPreset.PLD_Variant_Cure, Config.PLD_VariantCure))
@@ -593,8 +593,8 @@ internal partial class PLD : Tank
             if (IsEnabled(CustomComboPreset.PLD_AoE_Stun) && TargetIsCasting())
                 if (ActionReady(ShieldBash))
                     return ShieldBash;
-                else if (ActionReady(All.LowBlow))
-                    return All.LowBlow;
+                else if (Role.CanLowBlow())
+                    return Role.LowBlow;
 
             // Variant Cure
             if (Variant.CanCure(CustomComboPreset.PLD_Variant_Cure, Config.PLD_VariantCure))

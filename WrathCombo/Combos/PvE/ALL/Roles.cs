@@ -197,5 +197,7 @@ namespace WrathCombo.Combos.PvE
                 : CanCircleAoe(5) >= enemyCount) &&
             ActionReady(Reprisal) && PlayerHealthPercentageHp() < healthPercent;
 
+        public static bool CanLowBlow() =>
+            ActionReady(LowBlow) && TargetIsCasting();
     }
 }

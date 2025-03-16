@@ -435,9 +435,8 @@ internal partial class WAR : Tank
                 return All.Interject;
 
             // Stun
-            if (ActionReady(All.LowBlow)
-                && TargetIsCasting())
-                return All.LowBlow;
+            if (Role.CanLowBlow())
+                return Role.LowBlow;
 
             #endregion
 
@@ -580,9 +579,8 @@ internal partial class WAR : Tank
 
             // Stun
             if (IsEnabled(CustomComboPreset.WAR_AoE_Stun)
-                && ActionReady(All.LowBlow)
-                && TargetIsCasting())
-                return All.LowBlow;
+                && Role.CanLowBlow())
+                return Role.LowBlow;
 
             #endregion
 

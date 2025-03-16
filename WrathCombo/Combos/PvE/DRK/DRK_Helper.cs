@@ -287,9 +287,8 @@ internal partial class DRK
             if (flags.HasFlag(Combo.AoE) &&
                 (flags.HasFlag(Combo.Simple) ||
                  IsEnabled(Preset.DRK_AoE_Stun)) &&
-                ActionReady(All.LowBlow) &&
-                CanInterruptEnemy())
-                return (action = All.LowBlow) != 0;
+                Role.CanLowBlow())
+                return (action = Role.LowBlow) != 0;
 
             #endregion
 
