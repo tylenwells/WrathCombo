@@ -596,9 +596,6 @@ internal partial class DRK
                     : 1;
             var reprisalUseForRaidwides =
                 flags.HasFlag(Combo.AoE) || RaidWideCasting();
-            var reprisalTargetHasNoDebuff =
-                flags.HasFlag(Combo.AoE) ||
-                !TargetHasEffectAny(Role.Debuffs.Reprisal);
 
             #endregion
 
@@ -607,11 +604,9 @@ internal partial class DRK
                    IsEnabled(Preset.DRK_ST_Mit_Reprisal)) ||
                   flags.HasFlag(Combo.AoE) &&
                   IsEnabled(Preset.DRK_AoE_Mit_Reprisal))) &&
-                ActionReady(Role.Reprisal) &&
-                reprisalTargetHasNoDebuff &&
                 reprisalUseForRaidwides &&
-                CanCircleAoe(5) >= reprisalTargetCount &&
-                PlayerHealthPercentageHp() <= reprisalThreshold)
+                Role.CanReprisal(reprisalThreshold, reprisalTargetCount,
+                    !flags.HasFlag(Combo.AoE)))
                 return (action = Role.Reprisal) != 0;
 
             #endregion
@@ -1162,7 +1157,7 @@ internal partial class DRK
                      (!HasFriendlyTarget() && HasEffectAny(Buffs.Oblation)))) &&
                   GetRemainingCharges(Oblation) > Config.DRK_Mit_Oblation_Charges),
         (Role.Reprisal, Preset.DRK_Mit_Reprisal,
-            () => InActionRange(Role.Reprisal)),
+            () => Role.CanReprisal(checkTargetForDebuff:false)),
         (DarkMissionary, Preset.DRK_Mit_DarkMissionary,
             () => Config.DRK_Mit_DarkMissionary_PartyRequirement ==
                   (int)PartyRequirement.No || IsInParty()),

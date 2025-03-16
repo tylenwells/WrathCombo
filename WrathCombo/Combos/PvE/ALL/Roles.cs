@@ -186,8 +186,16 @@ namespace WrathCombo.Combos.PvE
             ((int)avoidanceSetting == (int)All.Enums.BossAvoidance.Off ||
              !InBossEncounter());
 
-        public static bool CanReprisal(int healthPercent) =>
-            ActionReady(Reprisal) && InActionRange(Reprisal) && PlayerHealthPercentageHp() < healthPercent;
+        public static bool CanReprisal
+            (int healthPercent = 101,
+                int? enemyCount = null,
+                bool checkTargetForDebuff = true) =>
+            (checkTargetForDebuff && !TargetHasEffectAny(Debuffs.Reprisal) ||
+             !checkTargetForDebuff) &&
+            (enemyCount is null
+                ? InActionRange(Reprisal)
+                : CanCircleAoe(5) >= enemyCount) &&
+            ActionReady(Reprisal) && PlayerHealthPercentageHp() < healthPercent;
 
     }
 }

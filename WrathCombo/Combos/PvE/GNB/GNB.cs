@@ -282,7 +282,7 @@ internal partial class GNB : Tank
                             return OriginalHook(Nebula);
                         if (Role.CanRampart(80))
                             return Role.Rampart;
-                        if (Role.CanReprisal(90))
+                        if (Role.CanReprisal(90, checkTargetForDebuff:false))
                             return Role.Reprisal;
                     }
                     if (ActionReady(Camouflage) && HPP < 70)
@@ -392,7 +392,7 @@ internal partial class GNB : Tank
                     if (IsEnabled(CustomComboPreset.GNB_AoE_Rampart) && Role.CanRampart(Config.GNB_AoE_Rampart_Health) &&
                         (Config.GNB_AoE_Rampart_SubOption == 0 || (TargetIsBoss() && Config.GNB_AoE_Rampart_SubOption == 1)))
                         return Role.Rampart;
-                    if (IsEnabled(CustomComboPreset.GNB_AoE_Reprisal) && Role.CanReprisal(Config.GNB_AoE_Reprisal_Health) &&
+                    if (IsEnabled(CustomComboPreset.GNB_AoE_Reprisal) && Role.CanReprisal(Config.GNB_AoE_Reprisal_Health, checkTargetForDebuff:false) &&
                         (Config.GNB_AoE_Reprisal_SubOption == 0 || (TargetIsBoss() && Config.GNB_AoE_Reprisal_SubOption == 1)))
                         return Role.Reprisal;
                     if (IsEnabled(CustomComboPreset.GNB_AoE_ArmsLength) &&

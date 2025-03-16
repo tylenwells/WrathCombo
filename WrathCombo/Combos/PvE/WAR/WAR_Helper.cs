@@ -142,8 +142,8 @@ internal partial class WAR
         (Equilibrium, CustomComboPreset.WAR_Mit_Equilibrium,
             () => PlayerHealthPercentageHp() <= Config.WAR_Mit_Equilibrium_Health),
         // Reprisal
-        (All.Reprisal, CustomComboPreset.WAR_Mit_Reprisal,
-            () => InActionRange(All.Reprisal)),
+        (Role.Reprisal, CustomComboPreset.WAR_Mit_Reprisal,
+            () => Role.CanReprisal(checkTargetForDebuff:false)),
         //Thrill of Battle
         (ThrillOfBattle, CustomComboPreset.WAR_Mit_ThrillOfBattle,
             () => PlayerHealthPercentageHp() <= Config.WAR_Mit_ThrillOfBattle_Health),

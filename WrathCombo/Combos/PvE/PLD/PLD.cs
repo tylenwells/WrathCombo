@@ -275,7 +275,7 @@ internal partial class PLD : Tank
                             return Role.Rampart;
 
                         //Reprisal
-                        if (Role.CanReprisal(90)) //Player's health is below 80%
+                        if (Role.CanReprisal(90, checkTargetForDebuff:false))
                             return Role.Reprisal;
                     }
 

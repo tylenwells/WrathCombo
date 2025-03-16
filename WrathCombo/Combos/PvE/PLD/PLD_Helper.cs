@@ -114,8 +114,8 @@ internal partial class PLD
         (OriginalHook(Sheltron), CustomComboPreset.PLD_Mit_Sheltron,
             () => Gauge.OathGauge >= 50),
         // Reprisal
-        (All.Reprisal, CustomComboPreset.PLD_Mit_Reprisal,
-            () => InActionRange(All.Reprisal)),
+        (Role.Reprisal, CustomComboPreset.PLD_Mit_Reprisal,
+            () => Role.CanReprisal(checkTargetForDebuff:false)),
         //Divine Veil
         (DivineVeil, CustomComboPreset.PLD_Mit_DivineVeil,
             () => Config.PLD_Mit_DivineVeil_PartyRequirement ==

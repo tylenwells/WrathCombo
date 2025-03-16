@@ -475,7 +475,7 @@ internal partial class WAR : Tank
                             return Role.Rampart;
 
                         //Reprisal
-                        if (Role.CanReprisal(90)) //Player's health is below 90%
+                        if (Role.CanReprisal(90, checkTargetForDebuff:false))
                             return Role.Reprisal;
                     }
 
@@ -630,7 +630,7 @@ internal partial class WAR : Tank
 
                     //Reprisal
                     if (IsEnabled(CustomComboPreset.WAR_AoE_Advanced_Reprisal) && //Reprisal option is enabled
-                        Role.CanReprisal(Config.WAR_AoE_Reprisal_Health) && //Player's health is below selected threshold
+                        Role.CanReprisal(Config.WAR_AoE_Reprisal_Health, checkTargetForDebuff:false) && //Player's health is below selected threshold
                         (Config.WAR_AoE_Reprisal_SubOption == 0 || //Reprisal is enabled for all targets
                          (TargetIsBoss() && Config.WAR_AoE_Reprisal_SubOption == 1))) //Reprisal is enabled for bosses only
                         return Role.Reprisal;

@@ -437,8 +437,8 @@ internal partial class GNB : Tank
         //Camouflage
         (Camouflage, CustomComboPreset.GNB_Mit_Camouflage, () => true),
         //Reprisal
-        (All.Reprisal, CustomComboPreset.GNB_Mit_Reprisal,
-            () => InActionRange(All.Reprisal)),
+        (Role.Reprisal, CustomComboPreset.GNB_Mit_Reprisal,
+            () => Role.CanReprisal(checkTargetForDebuff:false)),
         //Heart of Light
         (HeartOfLight, CustomComboPreset.GNB_Mit_HeartOfLight,
             () => Config.GNB_Mit_HeartOfLight_PartyRequirement ==
