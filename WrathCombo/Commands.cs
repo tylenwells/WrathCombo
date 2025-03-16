@@ -236,7 +236,7 @@ public partial class WrathCombo
                 : "";
 
             DuoLog.Information(
-                $"{target} {(action == toggle ? "toggled" : action)} {ctrlText}");
+                $"{usablePreset.Attributes().CustomComboInfo.Name} {action} {ctrlText}");
         }
     }
 
