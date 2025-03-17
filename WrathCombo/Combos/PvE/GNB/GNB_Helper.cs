@@ -78,6 +78,8 @@ internal partial class GNB : TankJob
         public override int MaxOpenerLevel => 99;
         internal override UserData ContentCheckConfig => Config.GNB_ST_Balance_Content;
         public override bool HasCooldowns() => IsOffCooldown(NoMercy) && IsOffCooldown(GnashingFang) && IsOffCooldown(BowShock) && IsOffCooldown(Bloodfest) && IsOffCooldown(DoubleDown) && Ammo == 0;
+
+        public override List<(int[] Steps, Func<bool> Condition)> SkipSteps { get; set; } = [([1], () => Config.GNB_Opener_StartChoice == 1)];
     }
     internal class Lv90FastNormalNM : GNBOpenerLv90Base
     {
@@ -188,6 +190,8 @@ internal partial class GNB : TankJob
         public override int MaxOpenerLevel => 109;
         internal override UserData ContentCheckConfig => Config.GNB_ST_Balance_Content;
         public override bool HasCooldowns() => IsOffCooldown(Bloodfest) && IsOffCooldown(NoMercy) && IsOffCooldown(GnashingFang) && IsOffCooldown(DoubleDown) && IsOffCooldown(BowShock) && Ammo == 0;
+
+        public override List<(int[] Steps, Func<bool> Condition)> SkipSteps { get; set; } = [([1], () => Config.GNB_Opener_StartChoice == 1)];
     }
     internal class Lv100FastNormalNM : GNBOpenerLv100Base
     {
@@ -215,8 +219,6 @@ internal partial class GNB : TankJob
             Hypervelocity
         ];
         public override List<int> VeryDelayedWeaveSteps { get; set; } = [5];
-
-        public override List<(int[] Steps, Func<bool> Condition)> SkipSteps { get; set; } = [([1], () => Config.GNB_Opener_StartChoice == 1)];
     }
     internal class Lv100SlowNormalNM : GNBOpenerLv100Base
     {
@@ -242,8 +244,6 @@ internal partial class GNB : TankJob
             NobleBlood,
             LionHeart
         ];
-
-        public override List<(int[] Steps, Func<bool> Condition)> SkipSteps { get; set; } = [([1], () => Config.GNB_Opener_StartChoice == 1)];
     }
     internal class Lv100FastEarlyNM : GNBOpenerLv100Base
     {
@@ -269,8 +269,6 @@ internal partial class GNB : TankJob
             Hypervelocity,
         ];
         public override List<int> VeryDelayedWeaveSteps { get; set; } = [3];
-
-        public override List<(int[] Steps, Func<bool> Condition)> SkipSteps { get; set; } = [([1], () => Config.GNB_Opener_StartChoice == 1)];
     }
     internal class Lv100SlowEarlyNM : GNBOpenerLv100Base
     {
@@ -295,8 +293,6 @@ internal partial class GNB : TankJob
             NobleBlood,
             LionHeart
         ];
-
-        public override List<(int[] Steps, Func<bool> Condition)> SkipSteps { get; set; } = [([1], () => Config.GNB_Opener_StartChoice == 1)];
     }
     #endregion
 
