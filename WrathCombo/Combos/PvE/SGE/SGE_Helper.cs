@@ -12,12 +12,12 @@ internal static partial class SGE
     internal static readonly List<uint>
         AddersgallList = [Taurochole, Druochole, Ixochole, Kerachole],
         DyskrasiaList = [Dyskrasia, Dyskrasia2];
-    internal static readonly Dictionary<uint, ushort>
+    internal static readonly Dictionary<uint, (uint Eukrasian, ushort DebuffID)>
         DosisList = new()
         {
-            { Dosis, Debuffs.EukrasianDosis },
-            { Dosis2, Debuffs.EukrasianDosis2 },
-            { Dosis3, Debuffs.EukrasianDosis3 }
+            { Dosis,  (EukrasianDosis,  Debuffs.EukrasianDosis)  },
+            { Dosis2, (EukrasianDosis2, Debuffs.EukrasianDosis2) },
+            { Dosis3, (EukrasianDosis3, Debuffs.EukrasianDosis3) }
         };
     internal static SGEOpenerMaxLevel1 Opener1 = new();
     internal static SGEGauge Gauge = GetJobGauge<SGEGauge>();

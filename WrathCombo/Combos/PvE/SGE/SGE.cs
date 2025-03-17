@@ -125,9 +125,9 @@ internal partial class SGE
                 !WasLastSpell(EukrasianDyskrasia) && //AoE DoT can be slow to take affect, doesn't apply to target first before others
                 TraitLevelChecked(Traits.OffensiveMagicMasteryII) &&
                 HasBattleTarget() && InActionRange(Dyskrasia) && //Same range
-                DosisList.TryGetValue(OriginalHook(Dosis), out ushort dotDebuffID))
+                DosisList.TryGetValue(OriginalHook(actionID), out (uint Eukrasian, ushort DebuffID) currentDosis))
             {
-                float dotDebuff = Math.Max(GetDebuffRemainingTime(dotDebuffID),
+                float dotDebuff = Math.Max(GetDebuffRemainingTime(currentDosis.DebuffID),
                     GetDebuffRemainingTime(Debuffs.EukrasianDyskrasia));
 
                 const float refreshtimer = 3; //Will revisit if it's really needed....SGE_ST_DPS_EDosis_Adv ? Config.SGE_ST_DPS_EDosisThreshold : 3;
@@ -241,7 +241,7 @@ internal partial class SGE
                     // Grab current Dosis via OriginalHook, grab it's fellow debuff ID from Dictionary, then check for the debuff
                     // Using TryGetValue due to edge case where the actionID would be read as Eukrasian Dosis instead of Dosis
                     // EDosis will show for half a second if the buff is removed manually or some other act of God
-                    if (DosisList.TryGetValue(OriginalHook(actionID), out ushort dotDebuffID))
+                    if (DosisList.TryGetValue(OriginalHook(actionID), out (uint Eukrasian, ushort DebuffID) currentDosis))
                     {
                         if (IsEnabled(CustomComboPreset.SGE_DPS_Variant_SpiritDart) &&
                             IsEnabled(Variant.VariantSpiritDart) &&
@@ -249,19 +249,21 @@ internal partial class SGE
                             CanSpellWeave())
                             return Variant.VariantSpiritDart;
 
-                        // Dosis DoT Debuff
-                        float dotDebuff = GetDebuffRemainingTime(dotDebuffID);
+                        if (!JustUsedOn(currentDosis.Eukrasian,CurrentTarget)) { 
+                            // Dosis DoT Debuff
+                            float dotDebuff = GetDebuffRemainingTime(currentDosis.DebuffID);
 
-                        // Check for the AoE DoT.  These DoTs overlap, so get time remaining of any of them
-                        if (TraitLevelChecked(Traits.OffensiveMagicMasteryII))
-                            dotDebuff = Math.Max(dotDebuff, GetDebuffRemainingTime(Debuffs.EukrasianDyskrasia));
+                            // Check for the AoE DoT.  These DoTs overlap, so get time remaining of any of them
+                            if (TraitLevelChecked(Traits.OffensiveMagicMasteryII))
+                                dotDebuff = Math.Max(dotDebuff, GetDebuffRemainingTime(Debuffs.EukrasianDyskrasia));
 
-                        float refreshTimer = Config.SGE_ST_DPS_EDosis_Adv ? Config.SGE_ST_DPS_EDosisThreshold : 5;
-                        int hpThreshold = Config.SGE_ST_DPS_EDosisSubOption == 1 || !InBossEncounter() ? Config.SGE_ST_DPS_EDosisOption : 0;
+                            float refreshTimer = Config.SGE_ST_DPS_EDosis_Adv ? Config.SGE_ST_DPS_EDosisThreshold : 5;
+                            int hpThreshold = Config.SGE_ST_DPS_EDosisSubOption == 1 || !InBossEncounter() ? Config.SGE_ST_DPS_EDosisOption : 0;
 
-                        if (dotDebuff <= refreshTimer &&
-                            GetTargetHPPercent() > hpThreshold)
-                            return Eukrasia;
+                            if (dotDebuff <= refreshTimer &&
+                                GetTargetHPPercent() > hpThreshold)
+                                return Eukrasia;
+                        }
                     }
                 }
 
