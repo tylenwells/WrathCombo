@@ -343,7 +343,7 @@ internal partial class SMN
                     if (ActionReady(OriginalHook(EnkindleBahamut)))
                         return OriginalHook(EnkindleBahamut);
 
-                    if (ActionReady(AstralFlow))
+                    if (ActionReady(AstralFlow) && ((IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_DemiSummons_Rekindle) && CurrentDemiSummon is DemiSummon.Phoenix) || CurrentDemiSummon is not DemiSummon.Phoenix))
                         return OriginalHook(AstralFlow);
                 }
             }
@@ -386,12 +386,12 @@ internal partial class SMN
                     if (ActionReady(OriginalHook(EnkindleBahamut)))
                         return OriginalHook(EnkindleBahamut);
 
-                    if (ActionReady(AstralFlow))
+                    if (ActionReady(AstralFlow) && ((IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_DemiSummons_Rekindle) && CurrentDemiSummon is DemiSummon.Phoenix) || CurrentDemiSummon is not DemiSummon.Phoenix))
                         return OriginalHook(AstralFlow);
                 }
 
                 // Lux Solaris
-                if (ActionReady(LuxSolaris) && IsEnabled(CustomComboPreset.SMN_Advanced_Combo_DemiSummons_LuxSolaris) &&
+                if (ActionReady(LuxSolaris) && IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_DemiSummons_LuxSolaris) &&
                     (PlayerHealthPercentageHp() < 100 || (GetBuffRemainingTime(Buffs.RefulgentLux) is < 3 and > 0)))
                     return OriginalHook(LuxSolaris);
 
@@ -539,7 +539,7 @@ internal partial class SMN
                     if (ActionReady(OriginalHook(EnkindleBahamut)))
                         return OriginalHook(EnkindleBahamut);
 
-                    if (ActionReady(AstralFlow))
+                    if (ActionReady(AstralFlow) && ((IsEnabled(CustomComboPreset.SMN_AoE_Advanced_Combo_DemiSummons_Rekindle) && CurrentDemiSummon is DemiSummon.Phoenix) || CurrentDemiSummon is not DemiSummon.Phoenix))
                         return OriginalHook(AstralFlow);
                 }
             }
@@ -582,12 +582,12 @@ internal partial class SMN
                     if (ActionReady(OriginalHook(EnkindleBahamut)))
                         return OriginalHook(EnkindleBahamut);
 
-                    if (ActionReady(AstralFlow))
+                    if (ActionReady(AstralFlow) && ((IsEnabled(CustomComboPreset.SMN_AoE_Advanced_Combo_DemiSummons_Rekindle) && CurrentDemiSummon is DemiSummon.Phoenix) || CurrentDemiSummon is not DemiSummon.Phoenix))
                         return OriginalHook(AstralFlow);
                 }
 
                 // Lux Solaris
-                if (ActionReady(LuxSolaris) && IsEnabled(CustomComboPreset.SMN_Advanced_Combo_DemiSummons_LuxSolaris) &&
+                if (ActionReady(LuxSolaris) && IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_DemiSummons_LuxSolaris) &&
                     (PlayerHealthPercentageHp() < 100 || (GetBuffRemainingTime(Buffs.RefulgentLux) is < 3 and > 0)))
                     return OriginalHook(LuxSolaris);
 

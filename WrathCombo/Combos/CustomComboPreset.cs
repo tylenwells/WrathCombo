@@ -5497,11 +5497,11 @@ public enum CustomComboPreset
 
     [ParentCombo(SMN_ST_Advanced_Combo_DemiSummons_Attacks)]
     [CustomComboInfo("Rekindle Combo Option", "Adds Rekindle to the single target combo.", SMN.JobID)]
-    SMN_Advanced_Combo_DemiSummons_Rekindle = 17028,
+    SMN_ST_Advanced_Combo_DemiSummons_Rekindle = 17028,
 
     [ParentCombo(SMN_ST_Advanced_Combo_DemiSummons_Attacks)]
     [CustomComboInfo("Lux Solaris Combo Option", "Adds Lux Solaris to the single target combo.", SMN.JobID)]
-    SMN_Advanced_Combo_DemiSummons_LuxSolaris = 17029,
+    SMN_ST_Advanced_Combo_DemiSummons_LuxSolaris = 17029,
 
     [ParentCombo(SMN_ST_Advanced_Combo)]
     [CustomComboInfo("Egi Attacks Combo Option", "Adds Gemshine to the single target combo.", SMN.JobID)]
