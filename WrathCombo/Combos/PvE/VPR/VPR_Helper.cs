@@ -67,6 +67,12 @@ internal partial class VPR
             if (Gauge.SerpentOffering >= 100)
                 return true;
 
+            //non boss encounters
+            if ((IsEnabled(CustomComboPreset.VPR_ST_SimpleMode) && !InBossEncounter() ||
+                 IsEnabled(CustomComboPreset.VPR_ST_AdvancedMode) && Config.VPR_ST_SerpentsIre_SubOption == 1 && !InBossEncounter()) &&
+                gauge.SerpentOffering >= 50)
+                return true;
+
             //Lower lvl
             if (Gauge.SerpentOffering >= 50 &&
                 WasLastWeaponskill(FourthGeneration) && !LevelChecked(Ouroboros))

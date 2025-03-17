@@ -93,7 +93,7 @@ internal partial class VPR
             //Vicewinder Usage
             if (HasEffect(Buffs.Swiftscaled) && !IsComboExpiring(3) &&
                 ActionReady(Vicewinder) && !HasEffect(Buffs.Reawakened) && InMeleeRange() &&
-                (IreCD >= GCD * 5 || !LevelChecked(SerpentsIre)) &&
+                (IreCD >= GCD * 5 && InBossEncounter() || !InBossEncounter() || !LevelChecked(SerpentsIre)) &&
                 !IsVenomExpiring(3) && !IsHoningExpiring(3))
                 return Vicewinder;
 
@@ -326,7 +326,7 @@ internal partial class VPR
             if (IsEnabled(CustomComboPreset.VPR_ST_Vicewinder) && HasEffect(Buffs.Swiftscaled) &&
                 !IsComboExpiring(3) &&
                 ActionReady(Vicewinder) && !HasEffect(Buffs.Reawakened) && InMeleeRange() &&
-                (IreCD >= GCD * 5 || !LevelChecked(SerpentsIre)) &&
+                (IreCD >= GCD * 5 && InBossEncounter() || !InBossEncounter() || !LevelChecked(SerpentsIre)) &&
                 !IsVenomExpiring(3) && !IsHoningExpiring(3))
                 return Vicewinder;
 
