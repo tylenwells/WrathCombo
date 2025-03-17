@@ -1,8 +1,7 @@
-using WrathCombo.Combos.PvE.Content;
 using WrathCombo.CustomComboNS;
 namespace WrathCombo.Combos.PvE;
 
-internal partial class MNK
+internal partial class MNK : MeleeJob
 {
     internal class MNK_ST_SimpleMode : CustomCombo
     {
@@ -28,10 +27,8 @@ internal partial class MNK
                 return FormShift;
 
             //Variant Cure
-            if (IsEnabled(CustomComboPreset.MNK_Variant_Cure) &&
-                IsEnabled(Variant.VariantCure) &&
-                PlayerHealthPercentageHp() <= Config.MNK_VariantCure)
-                return Variant.VariantCure;
+            if (Variant.CanCure(CustomComboPreset.MNK_Variant_Cure, Config.MNK_VariantCure))
+                return Variant.Cure;
 
             if (ActionReady(RiddleOfFire) &&
                 !HasEffect(Buffs.FiresRumination) &&
@@ -42,10 +39,8 @@ internal partial class MNK
             if (CanWeave())
             {
                 //Variant Rampart
-                if (IsEnabled(CustomComboPreset.MNK_Variant_Rampart) &&
-                    IsEnabled(Variant.VariantRampart) &&
-                    IsOffCooldown(Variant.VariantRampart))
-                    return Variant.VariantRampart;
+                if (Variant.CanRampart(CustomComboPreset.MNK_Variant_Rampart))
+                    return Variant.Rampart;
 
                 if (ActionReady(Brotherhood) &&
                     InBossEncounter())
@@ -60,11 +55,11 @@ internal partial class MNK
                 if (UsePerfectBalance())
                     return PerfectBalance;
 
-                if (PlayerHealthPercentageHp() <= 25 && ActionReady(All.SecondWind))
-                    return All.SecondWind;
+                if (IsEnabled(25) && Role.CanSecondWind(25))
+                    return Role.SecondWind;
 
-                if (PlayerHealthPercentageHp() <= 40 && ActionReady(All.Bloodbath))
-                    return All.Bloodbath;
+                if (Role.CanBloodBath(40))
+                    return Role.Bloodbath;
 
                 if (Gauge.Chakra >= 5 && InCombat() && LevelChecked(SteeledMeditation))
                     return OriginalHook(SteeledMeditation);
@@ -175,10 +170,8 @@ internal partial class MNK
                 }
 
             //Variant Cure
-            if (IsEnabled(CustomComboPreset.MNK_Variant_Cure) &&
-                IsEnabled(Variant.VariantCure) &&
-                PlayerHealthPercentageHp() <= Config.MNK_VariantCure)
-                return Variant.VariantCure;
+            if (Variant.CanCure(CustomComboPreset.MNK_Variant_Cure, Config.MNK_VariantCure))
+                return Variant.Cure;
 
             if (IsEnabled(CustomComboPreset.MNK_STUseBuffs) &&
                 IsEnabled(CustomComboPreset.MNK_STUseROF) &&
@@ -193,10 +186,8 @@ internal partial class MNK
             if (CanWeave())
             {
                 //Variant Rampart
-                if (IsEnabled(CustomComboPreset.MNK_Variant_Rampart) &&
-                    IsEnabled(Variant.VariantRampart) &&
-                    IsOffCooldown(Variant.VariantRampart))
-                    return Variant.VariantRampart;
+                if (Variant.CanRampart(CustomComboPreset.MNK_Variant_Rampart))
+                    return Variant.Rampart;
 
                 if (IsEnabled(CustomComboPreset.MNK_STUseBuffs))
                 {
@@ -221,11 +212,11 @@ internal partial class MNK
 
                 if (IsEnabled(CustomComboPreset.MNK_ST_ComboHeals))
                 {
-                    if (PlayerHealthPercentageHp() <= Config.MNK_ST_SecondWind_Threshold && ActionReady(All.SecondWind))
-                        return All.SecondWind;
+                    if (Role.CanSecondWind(Config.MNK_ST_SecondWind_Threshold))
+                        return Role.SecondWind;
 
-                    if (PlayerHealthPercentageHp() <= Config.MNK_ST_Bloodbath_Threshold && ActionReady(All.Bloodbath))
-                        return All.Bloodbath;
+                    if (Role.CanBloodBath(Config.MNK_ST_Bloodbath_Threshold))
+                        return Role.Bloodbath;
                 }
 
                 if (IsEnabled(CustomComboPreset.MNK_STUseTheForbiddenChakra) &&
@@ -332,10 +323,8 @@ internal partial class MNK
                 return FormShift;
 
             //Variant Cure
-            if (IsEnabled(CustomComboPreset.MNK_Variant_Cure) &&
-                IsEnabled(Variant.VariantCure) &&
-                PlayerHealthPercentageHp() <= Config.MNK_VariantCure)
-                return Variant.VariantCure;
+            if (Variant.CanCure(CustomComboPreset.MNK_Variant_Cure, Config.MNK_VariantCure))
+                return Variant.Cure;
 
             if (ActionReady(RiddleOfFire) &&
                 !HasEffect(Buffs.FiresRumination) &&
@@ -346,10 +335,8 @@ internal partial class MNK
             if (CanWeave())
             {
                 //Variant Rampart
-                if (IsEnabled(CustomComboPreset.MNK_Variant_Rampart) &&
-                    IsEnabled(Variant.VariantRampart) &&
-                    IsOffCooldown(Variant.VariantRampart))
-                    return Variant.VariantRampart;
+                if (Variant.CanRampart(CustomComboPreset.MNK_Variant_Rampart))
+                    return Variant.Rampart;
 
                 if (ActionReady(Brotherhood))
                     return Brotherhood;
@@ -368,11 +355,11 @@ internal partial class MNK
                     return PerfectBalance;
 
 
-                if (PlayerHealthPercentageHp() <= 25 && ActionReady(All.SecondWind))
-                    return All.SecondWind;
+                if (Role.CanSecondWind(25))
+                    return Role.SecondWind;
 
-                if (PlayerHealthPercentageHp() <= 40 && ActionReady(All.Bloodbath))
-                    return All.Bloodbath;
+                if (Role.CanBloodBath(40))
+                    return Role.Bloodbath;
 
                 if (Gauge.Chakra >= 5 &&
                     LevelChecked(InspiritedMeditation) &&
@@ -474,10 +461,8 @@ internal partial class MNK
                 return FormShift;
 
             //Variant Cure
-            if (IsEnabled(CustomComboPreset.MNK_Variant_Cure) &&
-                IsEnabled(Variant.VariantCure) &&
-                PlayerHealthPercentageHp() <= Config.MNK_VariantCure)
-                return Variant.VariantCure;
+            if (Variant.CanCure(CustomComboPreset.MNK_Variant_Cure, Config.MNK_VariantCure))
+                return Variant.Cure;
 
             if (IsEnabled(CustomComboPreset.MNK_AoEUseBuffs) &&
                 IsEnabled(CustomComboPreset.MNK_AoEUseROF) &&
@@ -491,10 +476,8 @@ internal partial class MNK
             if (CanWeave())
             {
                 //Variant Rampart
-                if (IsEnabled(CustomComboPreset.MNK_Variant_Rampart) &&
-                    IsEnabled(Variant.VariantRampart) &&
-                    IsOffCooldown(Variant.VariantRampart))
-                    return Variant.VariantRampart;
+                if (Variant.CanRampart(CustomComboPreset.MNK_Variant_Rampart))
+                    return Variant.Rampart;
 
                 if (IsEnabled(CustomComboPreset.MNK_AoEUseBuffs))
                 {
@@ -522,13 +505,11 @@ internal partial class MNK
 
                 if (IsEnabled(CustomComboPreset.MNK_AoE_ComboHeals))
                 {
-                    if (PlayerHealthPercentageHp() <= Config.MNK_AoE_SecondWind_Threshold &&
-                        ActionReady(All.SecondWind))
-                        return All.SecondWind;
+                    if (Role.CanSecondWind(Config.MNK_AoE_SecondWind_Threshold))
+                        return Role.SecondWind;
 
-                    if (PlayerHealthPercentageHp() <= Config.MNK_AoE_Bloodbath_Threshold &&
-                        ActionReady(All.Bloodbath))
-                        return All.Bloodbath;
+                    if (Role.CanBloodBath(Config.MNK_AoE_Bloodbath_Threshold))
+                        return Role.Bloodbath;
                 }
 
                 if (IsEnabled(CustomComboPreset.MNK_AoEUseHowlingFist) &&
