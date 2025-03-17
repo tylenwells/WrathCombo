@@ -79,9 +79,6 @@ namespace WrathCombo.AutoRotation
             if (cfg.InCombatOnly && (!GetPartyMembers().Any(x => x.BattleChara.Struct()->InCombat) || PartyEngageDuration().TotalSeconds < cfg.CombatDelay) && !combatBypass)
                 return;
 
-            if (Player.Job is Job.SGE && cfg.HealerSettings.ManageKardia)
-                UpdateKardiaTarget();
-
             var autoActions = Presets.GetJobAutorots;
             var healTarget = Player.Object.GetRole() is CombatRole.Healer ? AutoRotationHelper.GetSingleTarget(cfg.HealerRotationMode) : null;
             var aoeheal = Player.Object.GetRole() is CombatRole.Healer && HealerTargeting.CanAoEHeal() && autoActions.Any(x => x.Key.Attributes().AutoAction.IsHeal && x.Key.Attributes().AutoAction.IsAoE);
@@ -113,6 +110,9 @@ namespace WrathCombo.AutoRotation
                         RezParty();
                 }
             }
+
+            if (Player.Job is Job.SGE && cfg.HealerSettings.ManageKardia)
+                UpdateKardiaTarget();
 
 
             if (ActionManager.Instance()->AnimationLock > 0) return;
@@ -218,7 +218,6 @@ namespace WrathCombo.AutoRotation
                 _ => throw new NotImplementedException(),
             };
 
-
             if (ActionManager.Instance()->QueuedActionId == resSpell)
                 ActionManager.Instance()->QueuedActionId = 0;
 
@@ -257,6 +256,7 @@ namespace WrathCombo.AutoRotation
 
                         if (!IsMoving() || HasEffect(All.Buffs.Swiftcast))
                         {
+                            
                             if ((cfg.HealerSettings.AutoRezRequireSwift && ActionManager.GetAdjustedCastTime(ActionType.Action, resSpell) == 0) || !cfg.HealerSettings.AutoRezRequireSwift)
                                 ActionManager.Instance()->UseAction(ActionType.Action, resSpell, member.BattleChara.GameObjectId);
                         }
@@ -282,7 +282,7 @@ namespace WrathCombo.AutoRotation
             if (!LevelChecked(SGE.Kardia)) return;
             if (CombatEngageDuration().TotalSeconds < 3) return;
 
-            foreach (var member in GetPartyMembers().OrderByDescending(x => x.BattleChara.GetRole() is CombatRole.Tank))
+            foreach (var member in GetPartyMembers().Where(x => !x.BattleChara.IsDead).OrderByDescending(x => x.BattleChara.GetRole() is CombatRole.Tank))
             {
                 if (cfg.HealerSettings.KardiaTanksOnly && member.BattleChara.GetRole() is not CombatRole.Tank &&
                     FindEffectOnMember(3615, member.BattleChara) is null) continue;
