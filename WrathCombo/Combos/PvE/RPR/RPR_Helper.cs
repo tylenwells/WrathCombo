@@ -81,7 +81,7 @@ internal partial class RPR
             !HasEffect(Buffs.ImmortalSacrifice) && !IsComboExpiring(3) &&
             !JustUsed(ShadowOfDeath))
         {
-            if (Config.RPR_ST_ArcaneCircle_SubOption == 0 ||
+           if (Config.RPR_ST_ArcaneCircle_SubOption == 0 ||
                 Config.RPR_ST_ArcaneCircle_SubOption == 1 && InBossEncounter())
             {
                 //1st part double enshroud

@@ -27,10 +27,8 @@ internal partial class RPR : MeleeJob
             if (CanWeave())
             {
                 //Variant Rampart
-                if (IsEnabled(CustomComboPreset.RPR_Variant_Rampart) &&
-                    IsEnabled(Variant.VariantRampart) &&
-                    IsOffCooldown(Variant.VariantRampart))
-                    return Variant.VariantRampart;
+                if (Variant.CanRampart(CustomComboPreset.RPR_Variant_Rampart))
+                    return Variant.Rampart;
 
                 //Arcane Cirlce
                 if (LevelChecked(ArcaneCircle) && InBossEncounter() &&
@@ -50,8 +48,7 @@ internal partial class RPR : MeleeJob
                     !IsComboExpiring(3))
                 {
                     //Gluttony
-                    if (ActionReady(Gluttony) &&
-                        (GetCooldownRemainingTime(ArcaneCircle) > GCD * 3 || !LevelChecked(ArcaneCircle)))
+                    if (ActionReady(Gluttony))
                         return Role.CanTrueNorth()
                             ? Role.TrueNorth
                             : Gluttony;
@@ -213,10 +210,8 @@ internal partial class RPR : MeleeJob
             if (CanWeave())
             {
                 //Variant Rampart
-                if (IsEnabled(CustomComboPreset.RPR_Variant_Rampart) &&
-                    IsEnabled(Variant.VariantRampart) &&
-                    IsOffCooldown(Variant.VariantRampart))
-                    return Variant.VariantRampart;
+                if (Variant.CanRampart(CustomComboPreset.RPR_Variant_Rampart))
+                    return Variant.Rampart;
 
                 //Arcane Cirlce
                 if (IsEnabled(CustomComboPreset.RPR_ST_ArcaneCircle) &&

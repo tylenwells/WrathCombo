@@ -162,7 +162,7 @@ internal partial class MNK : MeleeJob
             if (IsEnabled(CustomComboPreset.MNK_STUseOpener))
                 if (Opener().FullOpener(ref actionID))
                 {
-                    if (IsOnCooldown(RiddleOfWind) &&
+                    if (Opener().OpenerStep >= 9 &&
                         CanWeave() && Gauge.Chakra >= 5)
                         return TheForbiddenChakra;
 
