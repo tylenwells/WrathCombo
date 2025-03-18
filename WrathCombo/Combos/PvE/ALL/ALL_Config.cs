@@ -1,6 +1,6 @@
 namespace WrathCombo.Combos.PvE;
 
-internal class ALL
+internal partial class ALL
 {
     internal static class Config
     {
