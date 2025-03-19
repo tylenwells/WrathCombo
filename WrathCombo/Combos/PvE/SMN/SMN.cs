@@ -6,6 +6,8 @@ namespace WrathCombo.Combos.PvE;
 
 internal partial class SMN : CasterJob
 {
+    #region Small Features
+
     internal class SMN_Raise : CustomCombo
     {
         protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.SMN_Raise;
@@ -87,6 +89,71 @@ internal partial class SMN : CasterJob
         }
     }
 
+    internal class SMN_CarbuncleReminder : CustomCombo
+    {
+        protected internal override CustomComboPreset Preset => CustomComboPreset.SMN_CarbuncleReminder;
+
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not (Ruin or Ruin2 or Ruin3 or DreadwyrmTrance or
+                 AstralFlow or EnkindleBahamut or SearingLight or
+                 RadiantAegis or Outburst or Tridisaster or
+                 PreciousBrilliance or Gemshine))
+                return actionID;
+
+            if (NeedToSummon && ActionReady(SummonCarbuncle))
+                return SummonCarbuncle;
+
+            return actionID;
+        }
+    }
+
+    internal class SMN_Egi_AstralFlow : CustomCombo
+    {
+        protected internal override CustomComboPreset Preset => CustomComboPreset.SMN_Egi_AstralFlow;
+
+        protected override uint Invoke(uint actionID)
+        {
+            if ((actionID is SummonTopaz or SummonTitan or SummonTitan2 or SummonEmerald or SummonGaruda or SummonGaruda2 or SummonRuby or SummonIfrit or SummonIfrit2 && HasEffect(Buffs.TitansFavor)) ||
+                (actionID is SummonTopaz or SummonTitan or SummonTitan2 or SummonEmerald or SummonGaruda or SummonGaruda2 && HasEffect(Buffs.GarudasFavor)) ||
+                (actionID is SummonTopaz or SummonTitan or SummonTitan2 or SummonRuby or SummonIfrit or SummonIfrit2 && (HasEffect(Buffs.IfritsFavor) || (ComboAction == CrimsonCyclone && InMeleeRange()))))
+                return OriginalHook(AstralFlow);
+
+            return actionID;
+        }
+    }
+    internal class SMN_DemiAbilities : CustomCombo
+    {
+        protected internal override CustomComboPreset Preset => CustomComboPreset.SMN_DemiAbilities;
+
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not (Aethercharge or DreadwyrmTrance or SummonBahamut) &&
+                actionID is not (SummonPhoenix or SummonSolarBahamut))
+                return actionID;
+
+            if (IsOffCooldown(EnkindleBahamut) && OriginalHook(Ruin) is AstralImpulse)
+                return OriginalHook(EnkindleBahamut);
+
+            if (IsOffCooldown(EnkindlePhoenix) && OriginalHook(Ruin) is FountainOfFire)
+                return OriginalHook(EnkindlePhoenix);
+
+            if (IsOffCooldown(EnkindleSolarBahamut) && OriginalHook(Ruin) is UmbralImpulse)
+                return OriginalHook(EnkindleBahamut);
+
+            if ((OriginalHook(AstralFlow) is Deathflare && IsOffCooldown(Deathflare)) || (OriginalHook(AstralFlow) is Rekindle && IsOffCooldown(Rekindle)))
+                return OriginalHook(AstralFlow);
+
+            if (OriginalHook(AstralFlow) is Sunflare && IsOffCooldown(Sunflare))
+                return OriginalHook(Sunflare);
+
+            return actionID;
+        }
+    }
+
+    #endregion
+
+    #region Simple
     internal class SMN_Simple_Combo : CustomCombo
     {
         protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.SMN_ST_Simple_Combo;
@@ -290,6 +357,9 @@ internal partial class SMN : CasterJob
             return actionID;
         }
     }
+    #endregion
+
+    #region Advanced
     internal class SMN_ST_Advanced_Combo : CustomCombo
     {
         internal static int DemiAttackCount = 0;
@@ -669,66 +739,11 @@ internal partial class SMN : CasterJob
         }
     }
 
-    internal class SMN_CarbuncleReminder : CustomCombo
-    {
-        protected internal override CustomComboPreset Preset => CustomComboPreset.SMN_CarbuncleReminder;
+    #endregion
 
-        protected override uint Invoke(uint actionID)
-        {
-            if (actionID is not (Ruin or Ruin2 or Ruin3 or DreadwyrmTrance or
-                 AstralFlow or EnkindleBahamut or SearingLight or
-                 RadiantAegis or Outburst or Tridisaster or
-                 PreciousBrilliance or Gemshine))
-                return actionID;
+    
 
-            if (NeedToSummon && ActionReady(SummonCarbuncle))
-                return SummonCarbuncle;
+    
 
-            return actionID;
-        }
-    }
-
-    internal class SMN_Egi_AstralFlow : CustomCombo
-    {
-        protected internal override CustomComboPreset Preset => CustomComboPreset.SMN_Egi_AstralFlow;
-
-        protected override uint Invoke(uint actionID)
-        {
-            if ((actionID is SummonTopaz or SummonTitan or SummonTitan2 or SummonEmerald or SummonGaruda or SummonGaruda2 or SummonRuby or SummonIfrit or SummonIfrit2 && HasEffect(Buffs.TitansFavor)) ||
-                (actionID is SummonTopaz or SummonTitan or SummonTitan2 or SummonEmerald or SummonGaruda or SummonGaruda2 && HasEffect(Buffs.GarudasFavor)) ||
-                (actionID is SummonTopaz or SummonTitan or SummonTitan2 or SummonRuby or SummonIfrit or SummonIfrit2 && (HasEffect(Buffs.IfritsFavor) || (ComboAction == CrimsonCyclone && InMeleeRange()))))
-                return OriginalHook(AstralFlow);
-
-            return actionID;
-        }
-    }
-
-    internal class SMN_DemiAbilities : CustomCombo
-    {
-        protected internal override CustomComboPreset Preset => CustomComboPreset.SMN_DemiAbilities;
-
-        protected override uint Invoke(uint actionID)
-        {
-            if (actionID is not (Aethercharge or DreadwyrmTrance or SummonBahamut) &&
-                actionID is not (SummonPhoenix or SummonSolarBahamut))
-                return actionID;
-
-            if (IsOffCooldown(EnkindleBahamut) && OriginalHook(Ruin) is AstralImpulse)
-                return OriginalHook(EnkindleBahamut);
-
-            if (IsOffCooldown(EnkindlePhoenix) && OriginalHook(Ruin) is FountainOfFire)
-                return OriginalHook(EnkindlePhoenix);
-
-            if (IsOffCooldown(EnkindleSolarBahamut) && OriginalHook(Ruin) is UmbralImpulse)
-                return OriginalHook(EnkindleBahamut);
-
-            if ((OriginalHook(AstralFlow) is Deathflare && IsOffCooldown(Deathflare)) || (OriginalHook(AstralFlow) is Rekindle && IsOffCooldown(Rekindle)))
-                return OriginalHook(AstralFlow);
-
-            if (OriginalHook(AstralFlow) is Sunflare && IsOffCooldown(Sunflare))
-                return OriginalHook(Sunflare);
-
-            return actionID;
-        }
-    }
+    
 }
