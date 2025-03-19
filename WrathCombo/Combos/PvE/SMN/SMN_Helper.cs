@@ -157,6 +157,8 @@ internal partial class SMN
     internal static bool IsTitanAttuned => AttunementType == 2;
     internal static bool IsGarudaAttuned => AttunementType == 3;
 
+    internal static bool GemshineReady => AttunementCount > 0;
+
     internal static bool IsAttunedAny => IsIfritAttuned || IsTitanAttuned || IsGarudaAttuned;
 
     internal static bool IsDreadwyrmTranceReady => !LevelChecked(SummonBahamut) && IsBahamutReady;

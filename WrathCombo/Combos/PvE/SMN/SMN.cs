@@ -370,6 +370,7 @@ internal partial class SMN : CasterJob
             if (actionID is not (Ruin or Ruin2))
                 return actionID;
 
+            #region Variables
             int summonerPrimalChoice = PluginConfiguration.GetCustomIntValue(Config.SMN_ST_PrimalChoice);
             int SummonerBurstPhase = PluginConfiguration.GetCustomIntValue(Config.SMN_ST_BurstPhase);
             int lucidThreshold = PluginConfiguration.GetCustomIntValue(Config.SMN_ST_Lucid);
@@ -384,15 +385,23 @@ internal partial class SMN : CasterJob
             var searingInSummon = GetCooldownRemainingTime(SearingLight) > (Gauge.SummonTimerRemaining / 1000f) + GCDTotal;
 
             DemiAttackCount = CurrentDemiSummon is not DemiSummon.None ? TimesUsedSinceOtherAction(OriginalHook(Aethercharge), [AstralImpulse, UmbralImpulse, FountainOfFire, AstralFlare, UmbralFlare, BrandOfPurgatory]) : 0;
+            #endregion
+
+            //Opener
+            if (IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_Balance_Opener) && Opener().FullOpener(ref actionID))
+                return actionID;
+
+            #region Variants
 
             if (Variant.CanCure(CustomComboPreset.SMN_Variant_Cure, Config.SMN_VariantCure))
                 return Variant.Cure;
 
-            if (IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_Balance_Opener) && Opener().FullOpener(ref actionID))
-                return actionID;
-
             if (Variant.CanRampart(CustomComboPreset.SMN_Variant_Rampart, WeaveTypes.SpellWeave))
                 return Variant.Rampart;
+
+            #endregion
+
+            #region OGCD
 
             // Emergency priority Demi Nuke to prevent waste if you can't get demi attacks out to satisfy the slider check.
             if (CurrentDemiSummon is not DemiSummon.None && IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_DemiSummons_Attacks) && Gauge.SummonTimerRemaining <= 2500)
@@ -401,8 +410,8 @@ internal partial class SMN : CasterJob
                 {
                     if (ActionReady(OriginalHook(EnkindleBahamut)))
                         return OriginalHook(EnkindleBahamut);
-
-                    if (ActionReady(AstralFlow) && ((IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_DemiSummons_Rekindle) && CurrentDemiSummon is DemiSummon.Phoenix) || CurrentDemiSummon is not DemiSummon.Phoenix))
+            
+                   if (ActionReady(AstralFlow) && ((IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_DemiSummons_Rekindle) && CurrentDemiSummon is DemiSummon.Phoenix) || CurrentDemiSummon is not DemiSummon.Phoenix))
                         return OriginalHook(AstralFlow);
                 }
             }
@@ -478,77 +487,95 @@ internal partial class SMN : CasterJob
                     return Role.LucidDreaming;
             }
 
+            #endregion
+
             // Demi
             if (IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_DemiSummons) && PartyInCombat() && ActionReady(OriginalHook(Aethercharge)))
                 return OriginalHook(Aethercharge);
 
-            //Ruin4 in Egi Phases
-            if (IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_Ruin4) && ActionReady(Ruin4) &&
-                ((!HasEffect(Role.Buffs.Swiftcast) && IsMoving() && ((HasEffect(Buffs.GarudasFavor) && !IsGarudaAttuned) || (IsIfritAttuned && ComboAction is not CrimsonCyclone))) ||
-                 (GetCooldownRemainingTime(OriginalHook(Aethercharge)) is < 2.5f and > 0)))
-                return Ruin4;
-
-            // Egi Features
-            if (IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_DemiEgiMenu_SwiftcastEgi))
+            #region Titan Phase
+            if (IsTitanAttuned || OriginalHook(AstralFlow) is MountainBuster) //Titan attunement ends before last mountian buster
             {
-                // Swiftcast Garuda Feature
-                if (swiftcastPhase is 0 or 1 or 3 && HasEffect(Buffs.GarudasFavor) && GarudaAstralFlow)
-                {
-                    if (Role.CanSwiftcast())
-                        return Role.Swiftcast;
+                if (TitanAstralFlow && ActionReady(AstralFlow) && CanSpellWeave())
+                    return OriginalHook(AstralFlow);
 
-                    if (ActionReady(Slipstream) && HasEffect(Role.Buffs.Swiftcast))
-                        return OriginalHook(AstralFlow);
-                }
-
-                // Swiftcast Ifrit Feature
-                if (swiftcastPhase is 2 or 3)
-                {
-                    if (Role.CanSwiftcast(false) && ActionReady(RubyCata))
-                        return Role.Swiftcast;
-                }
+                if (IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_EgiSummons_Attacks) && GemshineReady)
+                    return OriginalHook(Gemshine);
             }
+            #endregion
 
-            // Precious Brilliance priority casting
-            if (IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_EgiSummons_Attacks) &&
-                ((IsIfritAttuned && ActionReady(RubyCata) && HasEffect(Role.Buffs.Swiftcast) && ComboAction is not CrimsonCyclone) ||
-                 (HasEffect(Buffs.GarudasFavor) && !HasEffect(Role.Buffs.Swiftcast) && IsMoving())))
-                return OriginalHook(PreciousBrilliance);
+            #region Garuda Phase
+            if (IsGarudaAttuned || OriginalHook(AstralFlow) is Slipstream)
+            {               
+                if (GarudaAstralFlow && HasEffect(Buffs.GarudasFavor))
+                {
+                    if (IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_DemiEgiMenu_SwiftcastEgi) && swiftcastPhase is 1 or 3) // Forced Swiftcast option
+                    {
+                        if (Role.CanSwiftcast())
+                            return Role.Swiftcast;
+                    }
 
-            if ((GarudaAstralFlow && HasEffect(Buffs.GarudasFavor)) ||
-                (TitanAstralFlow && HasEffect(Buffs.TitansFavor) && CanSpellWeave()) ||
-                (IfritAstralFlowCyclone && HasEffect(Buffs.IfritsFavor) && ((!Config.SMN_ST_CrimsonCycloneMelee) || (Config.SMN_ST_CrimsonCycloneMelee && InMeleeRange()))) ||
-                (IfritAstralFlowStrike && HasEffect(Buffs.CrimsonStrike) && InMeleeRange()))
-                return OriginalHook(AstralFlow);
+                    if (!IsMoving() || HasEffect(Role.Buffs.Swiftcast))
+                        return OriginalHook(AstralFlow);                    
+                }
 
-            if (IsGarudaAttuned)
-            {
+                #region Special Ruin 3 rule lvl 54 - 72
                 // Use Ruin III instead of Emerald Ruin III if enabled and Ruin Mastery III is not active
                 if (IsEnabled(CustomComboPreset.SMN_ST_Ruin3_Emerald_Ruin3) && !TraitLevelChecked(Traits.RuinMastery3) && LevelChecked(Ruin3))
                 {
                     if (!IsMoving())
                         return Ruin3;
                 }
-            }
+                #endregion
 
-            // Gemshine
-            if (IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_EgiSummons_Attacks) && ActionReady(Gemshine))
-                return OriginalHook(Gemshine);
+                if (IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_EgiSummons_Attacks) && GemshineReady)
+                    return OriginalHook(Gemshine);
+
+                if (IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_Ruin4) && ActionReady(Ruin4) && IsMoving())
+                    return Ruin4;
+            }
+            #endregion
+
+            #region Ifrit Phase
+
+            if (IsIfritAttuned || OriginalHook(AstralFlow) is CrimsonCyclone or CrimsonStrike)
+            {
+                if (IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_DemiEgiMenu_SwiftcastEgi) && swiftcastPhase is 2 or 3)
+                {
+                    if (Role.CanSwiftcast())
+                        return Role.Swiftcast;
+
+                    if (GemshineReady && HasEffect(Role.Buffs.Swiftcast))
+                        return OriginalHook(Gemshine);
+                }
+                if (IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_EgiSummons_Attacks) && GemshineReady && !IsMoving())
+                    return OriginalHook(Gemshine);
+
+                if (IfritAstralFlowCyclone && HasEffect(Buffs.IfritsFavor) &&
+                   ((!Config.SMN_ST_CrimsonCycloneMelee) || (Config.SMN_ST_CrimsonCycloneMelee && InMeleeRange()))  //Melee Check
+                   || (IfritAstralFlowStrike && HasEffect(Buffs.CrimsonStrike) && InMeleeRange())) //After Strike
+                    return OriginalHook(AstralFlow);
+
+                if (IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_Ruin4) && ActionReady(Ruin4) && !HasEffect(Role.Buffs.Swiftcast) && GemshineReady)
+                    return Ruin4;
+
+            }
+            #endregion
 
             // Egi Order
-            if (IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_DemiEgiMenu_EgiOrder) && Gauge.SummonTimerRemaining == 0)
+            if (IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_DemiEgiMenu_EgiOrder) && !ActionReady(OriginalHook(Aethercharge)) && Gauge.SummonTimerRemaining == 0 && Gauge.AttunmentTimerRemaining == 0)
             { 
-                if (ActionReady(SummonEmerald) && (summonerPrimalChoice == 2 || !ActionReady(SummonTopaz)))
+                if ((Gauge.IsGarudaReady) && (summonerPrimalChoice == 2 || !ActionReady(SummonTopaz)))
                     return OriginalHook(SummonEmerald);
             
-                if (ActionReady(SummonTopaz))
+                if (Gauge.IsTitanReady)
                     return OriginalHook(SummonTopaz);
 
-                if (ActionReady(SummonRuby))
+                if (Gauge.IsIfritReady)
                     return OriginalHook(SummonRuby);
             }
 
-            // Ruin 4
+            // Ruin 4 Dump
             if (IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_Ruin4) && LevelChecked(Ruin4) && Gauge.SummonTimerRemaining == 0 && Gauge.AttunmentTimerRemaining == 0 && HasEffect(Buffs.FurtherRuin))
                 return Ruin4;
 
@@ -566,6 +593,8 @@ internal partial class SMN : CasterJob
             if (actionID is not (Outburst or Tridisaster))
                 return actionID;
 
+            #region Variables
+
             int summonerPrimalChoice = PluginConfiguration.GetCustomIntValue(Config.SMN_AoE_PrimalChoice);
             int SummonerBurstPhase = PluginConfiguration.GetCustomIntValue(Config.SMN_AoE_BurstPhase);
             int lucidThreshold = PluginConfiguration.GetCustomIntValue(Config.SMN_AoE_Lucid);
@@ -580,12 +609,19 @@ internal partial class SMN : CasterJob
             var searingInSummon = GetCooldownRemainingTime(SearingLight) > (Gauge.SummonTimerRemaining / 1000f) + GCDTotal;
 
             DemiAttackCount = CurrentDemiSummon is not DemiSummon.None ? TimesUsedSinceOtherAction(OriginalHook(Aethercharge), [AstralImpulse, UmbralImpulse, FountainOfFire, AstralFlare, UmbralFlare, BrandOfPurgatory]) : 0;
+            #endregion
+
+            #region Variant
 
             if (Variant.CanCure(CustomComboPreset.SMN_Variant_Cure, Config.SMN_VariantCure))
                 return Variant.Cure;
 
             if (Variant.CanRampart(CustomComboPreset.SMN_Variant_Rampart, WeaveTypes.SpellWeave))
                 return Variant.Rampart;
+
+            #endregion
+
+            #region OGCDS
 
             // Emergency priority Demi Nuke to prevent waste if you can't get demi attacks out to satisfy the slider check.
             if (CurrentDemiSummon is not DemiSummon.None && IsEnabled(CustomComboPreset.SMN_AoE_Advanced_Combo_DemiSummons_Attacks) && Gauge.SummonTimerRemaining <= 2500)
@@ -671,63 +707,83 @@ internal partial class SMN : CasterJob
                     return Role.LucidDreaming;
             }
 
+            #endregion
+
             // Demi
-            if (IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_DemiSummons) && PartyInCombat() && ActionReady(OriginalHook(Aethercharge)))
+            if (IsEnabled(CustomComboPreset.SMN_AoE_Advanced_Combo_DemiSummons) && PartyInCombat() && ActionReady(OriginalHook(Aethercharge)))
                 return OriginalHook(Aethercharge);
 
-            //Ruin4 in Egi Phases
-            if (IsEnabled(CustomComboPreset.SMN_AoE_Advanced_Combo_Ruin4) && ActionReady(Ruin4) &&
-                ((!HasEffect(Role.Buffs.Swiftcast) && IsMoving() && ((HasEffect(Buffs.GarudasFavor) && !IsGarudaAttuned) || (IsIfritAttuned && ComboAction is not CrimsonCyclone))) ||
-                 (GetCooldownRemainingTime(OriginalHook(Aethercharge)) is < 2.5f and > 0)))
-                return Ruin4;
+            #region Titan Phase
 
-            // Egi Features
-            if (IsEnabled(CustomComboPreset.SMN_AoE_Advanced_Combo_DemiEgiMenu_SwiftcastEgi))
+            if (IsTitanAttuned || OriginalHook(AstralFlow) is MountainBuster) //Titan attunement ends before last mountian buster
             {
-                // Swiftcast Garuda Feature
-                if (swiftcastPhase is 0 or 1 or 3 && HasEffect(Buffs.GarudasFavor) && GarudaAstralFlow)
+                if (TitanAstralFlow && ActionReady(AstralFlow) && CanSpellWeave())
+                    return OriginalHook(AstralFlow);
+
+                if (IsEnabled(CustomComboPreset.SMN_AoE_Advanced_Combo_EgiSummons_Attacks) && GemshineReady)
+                    return OriginalHook(PreciousBrilliance);
+            }
+            #endregion
+
+            #region Garuda Phase
+            if (IsGarudaAttuned || OriginalHook(AstralFlow) is Slipstream)
+            {
+                if (GarudaAstralFlow && HasEffect(Buffs.GarudasFavor))
+                {
+                    if (IsEnabled(CustomComboPreset.SMN_AoE_Advanced_Combo_DemiEgiMenu_SwiftcastEgi) && swiftcastPhase is 1 or 3) // Forced Swiftcast option
+                    {
+                        if (Role.CanSwiftcast())
+                            return Role.Swiftcast;
+                    }
+
+                    if (!IsMoving() || HasEffect(Role.Buffs.Swiftcast))
+                        return OriginalHook(AstralFlow);
+                }                
+
+                if (IsEnabled(CustomComboPreset.SMN_AoE_Advanced_Combo_EgiSummons_Attacks) && GemshineReady)
+                    return OriginalHook(PreciousBrilliance);
+
+                if (IsEnabled(CustomComboPreset.SMN_AoE_Advanced_Combo_Ruin4) && ActionReady(Ruin4) && IsMoving())
+                    return Ruin4;
+            }
+
+            #endregion
+
+            #region Ifrit Phase
+            {
+                if (IsEnabled(CustomComboPreset.SMN_AoE_Advanced_Combo_DemiEgiMenu_SwiftcastEgi) && swiftcastPhase is 2 or 3)
                 {
                     if (Role.CanSwiftcast())
                         return Role.Swiftcast;
 
-                    if (ActionReady(Slipstream) && HasEffect(Role.Buffs.Swiftcast))
-                        return OriginalHook(AstralFlow);
+                    if (GemshineReady && HasEffect(Role.Buffs.Swiftcast))
+                        return OriginalHook(PreciousBrilliance);
                 }
+                if (IsEnabled(CustomComboPreset.SMN_AoE_Advanced_Combo_EgiSummons_Attacks) && GemshineReady && 
+                    (!IsMoving() || HasEffect(Role.Buffs.Swiftcast)))
+                    return OriginalHook(PreciousBrilliance);
 
-                // Swiftcast Ifrit Feature
-                if (swiftcastPhase is 2 or 3)
-                {
-                    if (Role.CanSwiftcast(false) && ActionReady(RubyRite))
-                        return Role.Swiftcast;
-                }
+                if (IfritAstralFlowCyclone && HasEffect(Buffs.IfritsFavor) &&
+                   ((!Config.SMN_AoE_CrimsonCycloneMelee) || (Config.SMN_AoE_CrimsonCycloneMelee && InMeleeRange()))  //Melee Check
+                   || (IfritAstralFlowStrike && HasEffect(Buffs.CrimsonStrike) && InMeleeRange())) //After Strike
+                    return OriginalHook(AstralFlow);
+
+                if (IsEnabled(CustomComboPreset.SMN_AoE_Advanced_Combo_Ruin4) && ActionReady(Ruin4) && !HasEffect(Role.Buffs.Swiftcast) && GemshineReady)
+                    return Ruin4;
+
             }
-
-            // Precious Brilliance priority casting
-            if (IsEnabled(CustomComboPreset.SMN_AoE_Advanced_Combo_EgiSummons_Attacks) &&
-                ((IsIfritAttuned && ActionReady(RubyRite) && HasEffect(Role.Buffs.Swiftcast) && ComboAction is not CrimsonCyclone) ||
-                 (HasEffect(Buffs.GarudasFavor) && !HasEffect(Role.Buffs.Swiftcast) && IsMoving())))
-                return OriginalHook(PreciousBrilliance);
-
-            if ((GarudaAstralFlow && HasEffect(Buffs.GarudasFavor)) ||
-                (TitanAstralFlow && HasEffect(Buffs.TitansFavor) && CanSpellWeave()) ||
-                (IfritAstralFlowCyclone && HasEffect(Buffs.IfritsFavor) && ((!Config.SMN_AoE_CrimsonCycloneMelee) || (Config.SMN_AoE_CrimsonCycloneMelee && InMeleeRange()))) ||
-                (IfritAstralFlowStrike && HasEffect(Buffs.CrimsonStrike) && InMeleeRange()))
-                return OriginalHook(AstralFlow);
-
-            // Precious Brilliance
-            if (IsEnabled(CustomComboPreset.SMN_AoE_Advanced_Combo_EgiSummons_Attacks) && ActionReady(PreciousBrilliance))
-                return OriginalHook(PreciousBrilliance);
+            #endregion
 
             // Egi Order
-            if (IsEnabled(CustomComboPreset.SMN_AoE_Advanced_Combo_DemiEgiMenu_EgiOrder) && Gauge.SummonTimerRemaining == 0)
+            if (IsEnabled(CustomComboPreset.SMN_AoE_Advanced_Combo_DemiEgiMenu_EgiOrder) && !ActionReady(OriginalHook(Aethercharge)) && Gauge.SummonTimerRemaining == 0 && Gauge.AttunmentTimerRemaining == 0)
             {
-                if (ActionReady(SummonEmerald) && (summonerPrimalChoice == 2 || !ActionReady(SummonTopaz)))
+                if ((Gauge.IsGarudaReady) && (summonerPrimalChoice == 2 || !ActionReady(SummonTopaz)))
                     return OriginalHook(SummonEmerald);
 
-                if (ActionReady(SummonTopaz))
+                if (Gauge.IsTitanReady)
                     return OriginalHook(SummonTopaz);
 
-                if (ActionReady(SummonRuby))
+                if (Gauge.IsIfritReady)
                     return OriginalHook(SummonRuby);
             }
 
