@@ -241,9 +241,6 @@ internal partial class SMN
             TopazRite,
             MountainBuster,
             SummonGaruda2,
-            Role.Swiftcast,
-            Slipstream,
-
         ];
 
         public override List<int> DelayedWeaveSteps { get; set; } =
