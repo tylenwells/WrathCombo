@@ -241,12 +241,17 @@ internal partial class SMN
             TopazRite,
             MountainBuster,
             SummonGaruda2,
+            Role.Swiftcast,
+            Slipstream,
+
         ];
 
         public override List<int> DelayedWeaveSteps { get; set; } =
         [
             4,
         ];
+
+        public override List<(int[] Steps, Func<bool> Condition)> SkipSteps { get; set; } = [([26], () => Config.SMN_Opener_SkipSwiftcast == 2)];
         public override int MinOpenerLevel => 100;
         public override int MaxOpenerLevel => 109;
         internal override UserData? ContentCheckConfig => Config.SMN_Balance_Content;
