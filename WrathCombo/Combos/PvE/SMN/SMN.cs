@@ -209,6 +209,10 @@ internal partial class SMN : CasterJob
                 if (ActionReady(Fester))
                     return OriginalHook(Fester);
 
+                //Self Shield Overcap
+                if (!HasEffect(Buffs.SearingLight) && GetRemainingCharges(RadiantAegis) == 2 && ActionReady(RadiantAegis))
+                    return RadiantAegis;
+
                 // Lucid Dreaming
                 if (Role.CanLucidDream(4000))
                     return Role.LucidDreaming;
@@ -343,7 +347,10 @@ internal partial class SMN : CasterJob
 
                 if (ActionReady(Painflare))
                     return OriginalHook(Painflare);
-                
+
+                //Self Shield Overcap
+                if (!HasEffect(Buffs.SearingLight) && GetRemainingCharges(RadiantAegis) == 2 && ActionReady(RadiantAegis))
+                    return RadiantAegis;
 
                 // Lucid Dreaming
                 if (Role.CanLucidDream(4000))
@@ -543,6 +550,9 @@ internal partial class SMN : CasterJob
 
                     }
                 }
+                // Self Shield Overcap
+                if (IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_Radiant) && !HasEffect(Buffs.SearingLight) && GetRemainingCharges(RadiantAegis) == 2 && ActionReady(RadiantAegis))
+                    return RadiantAegis;
 
                 // Lucid Dreaming
                 if (IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_Lucid) && Role.CanLucidDream(lucidThreshold))
@@ -763,6 +773,10 @@ internal partial class SMN : CasterJob
                     }
                     
                 }
+
+                // Self Shield Overcap
+                if (IsEnabled(CustomComboPreset.SMN_AoE_Advanced_Combo_Radiant) && !HasEffect(Buffs.SearingLight) && GetRemainingCharges(RadiantAegis) == 2 && ActionReady(RadiantAegis))
+                    return RadiantAegis;
 
                 // Lucid Dreaming
                 if (IsEnabled(CustomComboPreset.SMN_AoE_Advanced_Combo_Lucid) && Role.CanLucidDream(lucidThreshold))

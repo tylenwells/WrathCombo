@@ -5568,6 +5568,10 @@ public enum CustomComboPreset
     SMN.JobID)]
     SMN_ST_Advanced_Combo_DemiEgiMenu_EgiOrder = 17016,
 
+    [ParentCombo(SMN_ST_Advanced_Combo)]
+    [CustomComboInfo("Radiant Aegis Option", "Will use Radiant Aegis, 30 second self shield, when at 2 charges to prevent waste ", SMN.JobID)]
+    SMN_ST_Advanced_Combo_Radiant = 17071,
+
     #endregion
 
     #region Advanced AoE
@@ -5702,6 +5706,10 @@ SMN.JobID)]
         "Changes Painflare to Ruin IV when out of Aetherflow stacks, Energy Siphon is on cooldown, and Ruin IV is up.",
         SMN.JobID)]
     SMN_ESPainflare_Ruin4 = 17039,
+
+    [ParentCombo(SMN_AoE_Advanced_Combo)]
+    [CustomComboInfo("Radiant Aegis Option", "Will use Radiant Aegis, 30 second self shield, when at 2 charges to prevent waste ", SMN.JobID)]
+    SMN_AoE_Advanced_Combo_Radiant = 17070,
 
     #endregion
 
