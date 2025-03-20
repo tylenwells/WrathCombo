@@ -5668,7 +5668,7 @@ SMN.JobID)]
 
     #region Standalone Features
     [ReplaceSkill(SMN.Fester)]
-    [CustomComboInfo("Energy Drain to Fester Feature", "Change Fester into Energy Drain when out of Aetherflow stacks.",
+    [CustomComboInfo("Fester to Energy Drain Feature", "Change Fester into Energy Drain when out of Aetherflow stacks.",
         SMN.JobID)]
     SMN_EDFester = 17008,
 
@@ -5679,7 +5679,7 @@ SMN.JobID)]
     SMN_EDFester_Ruin4 = 17013,
 
     [ReplaceSkill(SMN.Painflare)]
-    [CustomComboInfo("Energy Siphon to Painflare Feature",
+    [CustomComboInfo("Painflare to Energy Siphon Feature",
         "Change Painflare into Energy Siphon when out of Aetherflow stacks.", SMN.JobID)]
     SMN_ESPainflare = 17009,
 
@@ -5712,7 +5712,7 @@ SMN.JobID)]
     SMN_ESPainflare_Ruin4 = 17039,
 
     [CustomComboInfo("Searing Light Waste Protection Feature",
-           "Changes Searing light to Searing Flash while under the affect of another summoners buff to prevent waste. But still allows you to use Searing Flash while under affect of your own.", SMN.JobID)]
+           "Changes Searing light to SavageBlade while under the affect of another summoners buff to prevent waste.", SMN.JobID)]
     SMN_Searing = 17072,
 
 

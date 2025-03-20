@@ -34,8 +34,11 @@ internal partial class SMN : CasterJob
             if (actionID != SearingLight)
                 return actionID;
 
-            if (HasEffectAny(Buffs.SearingLight))
+            if (HasEffect(Buffs.RubysGlimmer))
                 return SearingFlash;
+
+            if (HasEffectAny(Buffs.SearingLight))
+                return 11;
 
             return actionID;
         }
