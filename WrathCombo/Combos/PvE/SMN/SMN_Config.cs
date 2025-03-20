@@ -74,9 +74,9 @@ internal partial class SMN
                     break;
 
                 case CustomComboPreset.SMN_ST_Advanced_Combo_DemiEgiMenu_oGCDPooling:
-                    UserConfig.DrawHorizontalRadioButton(SMN_ST_BurstPhase, "Solar Bahamut/Bahamut",
-                        "Bursts during Bahamut phase.\nBahamut burst phase becomes Solar Bahamut at Lv100.", 1);
-                    UserConfig.DrawHorizontalRadioButton(SMN_ST_BurstPhase, "Phoenix", "Bursts during Phoenix phase.", 2);
+                    UserConfig.DrawHorizontalRadioButton(SMN_ST_BurstPhase, "Solar Bahamut/Pre 100 Bahamut",
+                        "Bursts during Bahamut phase before 100.\nBahamut burst phase becomes Solar Bahamut at Lv100.", 1);
+                    UserConfig.DrawHorizontalRadioButton(SMN_ST_BurstPhase, "Phoenix/Post 100 Bahamut", "Bursts during Phoenix phase. Also adds Regular Bahamut at 100. ", 2);
 
                     UserConfig.DrawHorizontalRadioButton(SMN_ST_BurstPhase, "Any Demi Phase",
                         "Bursts during any Demi Summon phase.", 3);
@@ -90,9 +90,9 @@ internal partial class SMN
                     break;
 
                 case CustomComboPreset.SMN_AoE_Advanced_Combo_DemiEgiMenu_oGCDPooling:
-                    UserConfig.DrawHorizontalRadioButton(SMN_AoE_BurstPhase, "Solar Bahamut/Bahamut",
-                        "Bursts during Bahamut phase.\nBahamut burst phase becomes Solar Bahamut at Lv100.", 1);
-                    UserConfig.DrawHorizontalRadioButton(SMN_AoE_BurstPhase, "Phoenix", "Bursts during Phoenix phase.", 2);
+                    UserConfig.DrawHorizontalRadioButton(SMN_AoE_BurstPhase, "Solar Bahamut/Pre 100 Bahamut",
+                        "Bursts during Bahamut phase below 100.\nBahamut burst phase becomes Solar Bahamut at Lv100.", 1);
+                    UserConfig.DrawHorizontalRadioButton(SMN_AoE_BurstPhase, "Phoenix/Post 100 Bahamut", "Bursts during Phoenix phase. Also adds Regular Bahamut at 100.", 2);
 
                     UserConfig.DrawHorizontalRadioButton(SMN_AoE_BurstPhase, "Any Demi Phase",
                         "Bursts during any Demi Summon phase.", 3);

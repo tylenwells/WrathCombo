@@ -144,6 +144,7 @@ internal partial class SMN
     public static class Traits
     {
         public const ushort
+            EnhancedDreadwyrmTrance = 178,
             RuinMastery3 = 476,
             EnhancedBahamut = 619;
     }
