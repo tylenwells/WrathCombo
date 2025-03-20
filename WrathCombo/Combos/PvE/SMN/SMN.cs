@@ -25,7 +25,21 @@ internal partial class SMN : CasterJob
             return actionID;
         }
     }
+    internal class SMN_Searing : CustomCombo
+    {
+        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.SMN_Searing;
 
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID != SearingLight)
+                return actionID;
+
+            if (HasEffectAny(Buffs.SearingLight))
+                return SearingFlash;
+
+            return actionID;
+        }
+    }
     internal class SMN_RuinMobility : CustomCombo
     {
         protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.SMN_RuinMobility;

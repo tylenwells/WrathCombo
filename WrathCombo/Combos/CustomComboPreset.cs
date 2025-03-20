@@ -5660,6 +5660,10 @@ SMN.JobID)]
     [ParentCombo(SMN_AoE_Advanced_Combo)]
     [CustomComboInfo("Add Egi Astralflow", "Choose which Egi Astralflows to add to the rotation.", SMN.JobID)]
     SMN_AoE_Advanced_Combo_Egi_AstralFlow = 17068,
+
+    [ParentCombo(SMN_AoE_Advanced_Combo)]
+    [CustomComboInfo("Radiant Aegis Option", "Will use Radiant Aegis, 30 second self shield, when at 2 charges to prevent waste ", SMN.JobID)]
+    SMN_AoE_Advanced_Combo_Radiant = 17070,
     #endregion
 
     #region Standalone Features
@@ -5707,9 +5711,11 @@ SMN.JobID)]
         SMN.JobID)]
     SMN_ESPainflare_Ruin4 = 17039,
 
-    [ParentCombo(SMN_AoE_Advanced_Combo)]
-    [CustomComboInfo("Radiant Aegis Option", "Will use Radiant Aegis, 30 second self shield, when at 2 charges to prevent waste ", SMN.JobID)]
-    SMN_AoE_Advanced_Combo_Radiant = 17070,
+    [CustomComboInfo("Searing Light Waste Protection Feature",
+           "Changes Searing light to Searing Flash while under the affect of another summoners buff to prevent waste. But still allows you to use Searing Flash while under affect of your own.", SMN.JobID)]
+    SMN_Searing = 17072,
+
+
 
     #endregion
 
