@@ -5486,7 +5486,7 @@ public enum CustomComboPreset
     SMN_ST_Advanced_Combo_Balance_Opener = 170001,
 
     [ParentCombo(SMN_ST_Advanced_Combo)]
-    [CustomComboInfo("Use Ruin III instead of Emerald Ruin III when standing still",
+    [CustomComboInfo("Use Ruin III instead of Emerald Ruin III when standing still between the levels of 54 and 72",
         "Replaces Emerald Ruin III with Ruin III in the rotation when standing still and Ruin Mastery III is not active.",
         SMN.JobID)]
     SMN_ST_Ruin3_Emerald_Ruin3 = 17067,

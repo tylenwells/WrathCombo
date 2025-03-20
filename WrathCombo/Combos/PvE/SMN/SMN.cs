@@ -162,6 +162,8 @@ internal partial class SMN : CasterJob
         {
             if (actionID is not (Ruin or Ruin2))
                 return actionID;
+                        
+            #region Variants
 
             if (Variant.CanCure(CustomComboPreset.SMN_Variant_Cure, Config.SMN_VariantCure))
                 return Variant.Cure;
@@ -169,84 +171,110 @@ internal partial class SMN : CasterJob
             if (Variant.CanRampart(CustomComboPreset.SMN_Variant_Rampart, WeaveTypes.SpellWeave))
                 return Variant.Rampart;
 
-            if (NeedToSummon && ActionReady(SummonCarbuncle))
-                return SummonCarbuncle;
+            #endregion
 
-            if (CanWeave())
+            #region OGCD
+
+            if (CanSpellWeave())
             {
-                if (ActionReady(SearingLight) && !HasEffect(Buffs.RubysGlimmer) && (CurrentDemiSummon is DemiSummon.Dreadwyrm or DemiSummon.Bahamut or DemiSummon.SolarBahamut))
+                // Searing Light
+                if (IsOffCooldown(SearingLight) && LevelChecked(SearingLight) && !HasEffectAny(Buffs.SearingLight) && CurrentDemiSummon is not DemiSummon.None)
                     return SearingLight;
-
+                   
+                // Energy Drain
                 if (!Gauge.HasAetherflowStacks && ActionReady(EnergyDrain))
                     return EnergyDrain;
 
-                if (ActionReady(SearingFlash) && HasEffect(Buffs.RubysGlimmer))
+                //Searing Flash
+                if (HasEffect(Buffs.RubysGlimmer) && LevelChecked(SearingFlash))
                     return SearingFlash;
 
-                if (CurrentDemiSummon is DemiSummon.Bahamut or DemiSummon.Phoenix or DemiSummon.SolarBahamut)
+                // Demi Nuke
+                if (CurrentDemiSummon is not DemiSummon.None)
                 {
-                    if (ActionReady(EnkindleBahamut))
+                    if (ActionReady(OriginalHook(EnkindleBahamut)))
                         return OriginalHook(EnkindleBahamut);
 
                     if (ActionReady(AstralFlow))
                         return OriginalHook(AstralFlow);
-
-                    if (ActionReady(LuxSolaris))
-                        return OriginalHook(LuxSolaris);
                 }
 
+                // Lux Solaris
+                if (ActionReady(LuxSolaris) &&
+                    (PlayerHealthPercentageHp() < 100 || (GetBuffRemainingTime(Buffs.RefulgentLux) is < 3 and > 0)))
+                    return OriginalHook(LuxSolaris);
+
+                // Fester
+                
                 if (ActionReady(Fester))
-                {
-                    if (!LevelChecked(SearingLight) || HasEffect(Buffs.SearingLight) || GetCooldown(EnergyDrain).CooldownRemaining < 6)
-                        return OriginalHook(Fester);
-                }
+                    return OriginalHook(Fester);
 
+                // Lucid Dreaming
                 if (Role.CanLucidDream(4000))
                     return Role.LucidDreaming;
             }
 
-            if (ActionReady(Aethercharge))
+            #endregion
+
+            // Demi
+            if (PartyInCombat() && ActionReady(OriginalHook(Aethercharge)))
                 return OriginalHook(Aethercharge);
 
-            if (ActionReady(Slipstream) || ActionReady(RubyRite))
+            #region Titan Phase
+            if (IsTitanAttuned || OriginalHook(AstralFlow) is MountainBuster) //Titan attunement ends before last mountian buster
             {
-                if (ActionReady(Role.Swiftcast))
-                    return Role.Swiftcast;
+                if (ActionReady(AstralFlow) && CanSpellWeave())
+                    return OriginalHook(AstralFlow);
 
-                if (HasEffect(Role.Buffs.Swiftcast))
-                {
-                    if (ActionReady(Slipstream))
-                        return OriginalHook(Slipstream);
-
-                    if (ActionReady(RubyRite))
-                        return RubyRite;
-                }
+                if (GemshineReady)
+                    return OriginalHook(Gemshine);
             }
+            #endregion
 
-            if ((HasEffect(Buffs.GarudasFavor) && Gauge.Attunement == 0) ||
-                (HasEffect(Buffs.TitansFavor) && CanSpellWeave()) ||
-                HasEffect(Buffs.IfritsFavor) || HasEffect(Buffs.CrimsonStrike))
-                return OriginalHook(AstralFlow);
-
-            if (HasEffect(Buffs.FurtherRuin) && ((!HasEffect(Role.Buffs.Swiftcast) && IsIfritAttuned && IsMoving()) || (GetCooldownRemainingTime(OriginalHook(Aethercharge)) is < 2.5f and > 0)))
-                return Ruin4;
-
-            if (IsAttunedAny)
-                return OriginalHook(Gemshine);
-
-            if (Gauge.SummonTimerRemaining == 0)
+            #region Garuda Phase
+            if (IsGarudaAttuned || OriginalHook(AstralFlow) is Slipstream)
             {
-                if (ActionReady(SummonTopaz))
+                if (HasEffect(Buffs.GarudasFavor) && (!IsMoving() || HasEffect(Role.Buffs.Swiftcast)))
+                    return OriginalHook(AstralFlow);
+
+                if (GemshineReady)
+                    return OriginalHook(Gemshine);
+
+                if (ActionReady(Ruin4) && IsMoving())
+                    return Ruin4;
+            }
+            #endregion
+
+            #region Ifrit Phase
+
+            if (IsIfritAttuned || OriginalHook(AstralFlow) is CrimsonCyclone or CrimsonStrike)
+            {                
+                if (GemshineReady && (!IsMoving() || HasEffect(Role.Buffs.Swiftcast)))
+                    return OriginalHook(Gemshine);
+
+                if (HasEffect(Buffs.IfritsFavor) || HasEffect(Buffs.CrimsonStrike) && InMeleeRange())
+                    return OriginalHook(AstralFlow);
+
+                if (ActionReady(Ruin4) && !HasEffect(Role.Buffs.Swiftcast) && GemshineReady)
+                    return Ruin4;
+            }
+            #endregion
+
+            // Egi Order 
+            if (!ActionReady(OriginalHook(Aethercharge)) && Gauge.SummonTimerRemaining == 0 && Gauge.AttunmentTimerRemaining == 0)
+            {               
+                if (Gauge.IsTitanReady)
                     return OriginalHook(SummonTopaz);
 
-                if (ActionReady(SummonEmerald))
+                if (Gauge.IsGarudaReady)
                     return OriginalHook(SummonEmerald);
 
-                if (ActionReady(SummonRuby))
+                if (Gauge.IsIfritReady)
                     return OriginalHook(SummonRuby);
             }
 
-            if (LevelChecked(Ruin4) && !IsAttunedAny && CurrentDemiSummon is DemiSummon.None && HasEffect(Buffs.FurtherRuin))
+            // Ruin 4 Dump
+            if (LevelChecked(Ruin4) && Gauge.SummonTimerRemaining == 0 && Gauge.AttunmentTimerRemaining == 0 && HasEffect(Buffs.FurtherRuin))
                 return Ruin4;
 
             return actionID;
@@ -423,10 +451,11 @@ internal partial class SMN : CasterJob
                 {
                     if (IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_SearingLight_Burst))
                     {
-                        if ((SummonerBurstPhase is 0 or 1 && (CurrentDemiSummon is DemiSummon.Bahamut or DemiSummon.SolarBahamut)) ||
-                            (SummonerBurstPhase == 2 && CurrentDemiSummon is DemiSummon.Phoenix) ||
+                        if (SummonerBurstPhase is 0 or 1 && TraitLevelChecked(Traits.EnhancedBahamut) && CurrentDemiSummon is DemiSummon.SolarBahamut ||
+                            SummonerBurstPhase is 0 or 1 && !TraitLevelChecked(Traits.EnhancedBahamut) && CurrentDemiSummon is DemiSummon.Bahamut ||
+                            SummonerBurstPhase == 2 && CurrentDemiSummon is DemiSummon.Phoenix ||
                             SummonerBurstPhase == 3 && CurrentDemiSummon is not DemiSummon.None ||
-                            (SummonerBurstPhase == 4))
+                            SummonerBurstPhase == 4)
                             return SearingLight;
                     }
                     else
@@ -509,12 +538,9 @@ internal partial class SMN : CasterJob
             {               
                 if (GarudaAstralFlow && HasEffect(Buffs.GarudasFavor))
                 {
-                    if (IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_DemiEgiMenu_SwiftcastEgi) && swiftcastPhase is 1 or 3) // Forced Swiftcast option
-                    {
-                        if (Role.CanSwiftcast())
-                            return Role.Swiftcast;
-                    }
-
+                    if (IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_DemiEgiMenu_SwiftcastEgi) && swiftcastPhase is 1 or 3 && Role.CanSwiftcast()) // Forced Swiftcast option
+                        return Role.Swiftcast;
+                    
                     if (!IsMoving() || HasEffect(Role.Buffs.Swiftcast))
                         return OriginalHook(AstralFlow);                    
                 }
@@ -540,15 +566,11 @@ internal partial class SMN : CasterJob
 
             if (IsIfritAttuned || OriginalHook(AstralFlow) is CrimsonCyclone or CrimsonStrike)
             {
-                if (IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_DemiEgiMenu_SwiftcastEgi) && swiftcastPhase is 2 or 3)
-                {
-                    if (Role.CanSwiftcast())
-                        return Role.Swiftcast;
+                if (IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_DemiEgiMenu_SwiftcastEgi) && swiftcastPhase is 2 or 3 && Role.CanSwiftcast())
+                    return Role.Swiftcast;
 
-                    if (GemshineReady && HasEffect(Role.Buffs.Swiftcast))
-                        return OriginalHook(Gemshine);
-                }
-                if (IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_EgiSummons_Attacks) && GemshineReady && !IsMoving())
+                if (IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_EgiSummons_Attacks) && GemshineReady && 
+                    (!IsMoving() || HasEffect(Role.Buffs.Swiftcast)))
                     return OriginalHook(Gemshine);
 
                 if (IfritAstralFlowCyclone && HasEffect(Buffs.IfritsFavor) &&
@@ -558,11 +580,10 @@ internal partial class SMN : CasterJob
 
                 if (IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_Ruin4) && ActionReady(Ruin4) && !HasEffect(Role.Buffs.Swiftcast) && GemshineReady)
                     return Ruin4;
-
             }
             #endregion
 
-            // Egi Order
+            // Egi Order 
             if (IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_DemiEgiMenu_EgiOrder) && !ActionReady(OriginalHook(Aethercharge)) && Gauge.SummonTimerRemaining == 0 && Gauge.AttunmentTimerRemaining == 0)
             { 
                 if ((Gauge.IsGarudaReady) && (summonerPrimalChoice == 2 || !ActionReady(SummonTopaz)))
@@ -730,12 +751,9 @@ internal partial class SMN : CasterJob
             {
                 if (GarudaAstralFlow && HasEffect(Buffs.GarudasFavor))
                 {
-                    if (IsEnabled(CustomComboPreset.SMN_AoE_Advanced_Combo_DemiEgiMenu_SwiftcastEgi) && swiftcastPhase is 1 or 3) // Forced Swiftcast option
-                    {
-                        if (Role.CanSwiftcast())
-                            return Role.Swiftcast;
-                    }
-
+                    if (IsEnabled(CustomComboPreset.SMN_AoE_Advanced_Combo_DemiEgiMenu_SwiftcastEgi) && swiftcastPhase is 1 or 3 && Role.CanSwiftcast()) // Forced Swiftcast option
+                        return Role.Swiftcast;
+                   
                     if (!IsMoving() || HasEffect(Role.Buffs.Swiftcast))
                         return OriginalHook(AstralFlow);
                 }                
@@ -751,14 +769,9 @@ internal partial class SMN : CasterJob
 
             #region Ifrit Phase
             {
-                if (IsEnabled(CustomComboPreset.SMN_AoE_Advanced_Combo_DemiEgiMenu_SwiftcastEgi) && swiftcastPhase is 2 or 3)
-                {
-                    if (Role.CanSwiftcast())
-                        return Role.Swiftcast;
+                if (IsEnabled(CustomComboPreset.SMN_AoE_Advanced_Combo_DemiEgiMenu_SwiftcastEgi) && swiftcastPhase is 2 or 3 && (Role.CanSwiftcast()))
+                    return Role.Swiftcast;
 
-                    if (GemshineReady && HasEffect(Role.Buffs.Swiftcast))
-                        return OriginalHook(PreciousBrilliance);
-                }
                 if (IsEnabled(CustomComboPreset.SMN_AoE_Advanced_Combo_EgiSummons_Attacks) && GemshineReady && 
                     (!IsMoving() || HasEffect(Role.Buffs.Swiftcast)))
                     return OriginalHook(PreciousBrilliance);
@@ -770,7 +783,6 @@ internal partial class SMN : CasterJob
 
                 if (IsEnabled(CustomComboPreset.SMN_AoE_Advanced_Combo_Ruin4) && ActionReady(Ruin4) && !HasEffect(Role.Buffs.Swiftcast) && GemshineReady)
                     return Ruin4;
-
             }
             #endregion
 

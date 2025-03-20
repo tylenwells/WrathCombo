@@ -144,7 +144,8 @@ internal partial class SMN
     public static class Traits
     {
         public const ushort
-            RuinMastery3 = 476;
+            RuinMastery3 = 476,
+            EnhancedBahamut = 619;
     }
 
     #endregion
