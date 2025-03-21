@@ -160,7 +160,7 @@ internal partial class RPR
         public override int MinOpenerLevel => 100;
 
         public override int MaxOpenerLevel => 109;
-
+        
         public override List<uint> OpenerActions { get; set; } =
         [
             Harpe,
@@ -188,11 +188,11 @@ internal partial class RPR
             Slice
         ];
 
-        public override List<(int[] Steps, Func<bool> Condition)> SkipSteps { get; set; } = 
-            [
-                ([1], () => Config.RPR_Opener_StartChoice == 1)
-            ];
-        
+        public override List<(int[] Steps, Func<bool> Condition)> SkipSteps { get; set; } =
+        [
+            ([1], () => Config.RPR_Opener_StartChoice == 1)
+        ];
+
         public override List<(int[], uint, Func<bool>)> SubstitutionSteps { get; set; } =
         [
             ([5], ExecutionersGallows, () => OnTargetsRear()),
@@ -203,19 +203,7 @@ internal partial class RPR
 
         internal override UserData ContentCheckConfig => Config.RPR_Balance_Content;
 
-        public override bool HasCooldowns()
-        {
-            if (GetRemainingCharges(SoulSlice) < 2)
-                return false;
-
-            if (!IsOffCooldown(ArcaneCircle))
-                return false;
-
-            if (!IsOffCooldown(Gluttony))
-                return false;
-
-            return true;
-        }
+        public override bool HasCooldowns() => GetRemainingCharges(SoulSlice) is 2 && IsOffCooldown(ArcaneCircle) && IsOffCooldown(Gluttony);
     }
 
     #endregion
