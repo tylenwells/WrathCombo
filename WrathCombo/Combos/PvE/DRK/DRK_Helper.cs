@@ -877,7 +877,7 @@ internal partial class DRK
                     ? manaPooling ? (int)Config.DRK_ST_ManaSpenderPooling : 0
                     : (int)Config.DRK_AoE_ManaSpenderPooling
                 : 0;
-            var hasEnoughMana = mana >= (manaPool + 3000);
+            var hasEnoughMana = mana >= (manaPool + 3000) || Gauge.HasDarkArts;
             var manaEvenBurstSoon =
                 GetCooldownRemainingTime(LivingShadow) is > 0 and < 30;
             var manaBursting =
