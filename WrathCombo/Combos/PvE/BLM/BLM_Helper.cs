@@ -114,6 +114,8 @@ internal partial class BLM
 
         return false;
     }
+    
+    #region Openers
 
     internal class BLMOpenerMaxLevel1 : WrathOpener
     {
@@ -155,6 +157,8 @@ internal partial class BLM
                                                IsOffCooldown(Amplifier) && Gauge.InAstralFire;
     }
 
+  #endregion
+
     #region ID's
 
     public const byte ClassID = 7;
@@ -195,8 +199,7 @@ internal partial class BLM
         FlareStar = 36989;
 
     // Debuff Pairs of Actions and Debuff
-
-
+    
     private static int NextMpGain => Gauge.UmbralIceStacks switch
     {
         0 => 0,
