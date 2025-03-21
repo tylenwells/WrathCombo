@@ -21,7 +21,7 @@ internal partial class BLM
             { HighThunder, Debuffs.HighThunder },
             { HighThunder2, Debuffs.HighThunder2 }
         };
-    
+
     internal static BLMGauge Gauge = GetJobGauge<BLMGauge>();
     internal static BLMOpenerMaxLevel1 Opener1 = new();
 
@@ -150,28 +150,9 @@ internal partial class BLM
         ];
         internal override UserData ContentCheckConfig => Config.BLM_ST_Balance_Content;
 
-        public override bool HasCooldowns()
-        {
-            if (GetCooldown(Fire).BaseCooldownTotal > 2.45)
-                return false;
-
-            if (!IsOffCooldown(Manafont))
-                return false;
-
-            if (GetRemainingCharges(Triplecast) < 2)
-                return false;
-
-            if (!IsOffCooldown(Role.Swiftcast))
-                return false;
-
-            if (!IsOffCooldown(Amplifier))
-                return false;
-
-            if (Gauge.InUmbralIce)
-                return false;
-
-            return true;
-        }
+        public override bool HasCooldowns() => GetCooldown(Fire).BaseCooldownTotal <= 2.45 && IsOffCooldown(Manafont) &&
+                                               GetRemainingCharges(Triplecast) is 2 && IsOffCooldown(Role.Swiftcast) &&
+                                               IsOffCooldown(Amplifier) && Gauge.InAstralFire;
     }
 
     #region ID's
