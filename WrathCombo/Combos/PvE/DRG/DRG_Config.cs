@@ -38,16 +38,20 @@ internal partial class DRG
                     break;
 
                 case CustomComboPreset.DRG_ST_ComboHeals:
-                    DrawSliderInt(0, 100, DRG_ST_SecondWind_Threshold, $"{Role.SecondWind.ActionName()} HP percentage threshold (0 = Disabled)");
+                    DrawSliderInt(0, 100, DRG_ST_SecondWind_Threshold,
+                        $"{Role.SecondWind.ActionName()} HP percentage threshold");
 
-                    DrawSliderInt(0, 100, DRG_ST_Bloodbath_Threshold, $"{Role.Bloodbath.ActionName()} HP percentage threshold (0 = Disabled)");
+                    DrawSliderInt(0, 100, DRG_ST_Bloodbath_Threshold,
+                        $"{Role.Bloodbath.ActionName()} HP percentage threshold");
 
                     break;
 
                 case CustomComboPreset.DRG_AoE_ComboHeals:
-                    DrawSliderInt(0, 100, DRG_AoE_SecondWind_Threshold, $"{Role.SecondWind.ActionName()} HP percentage threshold (0 = Disabled)");
+                    DrawSliderInt(0, 100, DRG_AoE_SecondWind_Threshold,
+                        $"{Role.SecondWind.ActionName()} HP percentage threshold");
 
-                    DrawSliderInt(0, 100, DRG_AoE_Bloodbath_Threshold, $"{Role.Bloodbath.ActionName()} HP percentage threshold (0 = Disabled)");
+                    DrawSliderInt(0, 100, DRG_AoE_Bloodbath_Threshold,
+                        $"{Role.Bloodbath.ActionName()} HP percentage threshold");
 
                     break;
 
