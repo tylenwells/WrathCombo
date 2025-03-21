@@ -891,7 +891,41 @@ internal partial class DRK
 
             #endregion
 
-            #region Mana Burst
+            #region Mana Overcap
+
+            if ((flags.HasFlag(Combo.Simple) ||
+                 ((flags.HasFlag(Combo.ST) &&
+                   IsEnabled(Preset.DRK_ST_Sp_ManaOvercap)) ||
+                  flags.HasFlag(Combo.AoE) &&
+                  IsEnabled(Preset.DRK_AoE_Sp_ManaOvercap))) &&
+                mana >= 8500 &&
+                !manaEvenBurstSoon)
+                if (flags.HasFlag(Combo.ST) && LevelChecked(EdgeOfDarkness))
+                    return (action = OriginalHook(EdgeOfDarkness)) != 0;
+                else
+                    return (action = OriginalHook(FloodOfDarkness)) != 0;
+
+            #endregion
+
+            #region Darkside Maintenance
+
+            if ((flags.HasFlag(Combo.Simple) ||
+                 ((flags.HasFlag(Combo.ST) &&
+                   IsEnabled(Preset.DRK_ST_Sp_EdgeDarkside)) ||
+                  flags.HasFlag(Combo.AoE) &&
+                  IsEnabled(Preset.DRK_AoE_Sp_Flood))) &&
+                manaDarksideDropping)
+                if (flags.HasFlag(Combo.ST) && LevelChecked(EdgeOfDarkness))
+                    return (action = OriginalHook(EdgeOfDarkness)) != 0;
+                else
+                    return (action = OriginalHook(FloodOfDarkness)) != 0;
+
+            #endregion
+
+            // Bail if it is too early into the fight
+            if (CombatEngageDuration().TotalSeconds <= 10) return false;
+
+            #region Burst Phase Spending
 
             if ((flags.HasFlag(Combo.Simple) ||
                  ((flags.HasFlag(Combo.ST) && IsEnabled(Preset.DRK_ST_Sp_Edge)) ||
@@ -920,24 +954,6 @@ internal partial class DRK
 
             #endregion
 
-            #region Mana Darkside Maintenance
-
-            if ((flags.HasFlag(Combo.Simple) ||
-                 ((flags.HasFlag(Combo.ST) &&
-                   IsEnabled(Preset.DRK_ST_Sp_EdgeDarkside)) ||
-                  flags.HasFlag(Combo.AoE) &&
-                  IsEnabled(Preset.DRK_AoE_Sp_Flood))) &&
-                manaDarksideDropping)
-                if (flags.HasFlag(Combo.ST) && LevelChecked(EdgeOfDarkness))
-                    return (action = OriginalHook(EdgeOfDarkness)) != 0;
-                else
-                    return (action = OriginalHook(FloodOfDarkness)) != 0;
-
-            #endregion
-
-            // Bail if it is too early into the fight
-            if (CombatEngageDuration().TotalSeconds <= 10) return false;
-
             #region Mana Dark Arts Drop Prevention
 
             if ((flags.HasFlag(Combo.Simple) ||
@@ -947,22 +963,6 @@ internal partial class DRK
                 Gauge.HasDarkArts &&
                 (manaBursting ||
                  (!manaEvenBurstSoon && HasOwnTBN)))
-                if (flags.HasFlag(Combo.ST) && LevelChecked(EdgeOfDarkness))
-                    return (action = OriginalHook(EdgeOfDarkness)) != 0;
-                else
-                    return (action = OriginalHook(FloodOfDarkness)) != 0;
-
-            #endregion
-
-            #region Mana Overcap
-
-            if ((flags.HasFlag(Combo.Simple) ||
-                 ((flags.HasFlag(Combo.ST) &&
-                   IsEnabled(Preset.DRK_ST_Sp_ManaOvercap)) ||
-                  flags.HasFlag(Combo.AoE) &&
-                  IsEnabled(Preset.DRK_AoE_Sp_ManaOvercap))) &&
-                mana >= 8500 &&
-                !manaEvenBurstSoon)
                 if (flags.HasFlag(Combo.ST) && LevelChecked(EdgeOfDarkness))
                     return (action = OriginalHook(EdgeOfDarkness)) != 0;
                 else
