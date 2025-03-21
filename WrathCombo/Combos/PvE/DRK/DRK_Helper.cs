@@ -878,13 +878,17 @@ internal partial class DRK
                     : (int)Config.DRK_AoE_ManaSpenderPooling
                 : 0;
             var hasEnoughMana = mana >= (manaPool + 3000) || Gauge.HasDarkArts;
-            var manaEvenBurstSoon =
-                GetCooldownRemainingTime(LivingShadow) is > 0 and < 30;
-            var manaBursting =
+            var secondsBeforeBurst =
+                flags.HasFlag(Combo.Adv) && flags.HasFlag(Combo.ST)
+                    ? Config.DRK_ST_BurstSoonThreshold
+                    : 30;
+            var evenBurstSoon =
+                IsOnCooldown(LivingShadow) &&
+                GetCooldownRemainingTime(LivingShadow) < secondsBeforeBurst;
+            var bursting =
                 GetCooldownRemainingTime(LivingShadow) >= 100 ||
                 GetCooldownRemainingTime(Delirium) >= 50;
-            var manaDarksideDropping =
-                Gauge.DarksideTimeRemaining / 1000 < 10;
+            var darksideDropping = Gauge.DarksideTimeRemaining / 1000 < 10;
 
             // Bail if we don't have enough mana
             if (!hasEnoughMana) return false;
@@ -899,7 +903,7 @@ internal partial class DRK
                   flags.HasFlag(Combo.AoE) &&
                   IsEnabled(Preset.DRK_AoE_Sp_ManaOvercap))) &&
                 mana >= 8500 &&
-                !manaEvenBurstSoon)
+                !evenBurstSoon)
                 if (flags.HasFlag(Combo.ST) && LevelChecked(EdgeOfDarkness))
                     return (action = OriginalHook(EdgeOfDarkness)) != 0;
                 else
@@ -914,7 +918,7 @@ internal partial class DRK
                    IsEnabled(Preset.DRK_ST_Sp_EdgeDarkside)) ||
                   flags.HasFlag(Combo.AoE) &&
                   IsEnabled(Preset.DRK_AoE_Sp_Flood))) &&
-                manaDarksideDropping)
+                darksideDropping)
                 if (flags.HasFlag(Combo.ST) && LevelChecked(EdgeOfDarkness))
                     return (action = OriginalHook(EdgeOfDarkness)) != 0;
                 else
@@ -930,7 +934,7 @@ internal partial class DRK
             if ((flags.HasFlag(Combo.Simple) ||
                  ((flags.HasFlag(Combo.ST) && IsEnabled(Preset.DRK_ST_Sp_Edge)) ||
                   flags.HasFlag(Combo.AoE) && IsEnabled(Preset.DRK_AoE_Sp_Flood))) &&
-                manaBursting)
+                bursting)
                 if (flags.HasFlag(Combo.ST) && LevelChecked(EdgeOfDarkness))
                     return (action = OriginalHook(EdgeOfDarkness)) != 0;
                 else
@@ -939,14 +943,14 @@ internal partial class DRK
             #endregion
 
             // Bail if we're trying to save Dark Arts for burst
-            if (Gauge.HasDarkArts && manaEvenBurstSoon) return false;
+            if (Gauge.HasDarkArts && evenBurstSoon) return false;
 
             #region Mana Spend to Limit
 
             if ((flags.HasFlag(Combo.Simple) ||
                  ((flags.HasFlag(Combo.ST) && IsEnabled(Preset.DRK_ST_Sp_Edge)) ||
                   flags.HasFlag(Combo.AoE) && IsEnabled(Preset.DRK_AoE_Sp_Flood))) &&
-                !manaEvenBurstSoon)
+                !evenBurstSoon)
                 if (flags.HasFlag(Combo.ST) && LevelChecked(EdgeOfDarkness))
                     return (action = OriginalHook(EdgeOfDarkness)) != 0;
                 else
@@ -961,8 +965,8 @@ internal partial class DRK
                    IsEnabled(Preset.DRK_ST_Sp_DarkArts)) ||
                   flags.HasFlag(Combo.AoE) && IsEnabled(Preset.DRK_AoE_Sp_Flood))) &&
                 Gauge.HasDarkArts &&
-                (manaBursting ||
-                 (!manaEvenBurstSoon && HasOwnTBN)))
+                (bursting ||
+                 (!evenBurstSoon && HasOwnTBN)))
                 if (flags.HasFlag(Combo.ST) && LevelChecked(EdgeOfDarkness))
                     return (action = OriginalHook(EdgeOfDarkness)) != 0;
                 else
