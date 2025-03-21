@@ -123,24 +123,11 @@ internal partial class DRG
             RaidenThrust,
             WyrmwindThrust
         ];
+        
         internal override UserData ContentCheckConfig => Config.DRG_Balance_Content;
 
-        public override bool HasCooldowns()
-        {
-            if (GetRemainingCharges(LifeSurge) < 2)
-                return false;
-
-            if (!IsOffCooldown(BattleLitany))
-                return false;
-
-            if (!IsOffCooldown(DragonfireDive))
-                return false;
-
-            if (!IsOffCooldown(LanceCharge))
-                return false;
-
-            return true;
-        }
+        public override bool HasCooldowns() => GetRemainingCharges(LifeSurge) is 2 && IsOffCooldown(BattleLitany) && 
+                                               IsOffCooldown(DragonfireDive) && IsOffCooldown(LanceCharge);
     }
 
     internal class PiercingTalonOpenerLogic : WrathOpener
@@ -177,6 +164,7 @@ internal partial class DRG
             RaidenThrust,
             WyrmwindThrust
         ];
+        
         internal override UserData ContentCheckConfig => Config.DRG_Balance_Content;
 
         public override bool HasCooldowns() => GetRemainingCharges(LifeSurge) is 2 && IsOffCooldown(BattleLitany) && IsOffCooldown(DragonfireDive) && IsOffCooldown(LanceCharge);

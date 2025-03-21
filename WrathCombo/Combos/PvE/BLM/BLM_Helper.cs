@@ -150,6 +150,7 @@ internal partial class BLM
             Fire4,
             Despair
         ];
+        
         internal override UserData ContentCheckConfig => Config.BLM_ST_Balance_Content;
 
         public override bool HasCooldowns() => GetCooldown(Fire).BaseCooldownTotal <= 2.45 && IsOffCooldown(Manafont) &&

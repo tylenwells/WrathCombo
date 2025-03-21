@@ -296,6 +296,7 @@ internal partial class MCH
             HeatedSlugShot,
             HeatedCleanShot
         ];
+        
         internal override UserData ContentCheckConfig => Config.MCH_Balance_Content;
 
         public override List<(int[] Steps, Func<int> HoldDelay)> PrepullDelays { get; set; } =
@@ -345,6 +346,7 @@ internal partial class MCH
             Reassemble,
             Drill
         ];
+        
         internal override UserData ContentCheckConfig => Config.MCH_Balance_Content;
 
         public override List<(int[] Steps, Func<int> HoldDelay)> PrepullDelays { get; set; } =

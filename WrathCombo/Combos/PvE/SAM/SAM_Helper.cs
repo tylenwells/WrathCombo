@@ -155,6 +155,7 @@ internal partial class SAM
             TendoSetsugekka,
             TendoKaeshiSetsugekka
         ];
+        
         internal override UserData ContentCheckConfig => Config.SAM_Balance_Content;
 
         public override List<(int[] Steps, Func<int> HoldDelay)> PrepullDelays { get; set; } =
