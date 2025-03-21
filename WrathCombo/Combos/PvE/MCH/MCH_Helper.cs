@@ -253,7 +253,7 @@ internal partial class MCH
         return false;
     }
 
-      #region Openers
+    #region Openers
 
     internal class MCHOpenerMaxLevel : WrathOpener
     {

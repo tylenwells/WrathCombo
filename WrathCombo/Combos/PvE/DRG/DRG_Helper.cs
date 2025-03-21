@@ -88,8 +88,6 @@ internal partial class DRG
         return false;
     }
 
-
-
     #region Openers
 
     internal class StandardOpenerLogic : WrathOpener
