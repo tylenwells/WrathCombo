@@ -29,7 +29,7 @@ internal partial class MNK : MeleeJob
                 !HasEffect(Buffs.FormlessFist) && !HasEffect(Buffs.PerfectBalance) &&
                 !HasEffect(Buffs.OpoOpoForm) && !HasEffect(Buffs.RaptorForm) && !HasEffect(Buffs.CoeurlForm))
                 return FormShift;
-            
+
             if (ActionReady(RiddleOfFire) &&
                 !HasEffect(Buffs.FiresRumination) &&
                 CanDelayedWeave() && InBossEncounter())
@@ -171,7 +171,7 @@ internal partial class MNK : MeleeJob
 
                     return actionID;
                 }
-            
+
             if (IsEnabled(CustomComboPreset.MNK_STUseBuffs) &&
                 IsEnabled(CustomComboPreset.MNK_STUseROF) &&
                 !HasEffect(Buffs.FiresRumination) &&
@@ -323,7 +323,7 @@ internal partial class MNK : MeleeJob
                 !HasEffect(Buffs.FormlessFist) && !HasEffect(Buffs.PerfectBalance) &&
                 !HasEffect(Buffs.OpoOpoForm) && !HasEffect(Buffs.RaptorForm) && !HasEffect(Buffs.CoeurlForm))
                 return FormShift;
-            
+
             if (ActionReady(RiddleOfFire) &&
                 !HasEffect(Buffs.FiresRumination) &&
                 CanDelayedWeave())
@@ -462,7 +462,7 @@ internal partial class MNK : MeleeJob
                 !HasEffect(Buffs.FormlessFist) && !HasEffect(Buffs.PerfectBalance) &&
                 !HasEffect(Buffs.OpoOpoForm) && !HasEffect(Buffs.RaptorForm) && !HasEffect(Buffs.CoeurlForm))
                 return FormShift;
-            
+
             if (IsEnabled(CustomComboPreset.MNK_AoEUseBuffs) &&
                 IsEnabled(CustomComboPreset.MNK_AoEUseROF) &&
                 !HasEffect(Buffs.FiresRumination) &&
