@@ -942,6 +942,20 @@ internal partial class DRK
 
             #endregion
 
+            #region Mana Dark Arts Drop Prevention
+
+            if ((flags.HasFlag(Combo.Simple) ||
+                 ((flags.HasFlag(Combo.ST) &&
+                   IsEnabled(Preset.DRK_ST_Sp_DarkArts)) ||
+                  flags.HasFlag(Combo.AoE) && IsEnabled(Preset.DRK_AoE_Sp_Flood))) &&
+                Gauge.HasDarkArts && HasOwnTBN)
+                if (flags.HasFlag(Combo.ST) && LevelChecked(EdgeOfDarkness))
+                    return (action = OriginalHook(EdgeOfDarkness)) != 0;
+                else
+                    return (action = OriginalHook(FloodOfDarkness)) != 0;
+
+            #endregion
+
             // Bail if we're trying to save Dark Arts for burst
             if (Gauge.HasDarkArts && evenBurstSoon) return false;
 
@@ -951,22 +965,6 @@ internal partial class DRK
                  ((flags.HasFlag(Combo.ST) && IsEnabled(Preset.DRK_ST_Sp_Edge)) ||
                   flags.HasFlag(Combo.AoE) && IsEnabled(Preset.DRK_AoE_Sp_Flood))) &&
                 !evenBurstSoon)
-                if (flags.HasFlag(Combo.ST) && LevelChecked(EdgeOfDarkness))
-                    return (action = OriginalHook(EdgeOfDarkness)) != 0;
-                else
-                    return (action = OriginalHook(FloodOfDarkness)) != 0;
-
-            #endregion
-
-            #region Mana Dark Arts Drop Prevention
-
-            if ((flags.HasFlag(Combo.Simple) ||
-                 ((flags.HasFlag(Combo.ST) &&
-                   IsEnabled(Preset.DRK_ST_Sp_DarkArts)) ||
-                  flags.HasFlag(Combo.AoE) && IsEnabled(Preset.DRK_AoE_Sp_Flood))) &&
-                Gauge.HasDarkArts &&
-                (bursting ||
-                 (!evenBurstSoon && HasOwnTBN)))
                 if (flags.HasFlag(Combo.ST) && LevelChecked(EdgeOfDarkness))
                     return (action = OriginalHook(EdgeOfDarkness)) != 0;
                 else
