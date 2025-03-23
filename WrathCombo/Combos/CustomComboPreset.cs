@@ -766,8 +766,24 @@ public enum CustomComboPreset
     BRD_Adv_Song = 3011,
 
     [ParentCombo(BRD_ST_AdvMode)]
-    [CustomComboInfo("Buffs Option", "Adds buffs onto the Advanced Bard feature.", BRD.JobID)]
+    [CustomComboInfo("Buffs Option", "Adds buffs onto the Advanced Bard feature. \nBuffs have specific timing with each other intended to follow balance. \nDisabling only one can lead to unwanted results", BRD.JobID)]
     BRD_Adv_Buffs = 3017,
+
+    [ParentCombo(BRD_Adv_Buffs)]
+    [CustomComboInfo("Raging Strikes Option", "Adds Raging Strikes", BRD.JobID)]
+    BRD_Adv_Buffs_Raging = 3049,
+
+    [ParentCombo(BRD_Adv_Buffs)]
+    [CustomComboInfo("Battlevoice Option", "Adds Battle Voice", BRD.JobID)]
+    BRD_Adv_Buffs_Battlevoice = 3050,
+
+    [ParentCombo(BRD_Adv_Buffs)]
+        [CustomComboInfo("Radiant Finale Option", "Adds Radiant Finale", BRD.JobID)]
+    BRD_Adv_Buffs_RadiantFinale = 3051,
+
+    [ParentCombo(BRD_Adv_Buffs)]
+    [CustomComboInfo("Barrage Option", "Adds Barrage", BRD.JobID)]
+    BRD_Adv_Buffs_Barrage = 3052,
 
     [ParentCombo(BRD_ST_AdvMode)]
     [CustomComboInfo("Resonant Option", "Adds Resonant Arrow to the Rotation after Barrage.", BRD.JobID)]
@@ -821,8 +837,24 @@ public enum CustomComboPreset
     BRD_AoE_Adv_Songs = 3016,
 
     [ParentCombo(BRD_AoE_AdvMode)]
-    [CustomComboInfo("AoE Buffs Option", "Adds buffs onto the Advance AoE Bard feature.", BRD.JobID)]
+    [CustomComboInfo("AoE Buffs Option", "Adds buffs onto the Advance AoE Bard feature.\nBuffs have specific timing with each other intended to follow balance. \nDisabling only one can lead to unwanted results", BRD.JobID)]
     BRD_AoE_Adv_Buffs = 3032,
+
+    [ParentCombo(BRD_AoE_Adv_Buffs)]
+    [CustomComboInfo("Raging Strikes Option", "Adds Raging Strikes", BRD.JobID)]
+    BRD_AoE_Adv_Buffs_Raging = 3053,
+
+    [ParentCombo(BRD_AoE_Adv_Buffs)]
+    [CustomComboInfo("Battlevoice Option", "Adds Battle Voice", BRD.JobID)]
+    BRD_AoE_Adv_Buffs_Battlevoice = 3054,
+
+    [ParentCombo(BRD_AoE_Adv_Buffs)]
+    [CustomComboInfo("Radiant Finale Option", "Adds Radiant Finale", BRD.JobID)]
+    BRD_AoE_Adv_Buffs_RadiantFinale = 3055,
+
+    [ParentCombo(BRD_AoE_Adv_Buffs)]
+    [CustomComboInfo("Barrage Option", "Adds Barrage", BRD.JobID)]
+    BRD_AoE_Adv_Buffs_Barrage = 3056,
 
     [ParentCombo(BRD_AoE_AdvMode)]
     [CustomComboInfo("oGcd Option",

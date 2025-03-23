@@ -297,6 +297,10 @@ internal partial class BRD : PhysRangedJob
             int targetHPThreshold = PluginConfiguration.GetCustomIntValue(Config.BRD_AoENoWasteHPPercentage);
             bool isEnemyHealthHigh = !IsEnabled(CustomComboPreset.BRD_AoE_Adv_NoWaste) || GetTargetHPPercent() > targetHPThreshold;
             bool hasTarget = HasBattleTarget();
+            bool ragingEnabled = IsEnabled(CustomComboPreset.BRD_AoE_Adv_Buffs_Raging);
+            bool battleVoiceEnabled = IsEnabled(CustomComboPreset.BRD_AoE_Adv_Buffs_Battlevoice);
+            bool barrageEnabled = IsEnabled(CustomComboPreset.BRD_AoE_Adv_Buffs_Barrage);
+            bool radiantEnabled = IsEnabled(CustomComboPreset.BRD_AoE_Adv_Buffs_RadiantFinale);
 
             #region Variants
 
@@ -374,21 +378,21 @@ internal partial class BRD : PhysRangedJob
                 float ragingCD = GetCooldownRemainingTime(RagingStrikes);
 
                // Radiant First with late weave for tighter grouping
-                if (canWeaveDelayed && ActionReady(RadiantFinale) && ragingCD < 2.3 &&
+                if (radiantEnabled && canWeaveDelayed && ActionReady(RadiantFinale) && (ragingCD < 2.3 || !ragingEnabled) &&
                 !HasEffect(Buffs.RadiantEncoreReady) &&
                 (Array.TrueForAll(gauge.Coda, SongIsNotNone) || Array.Exists(gauge.Coda, SongIsWandererMinuet)))
                     return RadiantFinale;
 
                 // BV normal weave into the raging weave
-                if (canWeave && ActionReady(BattleVoice) && (HasEffect(Buffs.RadiantFinale) || !LevelChecked(RadiantFinale)))
+                if (battleVoiceEnabled && canWeave && ActionReady(BattleVoice) && (HasEffect(Buffs.RadiantFinale) || !LevelChecked(RadiantFinale) || !radiantEnabled))
                     return BattleVoice;
 
                 // Late weave Raging last, must have battle voice buff OR not be high enough level for Battlecoice
-                if (canWeave && ActionReady(RagingStrikes) && (JustUsed(BattleVoice) || !LevelChecked(BattleVoice) || HasEffect(Buffs.BattleVoice)))
+                if (ragingEnabled && canWeave && ActionReady(RagingStrikes) && (JustUsed(BattleVoice) || !LevelChecked(BattleVoice) || HasEffect(Buffs.BattleVoice) || !battleVoiceEnabled))
                     return RagingStrikes;
 
                 // Barrage Logic to check for raging for low level reasons and it doesn't really need to check for the other buffs
-                if (canWeave && ActionReady(Barrage) && HasEffect(Buffs.RagingStrikes) &&
+                if (barrageEnabled && canWeave && ActionReady(Barrage) && (HasEffect(Buffs.RagingStrikes) || !ragingEnabled) &&
                     !HasEffect(Buffs.ResonantArrowReady))
                     return Barrage;
 
@@ -547,6 +551,10 @@ internal partial class BRD : PhysRangedJob
             bool isEnemyHealthHigh = !IsEnabled(CustomComboPreset.BRD_Adv_NoWaste) || GetTargetHPPercent() > targetHPThreshold;
             bool hasTarget = HasBattleTarget();
             bool buffTime = GetCooldownRemainingTime(RagingStrikes) < 2.7;
+            bool ragingEnabled = IsEnabled(CustomComboPreset.BRD_Adv_Buffs_Raging);
+            bool battleVoiceEnabled = IsEnabled(CustomComboPreset.BRD_Adv_Buffs_Battlevoice);
+            bool barrageEnabled = IsEnabled(CustomComboPreset.BRD_Adv_Buffs_Barrage);
+            bool radiantEnabled = IsEnabled(CustomComboPreset.BRD_Adv_Buffs_RadiantFinale);
 
             #region Variants
 
@@ -643,21 +651,21 @@ internal partial class BRD : PhysRangedJob
                 float ragingCD = GetCooldownRemainingTime(RagingStrikes);
 
                 // Radiant First with late weave for tighter grouping
-                if (canWeaveDelayed && ActionReady(RadiantFinale) && ragingCD < 2.3 &&
+                if (radiantEnabled && canWeaveDelayed && ActionReady(RadiantFinale) && (ragingCD < 2.3 || !ragingEnabled) &&
                 !HasEffect(Buffs.RadiantEncoreReady) &&
                 (Array.TrueForAll(gauge.Coda, SongIsNotNone) || Array.Exists(gauge.Coda, SongIsWandererMinuet)))
                     return RadiantFinale;
 
                 // BV normal weave into the raging weave
-                if (canWeave && ActionReady(BattleVoice) && (HasEffect(Buffs.RadiantFinale) || !LevelChecked(RadiantFinale)))
+                if (battleVoiceEnabled && canWeave && ActionReady(BattleVoice) && (HasEffect(Buffs.RadiantFinale) || !LevelChecked(RadiantFinale) || !radiantEnabled))
                     return BattleVoice;
 
                 // Late weave Raging last, must have battle voice buff OR not be high enough level for Battlecoice
-                if (canWeave && ActionReady(RagingStrikes) && (JustUsed(BattleVoice) || !LevelChecked(BattleVoice) || HasEffect(Buffs.BattleVoice)))
+                if (ragingEnabled && canWeave && ActionReady(RagingStrikes) && (JustUsed(BattleVoice) || !LevelChecked(BattleVoice) || HasEffect(Buffs.BattleVoice) || !battleVoiceEnabled))
                     return RagingStrikes;
 
                 // Barrage Logic to check for raging for low level reasons and it doesn't really need to check for the other buffs
-                if (canWeave && ActionReady(Barrage) && HasEffect(Buffs.RagingStrikes) &&
+                if (barrageEnabled && canWeave && ActionReady(Barrage) && (HasEffect(Buffs.RagingStrikes) || !ragingEnabled) &&
                     !HasEffect(Buffs.ResonantArrowReady))
                     return Barrage;
 
