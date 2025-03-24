@@ -2201,7 +2201,7 @@ public enum CustomComboPreset
     GNB_ST_Overcap = 7018,
 
     [ParentCombo(GNB_ST_Advanced)]
-    [CustomComboInfo("Scuffed Option", "Adds Solid Barrel into the rotation under scuffed conditions:\n- No Mercy is active\n- 1 cartridge\n- Last combo action was Brutal Shell\n- Gnashing Fang is still on cooldown", GNB.JobID)]
+    [CustomComboInfo("Scuffed Option", "Adds Solid Barrel into the rotation under scuffed conditions:\n- Level 90 or above\n- No Mercy is active\n- Only 1 cartridge available\n- Last combo action was Brutal Shell\n- Gnashing Fang combo is still not active", GNB.JobID)]
     GNB_ST_Scuffed = 7372,
 
     [ParentCombo(GNB_ST_Advanced)]
@@ -2455,7 +2455,7 @@ public enum CustomComboPreset
     GNB_GF_BurstStrike = 7309,
 
     [ParentCombo(GNB_GF_Features)]
-    [CustomComboInfo("Scuffed Option", "Adds Solid Barrel to Gnashing Fang under scuffed conditions:\n- 1 cartridge\n- No Mercy is active\n- Last combo action was Brutal Shell\n- Gnashing Fang is still on cooldown", GNB.JobID)]
+    [CustomComboInfo("Scuffed Option", "Adds Solid Barrel to Gnashing Fang under scuffed conditions:\n- Level 90 or above\n- No Mercy is active\n- Only 1 cartridge available\n- Last combo action was Brutal Shell\n- Gnashing Fang combo is still not active", GNB.JobID)]
     GNB_GF_Scuffed = 7371,
     #endregion
 
