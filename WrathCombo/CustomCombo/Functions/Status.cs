@@ -58,7 +58,7 @@ namespace WrathCombo.CustomComboNS.Functions
         /// <param name="effectId"> Status effect ID. </param>
         /// <param name="isPlayerOwned"> Whether the status effect must be owned by the player or can be owned by anyone. </param>
         /// <returns> The duration of the status effect. </returns>
-        public unsafe static float GetDebuffRemainingTime(ushort effectId, bool isPlayerOwned = true)
+        public static unsafe float GetDebuffRemainingTime(ushort effectId, bool isPlayerOwned = true)
         {
             Status? eff = (isPlayerOwned == true)
                 ? FindTargetEffect(effectId)
