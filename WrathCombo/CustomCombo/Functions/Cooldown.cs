@@ -95,8 +95,8 @@ namespace WrathCombo.CustomComboNS.Functions
         /// <returns> If the action is currently enabled.</returns>
         public static unsafe bool IsEnabled(uint actionID) => ActionManager.Instance()->GetActionStatus(ActionType.Action, actionID) == 0;
 
-        private static uint Action1 => ActionManager.GetDutyActionId(0);
-        private static uint Action2 => ActionManager.GetDutyActionId(1);
+        private static uint Action1 => DutyActionManager.GetDutyActionId(0);
+        private static uint Action2 => DutyActionManager.GetDutyActionId(1);
 
         public static bool HasActionEquipped(uint actionId) => (Action1 == actionId && HasCharges(actionId)) || (Action2 == actionId && HasCharges(actionId));
 
