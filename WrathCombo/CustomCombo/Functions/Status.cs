@@ -21,7 +21,7 @@ namespace WrathCombo.CustomComboNS.Functions
         public static byte GetBuffStacks(ushort effectId)
         {
             Status? eff = FindEffect(effectId);
-            return eff?.StackCount ?? 0;
+            return eff?.Param ?? 0;
         }
 
         /// <summary> Gets the duration of a status effect on the player. By default, the effect must be owned by the player or unowned. </summary>
