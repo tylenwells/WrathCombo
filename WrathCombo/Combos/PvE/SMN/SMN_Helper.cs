@@ -1,11 +1,10 @@
 ﻿using Dalamud.Game.ClientState.JobGauge.Types;
-using FFXIVClientStructs.FFXIV.Client.Game;
 using FFXIVClientStructs.FFXIV.Client.Game.Gauge;
 using System;
 using System.Collections.Generic;
+using Dalamud.Game.ClientState.JobGauge.Enums;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
-using WrathCombo.Data;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
 
 namespace WrathCombo.Combos.PvE;
@@ -152,14 +151,12 @@ internal partial class SMN
     #endregion
 
     internal static SMNGauge Gauge => GetJobGauge<SMNGauge>();
-    private static byte AttunementType => (byte)(Gauge.Attunement & 0x3);
-    private static byte AttunementCount => (byte)(Gauge.Attunement >> 2);
 
-    internal static bool IsIfritAttuned => AttunementType == 1;
-    internal static bool IsTitanAttuned => AttunementType == 2;
-    internal static bool IsGarudaAttuned => AttunementType == 3;
+    internal static bool IsIfritAttuned => Gauge.AttunementType is SummonAttunement.Ifrit;
+    internal static bool IsTitanAttuned => Gauge.AttunementType is SummonAttunement.Titan;
+    internal static bool IsGarudaAttuned => Gauge.AttunementType is SummonAttunement.Garuda;
 
-    internal static bool GemshineReady => AttunementCount > 0;
+    internal static bool GemshineReady => Gauge.AttunementCount > 0;
 
     internal static bool IsAttunedAny => IsIfritAttuned || IsTitanAttuned || IsGarudaAttuned;
 
