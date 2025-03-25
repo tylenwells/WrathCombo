@@ -15,17 +15,17 @@ internal partial class MNK
 
     internal static float GCD => GetCooldown(OriginalHook(Bootshine)).CooldownTotal;
 
-    internal static bool BothNadisOpen => Gauge.Nadi.ToString() == "LUNAR, SOLAR";
+    internal static bool BothNadisOpen => Gauge.Nadi.ToString() == "Lunar, Solar";
 
-    internal static bool SolarNadi => Gauge.Nadi == Nadi.SOLAR;
+    internal static bool SolarNadi => Gauge.Nadi == Nadi.Solar;
 
-    internal static bool LunarNadi => Gauge.Nadi == Nadi.LUNAR;
+    internal static bool LunarNadi => Gauge.Nadi == Nadi.Lunar;
 
-    internal static int OpoOpoChakra => Gauge.BeastChakra.Count(x => x == BeastChakra.OPOOPO);
+    internal static int OpoOpoChakra => Gauge.BeastChakra.Count(x => x == BeastChakra.OpoOpo);
 
-    internal static int RaptorChakra => Gauge.BeastChakra.Count(x => x == BeastChakra.RAPTOR);
+    internal static int RaptorChakra => Gauge.BeastChakra.Count(x => x == BeastChakra.Raptor);
 
-    internal static int CoeurlChakra => Gauge.BeastChakra.Count(x => x == BeastChakra.COEURL);
+    internal static int CoeurlChakra => Gauge.BeastChakra.Count(x => x == BeastChakra.Coeurl);
 
     internal static uint DetermineCoreAbility(uint actionId, bool useTrueNorthIfEnabled)
     {
@@ -158,7 +158,7 @@ internal partial class MNK
 
         public override bool HasCooldowns() => GetRemainingCharges(PerfectBalance) is 2 && IsOffCooldown(Brotherhood) &&
                                                IsOffCooldown(RiddleOfFire) && IsOffCooldown(RiddleOfWind) &&
-                                               Gauge.Nadi is Nadi.NONE && Gauge.RaptorFury is 0 && Gauge.CoeurlFury is 0;
+                                               Gauge.Nadi is Nadi.None && Gauge.RaptorFury is 0 && Gauge.CoeurlFury is 0;
     }
 
     internal class MNKOpenerLogicLL : WrathOpener
@@ -194,7 +194,7 @@ internal partial class MNK
 
         public override bool HasCooldowns() => GetRemainingCharges(PerfectBalance) is 2 && IsOffCooldown(Brotherhood) &&
                                                IsOffCooldown(RiddleOfFire) && IsOffCooldown(RiddleOfWind) &&
-                                               Gauge.Nadi is Nadi.NONE && Gauge.RaptorFury is 0 && Gauge.CoeurlFury is 0;
+                                               Gauge.Nadi is Nadi.None && Gauge.RaptorFury is 0 && Gauge.CoeurlFury is 0;
     }
 
     #endregion
