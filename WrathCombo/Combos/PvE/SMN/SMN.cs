@@ -282,7 +282,7 @@ internal partial class SMN : CasterJob
             #endregion
 
             // Egi Order 
-            if (!ActionReady(OriginalHook(Aethercharge)) && Gauge.SummonTimerRemaining == 0 && Gauge.AttunmentTimerRemaining == 0)
+            if (!ActionReady(OriginalHook(Aethercharge)) && Gauge.SummonTimerRemaining == 0 && Gauge.AttunementTimerRemaining == 0)
             {               
                 if (Gauge.IsTitanReady)
                     return OriginalHook(SummonTopaz);
@@ -295,7 +295,7 @@ internal partial class SMN : CasterJob
             }
 
             // Ruin 4 Dump
-            if (LevelChecked(Ruin4) && Gauge.SummonTimerRemaining == 0 && Gauge.AttunmentTimerRemaining == 0 && HasEffect(Buffs.FurtherRuin))
+            if (LevelChecked(Ruin4) && Gauge.SummonTimerRemaining == 0 && Gauge.AttunementTimerRemaining == 0 && HasEffect(Buffs.FurtherRuin))
                 return Ruin4;
 
             return actionID;
@@ -422,7 +422,7 @@ internal partial class SMN : CasterJob
             #endregion
 
             // Egi Order 
-            if (!ActionReady(OriginalHook(Aethercharge)) && Gauge.SummonTimerRemaining == 0 && Gauge.AttunmentTimerRemaining == 0)
+            if (!ActionReady(OriginalHook(Aethercharge)) && Gauge.SummonTimerRemaining == 0 && Gauge.AttunementTimerRemaining == 0)
             {
                 if (Gauge.IsTitanReady)
                     return OriginalHook(SummonTopaz);
@@ -435,7 +435,7 @@ internal partial class SMN : CasterJob
             }
 
             // Ruin 4 Dump
-            if (LevelChecked(Ruin4) && Gauge.SummonTimerRemaining == 0 && Gauge.AttunmentTimerRemaining == 0 && HasEffect(Buffs.FurtherRuin))
+            if (LevelChecked(Ruin4) && Gauge.SummonTimerRemaining == 0 && Gauge.AttunementTimerRemaining == 0 && HasEffect(Buffs.FurtherRuin))
                 return Ruin4;
 
             return actionID;
@@ -644,7 +644,7 @@ internal partial class SMN : CasterJob
             #endregion
 
             // Egi Order 
-            if (IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_DemiEgiMenu_EgiOrder) && !ActionReady(OriginalHook(Aethercharge)) && Gauge.SummonTimerRemaining == 0 && Gauge.AttunmentTimerRemaining == 0)
+            if (IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_DemiEgiMenu_EgiOrder) && !ActionReady(OriginalHook(Aethercharge)) && Gauge.SummonTimerRemaining == 0 && Gauge.AttunementTimerRemaining == 0)
             { 
                 if ((Gauge.IsGarudaReady) && (summonerPrimalChoice == 2 || !ActionReady(SummonTopaz)))
                     return OriginalHook(SummonEmerald);
@@ -657,7 +657,7 @@ internal partial class SMN : CasterJob
             }
 
             // Ruin 4 Dump
-            if (IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_Ruin4) && LevelChecked(Ruin4) && Gauge.SummonTimerRemaining == 0 && Gauge.AttunmentTimerRemaining == 0 && HasEffect(Buffs.FurtherRuin))
+            if (IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_Ruin4) && LevelChecked(Ruin4) && Gauge.SummonTimerRemaining == 0 && Gauge.AttunementTimerRemaining == 0 && HasEffect(Buffs.FurtherRuin))
                 return Ruin4;
 
             return actionID;
@@ -860,7 +860,7 @@ internal partial class SMN : CasterJob
             #endregion
 
             // Egi Order
-            if (IsEnabled(CustomComboPreset.SMN_AoE_Advanced_Combo_DemiEgiMenu_EgiOrder) && !ActionReady(OriginalHook(Aethercharge)) && Gauge.SummonTimerRemaining == 0 && Gauge.AttunmentTimerRemaining == 0)
+            if (IsEnabled(CustomComboPreset.SMN_AoE_Advanced_Combo_DemiEgiMenu_EgiOrder) && !ActionReady(OriginalHook(Aethercharge)) && Gauge.SummonTimerRemaining == 0 && Gauge.AttunementTimerRemaining == 0)
             {
                 if ((Gauge.IsGarudaReady) && (summonerPrimalChoice == 2 || !ActionReady(SummonTopaz)))
                     return OriginalHook(SummonEmerald);
@@ -873,7 +873,7 @@ internal partial class SMN : CasterJob
             }
 
             // Ruin 4
-            if (IsEnabled(CustomComboPreset.SMN_AoE_Advanced_Combo_Ruin4) && LevelChecked(Ruin4) && Gauge.SummonTimerRemaining == 0 && Gauge.AttunmentTimerRemaining == 0 && HasEffect(Buffs.FurtherRuin))
+            if (IsEnabled(CustomComboPreset.SMN_AoE_Advanced_Combo_Ruin4) && LevelChecked(Ruin4) && Gauge.SummonTimerRemaining == 0 && Gauge.AttunementTimerRemaining == 0 && HasEffect(Buffs.FurtherRuin))
                 return Ruin4;
 
             return actionID;
