@@ -98,6 +98,33 @@ public struct DebugSMNGauge
     public byte AttunementType => (byte)(Attunement & 0x3);//new in 7.01, 1 = Ifrit, 2 = Titan, 3 = Garuda
 }
 
+[StructLayout(LayoutKind.Explicit, Size = 0x30)]
+public struct DebugBLMGauge
+{
+    [FieldOffset(0x08)] public short EnochianTimer;
+    [FieldOffset(0x0A)] public ElementalStackFlags RandoNumber;
+    [FieldOffset(0x0C)] public sbyte PolyglotStacks;
+    [FieldOffset(0x0D)] public short FlareStar;
+}
+
+
+
+[Flags]
+public enum ElementalStackFlags : short
+{
+    None = 0,
+    AstralFire1 = 1,
+    AstralFire2 = 2,
+    AstralFire3 = 3,
+    UmbralIce1 = 255,
+    UmbralIce2 = 254,
+    UmbralIce3 = 253,
+    UmbralHearts1 = 256,
+    UmbralHearts2 = 512,
+    UmbralHearts3 = 768,
+
+}
+
 [Flags]
 public enum DebugAetherFlags : byte
 {

@@ -221,7 +221,7 @@ namespace WrathCombo.Window.Tabs
                         Util.ShowStruct(&JobGaugeManager.Instance()->WhiteMage);
                         break;
                     case Job.BLM:
-                        Util.ShowStruct(&JobGaugeManager.Instance()->BlackMage);
+                        Util.ShowStruct((DebugBLMGauge*)&JobGaugeManager.Instance()->BlackMage);
                         break;
                     case Job.SMN:
                         Util.ShowStruct(&JobGaugeManager.Instance()->Summoner);

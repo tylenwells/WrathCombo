@@ -236,33 +236,6 @@ public sealed partial class WrathCombo : IDalamudPlugin
     private void ClientState_TerritoryChanged(ushort obj)
     {
         UpdateCaches(false, true, false);
-
-        Svc.Framework.Run(() =>
-        {
-            PluginLog.Verbose($"OnIPCInstanceChange: Waiting for screen to be ready ...");
-
-            // Wait (a limited amount of time) for the screen to be ready
-            byte count = 0;
-            while (!ECommons.GenericHelpers.IsScreenReady())
-            {
-                if (count > 50) return;
-                count++;
-                Task.Delay(400).Wait();
-            }
-
-            // Wait for AutoDuty to setup
-            PluginLog.Verbose($"OnIPCInstanceChange: Waiting for any IPC to seize control ...");
-            Task.Delay(4000).Wait();
-
-            // If IPC-Controlled: Run the IPC-Controlled Territory Change
-            if (P.UIHelper.AutoRotationStateControlled() is not null)
-            {
-                PluginLog.Verbose($"OnIPCInstanceChange: Is IPC-Controlled");
-                OnIPCControlledTerritoryChange();
-            }
-            else
-                PluginLog.Verbose($"OnIPCInstanceChange: Not IPC-Controlled");
-        });
     }
 
     public const string OptionControlledByIPC =
