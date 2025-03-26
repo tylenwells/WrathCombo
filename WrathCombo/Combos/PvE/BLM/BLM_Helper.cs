@@ -21,8 +21,8 @@ internal partial class BLM
             { HighThunder, Debuffs.HighThunder },
             { HighThunder2, Debuffs.HighThunder2 }
         };
-    
-    internal static BLMGauge Gauge = GetJobGauge<BLMGauge>();
+
+    internal static TmpBLMGauge Gauge = new();
     internal static BLMOpenerMaxLevel1 Opener1 = new();
 
     internal static uint CurMp => LocalPlayer.CurrentMp;
@@ -30,11 +30,6 @@ internal partial class BLM
     internal static int MaxPolyglot =>
         TraitLevelChecked(Traits.EnhancedPolyglotII) ? 3 :
         TraitLevelChecked(Traits.EnhancedPolyglot) ? 2 : 1;
-
-    internal static float ElementTimer => Gauge.ElementTimeRemaining / 1000f;
-
-    internal static double GCDsInTimer =>
-        Math.Floor(ElementTimer / GetActionCastTime(Gauge.InAstralFire ? Fire : Blizzard));
 
     internal static int RemainingPolyglotCD =>
         Math.Max(0, (MaxPolyglot - Gauge.PolyglotStacks) * 30000 + (Gauge.EnochianTimer - 30000));
@@ -49,7 +44,7 @@ internal partial class BLM
         TraitLevelChecked(Traits.AspectMasteryIII) &&
         IsOffCooldown(Role.Swiftcast);
 
-    internal static bool HasPolyglotStacks(BLMGauge gauge) => gauge.PolyglotStacks > 0;
+    internal static bool HasPolyglotStacks() => Gauge.PolyglotStacks > 0;
 
     internal static WrathOpener Opener()
     {

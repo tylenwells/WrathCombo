@@ -2,6 +2,7 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
 using ECommons.DalamudServices;
 using FFXIVClientStructs.FFXIV.Client.Game.Gauge;
+using InteropGenerator.Runtime;
 using System;
 using System.Runtime.InteropServices;
 
@@ -59,6 +60,73 @@ public unsafe class TmpPCTGauge
     }
 }
 
+public unsafe class TmpBLMGauge
+{
+
+    public TmpBLMGauge()
+    {
+        Address = Svc.SigScanner.GetStaticAddressFromSig("48 8B 3D ?? ?? ?? ?? 33 ED") + 0x8;
+        Struct = (DebugBLMGauge*)Address;
+    }
+
+    private protected DebugBLMGauge* Struct;
+    private nint Address;
+
+    /// <summary>
+    /// Gets the time remaining for the Enochian time in milliseconds.
+    /// </summary>
+    public short EnochianTimer => this.Struct->EnochianTimer;
+
+    /// <summary>
+    /// Gets the number of Polyglot stacks remaining.
+    /// </summary>
+    public sbyte PolyglotStacks => this.Struct->PolyglotStacks;
+
+    /// <summary>
+    /// Gets the number of Umbral Hearts remaining.
+    /// </summary>
+    public int UmbralHearts => this.Struct->UmbralHearts;
+
+    /// <summary>
+    /// Gets the amount of Umbral Ice stacks.
+    /// </summary>
+    public int UmbralIceStacks => this.Struct->UmbralStacks;
+
+    /// <summary>
+    /// Gets the amount of Astral Fire stacks.
+    /// </summary>
+    public int AstralFireStacks => this.Struct->AstralStacks;
+
+    /// <summary>
+    /// Gets the amount of Astral Soul stacks.
+    /// </summary>
+    public int AstralSoulStacks => this.Struct->AstralSoulStacks;
+
+    /// <summary>
+    /// Gets a value indicating whether or not the player is in Umbral Ice.
+    /// </summary>
+    /// <returns><c>true</c> or <c>false</c>.</returns>
+    public bool InUmbralIce => this.Struct->UmbralStacks > 0;
+
+    /// <summary>
+    /// Gets a value indicating whether or not the player is in Astral fire.
+    /// </summary>
+    /// <returns><c>true</c> or <c>false</c>.</returns>
+    public bool InAstralFire => this.Struct->AstralStacks > 0;
+
+    /// <summary>
+    /// Gets a value indicating whether or not Enochian is active.
+    /// </summary>
+    /// <returns><c>true</c> or <c>false</c>.</returns>
+    public bool IsEnochianActive => this.Struct->EnochianActive;
+
+    /// <summary>
+    /// Gets a value indicating whether Paradox is active.
+    /// </summary>
+    /// <returns><c>true</c> or <c>false</c>.</returns>
+    public bool IsParadoxActive => this.Struct->ParadoxActive;
+}
+
 [StructLayout(LayoutKind.Explicit, Size = 0x10)]
 public struct TmpScholarGauge
 {
@@ -102,15 +170,24 @@ public struct DebugSMNGauge
 public struct DebugBLMGauge
 {
     [FieldOffset(0x08)] public short EnochianTimer;
-    [FieldOffset(0x0A)] public ElementalStackFlags RandoNumber;
+    [FieldOffset(0x0A)] public ElementalFlags ElementalFlags;
     [FieldOffset(0x0C)] public sbyte PolyglotStacks;
-    [FieldOffset(0x0D)] public short FlareStar;
+    [FieldOffset(0x0D)] public EnochianFlags EnochianFlags;
+
+    public int UmbralStacks => ElementalFlags.HasFlag(ElementalFlags.UmbralIce1) ? 1 : ElementalFlags.HasFlag(ElementalFlags.UmbralIce2) ? 2 : ElementalFlags.HasFlag(ElementalFlags.UmbralIce3) ? 3 : 0;
+    public int AstralStacks => ElementalFlags.HasFlag(ElementalFlags.AstralFire1) ? 1 : ElementalFlags.HasFlag(ElementalFlags.AstralFire2) ? 2 : ElementalFlags.HasFlag(ElementalFlags.AstralFire3) ? 3 : 0;
+    public int UmbralHearts => ElementalFlags.HasFlag(ElementalFlags.UmbralHearts1) ? 1 : ElementalFlags.HasFlag(ElementalFlags.UmbralHearts2) ? 2 : ElementalFlags.HasFlag(ElementalFlags.UmbralHearts3) ? 3 : 0;
+    public int AstralSoulStacks => EnochianFlags.HasFlag(EnochianFlags.FlareStar1) ? 1 : EnochianFlags.HasFlag(EnochianFlags.FlareStar2) ? 2 : EnochianFlags.HasFlag(EnochianFlags.FlareStar3) ? 3 : EnochianFlags.HasFlag(EnochianFlags.FlareStar4) ? 4 :
+        EnochianFlags.HasFlag(EnochianFlags.FlareStar5) ? 5 : EnochianFlags.HasFlag(EnochianFlags.FlareStar6) ? 6 : 0;
+    public bool EnochianActive => EnochianFlags.HasFlag(EnochianFlags.Enochian);
+    public bool ParadoxActive => EnochianFlags.HasFlag(EnochianFlags.Paradox);
+    public bool FlareStarReady => EnochianFlags.HasFlag(EnochianFlags.FlareStar6);
 }
 
 
 
 [Flags]
-public enum ElementalStackFlags : short
+public enum ElementalFlags : short
 {
     None = 0,
     AstralFire1 = 1,
@@ -123,6 +200,20 @@ public enum ElementalStackFlags : short
     UmbralHearts2 = 512,
     UmbralHearts3 = 768,
 
+}
+
+[Flags]
+public enum EnochianFlags : byte
+{
+    None = 0,
+    Enochian = 1,
+    Paradox = 2,
+    FlareStar1 = 4,
+    FlareStar2 = 8,
+    FlareStar3 = 12,
+    FlareStar4 = 16,
+    FlareStar5 = 20,
+    FlareStar6 = 24,
 }
 
 [Flags]
