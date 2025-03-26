@@ -9,7 +9,7 @@ namespace WrathCombo.Combos.PvP
             PhantomDart = 43291,
             Rust = 43254;
 
-        public class Debuffs
+        public static class Debuffs
         {
             public const ushort
                 PhantomDart = 1234,
@@ -28,7 +28,7 @@ namespace WrathCombo.Combos.PvP
             StoneskinII = 43256,
             Diabrosis = 43257;
 
-        public class Buffs
+        public static class Buffs
         {
             public const ushort
                 StoneSkinII = 4481;
@@ -54,7 +54,7 @@ namespace WrathCombo.Combos.PvP
             Bravery = 43250,
             EagleEyeShot = 43251;
 
-        public class Buffs
+        public static class Buffs
         {
             public const ushort
                 Dervish = 4478,
@@ -73,7 +73,7 @@ namespace WrathCombo.Combos.PvP
             Swift = 43247,
             Smite = 43248;
 
-        public class Buffs
+        public static class Buffs
         {
             public const ushort
             //    Bloodbath = 1234; // NEED VERIFICATION IT EVEN IS A BUFF, CANNOT FIND
@@ -93,13 +93,13 @@ namespace WrathCombo.Combos.PvP
             Rampart = 43244,
             FullSwing = 43245;
 
-        public class Buffs
+        public static class Buffs
         {
             public const ushort
                 Rampart = 4168;
         }
 
-        public class Debuffs
+        public static class Debuffs
         {
             public const ushort
                 Rampage = 4476; 
