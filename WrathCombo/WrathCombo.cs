@@ -114,6 +114,7 @@ public sealed partial class WrathCombo : IDalamudPlugin
                 Service.ActionReplacer.UpdateFilteredCombos();
                 WrathOpener.SelectOpener();
                 P.IPCSearch.UpdateActiveJobPresets();
+                P.IPC.Leasing.SuspendLeases(CancellationReason.AllServicesSuspended);
             }
 
             if (onTerritoryChange)
@@ -469,7 +470,6 @@ public sealed partial class WrathCombo : IDalamudPlugin
     public void Dispose()
     {
         ConfigWindow.Dispose();
-        IPCSearch.Cancel.Cancel();
         // Try to force a config save if there are some pending
         if (PluginConfiguration.SaveQueue.Count > 0)
             lock (PluginConfiguration.SaveQueue)
