@@ -5,20 +5,23 @@ namespace WrathCombo.Combos.PvP
     class PvPCaster //Offensive Magic
     {
         public const uint
-            Comet = 1234,
-            PhantomDart = 1234,
-            Rust = 1234;
+            Comet = 43252,
+            PhantomDart = 43291,
+            Rust = 43254;
 
         public class Buffs
         {
             public const ushort
-                Rust = 1234;
+                HasComet = 4492,
+                HasPhantomDart = 4516,
+                HasRust = 4494;                
         }
 
         public class Debuffs
         {
             public const ushort
-                PhantomDart = 1234;
+                PhantomDart = 1234,
+                Rust = 4480;
         }
     }
 
