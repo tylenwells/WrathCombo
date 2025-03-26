@@ -420,7 +420,7 @@ public class Search(Leasing leasing)
                 _lastCacheUpdateForComboStatesByJobCategorized)
                 return field ?? [];
 
-            Task.Run(() =>
+            Svc.Framework.Run(() =>
             {
                 field = Presets
                     .Where(preset =>

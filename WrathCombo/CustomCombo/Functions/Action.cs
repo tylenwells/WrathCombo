@@ -283,7 +283,6 @@ namespace WrathCombo.CustomComboNS.Functions
 
         public static unsafe bool CanQueue(uint actionID)
         {
-            bool original = ActionWatching.canQueueAction.Original(ActionManager.Instance(), (uint)ActionType.Action, actionID);
             bool alreadyQueued = ActionManager.Instance()->QueuedActionId != 0;
             bool inSlidecast = (LocalPlayer.TotalCastTime - LocalPlayer.CurrentCastTime) <= 0.5f;
             bool animLocked = ActionManager.Instance()->AnimationLock > 0;

@@ -326,7 +326,7 @@ public partial class Leasing
         AutoRotationStateUpdated = DateTime.Now;
 
         // Try to build combo data before auto-rotation-readiness is requested
-        Task.Run(() => P.IPCSearch.ComboStatesByJobCategorized
+        Svc.Framework.Run(() => P.IPCSearch.ComboStatesByJobCategorized
             .TryGetValue(Player.Job, out var _));
 
         Logging.Log($"{registration.PluginName}: Auto-Rotation state updated");
@@ -398,7 +398,7 @@ public partial class Leasing
         Logging.Log(
             $"{registration.PluginName}: Registering Current Job ({job}) ...");
 
-        Task.Run(() =>
+        Svc.Framework.Run(() =>
         {
             bool locking;
             var combos = Helper.GetCombosToSetJobAutoRotationReady(job, false)!;
