@@ -96,6 +96,9 @@ internal partial class BLM : CasterJob
                         return Fire4;
                     }
 
+                if (HasEffect(Buffs.Firestarter) && TimeSinceFirestarterBuff >= 2)
+                    return Fire3;
+
                 if (CurMp >= MP.FireI)
                     return Fire;
 
@@ -153,7 +156,7 @@ internal partial class BLM : CasterJob
                             ? Xenoglossy
                             : Foul;
 
-                    if (CurMp + NextMpGain <= 10000 || CurMp < 7500)
+                    if (CurMp < 10000)
                         return Blizzard;
 
                     if (ActionReady(Transpose) && CanSpellWeave() &&
@@ -168,15 +171,12 @@ internal partial class BLM : CasterJob
                         : Foul;
                 }
 
-                if (CurMp + NextMpGain >= 7500 &&
-                    (LocalPlayer?.CastActionId == Blizzard ||
-                     WasLastSpell(Blizzard) ||
-                     WasLastSpell(Blizzard4)))
+                if (CurMp >= 7500)
                     return LevelChecked(Fire3)
                         ? Fire3
                         : Fire;
 
-                if (CurMp + NextMpGain <= 10000 || CurMp < 7500)
+                if (CurMp < 10000)
                     return Blizzard;
 
                 if (ActionReady(Transpose) && CanSpellWeave() &&
@@ -308,14 +308,15 @@ internal partial class BLM : CasterJob
                         return Fire4;
                     }
 
+                if (HasEffect(Buffs.Firestarter))
+                    return Fire3;
+
                 if (CurMp >= MP.FireI)
                     return Fire;
 
                 if (IsEnabled(CustomComboPreset.BLM_ST_Manafont) &&
                     ActionReady(Manafont))
-                    return HasEffect(Buffs.Firestarter)
-                        ? Fire3
-                        : Manafont;
+                    return Manafont;
 
                 if (ActionReady(Blizzard3) &&
                     (IsEnabled(CustomComboPreset.BLM_ST_Swiftcast) && ActionReady(Role.Swiftcast) ||
@@ -375,7 +376,7 @@ internal partial class BLM : CasterJob
                             ? Xenoglossy
                             : Foul;
 
-                    if (CurMp + NextMpGain <= 10000 || CurMp < 7500)
+                    if (CurMp < 10000)
                         return Blizzard;
 
                     if (IsEnabled(CustomComboPreset.BLM_ST_Transpose) &&
@@ -391,15 +392,12 @@ internal partial class BLM : CasterJob
                         : Foul;
                 }
 
-                if (CurMp + NextMpGain >= 7500 &&
-                    (LocalPlayer?.CastActionId == Blizzard ||
-                     WasLastSpell(Blizzard) ||
-                     WasLastSpell(Blizzard4)))
+                if (CurMp >= 7500)
                     return LevelChecked(Fire3)
                         ? Fire3
                         : Fire;
 
-                if (CurMp + NextMpGain <= 10000 || CurMp < 7500)
+                if (CurMp < 10000)
                     return Blizzard;
 
                 if (IsEnabled(CustomComboPreset.BLM_ST_Transpose) &&

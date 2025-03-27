@@ -46,6 +46,8 @@ internal partial class BLM
 
     internal static bool HasPolyglotStacks() => Gauge.PolyglotStacks > 0;
 
+    internal static float TimeSinceFirestarterBuff => HasEffect(Buffs.Firestarter) ? GetPartyMembers().First().TimeSinceBuffApplied(Buffs.Firestarter) : 0;
+    
     internal static WrathOpener Opener()
     {
         if (Opener1.LevelChecked)
@@ -207,17 +209,6 @@ internal partial class BLM
         FlareStar = 36989;
 
     // Debuff Pairs of Actions and Debuff
-
-
-    private static int NextMpGain => Gauge.UmbralIceStacks switch
-    {
-        0 => 0,
-        1 => 2500,
-        2 => 5000,
-        3 => 10000,
-        var _ => 0
-    };
-
     public static class Buffs
     {
         public const ushort

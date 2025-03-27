@@ -1,11 +1,13 @@
 ﻿using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Game.ClientState.Objects.Types;
+using Dalamud.Game.ClientState.Statuses;
 using ECommons.DalamudServices;
 using ECommons.ExcelServices;
 using ECommons.GameFunctions;
 using ECommons.GameHelpers;
 using ECommons.Throttlers;
 using FFXIVClientStructs.FFXIV.Client.Game;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using WrathCombo.AutoRotation;
@@ -147,6 +149,7 @@ namespace WrathCombo.CustomComboNS.Functions
         public bool MPUpdatePending = false;
         public ulong GameObjectId;
         public IBattleChara BattleChara = null!;
+        public Dictionary<ushort, long> BuffsGainedAt = new();
         public uint CurrentHP
         {
             get
@@ -170,6 +173,14 @@ namespace WrathCombo.CustomComboNS.Functions
                 return field;
             }
             set;
+        }
+
+        public float TimeSinceBuffApplied(ushort buff)
+        {
+            if (!BuffsGainedAt.ContainsKey(buff))
+                return 0;
+
+            return (Environment.TickCount64 - BuffsGainedAt[buff]) / 1000f;
         }
     }
 }

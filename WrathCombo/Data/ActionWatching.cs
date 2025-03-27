@@ -103,6 +103,15 @@ namespace WrathCombo.Data
                                 Svc.Framework.RunOnTick(() => member.MPUpdatePending = false, TimeSpan.FromSeconds(1.5));
                             }
                         }
+                        if (eff.Type is ActionEffectType.ApplyStatusEffectSource)
+                        {
+                            if (GetPartyMembers().Any(x => x.GameObjectId == casterEntityId))
+                            {
+                                var member = GetPartyMembers().First(x => x.GameObjectId == (eff.AtSource ? casterEntityId : target.id));
+                                member.BuffsGainedAt[eff.Value] = Environment.TickCount64;
+                            }
+                        }
+
                     }
                 }
 
