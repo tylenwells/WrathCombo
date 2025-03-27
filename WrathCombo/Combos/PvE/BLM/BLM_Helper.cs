@@ -22,10 +22,10 @@ internal partial class BLM
             { HighThunder2, Debuffs.HighThunder2 }
         };
 
-    internal static TmpBLMGauge Gauge = new();
+    internal static BLMGauge Gauge = GetJobGauge<BLMGauge>();
     internal static BLMOpenerMaxLevel1 Opener1 = new();
 
-    internal static uint CurMp => LocalPlayer.CurrentMp;
+    internal static uint CurMp => GetPartyMembers().First().CurrentMP;
 
     internal static int MaxPolyglot =>
         TraitLevelChecked(Traits.EnhancedPolyglotII) ? 3 :
@@ -129,19 +129,20 @@ internal partial class BLM
             LeyLines,
             Fire4,
             Fire4,
-            Despair,
+            Fire4,
             Manafont,
             Fire4,
             Triplecast,
-            Fire4,
             FlareStar,
             Fire4,
+            Fire4,
             HighThunder,
-            Paradox,
             Fire4,
             Fire4,
             Fire4,
-            Despair
+            Fire4,
+            Despair,
+            FlareStar
         ];
         internal override UserData ContentCheckConfig => Config.BLM_ST_Balance_Content;
 
@@ -160,9 +161,6 @@ internal partial class BLM
                 return false;
 
             if (!IsOffCooldown(Amplifier))
-                return false;
-
-            if (Gauge.InUmbralIce)
                 return false;
 
             return true;

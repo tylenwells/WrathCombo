@@ -174,6 +174,7 @@ namespace WrathCombo.Window.Tabs
                     $"{LocalPlayer.ClassJob.Value.NameEnglish} (ID: {LocalPlayer.ClassJob.RowId})");
                 CustomStyleText("Zone:",
                     $"{Svc.Data.GetExcelSheet<TerritoryType>().FirstOrDefault(x => x.RowId == Svc.ClientState.TerritoryType).PlaceName.Value.Name} (ID: {Svc.ClientState.TerritoryType})");
+                CustomStyleText($"MP:", GetPartyMembers().First().CurrentMP);
                 CustomStyleText("In PvP:", InPvP());
                 CustomStyleText("In Combat:", InCombat());
                 CustomStyleText("In Boss:", InBossEncounter());
@@ -221,7 +222,7 @@ namespace WrathCombo.Window.Tabs
                         Util.ShowStruct(&JobGaugeManager.Instance()->WhiteMage);
                         break;
                     case Job.BLM:
-                        Util.ShowStruct((DebugBLMGauge*)&JobGaugeManager.Instance()->BlackMage);
+                        Util.ShowStruct(&JobGaugeManager.Instance()->BlackMage);
                         break;
                     case Job.SMN:
                         Util.ShowStruct(&JobGaugeManager.Instance()->Summoner);

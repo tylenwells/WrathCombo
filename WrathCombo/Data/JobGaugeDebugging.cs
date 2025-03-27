@@ -80,7 +80,7 @@ public unsafe class TmpBLMGauge
     /// <summary>
     /// Gets the number of Polyglot stacks remaining.
     /// </summary>
-    public sbyte PolyglotStacks => this.Struct->PolyglotStacks;
+    public byte PolyglotStacks => this.Struct->PolyglotStacks;
 
     /// <summary>
     /// Gets the number of Umbral Hearts remaining.
@@ -170,18 +170,16 @@ public struct DebugSMNGauge
 public struct DebugBLMGauge
 {
     [FieldOffset(0x08)] public short EnochianTimer;
-    [FieldOffset(0x0A)] public ElementalFlags ElementalFlags;
-    [FieldOffset(0x0C)] public sbyte PolyglotStacks;
+    [FieldOffset(0x0A)] public sbyte ElementStance;
+    [FieldOffset(0x0B)] public byte UmbralHearts;
+    [FieldOffset(0x0C)] public byte PolyglotStacks;
     [FieldOffset(0x0D)] public EnochianFlags EnochianFlags;
 
-    public int UmbralStacks => ElementalFlags.HasFlag(ElementalFlags.UmbralIce1) ? 1 : ElementalFlags.HasFlag(ElementalFlags.UmbralIce2) ? 2 : ElementalFlags.HasFlag(ElementalFlags.UmbralIce3) ? 3 : 0;
-    public int AstralStacks => ElementalFlags.HasFlag(ElementalFlags.AstralFire1) ? 1 : ElementalFlags.HasFlag(ElementalFlags.AstralFire2) ? 2 : ElementalFlags.HasFlag(ElementalFlags.AstralFire3) ? 3 : 0;
-    public int UmbralHearts => ElementalFlags.HasFlag(ElementalFlags.UmbralHearts1) ? 1 : ElementalFlags.HasFlag(ElementalFlags.UmbralHearts2) ? 2 : ElementalFlags.HasFlag(ElementalFlags.UmbralHearts3) ? 3 : 0;
-    public int AstralSoulStacks => EnochianFlags.HasFlag(EnochianFlags.FlareStar1) ? 1 : EnochianFlags.HasFlag(EnochianFlags.FlareStar2) ? 2 : EnochianFlags.HasFlag(EnochianFlags.FlareStar3) ? 3 : EnochianFlags.HasFlag(EnochianFlags.FlareStar4) ? 4 :
-        EnochianFlags.HasFlag(EnochianFlags.FlareStar5) ? 5 : EnochianFlags.HasFlag(EnochianFlags.FlareStar6) ? 6 : 0;
+    public int UmbralStacks => ElementStance >= 0 ? 0 : ElementStance * -1;
+    public int AstralStacks => ElementStance <= 0 ? 0 : ElementStance;
     public bool EnochianActive => EnochianFlags.HasFlag(EnochianFlags.Enochian);
     public bool ParadoxActive => EnochianFlags.HasFlag(EnochianFlags.Paradox);
-    public bool FlareStarReady => EnochianFlags.HasFlag(EnochianFlags.FlareStar6);
+    public int AstralSoulStacks => ((int)EnochianFlags >> 2) & 7;
 }
 
 
@@ -203,7 +201,7 @@ public enum ElementalFlags : short
 }
 
 [Flags]
-public enum EnochianFlags : byte
+public enum DebugEnochianFlags : byte
 {
     None = 0,
     Enochian = 1,
