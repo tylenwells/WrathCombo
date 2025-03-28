@@ -163,6 +163,7 @@ internal partial class RPR
 
         public override List<uint> OpenerActions { get; set; } =
         [
+            Harpe,
             ShadowOfDeath,
             SoulSlice,
             ArcaneCircle,
@@ -185,6 +186,11 @@ internal partial class RPR
             Gibbet, //20
             ShadowOfDeath,
             Slice
+        ];
+
+        public override List<(int[] Steps, Func<bool> Condition)> SkipSteps { get; set; } =
+        [
+            ([1], () => Config.RPR_Opener_StartChoice == 1)
         ];
 
         public override List<(int[], uint, Func<bool>)> SubstitutionSteps { get; set; } =

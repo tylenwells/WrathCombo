@@ -1,3 +1,4 @@
+using ImGuiNET;
 using WrathCombo.Combos.PvP;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Extensions;
@@ -9,6 +10,7 @@ internal partial class RPR
     internal static class Config
     {
         public static UserInt
+            RPR_Opener_StartChoice = new("RPR_Opener_StartChoice", 0),
             RPR_SoDThreshold = new("RPRSoDThreshold", 0),
             RPR_WoDThreshold = new("RPRWoDThreshold", 1),
             RPR_SoDRefreshRange = new("RPRSoDRefreshRange", 6),
@@ -29,6 +31,21 @@ internal partial class RPR
             switch (preset)
             {
                 case CustomComboPreset.RPR_ST_Opener:
+
+                    if (DrawHorizontalRadioButton(RPR_Opener_StartChoice,
+                        "Normal Opener",
+                        $"Starts opener with {Harpe.ActionName()}", 0))
+                    {
+                        if (!CustomComboFunctions.InCombat())
+                            Opener().OpenerStep = 1;
+                    }
+
+                    DrawHorizontalRadioButton(RPR_Opener_StartChoice,
+                        "Early Opener",
+                        $"Starts opener with {ShadowOfDeath.ActionName()} instead, skipping {Harpe.ActionName()}", 1);
+
+                    ImGui.Spacing();
+
                     DrawBossOnlyChoice(RPR_Balance_Content);
                     break;
 
