@@ -84,19 +84,19 @@ internal partial class RPR
 
                 case CustomComboPreset.RPR_ST_ComboHeals:
                     DrawSliderInt(0, 100, RPR_STSecondWindThreshold,
-                        $"HP percent threshold to use {Role.SecondWind.ActionName()} below (0 = Disabled)");
+                        $"{Role.SecondWind.ActionName()} HP percentage threshold");
 
                     DrawSliderInt(0, 100, RPR_STBloodbathThreshold,
-                        $"HP percent threshold to use {Role.Bloodbath.ActionName()} (0 = Disabled)");
+                        $"{Role.Bloodbath.ActionName()} HP percentage threshold");
 
                     break;
 
                 case CustomComboPreset.RPR_AoE_ComboHeals:
                     DrawSliderInt(0, 100, RPR_AoESecondWindThreshold,
-                        $"HP percent threshold to use {Role.SecondWind.ActionName()} below (0 = Disabled)");
+                        $"{Role.SecondWind.ActionName()} HP percentage threshold");
 
                     DrawSliderInt(0, 100, RPR_AoEBloodbathThreshold,
-                        $"HP percent threshold to use {Role.Bloodbath.ActionName()} below (0 = Disabled)");
+                        $"{Role.Bloodbath.ActionName()} HP percentage threshold");
 
                     break;
 

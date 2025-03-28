@@ -100,7 +100,7 @@ internal partial class MNK
         if (NumberOfEnemiesInRange(ElixirField, null) >= 1 &&
             (OriginalHook(MasterfulBlitz) == ElixirField || 
              OriginalHook(MasterfulBlitz) == FlintStrike ||
-             OriginalHook(MasterfulBlitz) == ElixirBurst ||
+             OriginalHook(MasterfulBlitz) == ElixirBurst || 
              OriginalHook(MasterfulBlitz) == RisingPhoenix))
             return true;
 
@@ -158,9 +158,14 @@ internal partial class MNK
 
         internal override UserData ContentCheckConfig => Config.MNK_Balance_Content;
 
-        public override bool HasCooldowns() => GetRemainingCharges(PerfectBalance) is 2 && IsOffCooldown(Brotherhood) &&
-                                               IsOffCooldown(RiddleOfFire) && IsOffCooldown(RiddleOfWind) &&
-                                               Gauge.Nadi is Nadi.None && Gauge.RaptorFury is 0 && Gauge.CoeurlFury is 0;
+        public override bool HasCooldowns() => 
+            GetRemainingCharges(PerfectBalance) is 2 && 
+            IsOffCooldown(Brotherhood) &&
+            IsOffCooldown(RiddleOfFire) && 
+            IsOffCooldown(RiddleOfWind) &&
+            Gauge.Nadi is Nadi.None && 
+            Gauge.RaptorFury is 0 && 
+            Gauge.CoeurlFury is 0;
     }
 
     internal class MNKOpenerLogicLL : WrathOpener
@@ -192,11 +197,17 @@ internal partial class MNK
             ElixirBurst,
             LeapingOpo
         ];
+
         internal override UserData ContentCheckConfig => Config.MNK_Balance_Content;
 
-        public override bool HasCooldowns() => GetRemainingCharges(PerfectBalance) is 2 && IsOffCooldown(Brotherhood) &&
-                                               IsOffCooldown(RiddleOfFire) && IsOffCooldown(RiddleOfWind) &&
-                                               Gauge.Nadi is Nadi.None && Gauge.RaptorFury is 0 && Gauge.CoeurlFury is 0;
+        public override bool HasCooldowns() =>
+            GetRemainingCharges(PerfectBalance) is 2 &&
+            IsOffCooldown(Brotherhood) &&
+            IsOffCooldown(RiddleOfFire) &&
+            IsOffCooldown(RiddleOfWind) &&
+            Gauge.Nadi is Nadi.None &&
+            Gauge.RaptorFury is 0 && 
+            Gauge.CoeurlFury is 0;
     }
 
     #endregion

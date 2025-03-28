@@ -29,19 +29,19 @@ internal partial class MNK
             {
                 case CustomComboPreset.MNK_ST_ComboHeals:
                     DrawSliderInt(0, 100, MNK_ST_SecondWind_Threshold,
-                        $"HP percent threshold to use {Role.SecondWind.ActionName()} (0 = Disabled)");
+                        $"{Role.SecondWind.ActionName()} HP percentage threshold");
 
                     DrawSliderInt(0, 100, MNK_ST_Bloodbath_Threshold,
-                        $"HP percent threshold to use {Role.Bloodbath.ActionName()} (0 = Disabled)");
+                        $"{Role.Bloodbath.ActionName()} HP percentage threshold");
 
                     break;
 
                 case CustomComboPreset.MNK_AoE_ComboHeals:
                     DrawSliderInt(0, 100, MNK_AoE_SecondWind_Threshold,
-                        $"HP percent threshold to use {Role.SecondWind.ActionName()} (0 = Disabled)");
+                        $"{Role.SecondWind.ActionName()} HP percentage threshold");
 
                     DrawSliderInt(0, 100, MNK_AoE_Bloodbath_Threshold,
-                        $"HP percent threshold to use {Role.Bloodbath.ActionName()} (0 = Disabled)");
+                        $"{Role.Bloodbath.ActionName()} HP percentage threshold");
 
                     break;
 
@@ -56,16 +56,16 @@ internal partial class MNK
 
                 case CustomComboPreset.MNK_STUseROF:
                     DrawHorizontalRadioButton(MNK_ST_RiddleOfFire_SubOption,
-                        "All content", $"Uses {RiddleOfFire.ActionName()} regardless of content.", 0);
+                        "All content", $"Uses {RiddleOfFire.ActionName()}  regardless of content.", 0);
 
                     DrawHorizontalRadioButton(MNK_ST_RiddleOfFire_SubOption,
-                        "Boss encounters Only", $"Only uses{RiddleOfFire.ActionName()} when in Boss encounters.", 1);
+                        "Boss encounters Only", $"Only uses {RiddleOfFire.ActionName()}  when in Boss encounters.", 1);
 
                     break;
 
                 case CustomComboPreset.MNK_STUseROW:
                     DrawHorizontalRadioButton(MNK_ST_RiddleOfWind_SubOption,
-                        "All content", $"Uses {RiddleOfWind.ActionName()} regardless of content.", 0);
+                        "All content", $"Uses {RiddleOfWind.ActionName()}  regardless of content.", 0);
 
                     DrawHorizontalRadioButton(MNK_ST_RiddleOfWind_SubOption,
                         "Boss encounters Only", $"Only uses {RiddleOfWind.ActionName()} when in Boss encounters.", 1);
