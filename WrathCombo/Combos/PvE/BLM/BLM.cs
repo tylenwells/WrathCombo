@@ -308,7 +308,7 @@ internal partial class BLM : CasterJob
                         return Fire4;
                     }
 
-                if (HasEffect(Buffs.Firestarter))
+                if (HasEffect(Buffs.Firestarter) && TimeSinceFirestarterBuff >= 2)
                     return Fire3;
 
                 if (CurMp >= MP.FireI)
