@@ -176,8 +176,6 @@ internal partial class MNK : MeleeJob
                     return actionID;
                 }
 
-
-
             if (IsEnabled(CustomComboPreset.MNK_STUseBuffs) &&
                 IsEnabled(CustomComboPreset.MNK_STUseROF) &&
                 !HasEffect(Buffs.FiresRumination) &&
