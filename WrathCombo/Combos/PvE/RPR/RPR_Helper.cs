@@ -160,7 +160,7 @@ internal partial class RPR
         public override int MinOpenerLevel => 100;
 
         public override int MaxOpenerLevel => 109;
-        
+
         public override List<uint> OpenerActions { get; set; } =
         [
             Harpe,

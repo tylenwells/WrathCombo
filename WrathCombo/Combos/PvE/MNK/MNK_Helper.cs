@@ -98,8 +98,10 @@ internal partial class MNK
     internal static bool InMasterfulRange()
     {
         if (NumberOfEnemiesInRange(ElixirField, null) >= 1 &&
-            (OriginalHook(MasterfulBlitz) == ElixirField || OriginalHook(MasterfulBlitz) == FlintStrike ||
-             OriginalHook(MasterfulBlitz) == ElixirBurst || OriginalHook(MasterfulBlitz) == RisingPhoenix))
+            (OriginalHook(MasterfulBlitz) == ElixirField || 
+             OriginalHook(MasterfulBlitz) == FlintStrike ||
+             OriginalHook(MasterfulBlitz) == ElixirBurst ||
+             OriginalHook(MasterfulBlitz) == RisingPhoenix))
             return true;
 
         if (NumberOfEnemiesInRange(TornadoKick, CurrentTarget) >= 1 &&

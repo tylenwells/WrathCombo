@@ -16,6 +16,10 @@ internal partial class MNK : MeleeJob
             if (Variant.CanCure(CustomComboPreset.MNK_Variant_Cure, Config.MNK_VariantCure))
                 return Variant.Cure;
 
+            //Variant Rampart
+            if (Variant.CanRampart(CustomComboPreset.MNK_Variant_Rampart))
+                return Variant.Rampart;
+
             if (LevelChecked(SteeledMeditation) &&
                 (!InCombat() || !InMeleeRange()) &&
                 Gauge.Chakra < 5 &&
@@ -38,10 +42,6 @@ internal partial class MNK : MeleeJob
             // OGCDs
             if (CanWeave())
             {
-                //Variant Rampart
-                if (Variant.CanRampart(CustomComboPreset.MNK_Variant_Rampart))
-                    return Variant.Rampart;
-
                 if (ActionReady(Brotherhood) &&
                     InBossEncounter())
                     return Brotherhood;
@@ -146,6 +146,10 @@ internal partial class MNK : MeleeJob
             if (Variant.CanCure(CustomComboPreset.MNK_Variant_Cure, Config.MNK_VariantCure))
                 return Variant.Cure;
 
+            //Variant Rampart
+            if (Variant.CanRampart(CustomComboPreset.MNK_Variant_Rampart))
+                return Variant.Rampart;
+
             if (IsEnabled(CustomComboPreset.MNK_STUseMeditation) &&
                 LevelChecked(SteeledMeditation) &&
                 (!InCombat() || !InMeleeRange()) &&
@@ -184,10 +188,6 @@ internal partial class MNK : MeleeJob
             // OGCDs
             if (CanWeave())
             {
-                //Variant Rampart
-                if (Variant.CanRampart(CustomComboPreset.MNK_Variant_Rampart))
-                    return Variant.Rampart;
-
                 if (IsEnabled(CustomComboPreset.MNK_STUseBuffs))
                 {
                     if (IsEnabled(CustomComboPreset.MNK_STUseBrotherhood) &&
@@ -310,6 +310,10 @@ internal partial class MNK : MeleeJob
             if (Variant.CanCure(CustomComboPreset.MNK_Variant_Cure, Config.MNK_VariantCure))
                 return Variant.Cure;
 
+            //Variant Rampart
+            if (Variant.CanRampart(CustomComboPreset.MNK_Variant_Rampart))
+                return Variant.Rampart;
+
             if (LevelChecked(InspiritedMeditation) &&
                 (!InCombat() || !InMeleeRange()) &&
                 Gauge.Chakra < 5 &&
@@ -332,10 +336,6 @@ internal partial class MNK : MeleeJob
             // Buffs
             if (CanWeave())
             {
-                //Variant Rampart
-                if (Variant.CanRampart(CustomComboPreset.MNK_Variant_Rampart))
-                    return Variant.Rampart;
-
                 if (ActionReady(Brotherhood))
                     return Brotherhood;
 
@@ -447,6 +447,10 @@ internal partial class MNK : MeleeJob
             if (Variant.CanCure(CustomComboPreset.MNK_Variant_Cure, Config.MNK_VariantCure))
                 return Variant.Cure;
 
+            //Variant Rampart
+            if (Variant.CanRampart(CustomComboPreset.MNK_Variant_Rampart))
+                return Variant.Rampart;
+
             if (IsEnabled(CustomComboPreset.MNK_AoEUseMeditation) &&
                 LevelChecked(InspiritedMeditation) &&
                 (!InCombat() || !InMeleeRange()) &&
@@ -474,10 +478,6 @@ internal partial class MNK : MeleeJob
             // Buffs
             if (CanWeave())
             {
-                //Variant Rampart
-                if (Variant.CanRampart(CustomComboPreset.MNK_Variant_Rampart))
-                    return Variant.Rampart;
-
                 if (IsEnabled(CustomComboPreset.MNK_AoEUseBuffs))
                 {
                     if (IsEnabled(CustomComboPreset.MNK_AoEUseBrotherhood) &&
