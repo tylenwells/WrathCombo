@@ -656,7 +656,9 @@ internal partial class SMN : CasterJob
                     return OriginalHook(SummonRuby);
             }
 
+
             // Ruin 4 Dump
+
             if (IsEnabled(CustomComboPreset.SMN_ST_Advanced_Combo_Ruin4) && LevelChecked(Ruin4) && Gauge.SummonTimerRemaining == 0 && Gauge.AttunementTimerRemaining == 0 && HasEffect(Buffs.FurtherRuin))
                 return Ruin4;
 
