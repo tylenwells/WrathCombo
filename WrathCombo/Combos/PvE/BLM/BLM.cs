@@ -53,7 +53,7 @@ internal partial class BLM : CasterJob
                     return Paradox;
 
                 if (HasEffect(Buffs.Firestarter) &&
-                    (Gauge.AstralFireStacks < 3))
+                    Gauge.AstralFireStacks < 3)
                     return Fire3;
 
                 if (CurMp < MP.FireI && LevelChecked(Despair) && CurMp >= MP.Despair)
@@ -132,7 +132,7 @@ internal partial class BLM : CasterJob
             {
                 if (ActionReady(Blizzard3) && Gauge.UmbralIceStacks < 3 && TraitLevelChecked(Traits.UmbralHeart))
                 {
-                    if (HasEffect(Role.Buffs.Swiftcast) || HasEffect(Buffs.Triplecast))
+                    if (HasEffect(MagicRole.Buffs.Swiftcast) || HasEffect(Buffs.Triplecast))
                         return Blizzard3;
 
                     if (GetBuffStacks(Buffs.Triplecast) == 0 && IsOffCooldown(Role.Swiftcast))
@@ -254,7 +254,7 @@ internal partial class BLM : CasterJob
                     return Paradox;
 
                 if (HasEffect(Buffs.Firestarter) &&
-                    (Gauge.AstralFireStacks < 3))
+                    Gauge.AstralFireStacks < 3)
                     return Fire3;
 
                 if (IsEnabled(CustomComboPreset.BLM_ST_Despair) &&
@@ -347,7 +347,7 @@ internal partial class BLM : CasterJob
             {
                 if (ActionReady(Blizzard3) && Gauge.UmbralIceStacks < 3 && TraitLevelChecked(Traits.UmbralHeart))
                 {
-                    if (HasEffect(Role.Buffs.Swiftcast) || HasEffect(Buffs.Triplecast))
+                    if (HasEffect(MagicRole.Buffs.Swiftcast) || HasEffect(Buffs.Triplecast))
                         return Blizzard3;
 
                     if (IsEnabled(CustomComboPreset.BLM_ST_Swiftcast) &&
@@ -518,7 +518,7 @@ internal partial class BLM : CasterJob
                         CanSpellWeave())
                         return Role.Swiftcast;
 
-                    if (HasEffect(Role.Buffs.Swiftcast) || GetBuffStacks(Buffs.Triplecast) > 0)
+                    if (HasEffect(MagicRole.Buffs.Swiftcast) || GetBuffStacks(Buffs.Triplecast) > 0)
                         return OriginalHook(Blizzard2);
                 }
 
@@ -669,7 +669,7 @@ internal partial class BLM : CasterJob
                         CanSpellWeave())
                         return Role.Swiftcast;
 
-                    if (HasEffect(Role.Buffs.Swiftcast) || GetBuffStacks(Buffs.Triplecast) > 0)
+                    if (HasEffect(MagicRole.Buffs.Swiftcast) || GetBuffStacks(Buffs.Triplecast) > 0)
                         return OriginalHook(Blizzard2);
                 }
 

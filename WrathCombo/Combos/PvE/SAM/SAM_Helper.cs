@@ -155,7 +155,7 @@ internal partial class SAM
             TendoSetsugekka,
             TendoKaeshiSetsugekka
         ];
-        
+
         internal override UserData ContentCheckConfig => Config.SAM_Balance_Content;
 
         public override List<(int[] Steps, Func<int> HoldDelay)> PrepullDelays { get; set; } =
@@ -168,8 +168,11 @@ internal partial class SAM
             ([2], 11, () => !TargetNeedsPositionals())
         ];
 
-        public override bool HasCooldowns() => GetRemainingCharges(MeikyoShisui) is 2 && GetRemainingCharges(Role.TrueNorth) is 2 &&
-                                               IsOffCooldown(Senei) && IsOffCooldown(Ikishoten);
+        public override bool HasCooldowns() => 
+            GetRemainingCharges(MeikyoShisui) is 2 &&
+            GetRemainingCharges(Role.TrueNorth) is 2 &&
+            IsOffCooldown(Senei) && 
+            IsOffCooldown(Ikishoten);
     }
 
     #endregion

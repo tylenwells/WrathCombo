@@ -296,7 +296,7 @@ internal partial class MCH
             HeatedSlugShot,
             HeatedCleanShot
         ];
-        
+
         internal override UserData ContentCheckConfig => Config.MCH_Balance_Content;
 
         public override List<(int[] Steps, Func<int> HoldDelay)> PrepullDelays { get; set; } =
@@ -304,10 +304,15 @@ internal partial class MCH
             ([2], () => 4)
         ];
 
-        public override bool HasCooldowns() => GetRemainingCharges(Reassemble) is 2 && GetRemainingCharges(OriginalHook(GaussRound)) is 3 &&
-                                               GetRemainingCharges(OriginalHook(Ricochet)) is 3 && IsOffCooldown(Chainsaw) &&
-                                               IsOffCooldown(Wildfire) && IsOffCooldown(BarrelStabilizer) &&
-                                               IsOffCooldown(Excavator) && IsOffCooldown(FullMetalField);
+        public override bool HasCooldowns() =>
+            GetRemainingCharges(Reassemble) is 2 &&
+            GetRemainingCharges(OriginalHook(GaussRound)) is 3 &&
+            GetRemainingCharges(OriginalHook(Ricochet)) is 3 &&
+            IsOffCooldown(Chainsaw) &&
+            IsOffCooldown(Wildfire) &&
+            IsOffCooldown(BarrelStabilizer) &&
+            IsOffCooldown(Excavator) && 
+            IsOffCooldown(FullMetalField);
     }
 
     internal class MCHOpenerLvl90EarlyTools : WrathOpener
@@ -346,7 +351,7 @@ internal partial class MCH
             Reassemble,
             Drill
         ];
-        
+
         internal override UserData ContentCheckConfig => Config.MCH_Balance_Content;
 
         public override List<(int[] Steps, Func<int> HoldDelay)> PrepullDelays { get; set; } =
@@ -367,9 +372,13 @@ internal partial class MCH
             19, 21, 23, 25
         ];
 
-        public override bool HasCooldowns() => GetRemainingCharges(Reassemble) is 2 && GetRemainingCharges(OriginalHook(GaussRound)) is 3 &&
-                                               GetRemainingCharges(OriginalHook(Ricochet)) is 3 && IsOffCooldown(Chainsaw) &&
-                                               IsOffCooldown(Wildfire) && IsOffCooldown(BarrelStabilizer);
+        public override bool HasCooldowns() => 
+            GetRemainingCharges(Reassemble) is 2 &&
+            GetRemainingCharges(OriginalHook(GaussRound)) is 3 &&
+            GetRemainingCharges(OriginalHook(Ricochet)) is 3 &&
+            IsOffCooldown(Chainsaw) &&
+            IsOffCooldown(Wildfire) && 
+            IsOffCooldown(BarrelStabilizer);
     }
 
     #endregion
