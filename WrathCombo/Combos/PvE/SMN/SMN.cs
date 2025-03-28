@@ -188,6 +188,9 @@ internal partial class SMN : CasterJob
             if (Variant.CanRampart(CustomComboPreset.SMN_Variant_Rampart, WeaveTypes.SpellWeave))
                 return Variant.Rampart;
 
+            if (NeedToSummon && ActionReady(SummonCarbuncle))
+                return SummonCarbuncle;
+
             #endregion
 
             #region OGCD
@@ -318,6 +321,9 @@ internal partial class SMN : CasterJob
 
             if (Variant.CanRampart(CustomComboPreset.SMN_Variant_Rampart, WeaveTypes.SpellWeave))
                 return Variant.Rampart;
+
+            if (NeedToSummon && ActionReady(SummonCarbuncle))
+                return SummonCarbuncle;
 
             #endregion
 
