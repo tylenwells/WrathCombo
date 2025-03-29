@@ -76,7 +76,7 @@ namespace WrathCombo.Combos.PvP
         public static class Buffs
         {
             public const ushort
-            //    Bloodbath = 1234; // NEED VERIFICATION IT EVEN IS A BUFF, CANNOT FIND
+                Bloodbath = 1982,
                 Swift = 4477;
         }
 
