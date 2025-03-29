@@ -16,9 +16,9 @@ namespace WrathCombo.Combos.PvP
                 Rust = 4480;
         }
 
-        public bool CanComet() => ActionReady(Comet);
-        public bool CanPhantomDart() => ActionReady(PhantomDart);
-        public bool CanRust() => ActionReady(Rust);
+        public static bool CanComet() => ActionReady(Comet);
+        public static bool CanPhantomDart() => ActionReady(PhantomDart);
+        public static bool CanRust() => ActionReady(Rust);
     }
 
     class PvPHealer //Healers
