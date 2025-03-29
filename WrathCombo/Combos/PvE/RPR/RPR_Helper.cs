@@ -168,8 +168,8 @@ internal partial class RPR
             SoulSlice,
             ArcaneCircle,
             Gluttony,
-            ExecutionersGibbet, //5
-            ExecutionersGallows, //6
+            ExecutionersGibbet, //6
+            ExecutionersGallows, //7
             SoulSlice,
             PlentifulHarvest,
             Enshroud,
@@ -182,8 +182,8 @@ internal partial class RPR
             LemuresSlice,
             Communio,
             Perfectio,
-            UnveiledGibbet, //19
-            Gibbet, //20
+            UnveiledGibbet, //20
+            Gibbet, //21
             ShadowOfDeath,
             Slice
         ];
@@ -195,15 +195,15 @@ internal partial class RPR
 
         public override List<(int[], uint, Func<bool>)> SubstitutionSteps { get; set; } =
         [
-            ([5], ExecutionersGallows, () => OnTargetsRear()),
-            ([6], ExecutionersGibbet, () => HasEffect(Buffs.EnhancedGibbet)),
-            ([19], UnveiledGallows, () => HasEffect(Buffs.EnhancedGallows)),
-            ([20], Gallows, () => HasEffect(Buffs.EnhancedGallows))
+            ([6], ExecutionersGallows, () => OnTargetsRear()),
+            ([7], ExecutionersGibbet, () => HasEffect(Buffs.EnhancedGibbet)),
+            ([20], UnveiledGallows, () => HasEffect(Buffs.EnhancedGallows)),
+            ([21], Gallows, () => HasEffect(Buffs.EnhancedGallows))
         ];
 
         internal override UserData ContentCheckConfig => Config.RPR_Balance_Content;
 
-        public override bool HasCooldowns() => 
+        public override bool HasCooldowns() =>
             GetRemainingCharges(SoulSlice) is 2 &&
             IsOffCooldown(ArcaneCircle) &&
             IsOffCooldown(Gluttony);
