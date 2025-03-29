@@ -672,14 +672,12 @@ namespace WrathCombo.AutoRotation
             private static bool TargetHasRegen(IGameObject? target)
             {
                 if (target is null) return false;
-                ushort regenBuff = JobID switch
+                return JobID switch
                 {
-                    AST.JobID => AST.Buffs.AspectedBenefic,
-                    WHM.JobID => WHM.Buffs.Regen,
-                    _ => 0
+                    AST.JobID => FindEffectOnMember(AST.Buffs.AspectedBenefic, target) != null,
+                    WHM.JobID => FindEffectOnMember(WHM.Buffs.Regen, target) != null,
+                    _ => false,
                 };
-
-                return FindEffectOnMember(regenBuff, target) != null;
             }
         }
 
