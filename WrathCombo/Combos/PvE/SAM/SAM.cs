@@ -927,7 +927,7 @@ internal partial class SAM : MeleeJob
                 : actionID;
     }
 
-    internal class SAM_SeneiGuren: CustomCombo
+    internal class SAM_SeneiGuren : CustomCombo
     {
         protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.SAM_SeneiGuren;
 
