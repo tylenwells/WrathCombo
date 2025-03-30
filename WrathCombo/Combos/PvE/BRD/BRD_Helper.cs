@@ -1,11 +1,19 @@
-﻿using System;
+﻿#region Dependencies
+using System;
 using System.Collections.Generic;
+using Dalamud.Game.ClientState.JobGauge.Enums;
+using Dalamud.Game.ClientState.JobGauge.Types;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
+using WrathCombo.Data;
+using Dalamud.Game.ClientState.Statuses;
+using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
+
+#endregion
 
 namespace WrathCombo.Combos.PvE;
 
-internal partial class BRD
+internal partial class BRD : PhysRangedJob
 {
     #region ID's
 
@@ -80,6 +88,39 @@ internal partial class BRD
     }
 
     #endregion
+
+    #region Variables
+
+    internal static BRDGauge? gauge = GetJobGauge<BRDGauge>();
+    internal static int songTimerInSeconds = gauge.SongTimer / 1000;
+    internal static bool songNone = gauge.Song == Song.None;
+    internal static bool songWanderer = gauge.Song == Song.Wanderer;
+    internal static bool songMage = gauge.Song == Song.Mage;
+    internal static bool songArmy = gauge.Song == Song.Army;
+
+    internal static Status? purple = FindTargetEffect(Debuffs.CausticBite) ?? FindTargetEffect(Debuffs.VenomousBite);
+    internal static Status? blue = FindTargetEffect(Debuffs.Stormbite) ?? FindTargetEffect(Debuffs.Windbite);
+    internal static float purpleRemaining = purple?.RemainingTime ?? 0;
+    internal static float blueRemaining = blue?.RemainingTime ?? 0;
+
+    internal static bool hasTarget = HasBattleTarget();
+    internal static bool canWeave = CanWeave() && !ActionWatching.HasDoubleWeaved();
+    internal static bool canWeaveDelayed = CanDelayedWeave(0.9) && !ActionWatching.HasDoubleWeaved();
+    internal static bool canIronJaws = LevelChecked(IronJaws);
+    internal static bool buffTime = GetCooldownRemainingTime(RagingStrikes) < 2.7;
+
+    internal static float ragingCD = GetCooldownRemainingTime(RagingStrikes);
+    internal static float battleVoiceCD = GetCooldownRemainingTime(BattleVoice);
+    internal static float empyrealCD = GetCooldownRemainingTime(EmpyrealArrow);
+    internal static float radiantCD = GetCooldownRemainingTime(RadiantFinale);
+    internal static float ragingStrikesDuration = GetBuffRemainingTime(Buffs.RagingStrikes);
+
+    internal static uint rainOfDeathCharges = LevelChecked(RainOfDeath) ? GetRemainingCharges(RainOfDeath) : 0;
+    internal static uint bloodletterCharges = GetRemainingCharges(Bloodletter);
+
+    #endregion
+
+    #region Openers
 
     public static BRDStandard Opener1 = new();
     public static BRDAdjusted Opener2 = new();
@@ -290,5 +331,6 @@ internal partial class BRD
             return true;
         }
     }
+    #endregion
 }
 
