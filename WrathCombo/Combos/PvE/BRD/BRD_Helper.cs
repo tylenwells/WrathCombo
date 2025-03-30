@@ -1,20 +1,52 @@
 ﻿#region Dependencies
-using System;
-using System.Collections.Generic;
+
 using Dalamud.Game.ClientState.JobGauge.Enums;
 using Dalamud.Game.ClientState.JobGauge.Types;
+using Dalamud.Game.ClientState.Statuses;
+using System;
+using System.Collections.Generic;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Data;
-using Dalamud.Game.ClientState.Statuses;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
 
 #endregion
 
 namespace WrathCombo.Combos.PvE;
 
-internal partial class BRD : PhysRangedJob
+internal partial class BRD
 {
+     #region Variables
+
+    internal static BRDGauge? gauge = GetJobGauge<BRDGauge>();
+    internal static int SongTimerInSeconds => gauge.SongTimer / 1000;
+    internal static bool SongNone => gauge.Song == Song.None;
+    internal static bool SongWanderer => gauge.Song == Song.Wanderer;
+    internal static bool SongMage => gauge.Song == Song.Mage;
+    internal static bool SongArmy => gauge.Song == Song.Army;
+
+    internal static Status? Purple => FindTargetEffect(Debuffs.CausticBite) ?? FindTargetEffect(Debuffs.VenomousBite);
+    internal static Status? Blue => FindTargetEffect(Debuffs.Stormbite) ?? FindTargetEffect(Debuffs.Windbite);
+    internal static float PurpleRemaining => Purple?.RemainingTime ?? 0;
+    internal static float BlueRemaining => Blue?.RemainingTime ?? 0;
+
+    internal static bool BardHasTarget => HasBattleTarget();
+    internal static bool CanBardWeave => CanWeave() && !ActionWatching.HasDoubleWeaved();
+    internal static bool CanWeaveDelayed => CanDelayedWeave(0.9) && !ActionWatching.HasDoubleWeaved();
+    internal static bool CanIronJaws => LevelChecked(IronJaws);
+    internal static bool BuffTime => GetCooldownRemainingTime(RagingStrikes) < 2.7;
+
+    internal static float RagingCD => GetCooldownRemainingTime(RagingStrikes);
+    internal static float BattleVoiceCD => GetCooldownRemainingTime(BattleVoice);
+    internal static float EmpyrealCD => GetCooldownRemainingTime(EmpyrealArrow);
+    internal static float RadiantCD => GetCooldownRemainingTime(RadiantFinale);
+    internal static float RagingStrikesDuration => GetBuffRemainingTime(Buffs.RagingStrikes);
+
+    internal static uint RainOfDeathCharges => LevelChecked(RainOfDeath) ? GetRemainingCharges(RainOfDeath) : 0;
+    internal static uint BloodletterCharges => GetRemainingCharges(Bloodletter);
+
+    #endregion
+
     #region ID's
 
     public const byte ClassID = 5;
@@ -89,37 +121,6 @@ internal partial class BRD : PhysRangedJob
 
     #endregion
 
-    #region Variables
-
-    internal static BRDGauge? gauge = GetJobGauge<BRDGauge>();
-    internal static int songTimerInSeconds = gauge.SongTimer / 1000;
-    internal static bool songNone = gauge.Song == Song.None;
-    internal static bool songWanderer = gauge.Song == Song.Wanderer;
-    internal static bool songMage = gauge.Song == Song.Mage;
-    internal static bool songArmy = gauge.Song == Song.Army;
-
-    internal static Status? purple = FindTargetEffect(Debuffs.CausticBite) ?? FindTargetEffect(Debuffs.VenomousBite);
-    internal static Status? blue = FindTargetEffect(Debuffs.Stormbite) ?? FindTargetEffect(Debuffs.Windbite);
-    internal static float purpleRemaining = purple?.RemainingTime ?? 0;
-    internal static float blueRemaining = blue?.RemainingTime ?? 0;
-
-    internal static bool hasTarget = HasBattleTarget();
-    internal static bool canWeave = CanWeave() && !ActionWatching.HasDoubleWeaved();
-    internal static bool canWeaveDelayed = CanDelayedWeave(0.9) && !ActionWatching.HasDoubleWeaved();
-    internal static bool canIronJaws = LevelChecked(IronJaws);
-    internal static bool buffTime = GetCooldownRemainingTime(RagingStrikes) < 2.7;
-
-    internal static float ragingCD = GetCooldownRemainingTime(RagingStrikes);
-    internal static float battleVoiceCD = GetCooldownRemainingTime(BattleVoice);
-    internal static float empyrealCD = GetCooldownRemainingTime(EmpyrealArrow);
-    internal static float radiantCD = GetCooldownRemainingTime(RadiantFinale);
-    internal static float ragingStrikesDuration = GetBuffRemainingTime(Buffs.RagingStrikes);
-
-    internal static uint rainOfDeathCharges = LevelChecked(RainOfDeath) ? GetRemainingCharges(RainOfDeath) : 0;
-    internal static uint bloodletterCharges = GetRemainingCharges(Bloodletter);
-
-    #endregion
-
     #region Openers
 
     public static BRDStandard Opener1 = new();
@@ -127,7 +128,7 @@ internal partial class BRD : PhysRangedJob
     public static BRDComfy Opener3 = new();
     internal static WrathOpener Opener()
     {
-        if (CustomComboFunctions.IsEnabled(CustomComboPreset.BRD_ST_AdvMode))
+        if (IsEnabled(CustomComboPreset.BRD_ST_AdvMode))
         {
             if (Config.BRD_Adv_Opener_Selection == 0 && Opener1.LevelChecked) return Opener1;
             if (Config.BRD_Adv_Opener_Selection == 1 && Opener2.LevelChecked) return Opener2;
@@ -136,19 +137,6 @@ internal partial class BRD : PhysRangedJob
 
         if (Opener1.LevelChecked) return Opener1;
         return WrathOpener.Dummy;
-    }
-
-    internal class BRDOpenerMaxLevel1 : WrathOpener
-    {
-        public override List<uint> OpenerActions { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
-        public override int MinOpenerLevel => throw new NotImplementedException();
-
-        public override int MaxOpenerLevel => throw new NotImplementedException();
-
-        internal override UserData? ContentCheckConfig => throw new NotImplementedException();
-
-        public override bool HasCooldowns() => throw new NotImplementedException();
     }
 
     internal class BRDStandard : WrathOpener
@@ -173,12 +161,12 @@ internal partial class BRD : PhysRangedJob
             BurstShot,
             BurstShot,
             IronJaws,
-            BurstShot,
+            BurstShot
         ];
 
         public override List<(int[], uint, Func<bool>)> SubstitutionSteps { get; set; } =
         [
-            ([6, 9, 16, 17, 19], RefulgentArrow, () => CustomComboFunctions.HasEffect(Buffs.HawksEye)),
+            ([6, 9, 16, 17, 19], RefulgentArrow, () => HasEffect(Buffs.HawksEye))
         ];
 
         public override List<int> DelayedWeaveSteps { get; set; } =
@@ -188,28 +176,14 @@ internal partial class BRD : PhysRangedJob
         public override int MinOpenerLevel => 100;
         public override int MaxOpenerLevel => 109;
 
-        internal override UserData? ContentCheckConfig => Config.BRD_Balance_Content;
+        internal override UserData ContentCheckConfig => Config.BRD_Balance_Content;
 
-        public override bool HasCooldowns()
-        {
-            if (!CustomComboFunctions.IsOffCooldown(WanderersMinuet))
-                return false;
-
-            if (!CustomComboFunctions.IsOffCooldown(BattleVoice))
-                return false;
-
-            if (!CustomComboFunctions.IsOffCooldown(RadiantFinale))
-                return false;
-
-            if (!CustomComboFunctions.IsOffCooldown(RagingStrikes))
-                return false;
-
-            if (!CustomComboFunctions.IsOffCooldown(Barrage))
-                return false;
-
-
-            return true;
-        }
+        public override bool HasCooldowns() =>
+            IsOffCooldown(WanderersMinuet) &&
+            IsOffCooldown(BattleVoice) &&
+            IsOffCooldown(RadiantFinale) &&
+            IsOffCooldown(RagingStrikes) &&
+            IsOffCooldown(Barrage);
     }
 
     internal class BRDAdjusted : WrathOpener
@@ -235,12 +209,12 @@ internal partial class BRD : PhysRangedJob
             BurstShot,
             BurstShot,
             IronJaws,
-            BurstShot,
+            BurstShot
         ];
 
         public override List<(int[], uint, Func<bool>)> SubstitutionSteps { get; set; } =
         [
-            ([7, 10, 17, 18, 20], RefulgentArrow, () => CustomComboFunctions.HasEffect(Buffs.HawksEye)),
+            ([7, 10, 17, 18, 20], RefulgentArrow, () => HasEffect(Buffs.HawksEye))
         ];
 
         public override List<int> DelayedWeaveSteps { get; set; } =
@@ -251,28 +225,14 @@ internal partial class BRD : PhysRangedJob
         public override int MinOpenerLevel => 100;
         public override int MaxOpenerLevel => 109;
 
-        internal override UserData? ContentCheckConfig => Config.BRD_Balance_Content;
+        internal override UserData ContentCheckConfig => Config.BRD_Balance_Content;
 
-        public override bool HasCooldowns()
-        {
-            if (!CustomComboFunctions.IsOffCooldown(WanderersMinuet))
-                return false;
-
-            if (!CustomComboFunctions.IsOffCooldown(BattleVoice))
-                return false;
-
-            if (!CustomComboFunctions.IsOffCooldown(RadiantFinale))
-                return false;
-
-            if (!CustomComboFunctions.IsOffCooldown(RagingStrikes))
-                return false;
-
-            if (!CustomComboFunctions.IsOffCooldown(Barrage))
-                return false;
-
-
-            return true;
-        }
+        public override bool HasCooldowns() =>
+            IsOffCooldown(WanderersMinuet) &&
+            IsOffCooldown(BattleVoice) &&
+            IsOffCooldown(RadiantFinale) &&
+            IsOffCooldown(RagingStrikes) &&
+            IsOffCooldown(Barrage);
     }
 
     internal class BRDComfy : WrathOpener
@@ -298,39 +258,26 @@ internal partial class BRD : PhysRangedJob
             EmpyrealArrow,
             BurstShot,
             IronJaws,
-            BurstShot,
+            BurstShot
         ];
 
         public override List<(int[], uint, Func<bool>)> SubstitutionSteps { get; set; } =
         [
-            ([7, 10, 16, 18, 20], RefulgentArrow, () => CustomComboFunctions.HasEffect(Buffs.HawksEye)),
+            ([7, 10, 16, 18, 20], RefulgentArrow, () => HasEffect(Buffs.HawksEye))
         ];
 
         public override int MinOpenerLevel => 100;
         public override int MaxOpenerLevel => 109;
 
-        internal override UserData? ContentCheckConfig => Config.BRD_Balance_Content;
+        internal override UserData ContentCheckConfig => Config.BRD_Balance_Content;
 
-        public override bool HasCooldowns()
-        {
-            if (!CustomComboFunctions.IsOffCooldown(WanderersMinuet))
-                return false;
-
-            if (!CustomComboFunctions.IsOffCooldown(BattleVoice))
-                return false;
-
-            if (!CustomComboFunctions.IsOffCooldown(RadiantFinale))
-                return false;
-
-            if (!CustomComboFunctions.IsOffCooldown(RagingStrikes))
-                return false;
-
-            if (!CustomComboFunctions.IsOffCooldown(Barrage))
-                return false;
-
-            return true;
-        }
+        public override bool HasCooldowns() =>
+            IsOffCooldown(WanderersMinuet) &&
+            IsOffCooldown(BattleVoice) &&
+            IsOffCooldown(RadiantFinale) &&
+            IsOffCooldown(RagingStrikes) &&
+            IsOffCooldown(Barrage);
     }
+
     #endregion
 }
-
