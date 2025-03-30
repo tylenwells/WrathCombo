@@ -40,7 +40,11 @@ namespace WrathCombo.Combos.PvP
             public const ushort
                 PressurePoint = 3172;
         }
-
+        internal static class Config
+        {
+            internal const string
+                MNKPvP_SmiteThreshold = "MNKPvP_SmiteThreshold";
+        }
         internal class MNKPvP_Burst : CustomCombo
         {
             protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.MNKPvP_Burst;
@@ -55,6 +59,10 @@ namespace WrathCombo.Combos.PvP
 
                     if (!PvPCommon.TargetImmuneToDamage())
                     {
+                        if (IsEnabled(CustomComboPreset.MNKPvP_Smite) && PvPMelee.CanSmite() && GetTargetDistance() <= 10 && HasTarget() &&
+                            GetTargetHPPercent() <= GetOptionValue(Config.MNKPvP_SmiteThreshold))
+                            return PvPMelee.Smite;
+
                         if (IsEnabled(CustomComboPreset.MNKPvP_Burst_RisingPhoenix))
                         {
                             if (!HasEffect(Buffs.FireResonance) && GetRemainingCharges(RisingPhoenix) > 1 || WasLastWeaponskill(PouncingCoeurl) && GetRemainingCharges(RisingPhoenix) > 0)

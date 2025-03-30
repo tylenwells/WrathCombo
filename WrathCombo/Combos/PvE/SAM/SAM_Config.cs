@@ -183,6 +183,13 @@ internal partial class SAM
                         "Also requires next weaponskill to be Yukikaze.");
 
                     break;
+
+                // Smite
+                case CustomComboPreset.SAMPvP_Smite:
+                    UserConfig.DrawSliderInt(0, 100, SAMPvP.Config.SAMPvP_SmiteThreshold,
+                        "Target HP% to smite, Max damage below 25%");
+
+                    break;
             }
         }
     }

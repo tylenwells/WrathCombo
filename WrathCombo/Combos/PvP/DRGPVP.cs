@@ -44,7 +44,8 @@ namespace WrathCombo.Combos.PvP
                 DRGPvP_LOTD_Duration = "DRGPvP_LOTD_Duration",
                 DRGPvP_LOTD_HPValue = "DRGPvP_LOTD_HPValue",
                 DRGPvP_CS_HP_Threshold = "DRGPvP_CS_HP_Threshold",
-                DRGPvP_Distance_Threshold = "DRGPvP_Distance_Threshold";
+                DRGPvP_Distance_Threshold = "DRGPvP_Distance_Threshold",
+                DRGPvP_SmiteThreshold = "DRGPvP_SmiteThreshold";
         }
 
         internal class DRGPvP_Burst : CustomCombo
@@ -57,6 +58,10 @@ namespace WrathCombo.Combos.PvP
                 {
                     if (!TargetHasEffectAny(PvPCommon.Buffs.Guard))
                     {
+                        if (IsEnabled(CustomComboPreset.DRGPvP_Smite) && PvPMelee.CanSmite() && GetTargetDistance() <= 10 && HasTarget() &&
+                            GetTargetHPPercent() <= GetOptionValue(Config.DRGPvP_SmiteThreshold))
+                            return PvPMelee.Smite;
+
                         if (CanWeave())
                         {
                             if (IsEnabled(CustomComboPreset.DRGPvP_HighJump) && IsOffCooldown(HighJump) && !HasEffect(Buffs.StarCrossReady) && (HasEffect(Buffs.LifeOfTheDragon) || GetCooldownRemainingTime(Geirskogul) > 5)) // Will high jump after Gierskogul OR if Geir will be on cd for 2 more gcds.

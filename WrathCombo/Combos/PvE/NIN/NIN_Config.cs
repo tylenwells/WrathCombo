@@ -174,6 +174,12 @@ internal partial class NIN
                 case CustomComboPreset.NINPvP_AoE_SeitonTenchu:
                     UserConfig.DrawSliderInt(1, 50, NINPvP.Config.NINPVP_SeitonTenchuAoE, "Target's HP% to be at or under", 200);
                     break;
+                // Smite
+                case CustomComboPreset.NINPvP_Smite:
+                    UserConfig.DrawSliderInt(0, 100, NINPvP.Config.NINPvP_SmiteThreshold,
+                        "Target HP% to smite, Max damage below 25%");
+
+                    break;
             }
         }
     }

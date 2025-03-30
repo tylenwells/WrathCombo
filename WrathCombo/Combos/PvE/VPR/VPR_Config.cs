@@ -141,6 +141,13 @@ internal partial class VPR
                     DrawSliderInt(6, 10, VPRPvP.Config.VPRPvP_Slither_Range, "Maximum Range", 173);
 
                     break;
+
+                // Smite
+                case CustomComboPreset.VPRPvP_Smite:
+                    DrawSliderInt(0, 100, VPRPvP.Config.VPRPvP_SmiteThreshold, 
+                        "Target HP% to smite, Max damage below 25%");
+
+                    break;
             }
         }
     }

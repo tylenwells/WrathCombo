@@ -59,7 +59,8 @@ namespace WrathCombo.Combos.PvP
                 NINPvP_Meisui_ST = "NINPvP_Meisui_ST",
                 NINPvP_Meisui_AoE = "NINPvP_Meisui_AoE",
                 NINPVP_SeitonTenchu = "NINPVP_SeitonTenchu",
-                NINPVP_SeitonTenchuAoE = "NINPVP_SeitonTenchuAoE";
+                NINPVP_SeitonTenchuAoE = "NINPVP_SeitonTenchuAoE",
+                NINPvP_SmiteThreshold = "NINPvP_SmiteThreshold";
         }
 
         internal class NINPvP_ST_BurstMode : CustomCombo
@@ -94,6 +95,11 @@ namespace WrathCombo.Combos.PvP
                         if (IsEnabled(CustomComboPreset.NINPvP_ST_SeitonTenchu) && GetTargetHPPercent() < GetOptionValue(Config.NINPVP_SeitonTenchu) &&
                             (IsLB1Ready || HasEffect(Buffs.SeitonUnsealed)))  // Limit Break or Unsealed buff
                             return OriginalHook(SeitonTenchu);
+
+                        //Smite
+                        if (IsEnabled(CustomComboPreset.NINPvP_Smite) && PvPMelee.CanSmite() && GetTargetDistance() <= 10 && HasTarget() &&
+                            GetTargetHPPercent() <= GetOptionValue(Config.NINPvP_SmiteThreshold))
+                            return PvPMelee.Smite;
 
                         // Zesho Meppo
                         if (HasEffect(Buffs.ZeshoMeppoReady) && InMeleeRange())

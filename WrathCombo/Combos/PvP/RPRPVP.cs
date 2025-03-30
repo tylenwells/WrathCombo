@@ -50,6 +50,8 @@ namespace WrathCombo.Combos.PvP
                 RPRPvP_ImmortalStackThreshold = "RPRPvPImmortalStackThreshold";
             public const string
                 RPRPvP_ArcaneCircleThreshold = "RPRPvPArcaneCircleOption";
+            public const string
+                RPRPvP_SmiteThreshold = "RPRPvP_SmiteThreshold";
         }
 
         internal class RPRPvP_Burst : CustomCombo
@@ -78,6 +80,11 @@ namespace WrathCombo.Combos.PvP
 
                     if (!PvPCommon.TargetImmuneToDamage()) // Guard check on target
                     {
+                        //Smite
+                        if (IsEnabled(CustomComboPreset.RPRPvP_Smite) && PvPMelee.CanSmite() && GetTargetDistance() <= 10 && HasTarget() &&
+                            GetTargetHPPercent() <= GetOptionValue(Config.RPRPvP_SmiteThreshold))
+                            return PvPMelee.Smite;
+
                         // Harvest Moon Ranged Option
                         if (IsEnabled(CustomComboPreset.RPRPvP_Burst_RangedHarvest) && distance > 5)
                             return HarvestMoon;

@@ -137,6 +137,12 @@ internal partial class RPR
                         "Set a HP percentage value. Caps at 90 to prevent waste.");
 
                     break;
+
+                case CustomComboPreset.RPRPvP_Smite:
+                    DrawSliderInt(0, 100, RPRPvP.Config.RPRPvP_SmiteThreshold,
+                        "Target HP% to smite, Max damage below 25%");
+
+                    break;
             }
         }
     }

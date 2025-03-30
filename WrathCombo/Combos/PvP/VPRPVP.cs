@@ -54,7 +54,8 @@ namespace WrathCombo.Combos.PvP
                 VPRPvP_Bloodcoil_PlayerHP = new("VPRPvP_Bloodcoil_PlayerHP", 80),
                 VPRPvP_UncoiledFury_TargetHP = new("VPRPvP_UncoiledFury_TargetHP", 60),
                 VPRPvP_Slither_Charges = new("VPRPvP_Slither_Charges", 1),
-                VPRPvP_Slither_Range = new("VPRPvP_Slither_Range", 6);
+                VPRPvP_Slither_Range = new("VPRPvP_Slither_Range", 6),
+                VPRPvP_SmiteThreshold = new("VPRPvP_SmiteThreshold", 25);
 
             internal static UserBoolArray
                 VPRPvP_RattlingCoil_SubOptions = new("VPRPvP_RattlingCoil_SubOptions");
@@ -98,6 +99,10 @@ namespace WrathCombo.Combos.PvP
                     bool isUncoiledFuryDependant = !isUncoiledFuryEnabled || !(isUncoiledFuryEnabled && isUncoiledFuryPrimed);
                     bool isSlitherPrimed = hasTarget && !inMeleeRange && isUncoiledFuryDependant && !hasSlither && !hasBind;
                     #endregion
+                    // Smite
+                    if (IsEnabled(CustomComboPreset.VPRPvP_Smite) && PvPMelee.CanSmite() && !PvPCommon.TargetImmuneToDamage() && GetTargetDistance() <= 10 && HasTarget() &&
+                        GetTargetHPPercent() <= GetOptionValue(Config.VPRPvP_SmiteThreshold))
+                        return PvPMelee.Smite;
 
                     // Backlash
                     if (IsEnabled(CustomComboPreset.VPRPvP_Backlash) && ((!Config.VPRPvP_Backlash_SubOption && hasBacklash) ||

@@ -51,7 +51,8 @@ namespace WrathCombo.Combos.PvP
                 SAMPvP_Soten_Range = new("SAMPvP_Soten_Range", 3),
                 SAMPvP_Soten_Charges = new("SAMPvP_Soten_Charges", 1),
                 SAMPvP_Chiten_PlayerHP = new("SAMPvP_Chiten_PlayerHP", 70),
-                SAMPvP_Mineuchi_TargetHP = new("SAMPvP_Mineuchi_TargetHP", 40);
+                SAMPvP_Mineuchi_TargetHP = new("SAMPvP_Mineuchi_TargetHP", 40),
+                SAMPvP_SmiteThreshold = new("SAMPvP_SmiteThreshold", 25);
 
             public static UserBool
                 SAMPvP_Soten_SubOption = new("SAMPvP_Soten_SubOption"),
@@ -95,6 +96,11 @@ namespace WrathCombo.Combos.PvP
                     // Zantetsuken
                     if (IsEnabled(CustomComboPreset.SAMPvP_Zantetsuken) && isZantetsukenPrimed && !isTargetInvincible)
                         return OriginalHook(Zantetsuken);
+
+                    //Smite
+                    if (IsEnabled(CustomComboPreset.SAMPvP_Smite) && PvPMelee.CanSmite() && !PvPCommon.TargetImmuneToDamage() && GetTargetDistance() <= 10 && HasTarget() &&
+                        GetTargetHPPercent() <= GetOptionValue(Config.SAMPvP_SmiteThreshold))
+                        return PvPMelee.Smite;
 
                     // Chiten
                     if (IsEnabled(CustomComboPreset.SAMPvP_Chiten) && IsOffCooldown(Chiten) && inCombat && playerCurrentPercentHp < Config.SAMPvP_Chiten_PlayerHP)

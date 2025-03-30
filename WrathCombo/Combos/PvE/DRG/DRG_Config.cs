@@ -106,6 +106,12 @@ internal partial class DRG
                     DrawSliderInt(0, 20, DRGPvP.Config.DRGPvP_Distance_Threshold, "Minimum Distance to use Wyrmwind Thrust. Maximum damage at 15 or more");
 
                     break;
+
+                case CustomComboPreset.DRGPvP_Smite:
+                    DrawSliderInt(0, 100, DRGPvP.Config.DRGPvP_SmiteThreshold,
+                        "Target HP% to smite, Max damage below 25%");
+
+                    break;
             }
         }
     }

@@ -6944,7 +6944,13 @@ SMN.JobID)]
         DRG.JobID)]
     DRGPvP_BurstProtection = 116008,
 
-    // Last value = 116009
+    [ParentCombo(DRGPvP_Burst)]
+    [CustomComboInfo("Role Action Smite Option",
+        "Adds Role Action Smite to Burst Mode below selected health",
+        DRGPvP.JobID)]
+    DRGPvP_Smite = 116010,
+
+    // Last value = 116010
 
     #endregion
 
@@ -7102,7 +7108,14 @@ SMN.JobID)]
     [CustomComboInfo("Wind's Reply Option", "Adds Wind's Reply to Burst Mode.", MNK.JobID)]
     MNKPvP_Burst_WindsReply = 119005,
 
-    // Last value = 119006
+    [ParentCombo(MNKPvP_Burst)]
+    [PvPCustomCombo]
+    [CustomComboInfo("Role Action Smite Option",
+        "Adds Role Action Smite to Burst Mode below selected health",
+        MNKPvP.JobID)]
+    MNKPvP_Smite = 119007,
+
+    // Last value = 119007
 
     #endregion
 
@@ -7203,7 +7216,14 @@ SMN.JobID)]
         NINPvP.JobID)]
     NINPvP_AoE_SeitonTenchu = 120017,
 
-    // Last value = 120016
+    [ParentCombo(NINPvP_ST_BurstMode)]
+    [PvPCustomCombo]
+    [CustomComboInfo("Role Action Smite Option",
+      "Adds Role Action Smite to Burst Mode below selected health",
+      NINPvP.JobID)]
+    NINPvP_Smite = 120018,
+
+    // Last value = 120018
 
     #endregion
 
@@ -7359,7 +7379,14 @@ SMN.JobID)]
         RPR.JobID)]
     RPRPvP_Burst_ArcaneCircle = 122008,
 
-    // Last value = 122009
+    [PvPCustomCombo]
+    [ParentCombo(RPRPvP_Burst)]
+    [CustomComboInfo("Role Action Smite Option",
+        "Adds Role Action Smite to Burst Mode below selected health",
+        RPRPvP.JobID)]
+    RPRPvP_Smite = 122010,
+
+    // Last value = 122010
 
     #endregion
 
@@ -7491,7 +7518,14 @@ SMN.JobID)]
         SAMPvP.JobID)]
     SAMPvP_Zantetsuken = 125005,
 
-    // Last value = 125005
+    [PvPCustomCombo]
+    [ParentCombo(SAMPvP_Burst)]
+    [CustomComboInfo("Role Action Smite Option",
+        "Adds Role Action Smite to Burst Mode below selected health",
+        SAMPvP.JobID)]
+    SAMPvP_Smite = 125006,
+
+    // Last value = 125006
 
     #endregion
 
@@ -7619,7 +7653,14 @@ SMN.JobID)]
         "Adds Rattling Coil to Snake Scales when available.\n- Requires Snake Scales to be on cooldown.", VPRPvP.JobID)]
     VPRPvP_SnakeScales_Feature = 130006,
 
-    // Last value = 130006
+    [PvPCustomCombo]
+    [ParentCombo(VPRPvP_Burst)]
+    [CustomComboInfo("Role Action Smite Option",
+        "Adds Role Action Smite to Burst Mode below selected health",
+        VPRPvP.JobID)]
+    VPRPvP_Smite = 130007,
+
+    // Last value = 130007
 
     #endregion
 
