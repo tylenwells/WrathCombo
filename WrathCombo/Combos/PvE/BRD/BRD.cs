@@ -55,22 +55,17 @@ internal partial class BRD : PhysRangedJob
             if (actionID is not IronJaws)
                 return actionID;
 
-            // Before Iron Jaws: Alternate between DoTs
             if (!LevelChecked(IronJaws))
                 return LevelChecked(Windbite) && BlueRemaining <= PurpleRemaining
                     ? Windbite
                     : VenomousBite;
 
-            // At least Lv56 (Iron Jaws) from here on...
-
-            // DoT application takes priority, as Iron Jaws always cuts ticks
             if (Blue is null && LevelChecked(Windbite))
                 return OriginalHook(Windbite);
 
             if (Purple is null && LevelChecked(VenomousBite))
                 return OriginalHook(VenomousBite);
 
-            // DoT refresh over Apex Option
             if (PurpleRemaining < 4 || BlueRemaining < 4)
                 return IronJaws;
 
@@ -96,13 +91,11 @@ internal partial class BRD : PhysRangedJob
             if (actionID is not IronJaws)
                 return actionID;
 
-            // Iron Jaws only if it is applicable
             if (LevelChecked(IronJaws) && (
                 Purple is not null && PurpleRemaining < 4 ||
                 Blue is not null && BlueRemaining < 4))
                 return IronJaws;
 
-            // Otherwise alternate between DoTs as needed
             return LevelChecked(Windbite) && BlueRemaining <= PurpleRemaining ?
                 OriginalHook(Windbite) :
                 OriginalHook(VenomousBite);
@@ -130,11 +123,11 @@ internal partial class BRD : PhysRangedJob
                     return ArmysPaeon;
             }
 
-            if (SongWanderer && gauge.Repertoire == 3)
-                return OriginalHook(PitchPerfect);
-
             if (ActionReady(EmpyrealArrow))
                 return EmpyrealArrow;
+
+            if (PitchPerfected())
+                return OriginalHook(PitchPerfect);
 
             if (ActionReady(RainOfDeath))
                 return RainOfDeath;
@@ -167,7 +160,7 @@ internal partial class BRD : PhysRangedJob
                     return ArmysPaeon;
             }
 
-            if (SongWanderer && gauge.Repertoire == 3)
+            if (PitchPerfected())
                 return OriginalHook(PitchPerfect);
 
             if (ActionReady(EmpyrealArrow))
@@ -372,39 +365,25 @@ internal partial class BRD : PhysRangedJob
 
             #region OGCDS
 
-            if (CanBardWeave && IsEnabled(CustomComboPreset.BRD_AoE_Adv_oGCD))
+            if (CanBardWeave && IsEnabled(CustomComboPreset.BRD_AoE_Adv_oGCD) &&
+               (!BuffTime || !IsEnabled(CustomComboPreset.BRD_AoE_Adv_Buffs)))
             {
                 if (ActionReady(EmpyrealArrow))
                     return EmpyrealArrow;
 
-                // Pitch perfect logic. Uses when full, or at 2 stacks before Empy arrow to prevent overcap
-                if (LevelChecked(PitchPerfect) && SongWanderer &&
-                    (gauge.Repertoire == 3 || LevelChecked(EmpyrealArrow) && gauge.Repertoire == 2 && EmpyrealCD < 2))
+                if (PitchPerfected())
                     return OriginalHook(PitchPerfect);
 
-                // Sidewinder Logic to stay in the buff window on 2 min, but on cd with the 1 min
-                if (ActionReady(Sidewinder))
-                {
-                    if (SongWanderer)
-                    {
-                        if ((HasEffect(Buffs.RagingStrikes) || RagingCD > 10) &&
-                            (HasEffect(Buffs.BattleVoice) || BattleVoiceCD > 10) &&
-                            (HasEffect(Buffs.RadiantFinale) || RadiantCD > 10 ||
-                             !LevelChecked(RadiantFinale)))
-                            return Sidewinder;
-                    }
-                    else
-                        return Sidewinder;
-                }
-            }
+                if (ActionReady(Sidewinder) &&
+                    (IsEnabled(CustomComboPreset.BRD_AoE_Pooling) && UsePooledSidewinder() || !IsEnabled(CustomComboPreset.BRD_AoE_Pooling)))
+                    return Sidewinder;
+            
+                if (Role.CanHeadGraze(CustomComboPreset.BRD_AoE_Adv_Interrupt) && CanWeaveDelayed)
+                    return Role.HeadGraze;
 
-            // Interupt Logic, set to delayed weave. Let someone else do it if they want. Better to be last line of defense and stay off cd.
-            if (Role.CanHeadGraze(CustomComboPreset.BRD_AoE_Adv_Interrupt) && CanWeaveDelayed)
-                return Role.HeadGraze;
-
-            // Rain of death Logic
-            if (CanBardWeave && IsEnabled(CustomComboPreset.BRD_AoE_Adv_oGCD))
-            {
+                // Rain of death Logic
+                if (CanBardWeave && IsEnabled(CustomComboPreset.BRD_AoE_Adv_oGCD))
+            
                 if (LevelChecked(RainOfDeath) && !WasLastAction(RainOfDeath) && EmpyrealCD > 1 || !LevelChecked(EmpyrealArrow))
                 {
                     if (IsEnabled(CustomComboPreset.BRD_AoE_Pooling) && LevelChecked(WanderersMinuet) && TraitLevelChecked(Traits.EnhancedBloodletter))
@@ -458,27 +437,16 @@ internal partial class BRD : PhysRangedJob
                 return OriginalHook(WideVolley);
 
             // Delay Encore enough for buff window
-            if (IsEnabled(CustomComboPreset.BRD_Adv_BuffsEncore) && HasEffect(Buffs.RadiantEncoreReady) && GetBuffRemainingTime(Buffs.RadiantFinale) < 15)
+            if (IsEnabled(CustomComboPreset.BRD_Adv_BuffsEncore) && HasEffect(Buffs.RadiantEncoreReady) && RadiantFinaleDuration < 15)
                 return OriginalHook(RadiantEncore);
 
-            if (IsEnabled(CustomComboPreset.BRD_ST_ApexArrow)) // Apex Logic to time song in buff window and in mages.
+            if (IsEnabled(CustomComboPreset.BRD_AoE_ApexArrow))
             {
                 if (HasEffect(Buffs.BlastArrowReady))
                     return BlastArrow;
 
-                if (LevelChecked(ApexArrow))
-                {
-                    if (SongMage && gauge.SoulVoice == 100)
-                        return ApexArrow;
-
-                    if (SongMage && gauge.SoulVoice >= 80 &&
-                        SongTimerInSeconds > 18 && SongTimerInSeconds < 22)
-                        return ApexArrow;
-
-                    if (SongWanderer && HasEffect(Buffs.RagingStrikes) && HasEffect(Buffs.BattleVoice) &&
-                        (HasEffect(Buffs.RadiantFinale) || !LevelChecked(RadiantFinale)) && gauge.SoulVoice >= 80)
-                        return ApexArrow;
-                }
+                if (IsEnabled(CustomComboPreset.BRD_AoE_ApexPooling) && UsePooledApex() || !IsEnabled(CustomComboPreset.BRD_AoE_ApexPooling) && gauge.SoulVoice == 100)
+                    return ApexArrow;
             }
 
             if (IsEnabled(CustomComboPreset.BRD_Adv_BuffsResonant))
@@ -501,6 +469,7 @@ internal partial class BRD : PhysRangedJob
             if (actionID is not (HeavyShot or BurstShot))
                 return actionID;
 
+            #region Variables
             int targetHPThreshold = Config.BRD_NoWasteHPPercentage;
             int ragingJawsRenewTime = Config.BRD_RagingJawsRenewTime;
             bool isEnemyHealthHigh = !IsEnabled(CustomComboPreset.BRD_Adv_NoWaste) || GetTargetHPPercent() > targetHPThreshold;
@@ -508,6 +477,7 @@ internal partial class BRD : PhysRangedJob
             bool battleVoiceEnabled = IsEnabled(CustomComboPreset.BRD_Adv_Buffs_Battlevoice);
             bool barrageEnabled = IsEnabled(CustomComboPreset.BRD_Adv_Buffs_Barrage);
             bool radiantEnabled = IsEnabled(CustomComboPreset.BRD_Adv_Buffs_RadiantFinale);
+            #endregion
 
             #region Variants
 
@@ -518,6 +488,8 @@ internal partial class BRD : PhysRangedJob
                 return Variant.Rampart;
 
             #endregion
+
+            #region Opener
 
             if (IsEnabled(CustomComboPreset.BRD_ST_Adv_Balance_Standard) &&
                 Opener().FullOpener(ref actionID))
@@ -533,6 +505,7 @@ internal partial class BRD : PhysRangedJob
 
                 return actionID;
             }
+            #endregion
 
             #region Songs
 
@@ -624,41 +597,19 @@ internal partial class BRD : PhysRangedJob
             if (CanBardWeave && IsEnabled(CustomComboPreset.BRD_ST_Adv_oGCD) &&
                 (!BuffTime || !IsEnabled(CustomComboPreset.BRD_Adv_Buffs)))
             {
-                // Pitch Perfect logic to use when full or when Empyreal arrow might overcap it.
-                if (LevelChecked(PitchPerfect) && SongWanderer &&
-                    (gauge.Repertoire == 3 || LevelChecked(EmpyrealArrow) && gauge.Repertoire == 2 && EmpyrealCD < 2))
-                    return OriginalHook(PitchPerfect);
-
                 if (ActionReady(EmpyrealArrow))
                     return EmpyrealArrow;
 
-                // Sidewinder logic to use in burst window with buffs or on cd on the 1 minutes
-                if (ActionReady(Sidewinder))
-                {
-                    if (IsEnabled(CustomComboPreset.BRD_Adv_Pooling))
-                    {
-                        if (SongWanderer)
-                        {
-                            if ((HasEffect(Buffs.RagingStrikes) || RagingCD > 10) &&
-                                (HasEffect(Buffs.BattleVoice) || BattleVoiceCD > 10) &&
-                                (HasEffect(Buffs.RadiantFinale) || RadiantCD > 10 ||
-                                 !LevelChecked(RadiantFinale)))
-                                return Sidewinder;
-                        }
-                        else
-                            return Sidewinder;
-                    }
-                    else
-                        return Sidewinder;
-                }
-            }
-            //Interupt Logic, set to delayed weave. Let someone else do it if they want. Better to be last line of defense and stay off cd.
-            if (Role.CanHeadGraze(CustomComboPreset.BRD_Adv_Interrupt) && CanWeaveDelayed)
-                return Role.HeadGraze;
+                if (PitchPerfected())
+                    return OriginalHook(PitchPerfect);
 
-            // Bloodletter pooling logic. Will Pool as buffs are coming up.
-            if (CanBardWeave && IsEnabled(CustomComboPreset.BRD_ST_Adv_oGCD))
-            {
+                if (ActionReady(Sidewinder) && 
+                    (IsEnabled(CustomComboPreset.BRD_Adv_Pooling) && UsePooledSidewinder() || !IsEnabled(CustomComboPreset.BRD_Adv_Pooling)))
+                    return Sidewinder;
+
+                if (Role.CanHeadGraze(CustomComboPreset.BRD_Adv_Interrupt) && CanWeaveDelayed)
+                    return Role.HeadGraze;
+
                 if (ActionReady(Bloodletter) && !(WasLastAction(Bloodletter) || WasLastAction(HeartbreakShot)) && EmpyrealCD > 1 || !LevelChecked(EmpyrealArrow))
                 {
                     if (IsEnabled(CustomComboPreset.BRD_Adv_Pooling) &&
@@ -695,7 +646,6 @@ internal partial class BRD : PhysRangedJob
                 if (IsEnabled(CustomComboPreset.BRD_ST_SecondWind) && Role.CanSecondWind(Config.BRD_STSecondWindThreshold))
                     return Role.SecondWind;
 
-                // Could be upgraded with a targetting system in the future
                 if (IsEnabled(CustomComboPreset.BRD_ST_Wardens) && ActionReady(TheWardensPaeon) && HasCleansableDebuff(LocalPlayer))
                     return OriginalHook(TheWardensPaeon);
             }
@@ -738,29 +688,16 @@ internal partial class BRD : PhysRangedJob
             if (HasEffect(Buffs.HawksEye) || HasEffect(Buffs.Barrage))
                 return OriginalHook(StraightShot);
 
-            // Delay Encore enough for buff window
-            if (IsEnabled(CustomComboPreset.BRD_Adv_BuffsEncore) &&
-                HasEffect(Buffs.RadiantEncoreReady) && HasEffect(Buffs.RagingStrikes))
+            if (IsEnabled(CustomComboPreset.BRD_Adv_BuffsEncore) && HasEffect(Buffs.RadiantEncoreReady) && RadiantFinaleDuration < 15)
                 return OriginalHook(RadiantEncore);
 
-            if (IsEnabled(CustomComboPreset.BRD_ST_ApexArrow)) // Apex Logic to time song in buff window and in mages.
+            if (IsEnabled(CustomComboPreset.BRD_ST_ApexArrow))
             {
                 if (HasEffect(Buffs.BlastArrowReady))
                     return BlastArrow;
 
-                if (LevelChecked(ApexArrow))
-                {
-                    if (SongMage && gauge.SoulVoice == 100)
-                        return ApexArrow;
-
-                    if (SongMage && gauge.SoulVoice >= 80 &&
-                        SongTimerInSeconds > 18 && SongTimerInSeconds < 22)
-                        return ApexArrow;
-
-                    if (SongWanderer && HasEffect(Buffs.RagingStrikes) && HasEffect(Buffs.BattleVoice) &&
-                        (HasEffect(Buffs.RadiantFinale) || !LevelChecked(RadiantFinale)) && gauge.SoulVoice >= 80)
-                        return ApexArrow;
-                }
+                if (IsEnabled(CustomComboPreset.BRD_Adv_ApexPooling) && UsePooledApex() || !IsEnabled(CustomComboPreset.BRD_Adv_ApexPooling) && gauge.SoulVoice == 100)
+                    return ApexArrow;
             }
 
             if (IsEnabled(CustomComboPreset.BRD_Adv_BuffsResonant) && HasEffect(Buffs.ResonantArrowReady))
@@ -881,27 +818,12 @@ internal partial class BRD : PhysRangedJob
                 if (ActionReady(EmpyrealArrow))
                     return EmpyrealArrow;
 
-                // Pitch Perfect logic to use when full or when Empy arrow can cause an overcap
-                if (LevelChecked(PitchPerfect) && SongWanderer &&
-                    (gauge.Repertoire == 3 || LevelChecked(EmpyrealArrow) && gauge.Repertoire == 2 && EmpyrealCD < 2))
+                if (PitchPerfected())
                     return OriginalHook(PitchPerfect);
 
-                // Sidewinder Logic to use in Window and on the 1 min
-                if (ActionReady(Sidewinder))
-                {
-                    if (SongWanderer)
-                    {
-                        if ((HasEffect(Buffs.RagingStrikes) || RagingCD > 10) &&
-                            (HasEffect(Buffs.BattleVoice) || BattleVoiceCD > 10) &&
-                            (HasEffect(Buffs.RadiantFinale) || RadiantCD > 10 ||
-                             !LevelChecked(RadiantFinale)))
-                            return Sidewinder;
-                    }
-                    else
-                        return Sidewinder;
-                }
+                if (ActionReady(Sidewinder) && UsePooledSidewinder())
+                    return Sidewinder;
 
-                // Interupt
                 if (Role.CanHeadGraze(CustomComboPreset.BRD_AoE_SimpleMode) && CanWeaveDelayed)
                     return Role.HeadGraze;
 
@@ -934,8 +856,6 @@ internal partial class BRD : PhysRangedJob
                 if (!LevelChecked(RainOfDeath) && !(WasLastAction(Bloodletter) && BloodletterCharges > 0))
                     return OriginalHook(Bloodletter);
 
-                // Self care section for healing and debuff removal
-
                 if (Role.CanSecondWind(40))
                     return Role.SecondWind;
 
@@ -947,19 +867,19 @@ internal partial class BRD : PhysRangedJob
 
             #region GCDS
 
-            if (HasEffect(Buffs.HawksEye) || HasEffect(Buffs.Barrage)) //Ahead of other gcds because of higher risk of losing a proc than a ready buff
+            if (HasEffect(Buffs.HawksEye) || HasEffect(Buffs.Barrage))
                 return OriginalHook(WideVolley);
-
-            if (LevelChecked(ApexArrow) && gauge.SoulVoice == 100)
-                return ApexArrow;
 
             if (HasEffect(Buffs.BlastArrowReady))
                 return BlastArrow;
 
+            if (UsePooledApex())
+                return ApexArrow;
+
             if (HasEffect(Buffs.ResonantArrowReady))
                 return ResonantArrow;
 
-            if (HasEffect(Buffs.RadiantEncoreReady))
+            if (HasEffect(Buffs.RadiantEncoreReady) && RadiantFinaleDuration < 15)
                 return OriginalHook(RadiantEncore);
 
             #endregion
@@ -1080,32 +1000,15 @@ internal partial class BRD : PhysRangedJob
 
             if (CanBardWeave)
             {
-                // Empyreal Arrow first to minimize drift
                 if (ActionReady(EmpyrealArrow))
                     return EmpyrealArrow;
 
-                //Pitch Perfect Logic to not let Empyreal arrow overcap
-                if (LevelChecked(PitchPerfect) && SongWanderer &&
-                    (gauge.Repertoire == 3 || LevelChecked(EmpyrealArrow) && gauge.Repertoire == 2 && EmpyrealCD < 2))
+                if (PitchPerfected())
                     return OriginalHook(PitchPerfect);
 
-                // Sidewinder Logic for burst window and 1 min
-                if (ActionReady(Sidewinder))
-                {
-                    if (SongWanderer)
-                    {
-                        if ((HasEffect(Buffs.RagingStrikes) || RagingCD > 10) &&
-                            (HasEffect(Buffs.BattleVoice) || BattleVoiceCD > 10) &&
-                            (HasEffect(Buffs.RadiantFinale) || RadiantCD > 10 ||
-                             !LevelChecked(RadiantFinale)))
-                            return Sidewinder;
-                    }
-
-                    else
-                        return Sidewinder;
-                }
-
-                //Interupt delayered weave
+                if (ActionReady(Sidewinder) && UsePooledSidewinder())
+                    return Sidewinder;            
+               
                 if (Role.CanHeadGraze(CustomComboPreset.BRD_ST_SimpleMode) && CanWeaveDelayed)
                     return Role.HeadGraze;
 
@@ -1136,8 +1039,6 @@ internal partial class BRD : PhysRangedJob
                     else if (BloodletterCharges > 0)
                         return OriginalHook(Bloodletter);
                 }
-
-                // Self Care
 
                 if (Role.CanSecondWind(40))
                     return Role.SecondWind;
@@ -1181,27 +1082,16 @@ internal partial class BRD : PhysRangedJob
             if (HasEffect(Buffs.HawksEye) || HasEffect(Buffs.Barrage))
                 return OriginalHook(StraightShot);
 
-            if (LevelChecked(BlastArrow) && HasEffect(Buffs.BlastArrowReady))
+            if (HasEffect(Buffs.BlastArrowReady))
                 return BlastArrow;
 
-            if (LevelChecked(ApexArrow)) //Apex Logic to use in the burst window and around the 1 min.
-            {
-                if (SongMage && gauge.SoulVoice == 100)
-                    return ApexArrow;
-
-                if (SongMage && gauge.SoulVoice >= 80 &&
-                    SongTimerInSeconds > 18 && SongTimerInSeconds < 22)
-                    return ApexArrow;
-
-                if (SongWanderer && HasEffect(Buffs.RagingStrikes) && HasEffect(Buffs.BattleVoice) &&
-                    (HasEffect(Buffs.RadiantFinale) || !LevelChecked(RadiantFinale)) && gauge.SoulVoice >= 80)
-                    return ApexArrow;
-            }
+            if (UsePooledApex())
+                return ApexArrow;
 
             if (HasEffect(Buffs.ResonantArrowReady))
                 return ResonantArrow;
 
-            if (HasEffect(Buffs.RadiantEncoreReady) && !JustUsed(RadiantFinale) && GetCooldownElapsed(BattleVoice) >= 4.2f)
+            if (HasEffect(Buffs.RadiantEncoreReady) && RadiantFinaleDuration < 15)
                 return OriginalHook(RadiantEncore);
 
             #endregion

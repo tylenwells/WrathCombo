@@ -16,34 +16,74 @@ namespace WrathCombo.Combos.PvE;
 
 internal partial class BRD
 {
-     #region Variables
+    #region Variables
 
+    // Gauge Stuff
     internal static BRDGauge? gauge = GetJobGauge<BRDGauge>();
     internal static int SongTimerInSeconds => gauge.SongTimer / 1000;
     internal static bool SongNone => gauge.Song == Song.None;
     internal static bool SongWanderer => gauge.Song == Song.Wanderer;
     internal static bool SongMage => gauge.Song == Song.Mage;
     internal static bool SongArmy => gauge.Song == Song.Army;
-
+    //Dot Management
     internal static Status? Purple => FindTargetEffect(Debuffs.CausticBite) ?? FindTargetEffect(Debuffs.VenomousBite);
     internal static Status? Blue => FindTargetEffect(Debuffs.Stormbite) ?? FindTargetEffect(Debuffs.Windbite);
     internal static float PurpleRemaining => Purple?.RemainingTime ?? 0;
     internal static float BlueRemaining => Blue?.RemainingTime ?? 0;
 
+    //Useful Bools
     internal static bool BardHasTarget => HasBattleTarget();
     internal static bool CanBardWeave => CanWeave() && !ActionWatching.HasDoubleWeaved();
     internal static bool CanWeaveDelayed => CanDelayedWeave(0.9) && !ActionWatching.HasDoubleWeaved();
     internal static bool CanIronJaws => LevelChecked(IronJaws);
     internal static bool BuffTime => GetCooldownRemainingTime(RagingStrikes) < 2.7;
+    internal static bool BuffWindow => HasEffect(Buffs.RagingStrikes) && HasEffect(Buffs.BattleVoice) && (HasEffect(Buffs.RadiantFinale) || !LevelChecked(RadiantFinale));
 
+    //Buff Tracking
     internal static float RagingCD => GetCooldownRemainingTime(RagingStrikes);
     internal static float BattleVoiceCD => GetCooldownRemainingTime(BattleVoice);
     internal static float EmpyrealCD => GetCooldownRemainingTime(EmpyrealArrow);
     internal static float RadiantCD => GetCooldownRemainingTime(RadiantFinale);
     internal static float RagingStrikesDuration => GetBuffRemainingTime(Buffs.RagingStrikes);
+    internal static float RadiantFinaleDuration => GetBuffRemainingTime(Buffs.RadiantFinale);
 
+    // Charge Tracking
     internal static uint RainOfDeathCharges => LevelChecked(RainOfDeath) ? GetRemainingCharges(RainOfDeath) : 0;
     internal static uint BloodletterCharges => GetRemainingCharges(Bloodletter);
+
+    #endregion
+
+    #region Functions
+
+    // Pooled Apex Logic
+    internal static bool UsePooledApex()
+    {
+        if (gauge.SoulVoice >= 80)
+        {
+            if (BuffWindow && RagingStrikesDuration < 18 || RagingCD >= 50 && RagingCD <= 58)
+                return true;
+        }
+        return false;
+    }
+
+    // Pitch Perfect Logic
+    internal static bool PitchPerfected()
+    {
+       if (LevelChecked(PitchPerfect) && SongWanderer &&
+            (gauge.Repertoire == 3 || LevelChecked(EmpyrealArrow) && gauge.Repertoire == 2 && EmpyrealCD < 2))
+            return true;
+        
+       return false;
+    }
+
+    //Sidewinder
+    internal static bool UsePooledSidewinder()
+    {
+        if (BuffWindow && RagingStrikesDuration < 18 || RagingCD >= 10)
+                return true;
+            
+       return false;
+    }
 
     #endregion
 
@@ -183,7 +223,8 @@ internal partial class BRD
             IsOffCooldown(BattleVoice) &&
             IsOffCooldown(RadiantFinale) &&
             IsOffCooldown(RagingStrikes) &&
-            IsOffCooldown(Barrage);
+            IsOffCooldown(Barrage) &&
+            IsOffCooldown(Sidewinder);
     }
 
     internal class BRDAdjusted : WrathOpener
@@ -232,7 +273,8 @@ internal partial class BRD
             IsOffCooldown(BattleVoice) &&
             IsOffCooldown(RadiantFinale) &&
             IsOffCooldown(RagingStrikes) &&
-            IsOffCooldown(Barrage);
+            IsOffCooldown(Barrage) &&
+            IsOffCooldown(Sidewinder);
     }
 
     internal class BRDComfy : WrathOpener
@@ -276,7 +318,8 @@ internal partial class BRD
             IsOffCooldown(BattleVoice) &&
             IsOffCooldown(RadiantFinale) &&
             IsOffCooldown(RagingStrikes) &&
-            IsOffCooldown(Barrage);
+            IsOffCooldown(Barrage) &&
+            IsOffCooldown(Sidewinder);
     }
 
     #endregion
