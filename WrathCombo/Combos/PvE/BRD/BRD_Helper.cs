@@ -37,7 +37,9 @@ internal partial class BRD
     internal static bool CanWeaveDelayed => CanDelayedWeave(0.9) && !ActionWatching.HasDoubleWeaved();
     internal static bool CanIronJaws => LevelChecked(IronJaws);
     internal static bool BuffTime => GetCooldownRemainingTime(RagingStrikes) < 2.7;
-    internal static bool BuffWindow => HasEffect(Buffs.RagingStrikes) && HasEffect(Buffs.BattleVoice) && (HasEffect(Buffs.RadiantFinale) || !LevelChecked(RadiantFinale));
+    internal static bool BuffWindow => HasEffect(Buffs.RagingStrikes) && 
+                                       (HasEffect(Buffs.BattleVoice) || !LevelChecked(BattleVoice)) &&
+                                       (HasEffect(Buffs.RadiantFinale) || !LevelChecked(RadiantFinale));
 
     //Buff Tracking
     internal static float RagingCD => GetCooldownRemainingTime(RagingStrikes);
@@ -76,13 +78,27 @@ internal partial class BRD
        return false;
     }
 
-    //Sidewinder
+    //Sidewinder Logic
     internal static bool UsePooledSidewinder()
     {
         if (BuffWindow && RagingStrikesDuration < 18 || RagingCD >= 10)
                 return true;
             
        return false;
+    }
+
+    //Bloodletter & Rain of Death Logic
+    internal static bool UsePooledBloodRain()
+    {
+        if ((!JustUsed(OriginalHook(Bloodletter)) || !JustUsed(OriginalHook(RainOfDeath))) && 
+           (EmpyrealCD > 1 || !LevelChecked(EmpyrealArrow)))
+        {
+            if (BloodletterCharges == 3 && TraitLevelChecked(Traits.EnhancedBloodletter) || 
+                BloodletterCharges == 2 && !TraitLevelChecked(Traits.EnhancedBloodletter) ||
+                BloodletterCharges > 0 && (BuffWindow || RagingCD > 30))
+                return true; 
+        }
+        return false;
     }
 
     #endregion

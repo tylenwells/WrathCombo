@@ -381,35 +381,9 @@ internal partial class BRD : PhysRangedJob
                 if (Role.CanHeadGraze(CustomComboPreset.BRD_AoE_Adv_Interrupt) && CanWeaveDelayed)
                     return Role.HeadGraze;
 
-                // Rain of death Logic
-                if (CanBardWeave && IsEnabled(CustomComboPreset.BRD_AoE_Adv_oGCD))
-            
-                if (LevelChecked(RainOfDeath) && !WasLastAction(RainOfDeath) && EmpyrealCD > 1 || !LevelChecked(EmpyrealArrow))
-                {
-                    if (IsEnabled(CustomComboPreset.BRD_AoE_Pooling) && LevelChecked(WanderersMinuet) && TraitLevelChecked(Traits.EnhancedBloodletter))
-                    {
-                        //Stop pooling for buff window
-                        if (SongWanderer && ((HasEffect(Buffs.RagingStrikes) || RagingCD > 10) &&
-                            (HasEffect(Buffs.BattleVoice) || BattleVoiceCD > 10 ||
-                             !LevelChecked(BattleVoice)) &&
-                            (HasEffect(Buffs.RadiantFinale) || RadiantCD > 10 ||
-                             !LevelChecked(RadiantFinale)) &&
-                            RainOfDeathCharges > 0 || RainOfDeathCharges > 2))
-                            return OriginalHook(RainOfDeath);
-
-                        if (SongArmy && (RainOfDeathCharges == 3 || gauge.SongTimer / 1000 > 30 && RainOfDeathCharges > 0)) //Start pooling in Armys
-                            return OriginalHook(RainOfDeath);
-
-                        if (SongMage && RainOfDeathCharges > 0) // Dont poolin mages
-                            return OriginalHook(RainOfDeath);
-
-                        if (SongNone && RainOfDeathCharges == 3) //Pool when no song
-                            return OriginalHook(RainOfDeath);
-                    }
-
-                    else if (RainOfDeathCharges > 0) //Dont pool when not enabled
-                        return OriginalHook(RainOfDeath);
-                }
+                if (ActionReady(RainOfDeath) &&
+                    (IsEnabled(CustomComboPreset.BRD_AoE_Pooling) && UsePooledBloodRain() || !IsEnabled(CustomComboPreset.BRD_AoE_Pooling)))
+                    return OriginalHook(RainOfDeath);
 
                 if (!LevelChecked(RainOfDeath) && !(WasLastAction(Bloodletter) && BloodletterCharges > 0))
                     return OriginalHook(Bloodletter);
@@ -610,31 +584,9 @@ internal partial class BRD : PhysRangedJob
                 if (Role.CanHeadGraze(CustomComboPreset.BRD_Adv_Interrupt) && CanWeaveDelayed)
                     return Role.HeadGraze;
 
-                if (ActionReady(Bloodletter) && !(WasLastAction(Bloodletter) || WasLastAction(HeartbreakShot)) && EmpyrealCD > 1 || !LevelChecked(EmpyrealArrow))
-                {
-                    if (IsEnabled(CustomComboPreset.BRD_Adv_Pooling) &&
-                        LevelChecked(WanderersMinuet) && TraitLevelChecked(Traits.EnhancedBloodletter))
-                    {
-                        if (SongWanderer && ((HasEffect(Buffs.RagingStrikes) || RagingCD > 10) &&
-                            (HasEffect(Buffs.BattleVoice) || BattleVoiceCD > 10 ||
-                             !LevelChecked(BattleVoice)) &&
-                            (HasEffect(Buffs.RadiantFinale) || RadiantCD > 10 ||
-                             !LevelChecked(RadiantFinale)) &&
-                            BloodletterCharges > 0 || BloodletterCharges > 2))
-                            return OriginalHook(Bloodletter);
-
-                        if (SongArmy && (BloodletterCharges == 3 || gauge.SongTimer / 1000 > 30 && BloodletterCharges > 0)) // Start pooling in Army
-                            return OriginalHook(Bloodletter);
-
-                        if (SongMage && BloodletterCharges > 0) //Don't pool in Mages
-                            return OriginalHook(Bloodletter);
-
-                        if (SongNone && BloodletterCharges == 3) //Pool with no song
-                            return OriginalHook(Bloodletter);
-                    }
-                    else if (BloodletterCharges > 0)
-                        return OriginalHook(Bloodletter);
-                }
+                if (ActionReady(Bloodletter) &&
+                    (IsEnabled(CustomComboPreset.BRD_Adv_Pooling) && UsePooledBloodRain() || !IsEnabled(CustomComboPreset.BRD_Adv_Pooling)))
+                    return OriginalHook(Bloodletter);
             }
 
             #endregion
@@ -827,31 +779,8 @@ internal partial class BRD : PhysRangedJob
                 if (Role.CanHeadGraze(CustomComboPreset.BRD_AoE_SimpleMode) && CanWeaveDelayed)
                     return Role.HeadGraze;
 
-                // Pooling logic for rain of death basied on song
-                if (LevelChecked(RainOfDeath) && !WasLastAction(RainOfDeath) && (EmpyrealCD > 1 || !LevelChecked(EmpyrealArrow)))
-                {
-                    if (LevelChecked(WanderersMinuet) && TraitLevelChecked(Traits.EnhancedBloodletter))
-                    {
-                        if (SongWanderer && ((HasEffect(Buffs.RagingStrikes) || RagingCD > 10) &&
-                            (HasEffect(Buffs.BattleVoice) || BattleVoiceCD > 10 ||
-                             !LevelChecked(BattleVoice)) &&
-                            (HasEffect(Buffs.RadiantFinale) || RadiantCD > 10 ||
-                             !LevelChecked(RadiantFinale)) &&
-                            RainOfDeathCharges > 0 || RainOfDeathCharges > 2))
-                            return OriginalHook(RainOfDeath);
-
-                        if (SongArmy && (RainOfDeathCharges == 3 || gauge.SongTimer / 1000 > 30 && RainOfDeathCharges > 0))
-                            return OriginalHook(RainOfDeath);
-
-                        if (SongMage && RainOfDeathCharges > 0)
-                            return OriginalHook(RainOfDeath);
-
-                        if (SongNone && RainOfDeathCharges == 3)
-                            return OriginalHook(RainOfDeath);
-                    }
-                    else if (RainOfDeathCharges > 0)
-                        return OriginalHook(RainOfDeath);
-                }
+                if (ActionReady(RainOfDeath) && UsePooledBloodRain())
+                    return OriginalHook(RainOfDeath);
 
                 if (!LevelChecked(RainOfDeath) && !(WasLastAction(Bloodletter) && BloodletterCharges > 0))
                     return OriginalHook(Bloodletter);
@@ -1012,33 +941,8 @@ internal partial class BRD : PhysRangedJob
                 if (Role.CanHeadGraze(CustomComboPreset.BRD_ST_SimpleMode) && CanWeaveDelayed)
                     return Role.HeadGraze;
 
-                // Bloodletter pooling logic
-                if (ActionReady(Bloodletter) && !(WasLastAction(Bloodletter) || WasLastAction(HeartbreakShot)) && (EmpyrealCD > 1 || !LevelChecked(EmpyrealArrow)))
-                {
-                    if (LevelChecked(WanderersMinuet) && TraitLevelChecked(Traits.EnhancedBloodletter))
-                    {
-                        // Stop pooling in burst window
-                        if (SongWanderer && ((HasEffect(Buffs.RagingStrikes) || RagingCD > 10) &&
-                            (HasEffect(Buffs.BattleVoice) || BattleVoiceCD > 10 ||
-                             !LevelChecked(BattleVoice)) &&
-                            (HasEffect(Buffs.RadiantFinale) || RadiantCD > 10 ||
-                             !LevelChecked(RadiantFinale)) &&
-                            BloodletterCharges > 0 || BloodletterCharges > 2))
-                            return OriginalHook(Bloodletter);
-
-                        if (SongArmy && (BloodletterCharges == 3 || gauge.SongTimer / 1000 > 30 && BloodletterCharges > 0)) // Start pooling in army
-                            return OriginalHook(Bloodletter);
-
-                        if (SongMage && BloodletterCharges > 0) // Dont pool in mages
-                            return OriginalHook(Bloodletter);
-
-                        if (SongNone && BloodletterCharges == 3) // No song pooling
-                            return OriginalHook(Bloodletter);
-                    }
-
-                    else if (BloodletterCharges > 0)
-                        return OriginalHook(Bloodletter);
-                }
+                if (ActionReady(Bloodletter) && UsePooledBloodRain())
+                    return OriginalHook(Bloodletter);
 
                 if (Role.CanSecondWind(40))
                     return Role.SecondWind;

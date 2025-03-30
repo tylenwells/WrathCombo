@@ -803,7 +803,7 @@ public enum CustomComboPreset
     BRD_ST_Adv_oGCD = 3038,
 
     [ParentCombo(BRD_ST_AdvMode)]
-    [CustomComboInfo("Pooling Option", "84+ Pools Bloodletter charges and Sidewinder to allow for optimum burst phases ", BRD.JobID)]
+    [CustomComboInfo("Pooling Option", "Pools Bloodletter charges and Sidewinder to allow for optimum burst phases ", BRD.JobID)]
     BRD_Adv_Pooling = 3023,
 
     [ParentCombo(BRD_ST_AdvMode)]
@@ -866,7 +866,7 @@ public enum CustomComboPreset
     BRD_AoE_Adv_oGCD = 3037,
 
     [ParentCombo(BRD_AoE_AdvMode)]
-    [CustomComboInfo("Pooling Option", "84+ Pools Rain of death charges to allow for optimum burst phases.", BRD.JobID)]
+    [CustomComboInfo("Pooling Option", "Pools Rain of death charges to allow for optimum burst phases.", BRD.JobID)]
     BRD_AoE_Pooling = 3040,
 
     [ParentCombo(BRD_AoE_AdvMode)]
