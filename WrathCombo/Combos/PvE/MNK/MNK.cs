@@ -52,7 +52,7 @@ internal partial class MNK : MeleeJob
                     return RiddleOfWind;
 
                 //Perfect Balance
-                if (UsePerfectBalance())
+                if (UsePerfectBalanceST())
                     return PerfectBalance;
 
                 if (Role.CanSecondWind(25))
@@ -95,7 +95,7 @@ internal partial class MNK : MeleeJob
 
             // Perfect Balance
             if (HasEffect(Buffs.PerfectBalance) &&
-                DoPerfectBalanceCombo(ref actionID))
+                DoPerfectBalanceComboST(ref actionID))
                 return actionID;
 
             // Standard Beast Chakras
@@ -176,7 +176,7 @@ internal partial class MNK : MeleeJob
 
                 //Perfect Balance
                 if (IsEnabled(CustomComboPreset.MNK_STUsePerfectBalance) &&
-                    UsePerfectBalance())
+                    UsePerfectBalanceST())
                     return PerfectBalance;
 
                 if (IsEnabled(CustomComboPreset.MNK_ST_ComboHeals))
@@ -229,7 +229,7 @@ internal partial class MNK : MeleeJob
 
             // Perfect Balance
             if (HasEffect(Buffs.PerfectBalance) &&
-                DoPerfectBalanceCombo(ref actionID))
+                DoPerfectBalanceComboST(ref actionID))
                 return actionID;
 
             // Standard Beast Chakras
@@ -283,15 +283,8 @@ internal partial class MNK : MeleeJob
                     !HasEffect(Buffs.WindsRumination))
                     return RiddleOfWind;
 
-                if (ActionReady(PerfectBalance) &&
-                    !HasEffect(Buffs.PerfectBalance) &&
-                    (GetRemainingCharges(PerfectBalance) == GetMaxCharges(PerfectBalance) ||
-                     GetCooldownRemainingTime(PerfectBalance) <= 4 ||
-                     HasEffect(Buffs.Brotherhood) ||
-                     HasEffect(Buffs.RiddleOfFire) && GetBuffRemainingTime(Buffs.RiddleOfFire) < 10 ||
-                     GetCooldownRemainingTime(RiddleOfFire) < 4 && GetCooldownRemainingTime(Brotherhood) < 8))
+                if (UsePerfectBalanceAoE())
                     return PerfectBalance;
-
 
                 if (Role.CanSecondWind(25))
                     return Role.SecondWind;
@@ -326,7 +319,7 @@ internal partial class MNK : MeleeJob
 
             // Perfect Balance
             if (HasEffect(Buffs.PerfectBalance) &&
-                DoPerfectBalanceCombo(ref actionID))
+                DoPerfectBalanceComboAoE(ref actionID))
                 return actionID;
 
             // Monk Rotation
@@ -408,13 +401,7 @@ internal partial class MNK : MeleeJob
                 }
 
                 if (IsEnabled(CustomComboPreset.MNK_AoEUsePerfectBalance) &&
-                    ActionReady(PerfectBalance) &&
-                    !HasEffect(Buffs.PerfectBalance) &&
-                    (GetRemainingCharges(PerfectBalance) == GetMaxCharges(PerfectBalance) ||
-                     GetCooldownRemainingTime(PerfectBalance) <= 4 ||
-                     HasEffect(Buffs.Brotherhood) ||
-                     HasEffect(Buffs.RiddleOfFire) && GetBuffRemainingTime(Buffs.RiddleOfFire) < 10 ||
-                     GetCooldownRemainingTime(RiddleOfFire) < 4 && GetCooldownRemainingTime(Brotherhood) < 8))
+                    UsePerfectBalanceAoE())
                     return PerfectBalance;
 
                 if (IsEnabled(CustomComboPreset.MNK_AoE_ComboHeals))
@@ -459,7 +446,7 @@ internal partial class MNK : MeleeJob
 
             // Perfect Balance
             if (HasEffect(Buffs.PerfectBalance) &&
-                DoPerfectBalanceCombo(ref actionID))
+                DoPerfectBalanceComboAoE(ref actionID))
                 return actionID;
 
             // Monk Rotation
