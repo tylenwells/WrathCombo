@@ -94,8 +94,7 @@ internal partial class MNK : MeleeJob
                 return WindsReply;
 
             // Perfect Balance
-            if (HasEffect(Buffs.PerfectBalance) &&
-                DoPerfectBalanceComboST(ref actionID))
+            if (DoPerfectBalanceComboST(ref actionID))
                 return actionID;
 
             // Standard Beast Chakras
@@ -228,8 +227,7 @@ internal partial class MNK : MeleeJob
             }
 
             // Perfect Balance
-            if (HasEffect(Buffs.PerfectBalance) &&
-                DoPerfectBalanceComboST(ref actionID))
+            if (DoPerfectBalanceComboST(ref actionID))
                 return actionID;
 
             // Standard Beast Chakras
@@ -318,8 +316,7 @@ internal partial class MNK : MeleeJob
                 return WindsReply;
 
             // Perfect Balance
-            if (HasEffect(Buffs.PerfectBalance) &&
-                DoPerfectBalanceComboAoE(ref actionID))
+            if (DoPerfectBalanceComboAoE(ref actionID))
                 return actionID;
 
             // Monk Rotation
@@ -445,8 +442,7 @@ internal partial class MNK : MeleeJob
             }
 
             // Perfect Balance
-            if (HasEffect(Buffs.PerfectBalance) &&
-                DoPerfectBalanceComboAoE(ref actionID))
+            if (DoPerfectBalanceComboAoE(ref actionID))
                 return actionID;
 
             // Monk Rotation
