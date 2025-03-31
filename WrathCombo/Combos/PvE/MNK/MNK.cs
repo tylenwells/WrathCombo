@@ -94,39 +94,9 @@ internal partial class MNK : MeleeJob
                 return WindsReply;
 
             // Perfect Balance
-            if (HasEffect(Buffs.PerfectBalance))
-            {
-                #region Open Lunar
-
-                if (!LunarNadi || BothNadisOpen || !SolarNadi && !LunarNadi)
-                    return Gauge.OpoOpoFury == 0
-                        ? DragonKick
-                        : OriginalHook(Bootshine);
-
-                #endregion
-
-                #region Open Solar
-
-                if (!SolarNadi && !BothNadisOpen)
-                {
-                    if (CoeurlChakra == 0)
-                        return Gauge.CoeurlFury == 0
-                            ? Demolish
-                            : OriginalHook(SnapPunch);
-
-                    if (RaptorChakra == 0)
-                        return Gauge.RaptorFury == 0
-                            ? TwinSnakes
-                            : OriginalHook(TrueStrike);
-
-                    if (OpoOpoChakra == 0)
-                        return Gauge.OpoOpoFury == 0
-                            ? DragonKick
-                            : OriginalHook(Bootshine);
-                }
-
-                #endregion
-            }
+            if (HasEffect(Buffs.PerfectBalance) &&
+                DoPerfectBalanceCombo(ref actionID))
+                return actionID;
 
             // Standard Beast Chakras
             return DetermineCoreAbility(actionID, true);
@@ -258,39 +228,9 @@ internal partial class MNK : MeleeJob
             }
 
             // Perfect Balance
-            if (HasEffect(Buffs.PerfectBalance))
-            {
-                #region Open Lunar
-
-                if (!LunarNadi || BothNadisOpen || !SolarNadi && !LunarNadi)
-                    return Gauge.OpoOpoFury == 0
-                        ? DragonKick
-                        : OriginalHook(Bootshine);
-
-                #endregion
-
-                #region Open Solar
-
-                if (!SolarNadi && !BothNadisOpen)
-                {
-                    if (CoeurlChakra == 0)
-                        return Gauge.CoeurlFury == 0
-                            ? Demolish
-                            : OriginalHook(SnapPunch);
-
-                    if (RaptorChakra == 0)
-                        return Gauge.RaptorFury == 0
-                            ? TwinSnakes
-                            : OriginalHook(TrueStrike);
-
-                    if (OpoOpoChakra == 0)
-                        return Gauge.OpoOpoFury == 0
-                            ? DragonKick
-                            : OriginalHook(Bootshine);
-                }
-
-                #endregion
-            }
+            if (HasEffect(Buffs.PerfectBalance) &&
+                DoPerfectBalanceCombo(ref actionID))
+                return actionID;
 
             // Standard Beast Chakras
             return DetermineCoreAbility(actionID, IsEnabled(CustomComboPreset.MNK_STUseTrueNorth));
@@ -385,34 +325,9 @@ internal partial class MNK : MeleeJob
                 return WindsReply;
 
             // Perfect Balance
-            if (HasEffect(Buffs.PerfectBalance))
-            {
-                #region Open Lunar
-
-                if (!LunarNadi || BothNadisOpen || !SolarNadi && !LunarNadi)
-                    return LevelChecked(ShadowOfTheDestroyer)
-                        ? ShadowOfTheDestroyer
-                        : Rockbreaker;
-
-                #endregion
-
-                #region Open Solar
-
-                if (!SolarNadi && !BothNadisOpen)
-                    switch (GetBuffStacks(Buffs.PerfectBalance))
-                    {
-                        case 3:
-                            return OriginalHook(ArmOfTheDestroyer);
-
-                        case 2:
-                            return FourPointFury;
-
-                        case 1:
-                            return Rockbreaker;
-                    }
-
-                #endregion
-            }
+            if (HasEffect(Buffs.PerfectBalance) &&
+                DoPerfectBalanceCombo(ref actionID))
+                return actionID;
 
             // Monk Rotation
             if (HasEffect(Buffs.OpoOpoForm))
@@ -543,34 +458,9 @@ internal partial class MNK : MeleeJob
             }
 
             // Perfect Balance
-            if (HasEffect(Buffs.PerfectBalance))
-            {
-                #region Open Lunar
-
-                if (!LunarNadi || BothNadisOpen || !SolarNadi && !LunarNadi)
-                    return LevelChecked(ShadowOfTheDestroyer)
-                        ? ShadowOfTheDestroyer
-                        : Rockbreaker;
-
-                #endregion
-
-                #region Open Solar
-
-                if (!SolarNadi && !BothNadisOpen)
-                    switch (GetBuffStacks(Buffs.PerfectBalance))
-                    {
-                        case 3:
-                            return OriginalHook(ArmOfTheDestroyer);
-
-                        case 2:
-                            return FourPointFury;
-
-                        case 1:
-                            return Rockbreaker;
-                    }
-
-                #endregion
-            }
+            if (HasEffect(Buffs.PerfectBalance) &&
+                DoPerfectBalanceCombo(ref actionID))
+                return actionID;
 
             // Monk Rotation
             if (HasEffect(Buffs.OpoOpoForm))

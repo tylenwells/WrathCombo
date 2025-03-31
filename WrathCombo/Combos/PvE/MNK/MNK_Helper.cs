@@ -94,13 +94,133 @@ internal partial class MNK
 
         return false;
     }
+    internal static bool DoPerfectBalanceCombo(ref uint actionID)
+    {
+        if (IsEnabled(CustomComboPreset.MNK_ST_SimpleMode) ||
+            IsEnabled(CustomComboPreset.MNK_ST_AdvancedMode))
+        {
+        #region Open Lunar
+
+            if (!LunarNadi || BothNadisOpen || !SolarNadi && !LunarNadi)
+            {
+                switch (Gauge.OpoOpoFury)
+                {
+                    case 0:
+                        actionID = DragonKick;
+                        return true;
+
+                    case > 0:
+                        actionID = OriginalHook(Bootshine);
+                        return true;
+                }
+            }
+
+        #endregion
+
+        #region Open Solar
+
+            if (!SolarNadi && !BothNadisOpen)
+            {
+                if (CoeurlChakra == 0)
+                {
+                    switch (Gauge.CoeurlFury)
+                    {
+                        case 0:
+                            actionID = Demolish;
+                            return true;
+
+                        case > 0:
+                            actionID = OriginalHook(SnapPunch);
+                            return true;
+                    }
+                }
+
+                if (RaptorChakra == 0)
+                {
+                    switch (Gauge.RaptorFury)
+                    {
+                        case 0:
+                            actionID = TwinSnakes;
+                            return true;
+
+                        case > 0:
+                            actionID = OriginalHook(TrueStrike);
+                            return true;
+                    }
+                }
+
+                if (OpoOpoChakra == 0)
+                {
+                    switch (Gauge.OpoOpoFury)
+                    {
+                        case 0:
+                            actionID = DragonKick;
+                            return true;
+
+                        case > 0:
+                            actionID = OriginalHook(Bootshine);
+                            return true;
+                    }
+                }
+            }
+
+        #endregion
+        }
+
+        if (IsEnabled(CustomComboPreset.MNK_AOE_SimpleMode) ||
+            IsEnabled(CustomComboPreset.MNK_AOE_AdvancedMode))
+        {
+        #region Open Lunar
+
+            if (!LunarNadi || BothNadisOpen || !SolarNadi && !LunarNadi)
+            {
+                if (LevelChecked(ShadowOfTheDestroyer))
+                {
+                    actionID = ShadowOfTheDestroyer;
+                    return true;
+                }
+
+                if (!LevelChecked(ShadowOfTheDestroyer))
+                {
+                    actionID = Rockbreaker;
+                    return true;
+                }
+            }
+
+        #endregion
+
+        #region Open Solar
+
+            if (!SolarNadi && !BothNadisOpen)
+            {
+                switch (GetBuffStacks(Buffs.PerfectBalance))
+                {
+                    case 3:
+                        actionID = OriginalHook(ArmOfTheDestroyer);
+                        return true;
+
+                    case 2:
+                        actionID = FourPointFury;
+                        return true;
+
+                    case 1:
+                        actionID = Rockbreaker;
+                        return true;
+                }
+            }
+
+        #endregion
+        }
+
+        return false;
+    }
 
     internal static bool InMasterfulRange()
     {
         if (NumberOfEnemiesInRange(ElixirField, null) >= 1 &&
-            (OriginalHook(MasterfulBlitz) == ElixirField || 
+            (OriginalHook(MasterfulBlitz) == ElixirField ||
              OriginalHook(MasterfulBlitz) == FlintStrike ||
-             OriginalHook(MasterfulBlitz) == ElixirBurst || 
+             OriginalHook(MasterfulBlitz) == ElixirBurst ||
              OriginalHook(MasterfulBlitz) == RisingPhoenix))
             return true;
 
@@ -158,13 +278,13 @@ internal partial class MNK
 
         internal override UserData ContentCheckConfig => Config.MNK_Balance_Content;
 
-        public override bool HasCooldowns() => 
-            GetRemainingCharges(PerfectBalance) is 2 && 
+        public override bool HasCooldowns() =>
+            GetRemainingCharges(PerfectBalance) is 2 &&
             IsOffCooldown(Brotherhood) &&
-            IsOffCooldown(RiddleOfFire) && 
+            IsOffCooldown(RiddleOfFire) &&
             IsOffCooldown(RiddleOfWind) &&
-            Gauge.Nadi is Nadi.None && 
-            Gauge.RaptorFury is 0 && 
+            Gauge.Nadi is Nadi.None &&
+            Gauge.RaptorFury is 0 &&
             Gauge.CoeurlFury is 0;
     }
 
@@ -206,7 +326,7 @@ internal partial class MNK
             IsOffCooldown(RiddleOfFire) &&
             IsOffCooldown(RiddleOfWind) &&
             Gauge.Nadi is Nadi.None &&
-            Gauge.RaptorFury is 0 && 
+            Gauge.RaptorFury is 0 &&
             Gauge.CoeurlFury is 0;
     }
 
