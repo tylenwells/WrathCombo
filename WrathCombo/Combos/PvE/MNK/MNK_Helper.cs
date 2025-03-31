@@ -27,6 +27,9 @@ internal partial class MNK
 
     internal static int CoeurlChakra => Gauge.BeastChakra.Count(x => x == BeastChakra.Coeurl);
 
+
+    #region 1-2-3
+
     internal static uint DetermineCoreAbility(uint actionId, bool useTrueNorthIfEnabled)
     {
         if (HasEffect(Buffs.OpoOpoForm) || HasEffect(Buffs.FormlessFist))
@@ -68,6 +71,32 @@ internal partial class MNK
 
         return actionId;
     }
+
+    #endregion
+
+    #region Masterfull Blitz
+
+    internal static bool InMasterfulRange()
+    {
+        if (NumberOfEnemiesInRange(ElixirField, null) >= 1 &&
+            (OriginalHook(MasterfulBlitz) == ElixirField ||
+             OriginalHook(MasterfulBlitz) == FlintStrike ||
+             OriginalHook(MasterfulBlitz) == ElixirBurst ||
+             OriginalHook(MasterfulBlitz) == RisingPhoenix))
+            return true;
+
+        if (NumberOfEnemiesInRange(TornadoKick, CurrentTarget) >= 1 &&
+            (OriginalHook(MasterfulBlitz) == TornadoKick ||
+             OriginalHook(MasterfulBlitz) == CelestialRevolution ||
+             OriginalHook(MasterfulBlitz) == PhantomRush))
+            return true;
+
+        return false;
+    }
+
+    #endregion
+
+    #region PB
 
     internal static bool UsePerfectBalanceST()
     {
@@ -120,6 +149,10 @@ internal partial class MNK
 
         return false;
     }
+
+    #endregion
+
+    #region PB Combo
 
     internal static bool DoPerfectBalanceComboST(ref uint actionID)
     {
@@ -239,23 +272,7 @@ internal partial class MNK
         return false;
     }
 
-    internal static bool InMasterfulRange()
-    {
-        if (NumberOfEnemiesInRange(ElixirField, null) >= 1 &&
-            (OriginalHook(MasterfulBlitz) == ElixirField ||
-             OriginalHook(MasterfulBlitz) == FlintStrike ||
-             OriginalHook(MasterfulBlitz) == ElixirBurst ||
-             OriginalHook(MasterfulBlitz) == RisingPhoenix))
-            return true;
-
-        if (NumberOfEnemiesInRange(TornadoKick, CurrentTarget) >= 1 &&
-            (OriginalHook(MasterfulBlitz) == TornadoKick ||
-             OriginalHook(MasterfulBlitz) == CelestialRevolution ||
-             OriginalHook(MasterfulBlitz) == PhantomRush))
-            return true;
-
-        return false;
-    }
+    #endregion
 
     #region Openers
 
