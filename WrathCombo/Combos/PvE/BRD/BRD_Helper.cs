@@ -58,84 +58,123 @@ internal partial class BRD
 
     #region Functions
 
-        
-
-    // Pooled Apex Logic
-    internal static bool UsePooledApex()
-    {
-        if (gauge.SoulVoice >= 80)
+        #region Pooling
+        // Pooled Apex Logic
+        internal static bool UsePooledApex()
         {
-            if (BuffWindow && RagingStrikesDuration < 18 || RagingCD >= 50 && RagingCD <= 62)
-                return true;
+            if (gauge.SoulVoice >= 80)
+            {
+                if (BuffWindow && RagingStrikesDuration < 18 || RagingCD >= 50 && RagingCD <= 62)
+                    return true;
+            }
+            return false;
         }
-        return false;
-    }
-
-    // Pitch Perfect Logic
-    internal static bool PitchPerfected()
-    {
-       if (LevelChecked(PitchPerfect) && SongWanderer &&
-            (gauge.Repertoire == 3 || LevelChecked(EmpyrealArrow) && gauge.Repertoire == 2 && EmpyrealCD < 2))
-            return true;
-        
-       return false;
-    }
-
-    //Sidewinder Logic
-    internal static bool UsePooledSidewinder()
-    {
-        if (BuffWindow && RagingStrikesDuration < 18 || RagingCD >= 10)
-                return true;
-            
-       return false;
-    }
-
-    //Bloodletter & Rain of Death Logic
-    internal static bool UsePooledBloodRain()
-    {
-        if ((!JustUsed(OriginalHook(Bloodletter)) || !JustUsed(OriginalHook(RainOfDeath))) && 
-           (EmpyrealCD > 1 || !LevelChecked(EmpyrealArrow)))
-        {
-            if (BloodletterCharges == 3 && TraitLevelChecked(Traits.EnhancedBloodletter) || 
-                BloodletterCharges == 2 && !TraitLevelChecked(Traits.EnhancedBloodletter) ||
-                BloodletterCharges > 0 && (BuffWindow || RagingCD > 30))
-                return true; 
-        }
-        return false;
-    }
     
-    //Iron Jaws dot refreshing
-    internal static bool UseIronJaws()
-    {
-        if (ActionReady(IronJaws) && Purple is not null && Blue is not null &&
-                (PurpleRemaining < 4 || BlueRemaining < 4))
-            return true;
-        return false;
-    }
 
-    //Blue dot application and low level refresh
-    internal static bool ApplyBlueDot()
-    {
-        if (ActionReady(Windbite) && (Blue is null || !CanIronJaws && BlueRemaining < 4))
-            return true;
-        return false;
-    }
+        // Pitch Perfect Logic
+        internal static bool PitchPerfected()
+        {
+           if (LevelChecked(PitchPerfect) && SongWanderer &&
+                (gauge.Repertoire == 3 || LevelChecked(EmpyrealArrow) && gauge.Repertoire == 2 && EmpyrealCD < 2))
+                return true;
+        
+           return false;
+        }
 
-    //Purple dot application and low level refresh
-    internal static bool ApplyPurpleDot()
-    {
-        if (ActionReady(VenomousBite) && (Purple is null || !CanIronJaws && PurpleRemaining < 4))
-            return true;
-        return false;
-    }
+        //Sidewinder Logic
+        internal static bool UsePooledSidewinder()
+        {
+            if (BuffWindow && RagingStrikesDuration < 18 || RagingCD >= 10)
+                    return true;
+            
+           return false;
+        }
 
-    //Raging jaws option dot refresh for snapshot
-    internal static bool RagingJawsRefresh()
-    {
-        if (HasEffect(Buffs.RagingStrikes) && PurpleRemaining < 35 && BlueRemaining < 35)
-            return true;
-        return false;
-    }
+        //Bloodletter & Rain of Death Logic
+        internal static bool UsePooledBloodRain()
+        {
+            if ((!JustUsed(OriginalHook(Bloodletter)) || !JustUsed(OriginalHook(RainOfDeath))) && 
+               (EmpyrealCD > 1 || !LevelChecked(EmpyrealArrow)))
+            {
+                if (BloodletterCharges == 3 && TraitLevelChecked(Traits.EnhancedBloodletter) || 
+                    BloodletterCharges == 2 && !TraitLevelChecked(Traits.EnhancedBloodletter) ||
+                    BloodletterCharges > 0 && (BuffWindow || RagingCD > 30))
+                    return true; 
+            }
+            return false;
+        }
+        #endregion
+
+        #region Dot Management
+
+        //Iron Jaws dot refreshing
+        internal static bool UseIronJaws()
+        {
+            if (ActionReady(IronJaws) && Purple is not null && Blue is not null &&
+                    (PurpleRemaining < 4 || BlueRemaining < 4))
+                return true;
+            return false;
+        }
+
+        //Blue dot application and low level refresh
+        internal static bool ApplyBlueDot()
+        {
+            if (ActionReady(Windbite) && (Blue is null || !CanIronJaws && BlueRemaining < 4))
+                return true;
+            return false;
+        }
+
+        //Purple dot application and low level refresh
+        internal static bool ApplyPurpleDot()
+        {
+            if (ActionReady(VenomousBite) && (Purple is null || !CanIronJaws && PurpleRemaining < 4))
+                return true;
+            return false;
+        }
+
+        //Raging jaws option dot refresh for snapshot
+        internal static bool RagingJawsRefresh()
+        {
+            if (HasEffect(Buffs.RagingStrikes) && PurpleRemaining < 35 && BlueRemaining < 35)
+                return true;
+            return false;
+        }
+        #endregion
+
+        #region Buff Timing
+        //RadiantFinale Buff
+        internal static bool UseRadiantBuff()
+        {
+            if (ActionReady(RadiantFinale) && RagingCD < 2.3 && CanWeaveDelayed && !HasEffect(Buffs.RadiantEncoreReady))
+                return true;
+            return false;
+        } 
+
+        //BattleVoice Buff
+        internal static bool UseBattleVoiceBuff()
+        {
+            if (ActionReady(BattleVoice) && (HasEffect(Buffs.RadiantFinale) || !LevelChecked(RadiantFinale)))
+                return true;
+            return false;
+        }
+    
+        //RagingStrikes Buff
+        internal static bool UseRagingStrikesBuff()
+        {
+            if (ActionReady(RagingStrikes) && (JustUsed(BattleVoice) || !LevelChecked(BattleVoice) || HasEffect(Buffs.BattleVoice)))
+                return true;
+            return false;
+
+        } 
+
+        //Barrage Buff
+        internal static bool UseBarrageBuff()
+        {
+            if (ActionReady(Barrage) && HasEffect(Buffs.RagingStrikes) && !HasEffect(Buffs.ResonantArrowReady))
+                return true;
+            return false;
+        }
+            #endregion
 
     #endregion
 

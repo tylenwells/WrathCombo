@@ -766,7 +766,7 @@ public enum CustomComboPreset
     BRD_Adv_Song = 3011,
 
     [ParentCombo(BRD_ST_AdvMode)]
-    [CustomComboInfo("Buffs Option", "Adds buffs onto the Advanced Bard feature. \nBuffs have specific timing with each other intended to follow balance. \nDisabling only one can lead to unwanted results", BRD.JobID)]
+    [CustomComboInfo("Buffs Option", "Adds buffs onto the Advanced Bard feature. \nEnable all to follow balance buff windows \nDisabling any buff will follow simple priority", BRD.JobID)]
     BRD_Adv_Buffs = 3017,
 
     [ParentCombo(BRD_Adv_Buffs)]
@@ -841,7 +841,7 @@ public enum CustomComboPreset
     BRD_AoE_Adv_Songs = 3016,
 
     [ParentCombo(BRD_AoE_AdvMode)]
-    [CustomComboInfo("AoE Buffs Option", "Adds buffs onto the Advance AoE Bard feature.\nBuffs have specific timing with each other intended to follow balance. \nDisabling only one can lead to unwanted results", BRD.JobID)]
+    [CustomComboInfo("AoE Buffs Option", "Adds buffs onto the Advance AoE Bard feature.\nEnable all to follow balance buff windows \nDisabling any buff will follow simple priority", BRD.JobID)]
     BRD_AoE_Adv_Buffs = 3032,
 
     [ParentCombo(BRD_AoE_Adv_Buffs)]
