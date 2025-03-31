@@ -55,19 +55,14 @@ internal partial class BRD : PhysRangedJob
             if (actionID is not IronJaws)
                 return actionID;
 
-            if (!LevelChecked(IronJaws))
-                return LevelChecked(Windbite) && BlueRemaining <= PurpleRemaining
-                    ? Windbite
-                    : VenomousBite;
+            if (UseIronJaws())
+                return IronJaws;
 
-            if (Blue is null && LevelChecked(Windbite))
+            if (ApplyBlueDot())
                 return OriginalHook(Windbite);
 
-            if (Purple is null && LevelChecked(VenomousBite))
+            if (ApplyPurpleDot())
                 return OriginalHook(VenomousBite);
-
-            if (PurpleRemaining < 4 || BlueRemaining < 4)
-                return IronJaws;
 
             // Apex Option
             if (IsEnabled(CustomComboPreset.BRD_IronJawsApex))
@@ -91,9 +86,7 @@ internal partial class BRD : PhysRangedJob
             if (actionID is not IronJaws)
                 return actionID;
 
-            if (LevelChecked(IronJaws) && (
-                Purple is not null && PurpleRemaining < 4 ||
-                Blue is not null && BlueRemaining < 4))
+            if (UseIronJaws())
                 return IronJaws;
 
             return LevelChecked(Windbite) && BlueRemaining <= PurpleRemaining ?
@@ -610,25 +603,16 @@ internal partial class BRD : PhysRangedJob
             {
                 if (IsEnabled(CustomComboPreset.BRD_Adv_DoT))
                 {
-                    if (Purple is not null && PurpleRemaining < 4)
-                        return CanIronJaws
-                            ? IronJaws
-                            : VenomousBite;
+                    if (UseIronJaws())
+                        return IronJaws;
 
-                    if (Blue is not null && BlueRemaining < 4)
-                        return CanIronJaws
-                            ? IronJaws
-                            : Windbite;
-
-                    if (Blue is null && LevelChecked(Windbite))
+                    if (ApplyBlueDot())
                         return OriginalHook(Windbite);
 
-                    if (Purple is null && LevelChecked(VenomousBite))
+                    if (ApplyPurpleDot())
                         return OriginalHook(VenomousBite);
 
-                    if (IsEnabled(CustomComboPreset.BRD_Adv_RagingJaws) && ActionReady(IronJaws) && HasEffect(Buffs.RagingStrikes) &&
-                        RagingStrikesDuration < ragingJawsRenewTime && // Raging Jaws Slider Check
-                        PurpleRemaining < 35 && BlueRemaining < 35) // Prevention of double refreshing dots
+                    if (IsEnabled(CustomComboPreset.BRD_Adv_RagingJaws) && RagingJawsRefresh() && RagingStrikesDuration < ragingJawsRenewTime)
                         return IronJaws;
                 }
             }
@@ -955,29 +939,18 @@ internal partial class BRD : PhysRangedJob
 
             #region Dot Management
 
-            // Iron jaws Dot refresh, or low level manaul dot refresh
-            if (Purple is not null && PurpleRemaining < 4)
-                return CanIronJaws
-                    ? IronJaws
-                    : VenomousBite;
+            if (UseIronJaws())
+                return IronJaws;
 
-            if (Blue is not null && BlueRemaining < 4)
-                return CanIronJaws
-                    ? IronJaws
-                    : Windbite;
-
-            // Dot application
-            if (Blue is null && LevelChecked(Windbite))
+            if (ApplyBlueDot())
                 return OriginalHook(Windbite);
 
-            if (Purple is null && LevelChecked(VenomousBite))
+            if (ApplyPurpleDot())
                 return OriginalHook(VenomousBite);
 
-            // Raging jaws dot snapshotting logic
-            if (ActionReady(IronJaws) && HasEffect(Buffs.RagingStrikes) &&
-                RagingStrikesDuration < 6 && // Raging Jaws 
-                PurpleRemaining < 35 && BlueRemaining < 35) // Prevention of double refreshing dots
+            if (RagingJawsRefresh() && RagingStrikesDuration < 6)
                 return IronJaws;
+
 
             #endregion
 
@@ -999,6 +972,7 @@ internal partial class BRD : PhysRangedJob
                 return OriginalHook(RadiantEncore);
 
             #endregion
+
             return actionID;
         }
     }

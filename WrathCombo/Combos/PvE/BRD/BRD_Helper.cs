@@ -5,6 +5,7 @@ using Dalamud.Game.ClientState.JobGauge.Types;
 using Dalamud.Game.ClientState.Statuses;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Data;
@@ -57,12 +58,14 @@ internal partial class BRD
 
     #region Functions
 
+        
+
     // Pooled Apex Logic
     internal static bool UsePooledApex()
     {
         if (gauge.SoulVoice >= 80)
         {
-            if (BuffWindow && RagingStrikesDuration < 18 || RagingCD >= 50 && RagingCD <= 58)
+            if (BuffWindow && RagingStrikesDuration < 18 || RagingCD >= 50 && RagingCD <= 62)
                 return true;
         }
         return false;
@@ -98,6 +101,39 @@ internal partial class BRD
                 BloodletterCharges > 0 && (BuffWindow || RagingCD > 30))
                 return true; 
         }
+        return false;
+    }
+    
+    //Iron Jaws dot refreshing
+    internal static bool UseIronJaws()
+    {
+        if (ActionReady(IronJaws) && Purple is not null && Blue is not null &&
+                (PurpleRemaining < 4 || BlueRemaining < 4))
+            return true;
+        return false;
+    }
+
+    //Blue dot application and low level refresh
+    internal static bool ApplyBlueDot()
+    {
+        if (ActionReady(Windbite) && (Blue is null || !CanIronJaws && BlueRemaining < 4))
+            return true;
+        return false;
+    }
+
+    //Purple dot application and low level refresh
+    internal static bool ApplyPurpleDot()
+    {
+        if (ActionReady(VenomousBite) && (Purple is null || !CanIronJaws && PurpleRemaining < 4))
+            return true;
+        return false;
+    }
+
+    //Raging jaws option dot refresh for snapshot
+    internal static bool RagingJawsRefresh()
+    {
+        if (HasEffect(Buffs.RagingStrikes) && PurpleRemaining < 35 && BlueRemaining < 35)
+            return true;
         return false;
     }
 
