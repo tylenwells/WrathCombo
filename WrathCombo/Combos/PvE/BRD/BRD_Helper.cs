@@ -3,6 +3,7 @@
 using Dalamud.Game.ClientState.JobGauge.Enums;
 using Dalamud.Game.ClientState.JobGauge.Types;
 using Dalamud.Game.ClientState.Statuses;
+using Microsoft.Win32.SafeHandles;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -174,7 +175,70 @@ internal partial class BRD
                 return true;
             return false;
         }
-            #endregion
+    #endregion
+
+        #region Songs
+
+    internal static bool WandererSong()
+    {
+        if (ActionReady(WanderersMinuet))
+        {
+            if (SongNone)
+               return true;
+                
+            if (SongArmy && (CanWeaveDelayed || !BardHasTarget) && (SongTimerInSeconds <= 12 || gauge.Repertoire == 4))
+                return true;
+        }
+        return false;
+    }
+    internal static bool MagesSong()
+    {
+        if (ActionReady(MagesBallad))
+        {
+            if (SongNone && !ActionReady(WanderersMinuet))
+                return true;
+
+            if (SongWanderer && SongTimerInSeconds <= 3)
+                return true;
+
+            if (!LevelChecked(WanderersMinuet) && SongTimerInSeconds <= 3 && CanWeaveDelayed)
+                return true;
+        }
+        return false;
+    }
+
+    internal static bool ArmySong()
+    {
+        if (ActionReady(ArmysPaeon))
+        {
+            if (SongNone && !ActionReady(MagesBallad) && !ActionReady(WanderersMinuet))
+                return true;
+
+            if (SongMage && SongTimerInSeconds <= 3)
+                return true;
+
+            if (!LevelChecked(WanderersMinuet) && SongTimerInSeconds <= 3 && CanWeaveDelayed && !ActionReady(MagesBallad))
+                return true;
+        }
+        return false;
+    }
+
+    internal static bool SongChangeEmpyreal()
+    {
+        if (SongMage && SongTimerInSeconds <= 3 && ActionReady(ArmysPaeon) && ActionReady(EmpyrealArrow) && BardHasTarget)
+            return true;
+        
+        return false;
+    }
+
+    internal static bool SongChangePitchPerfect()
+    {
+        if (SongWanderer && SongTimerInSeconds <= 3 && gauge.Repertoire > 0 && BardHasTarget)
+            return true;
+
+        return false;
+    }
+    #endregion
 
     #endregion
 

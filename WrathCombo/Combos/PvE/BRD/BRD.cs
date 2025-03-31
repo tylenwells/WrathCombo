@@ -274,61 +274,24 @@ internal partial class BRD : PhysRangedJob
 
             #region Songs
 
-            if (IsEnabled(CustomComboPreset.BRD_AoE_Adv_Songs))
+            if (IsEnabled(CustomComboPreset.BRD_AoE_Adv_Songs) && isEnemyHealthHigh && InCombat() && (CanBardWeave || !BardHasTarget))
             {
-                // Limit optimisation to when you are high enough level to benefit from it.
-                if (LevelChecked(WanderersMinuet))
-                {
-                    if (CanBardWeave || !BardHasTarget)
-                    {
-                        if (SongNone && InCombat())
-                        {
-                            // Logic to determine first song
-                            if (ActionReady(WanderersMinuet) && !(JustUsed(MagesBallad) || JustUsed(ArmysPaeon)))
-                                return WanderersMinuet;
+                if (SongChangePitchPerfect())
+                    return PitchPerfect;
 
-                            if (ActionReady(MagesBallad) && !(JustUsed(WanderersMinuet) || JustUsed(ArmysPaeon)))
-                                return MagesBallad;
+                if (SongChangeEmpyreal())
+                    return EmpyrealArrow;
 
-                            if (ActionReady(ArmysPaeon) && !(JustUsed(MagesBallad) || JustUsed(WanderersMinuet)))
-                                return ArmysPaeon;
-                        }
+                if (WandererSong())
+                    return WanderersMinuet;
 
-                        if (SongWanderer)
-                        {
-                            if (SongTimerInSeconds <= 3 && gauge.Repertoire > 0 && BardHasTarget) // Spend any repertoire before switching to next song
-                                return OriginalHook(PitchPerfect);
+                if (MagesSong())
+                    return MagesBallad;
 
-                            if (SongTimerInSeconds <= 3 && ActionReady(MagesBallad)) // Move to Mage's Ballad if <= 3 seconds left on song
-                                return MagesBallad;
-                        }
+                if (ArmySong())
+                    return ArmysPaeon;
 
-                        // Move to Army's Paeon if < 3 seconds left on song
-                        // Special case for Empyreal Arrow: it must be cast before you change to it to avoid drift!
-                        if (SongMage && SongTimerInSeconds <= 3 && ActionReady(ArmysPaeon))
-                        {
-                            return ActionReady(EmpyrealArrow) && BardHasTarget
-                                ? EmpyrealArrow
-                                : ArmysPaeon;
-                        }
-                    }
-
-                    // Move to Wanderer's Minuet if <= 12 seconds left on song or WM off CD and have 4 repertoires of AP
-                    if (SongArmy && (CanWeaveDelayed || !BardHasTarget) &&
-                        (SongTimerInSeconds <= 12 || ActionReady(WanderersMinuet) && gauge.Repertoire == 4))
-                        return WanderersMinuet;
-                }
-
-                else if (SongTimerInSeconds <= 3 && CanWeaveDelayed)
-                {
-                    if (ActionReady(MagesBallad))
-                        return MagesBallad;
-
-                    if (ActionReady(ArmysPaeon))
-                        return ArmysPaeon;
-                }
             }
-
             #endregion
 
             #region Buffs
@@ -415,8 +378,7 @@ internal partial class BRD : PhysRangedJob
             if (HasEffect(Buffs.HawksEye) || HasEffect(Buffs.Barrage))
                 return OriginalHook(WideVolley);
 
-            // Delay Encore enough for buff window
-            if (IsEnabled(CustomComboPreset.BRD_Adv_BuffsEncore) && HasEffect(Buffs.RadiantEncoreReady) && RadiantFinaleDuration < 15)
+            if (IsEnabled(CustomComboPreset.BRD_Adv_BuffsEncore) && HasEffect(Buffs.RadiantEncoreReady) && RadiantFinaleDuration < 18)
                 return OriginalHook(RadiantEncore);
 
             if (IsEnabled(CustomComboPreset.BRD_AoE_ApexArrow))
@@ -489,59 +451,23 @@ internal partial class BRD : PhysRangedJob
 
             #region Songs
 
-            if (IsEnabled(CustomComboPreset.BRD_Adv_Song) && isEnemyHealthHigh)
+            if (IsEnabled(CustomComboPreset.BRD_Adv_Song) && isEnemyHealthHigh && InCombat() && (CanBardWeave || !BardHasTarget))
             {
-                // Limit optimisation to when you are high enough level to benefit from it.
-                if (LevelChecked(WanderersMinuet))
-                {
-                    if (CanBardWeave || !BardHasTarget)
-                    {
-                        if (SongNone && InCombat())
-                        {
-                            // Logic to determine first song
-                            if (ActionReady(WanderersMinuet) && !(JustUsed(MagesBallad) || JustUsed(ArmysPaeon)))
-                                return WanderersMinuet;
+                if (SongChangePitchPerfect())
+                    return PitchPerfect;
 
-                            if (ActionReady(MagesBallad) && !(JustUsed(WanderersMinuet) || JustUsed(ArmysPaeon)))
-                                return MagesBallad;
+                if (SongChangeEmpyreal())
+                    return EmpyrealArrow;
 
-                            if (ActionReady(ArmysPaeon) && !(JustUsed(MagesBallad) || JustUsed(WanderersMinuet)))
-                                return ArmysPaeon;
-                        }
+                if (WandererSong())
+                    return WanderersMinuet;
 
-                        if (SongWanderer)
-                        {
-                            if (SongTimerInSeconds <= 3 && gauge.Repertoire > 0 && BardHasTarget) // Spend any repertoire before switching to next song
-                                return OriginalHook(PitchPerfect);
+                if (MagesSong())
+                    return MagesBallad;
 
-                            if (SongTimerInSeconds <= 3 && ActionReady(MagesBallad)) // Move to Mage's Ballad if <= 3 seconds left on song
-                                return MagesBallad;
-                        }
+                if (ArmySong())
+                    return ArmysPaeon;
 
-                        // Move to Army's Paeon if <= 3 seconds left on song
-                        // Special case for Empyreal Arrow: it must be cast before you change to it to avoid drift!
-                        if (SongMage && SongTimerInSeconds <= 3 && ActionReady(ArmysPaeon))
-                        {
-                            if (ActionReady(EmpyrealArrow) && BardHasTarget)
-                                return EmpyrealArrow;
-
-                            return ArmysPaeon;
-                        }
-                    }
-
-                    // Move to Wanderer's Minuet if <= 12 seconds left on song or WM off CD and have 4 repertoires of AP
-                    if (SongArmy && (CanWeaveDelayed || !BardHasTarget) && (SongTimerInSeconds <= 12 || ActionReady(WanderersMinuet) && gauge.Repertoire == 4))
-                        return WanderersMinuet;
-                }
-
-                else if (SongTimerInSeconds <= 3 && CanWeaveDelayed) // Before you get Wanderers, it just toggles the two songs.
-                {
-                    if (ActionReady(MagesBallad))
-                        return MagesBallad;
-
-                    if (ActionReady(ArmysPaeon))
-                        return ArmysPaeon;
-                }
             }
 
             #endregion
@@ -647,7 +573,7 @@ internal partial class BRD : PhysRangedJob
             if (HasEffect(Buffs.HawksEye) || HasEffect(Buffs.Barrage))
                 return OriginalHook(StraightShot);
 
-            if (IsEnabled(CustomComboPreset.BRD_Adv_BuffsEncore) && HasEffect(Buffs.RadiantEncoreReady) && RadiantFinaleDuration < 15)
+            if (IsEnabled(CustomComboPreset.BRD_Adv_BuffsEncore) && HasEffect(Buffs.RadiantEncoreReady) && RadiantFinaleDuration < 18)
                 return OriginalHook(RadiantEncore);
 
             if (IsEnabled(CustomComboPreset.BRD_ST_ApexArrow))
@@ -693,54 +619,23 @@ internal partial class BRD : PhysRangedJob
             #region Songs
 
             // Limit optimisation to when you are high enough level to benefit from it.
-            if (LevelChecked(WanderersMinuet))
+            if (InCombat() && (CanBardWeave || !BardHasTarget))
             {
-                if (CanBardWeave || !BardHasTarget)
-                {
-                    if (SongNone && InCombat())
-                    {
-                        // Logic to determine first song
-                        if (ActionReady(WanderersMinuet) && !(JustUsed(MagesBallad) || JustUsed(ArmysPaeon)))
-                            return WanderersMinuet;
+                if (SongChangePitchPerfect())
+                    return PitchPerfect;
 
-                        if (ActionReady(MagesBallad) && !(JustUsed(WanderersMinuet) || JustUsed(ArmysPaeon)))
-                            return MagesBallad;
+                if (SongChangeEmpyreal())
+                    return EmpyrealArrow;
 
-                        if (ActionReady(ArmysPaeon) && !(JustUsed(MagesBallad) || JustUsed(WanderersMinuet)))
-                            return ArmysPaeon;
-                    }
-
-                    if (SongWanderer)
-                    {
-                        if (SongTimerInSeconds <= 3 && gauge.Repertoire > 0 && BardHasTarget) // Spend any repertoire before switching to next song
-                            return OriginalHook(PitchPerfect);
-
-                        if (SongTimerInSeconds <= 3 && ActionReady(MagesBallad)) // Move to Mage's Ballad if <= 3 seconds left on song
-                            return MagesBallad;
-                    }
-
-                    // Move to Army's Paeon if < 3 seconds left on song
-                    // Special case for Empyreal Arrow: it must be cast before you change to it to avoid drift!
-                    if (SongMage && SongTimerInSeconds <= 3 && ActionReady(ArmysPaeon))
-                    {
-                        return ActionReady(EmpyrealArrow) && BardHasTarget
-                            ? EmpyrealArrow
-                            : ArmysPaeon;
-                    }
-                }
-
-                // Move to Wanderer's Minuet if <= 12 seconds left on song or WM off CD and have 4 repertoires of AP
-                if (SongArmy && (CanWeaveDelayed || !BardHasTarget) && (SongTimerInSeconds <= 12 || gauge.Repertoire == 4) && ActionReady(WanderersMinuet))
+                if (WandererSong())
                     return WanderersMinuet;
-            }
 
-            else if (SongTimerInSeconds <= 3 && CanWeaveDelayed) // Not high enough for wanderers Minuet yet
-            {
-                if (ActionReady(MagesBallad))
+                if (MagesSong())
                     return MagesBallad;
 
-                if (ActionReady(ArmysPaeon))
+                if (ArmySong())
                     return ArmysPaeon;
+
             }
 
             #endregion
@@ -827,7 +722,7 @@ internal partial class BRD : PhysRangedJob
             if (HasEffect(Buffs.ResonantArrowReady))
                 return ResonantArrow;
 
-            if (HasEffect(Buffs.RadiantEncoreReady) && RadiantFinaleDuration < 15)
+            if (HasEffect(Buffs.RadiantEncoreReady) && RadiantFinaleDuration < 18)
                 return OriginalHook(RadiantEncore);
 
             #endregion
@@ -857,64 +752,23 @@ internal partial class BRD : PhysRangedJob
             #region Songs
 
             // Limit optimisation to when you are high enough level to benefit from it.
-            if (LevelChecked(WanderersMinuet))
+            if (InCombat() && (CanBardWeave || !BardHasTarget))
             {
-                // 43s of Wanderer's Minute, ~36s of Mage's Ballad, and ~43s of Army's Paeon
+                if (SongChangePitchPerfect())
+                    return PitchPerfect;
 
-                if (ActionReady(EmpyrealArrow) && JustUsed(WanderersMinuet))
+                if (SongChangeEmpyreal())
                     return EmpyrealArrow;
 
-                if (CanBardWeave || !BardHasTarget)
-                {
-                    if (SongNone && InCombat())
-                    {
-                        // Logic to determine first song
-                        if (ActionReady(WanderersMinuet) && !(JustUsed(MagesBallad) || JustUsed(ArmysPaeon)))
-                            return WanderersMinuet;
-
-                        if (ActionReady(MagesBallad) && !(JustUsed(WanderersMinuet) || JustUsed(ArmysPaeon)))
-                            return MagesBallad;
-
-                        if (ActionReady(ArmysPaeon) && !(JustUsed(MagesBallad) || JustUsed(WanderersMinuet)))
-                            return ArmysPaeon;
-                    }
-
-                    if (SongWanderer)
-                    {
-                        if (SongTimerInSeconds <= 3 && gauge.Repertoire > 0 && BardHasTarget) // Spend any repertoire before switching to next song
-                            return OriginalHook(PitchPerfect);
-
-                        if (SongTimerInSeconds <= 3 && ActionReady(MagesBallad)) // Move to Mage's Ballad if <= 3 seconds left on song
-                            return MagesBallad;
-                    }
-
-                    if (SongMage)
-                    {
-                        // Move to Army's Paeon if <= 3 seconds left on song
-                        if (SongTimerInSeconds <= 3 && ActionReady(ArmysPaeon))
-                        {
-                            // Special case for Empyreal Arrow: it must be cast before you change to it to avoid drift!
-                            if (ActionReady(EmpyrealArrow) && BardHasTarget)
-                                return EmpyrealArrow;
-
-                            return ArmysPaeon;
-                        }
-                    }
-                }
-
-                // Move to Wanderer's Minuet if <= 12 seconds left on song or WM off CD and have 4 repertoires of AP
-                if (SongArmy && (CanWeaveDelayed || !BardHasTarget) &&
-                    (SongTimerInSeconds <= 12 || ActionReady(WanderersMinuet) && gauge.Repertoire == 4))
+                if (WandererSong())
                     return WanderersMinuet;
-            }
 
-            else if (SongTimerInSeconds <= 3 && CanWeaveDelayed)
-            {
-                if (ActionReady(MagesBallad))
+                if (MagesSong())
                     return MagesBallad;
 
-                if (ActionReady(ArmysPaeon))
+                if (ArmySong())
                     return ArmysPaeon;
+
             }
 
             #endregion
@@ -1015,7 +869,7 @@ internal partial class BRD : PhysRangedJob
             if (HasEffect(Buffs.ResonantArrowReady))
                 return ResonantArrow;
 
-            if (HasEffect(Buffs.RadiantEncoreReady) && RadiantFinaleDuration < 15)
+            if (HasEffect(Buffs.RadiantEncoreReady) && RadiantFinaleDuration < 18)
                 return OriginalHook(RadiantEncore);
 
             #endregion
