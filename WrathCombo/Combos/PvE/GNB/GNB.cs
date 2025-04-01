@@ -460,20 +460,20 @@ internal partial class GNB : TankJob
             }
             if (ComboTimer > 0)
             {
-                if (ComboAction == DemonSlice && //just used Demon Slice
-                    LevelChecked(DemonSlaughter)) //and we have Demon Slaughter
+                if (ComboAction == DemonSlice &&
+                    LevelChecked(DemonSlaughter))
                 {
-                    if (Ammo == MaxCartridges()) //if we have max cartridges
+                    if (Ammo == MaxCartridges())
                     {
-                        if (IsEnabled(CustomComboPreset.GNB_AoE_Overcap) && //and we have overcap enabled
-                            LevelChecked(FatedCircle)) //and we have Fated Circle
-                            return FatedCircle; //use Fated Circle
-                        if (IsEnabled(CustomComboPreset.GNB_AoE_BSOvercap) && //or we have Burst Strike overcap enabled 
-                            !LevelChecked(FatedCircle)) //and we don't have Fated Circle
-                            return BurstStrike; //use Burst Strike
+                        if (IsEnabled(CustomComboPreset.GNB_AoE_Overcap) &&
+                            LevelChecked(FatedCircle))
+                            return FatedCircle;
+                        if (IsEnabled(CustomComboPreset.GNB_AoE_BSOvercap) &&
+                            !LevelChecked(FatedCircle))
+                            return BurstStrike;
                     }
-                    if (Ammo != MaxCartridges() || //if we don't have max cartridges
-                        (Ammo == MaxCartridges() && //or we do have max cartridges
+                    if (Ammo != MaxCartridges() ||
+                        (Ammo == MaxCartridges() &&
                         (!LevelChecked(FatedCircle) && !IsEnabled(CustomComboPreset.GNB_AoE_BSOvercap)) || !IsEnabled(CustomComboPreset.GNB_AoE_Overcap)))
                         return DemonSlaughter;
                 }
