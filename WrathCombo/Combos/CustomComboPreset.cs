@@ -6714,12 +6714,18 @@ SMN.JobID)]
         AST.JobID)]
     ASTPvP_Burst_Macrocosmos = 111007,
 
+    [ParentCombo(ASTPvP_Burst)]
+    [CustomComboInfo("Role Action Diabrosis Option",
+        "Adds Role Action Diabrosis to Burst Mode below selected health",
+        ASTPvP.JobID)]
+    ASTPvP_Diabrosis = 111010,
+
     [PvPCustomCombo]
     [ReplaceSkill(ASTPvP.Epicycle)]
     [CustomComboInfo("Epicycle Burst Feature", "Turns Epicycle into burst combo.", AST.JobID)]
     ASTPvP_Epicycle = 111008,
 
-    // Last value = 111009
+    // Last value = 111010
 
     #endregion
 
@@ -7444,7 +7450,13 @@ SMN.JobID)]
     [CustomComboInfo("Kardia Reminder Option", "Adds Kardia to Burst Mode.", SGE.JobID)]
     SGEPvP_BurstMode_KardiaReminder = 124007,
 
-    // Last value = 124007
+    [ParentCombo(SGEPvP_BurstMode)]
+    [CustomComboInfo("Role Action Diabrosis Option",
+       "Adds Role Action Diabrosis to Burst Mode below selected health",
+       SGE.JobID)]
+    SGEPvP_Diabrosis = 124008,
+
+    // Last value = 124008
 
     #endregion
 
@@ -7518,7 +7530,13 @@ SMN.JobID)]
     [CustomComboInfo("Chain Stratagem Option", "Adds Chain Stratagem to Burst Mode when available.", SCH.JobID)]
     SCHPvP_ChainStratagem = 126004,
 
-    // Last value = 126004
+    [ParentCombo(SCHPvP_Burst)]
+    [CustomComboInfo("Role Action Diabrosis Option",
+       "Adds Role Action Diabrosis to Burst Mode below selected health",
+       SCH.JobID)]
+    SCHPvP_Diabrosis = 126005,
+
+    // Last value = 126005
 
     #endregion
 
@@ -7708,7 +7726,13 @@ SMN.JobID)]
     [CustomComboInfo("Aquaveil Option", "Adds Aquaviel to Cure II when available.", WHM.JobID)]
     WHMPvP_Aquaveil = 129007,
 
-    // Last value = 129007
+    [ParentCombo(WHMPvP_Burst)]
+    [CustomComboInfo("Role Action Diabrosis Option",
+       "Adds Role Action Diabrosis to Burst Mode below selected health",
+       WHMPvP.JobID)]
+    WHMPvP_Diabrosis = 129009,
+
+    // Last value = 129009
 
     #endregion
 

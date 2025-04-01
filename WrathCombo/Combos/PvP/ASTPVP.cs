@@ -30,7 +30,6 @@ namespace WrathCombo.Combos.PvP
                     LadyOfCrowns = 4328,
                     LordOfCrowns = 4329,
                     RetrogradeReady = 4331;
-
         }
 
         internal class ASTPvP_Burst : CustomCombo
@@ -63,6 +62,10 @@ namespace WrathCombo.Combos.PvP
                         
                     if (!PvPCommon.TargetImmuneToDamage())
                     { 
+                        if (IsEnabled(CustomComboPreset.ASTPvP_Diabrosis) && PvPHealer.CanDiabrosis() && HasTarget() &&
+                            GetTargetHPPercent() <= GetOptionValue(Config.ASTPvP_DiabrosisThreshold))
+                            return PvPHealer.Diabrosis;
+
                         // Macrocosmos only with double gravity or on coodlown when double gravity is disabled
                         if (IsEnabled(CustomComboPreset.ASTPvP_Burst_Macrocosmos) && IsOffCooldown(Macrocosmos) &&
                            (ComboAction == DoubleGravity || !IsEnabled(CustomComboPreset.ASTPvP_Burst_DoubleGravity)))

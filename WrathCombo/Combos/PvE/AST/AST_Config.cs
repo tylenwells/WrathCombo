@@ -30,7 +30,9 @@ internal partial class AST
             AST_ST_DPS_Balance_Content = new("AST_ST_DPS_Balance_Content", 1),
             AST_ST_DPS_CombustSubOption = new("AST_ST_DPS_CombustSubOption", 0),
             //PVP
-            ASTPvP_Burst_PlayCardOption = new("ASTPvP_Burst_PlayCardOption");
+            ASTPvP_Burst_PlayCardOption = new("ASTPvP_Burst_PlayCardOption"),
+            ASTPvP_DiabrosisThreshold = new("ASTPvP_DiabrosisThreshold");
+
         public static UserBool
             AST_QuickTarget_SkipDamageDown = new("AST_QuickTarget_SkipDamageDown"),
             AST_QuickTarget_SkipRezWeakness = new("AST_QuickTarget_SkipRezWeakness"),
@@ -213,6 +215,12 @@ internal partial class AST
 
                     DrawHorizontalRadioButton(ASTPvP_Burst_PlayCardOption, "Lady of Crowns card play",
                         "Only uses Lady of Crowns when available.", 3);
+
+                    break;
+
+                case CustomComboPreset.ASTPvP_Diabrosis:
+                    DrawSliderInt(0, 100, ASTPvP_DiabrosisThreshold,
+                        "Target HP% to use Diabrosis");
 
                     break;
             }

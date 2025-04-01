@@ -1,4 +1,5 @@
 ﻿using WrathCombo.CustomComboNS;
+using WrathCombo.CustomComboNS.Functions;
 
 namespace WrathCombo.Combos.PvP
 {
@@ -29,6 +30,12 @@ namespace WrathCombo.Combos.PvP
                 Biolytic = 3090;
         }
 
+        internal class Config
+        {
+            internal static UserInt
+                SCHPvP_DiabrosisThreshold = new("SCHPvP_DiabrosisThreshold");
+        }
+
         internal class SCHPvP_Burst : CustomCombo
         {
             protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.SCHPvP_Burst;
@@ -40,6 +47,10 @@ namespace WrathCombo.Combos.PvP
                     // Uses Chain Stratagem when available
                     if (IsEnabled(CustomComboPreset.SCHPvP_ChainStratagem) && IsOffCooldown(ChainStratagem))
                         return ChainStratagem;
+
+                    if (IsEnabled(CustomComboPreset.SCHPvP_Diabrosis) && PvPHealer.CanDiabrosis() && HasTarget() &&
+                            GetTargetHPPercent() <= GetOptionValue(Config.SCHPvP_DiabrosisThreshold))
+                        return PvPHealer.Diabrosis;
 
                     // Uses Expedient when available and target isn't affected with Biolysis
                     if (IsEnabled(CustomComboPreset.SCHPvP_Expedient) && IsOffCooldown(Expedient) && !TargetHasEffect(Debuffs.Biolysis))

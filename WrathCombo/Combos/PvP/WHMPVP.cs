@@ -31,10 +31,11 @@ namespace WrathCombo.Combos.PvP
         internal class Config
         {
             internal static UserInt
-                WHMPVP_HealOrder = new("WHMPVP_HealOrder");
+                WHMPVP_HealOrder = new("WHMPVP_HealOrder"),        
+                WHMPvP_DiabrosisThreshold = new("WHMPvP_DiabrosisThreshold");
         }
 
-        internal class WHMPvP_Burst : CustomCombo
+    internal class WHMPvP_Burst : CustomCombo
         {
             protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.WHMPvP_Burst;
 
@@ -47,6 +48,10 @@ namespace WrathCombo.Combos.PvP
                         var tar = OptionalTarget as IBattleChara ?? Svc.Targets.Target as IBattleChara;
                         if (IsEnabled(CustomComboPreset.WHMPvP_AfflatusPurgation) && LimitBreakLevel == 1 && tar?.CurrentHp <= 40000)
                             return AfflatusPurgation;
+
+                        if (IsEnabled(CustomComboPreset.WHMPvP_Diabrosis) && PvPHealer.CanDiabrosis() && HasTarget() &&
+                            GetTargetHPPercent() <= GetOptionValue(Config.WHMPvP_DiabrosisThreshold))
+                            return PvPHealer.Diabrosis;
 
                         // Afflatus Misery if enabled and off cooldown
                         if (IsEnabled(CustomComboPreset.WHMPvP_Afflatus_Misery) && IsOffCooldown(AfflatusMisery))

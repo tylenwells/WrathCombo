@@ -1,4 +1,5 @@
 ﻿using WrathCombo.CustomComboNS;
+using WrathCombo.CustomComboNS.Functions;
 
 namespace WrathCombo.Combos.PvP
 {
@@ -36,6 +37,12 @@ namespace WrathCombo.Combos.PvP
                 Haimatinon = 3111;
         }
 
+        internal class Config
+        {
+            internal static UserInt
+                SGEPvP_DiabrosisThreshold = new("SGEPvP_DiabrosisThreshold");
+        }
+
         internal class SGEPvP_BurstMode : CustomCombo
         {
             protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.SGEPvP_BurstMode;
@@ -49,6 +56,10 @@ namespace WrathCombo.Combos.PvP
 
                     if (!PvPCommon.TargetImmuneToDamage())
                     {
+                        if (IsEnabled(CustomComboPreset.SGEPvP_Diabrosis) && PvPHealer.CanDiabrosis() && HasTarget() &&
+                            GetTargetHPPercent() <= GetOptionValue(Config.SGEPvP_DiabrosisThreshold))
+                            return PvPHealer.Diabrosis;
+
                         // Psyche after Phlegma
                         if (IsEnabled(CustomComboPreset.SGEPvP_BurstMode_Psyche) && WasLastSpell(Phlegma))
                             return Psyche;

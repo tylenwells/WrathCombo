@@ -1,5 +1,6 @@
 ﻿using Dalamud.Interface.Colors;
 using ImGuiNET;
+using WrathCombo.Combos.PvP;
 using WrathCombo.CustomComboNS.Functions;
 using static WrathCombo.Extensions.UIntExtensions;
 using static WrathCombo.Window.Functions.SliderIncrements;
@@ -194,6 +195,12 @@ internal partial class SGE
                     DrawRadioButton(SGE_Eukrasia_Mode, $"{EukrasianDiagnosis.ActionName()}", "", 1);
                     DrawRadioButton(SGE_Eukrasia_Mode, $"{EukrasianPrognosis.ActionName()}", "", 2);
                     DrawRadioButton(SGE_Eukrasia_Mode, $"{EukrasianDyskrasia.ActionName()}", "", 3);
+                    break;
+
+                case CustomComboPreset.SGEPvP_Diabrosis:
+                    DrawSliderInt(0, 100, SGEPvP.Config.SGEPvP_DiabrosisThreshold,
+                        "Target HP% to use Diabrosis");
+
                     break;
             }
         }

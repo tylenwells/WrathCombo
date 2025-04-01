@@ -179,6 +179,12 @@ internal partial class WHM
                     DrawHorizontalRadioButton(WHMPvP.Config.WHMPVP_HealOrder, $"{WHMPvP.Aquaveil.ActionName()} First", $"If Both {WHMPvP.Aquaveil.ActionName()} & {WHMPvP.Cure3.ActionName()} are ready, prioritise {WHMPvP.Aquaveil.ActionName()}", 0);
                     DrawHorizontalRadioButton(WHMPvP.Config.WHMPVP_HealOrder, $"{WHMPvP.Cure3.ActionName()} First", $"If Both {WHMPvP.Aquaveil.ActionName()} & {WHMPvP.Cure3.ActionName()} are ready, prioritise {WHMPvP.Cure3.ActionName()}", 1);
                     break;
+
+                case CustomComboPreset.WHMPvP_Diabrosis:
+                    DrawSliderInt(0, 100, WHMPvP.Config.WHMPvP_DiabrosisThreshold,
+                        "Target HP% to use Diabrosis");
+
+                    break;
             }
         }
     }
