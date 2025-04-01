@@ -1,4 +1,5 @@
 ﻿using WrathCombo.CustomComboNS;
+using WrathCombo.CustomComboNS.Functions;
 
 namespace WrathCombo.Combos.PvP
 {
@@ -43,6 +44,12 @@ namespace WrathCombo.Combos.PvP
                 ShieldSmite = 4283;
         }
 
+        internal class Config
+        {
+            internal static UserInt
+                PLDPvP_RampartThreshold = new("PLDPvP_RampartThreshold");
+        }
+
         internal class PLDPvP_Burst : CustomCombo
         {
             protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.PLDPvP_Burst;
@@ -51,6 +58,9 @@ namespace WrathCombo.Combos.PvP
             {
                 if (actionID is FastBlade or RiotBlade or RoyalAuthority)
                 {
+                    if (IsEnabled(CustomComboPreset.PLDPvP_Rampart) && PvPTank.CanRampart(GetOptionValue(Config.PLDPvP_RampartThreshold)))
+                        return PvPTank.Rampart;
+
                     if (IsEnabled(CustomComboPreset.PLDPvP_Intervene) && !InMeleeRange() && IsOffCooldown(Intervene) || IsEnabled(CustomComboPreset.PLDPvP_Intervene_Melee) && InMeleeRange() && IsOffCooldown(Intervene))
                         return Intervene;
 

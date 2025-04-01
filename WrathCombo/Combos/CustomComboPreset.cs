@@ -6897,7 +6897,12 @@ SMN.JobID)]
     [CustomComboInfo("Scorn Option", "Adds Scorn to Burst mode.", DRK.JobID)]
     DRKPvP_Scorn = 115008,
 
-    // Last value = 115008
+    [ParentCombo(DRKPvP_Burst)]
+    [CustomComboInfo("Role Action Rampart Option",
+        "Adds Defensive Role Action Rampart to Burst Mode below selected health", DRK.JobID)]
+    DRKPvP_Rampart = 115009,
+
+    // Last value = 115009
 
     #endregion
 
@@ -6961,10 +6966,6 @@ SMN.JobID)]
     [CustomComboInfo("Fated Circle Option", "Adds Fated Circle to rotation under No Mercy status.", GNB.JobID)]
     GNBPvP_FatedCircle = 117001,
 
-    //[ParentCombo(GNBPvP_Burst)] No longer its own ability
-    //[CustomComboInfo("Burst Strike Option", "Adds Burst Strike to rotation when appropriate.", GNB.JobID)]
-    //GNBPvP_BurstStrike = 117002,
-
     [ParentCombo(GNBPvP_Burst)]
     [CustomComboInfo("Gnashing Fang Option", "Adds Gnashing Fang to Burst Mode.", GNB.JobID)]
     GNBPvP_ST_GnashingFang = 117004,
@@ -6985,6 +6986,11 @@ SMN.JobID)]
     [CustomComboInfo("Heart of Corundum Option", "Adds Heart of Corundum to Burst Mode under set health %.", GNB.JobID)]
     GNBPvP_Corundum = 117011,
 
+    [ParentCombo(GNBPvP_Burst)]
+    [CustomComboInfo("Role Action Rampart Option",
+        "Adds Defensive Role Action Rampart to Burst Mode below selected health", GNB.JobID)]
+    GNBPvP_Rampart = 117012,
+
     #endregion
 
     #region Option Select
@@ -6994,7 +7000,7 @@ SMN.JobID)]
     [CustomComboInfo("Continuation Feature", "Adds Continuation to Gnashing Fang.", GNB.JobID)]
     GNBPvP_GnashingFang = 117010,
 
-    // Last value = 117011
+    // Last value = 117012
 
     #endregion
 
@@ -7246,7 +7252,12 @@ SMN.JobID)]
     [CustomComboInfo("Holy Sheltron Option", "Adds Holy Sheltron to Burst Mode in melee range.", PLD.JobID)]
     PLDPvP_Sheltron = 121008,
 
-    // Last value = 121008
+    [ParentCombo(PLDPvP_Burst)]
+    [CustomComboInfo("Role Action Rampart Option",
+        "Adds Defensive Role Action Rampart to Burst Mode below selected health", PLD.JobID)]
+    PLDPvP_Rampart = 121009,
+
+    // Last value = 121009
 
     #endregion
 
@@ -7666,7 +7677,12 @@ SMN.JobID)]
     [CustomComboInfo("PrimalScream Option", "Adds Primal Scream to Burst Mode.", WARPvP.JobID)]
     WARPvP_BurstMode_PrimalScream = 128008,
 
-    // Last value = 128008
+    [ParentCombo(WARPvP_BurstMode)]
+    [CustomComboInfo("Role Action Rampart Option",
+        "Adds Defensive Role Action Rampart to Burst Mode below selected health", WARPvP.JobID)]
+    WARPvP_Rampart = 128009,
+
+    // Last value = 128009
 
     #endregion
 

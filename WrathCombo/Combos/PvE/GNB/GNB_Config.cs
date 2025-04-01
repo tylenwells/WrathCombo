@@ -16,9 +16,7 @@ internal partial class GNB
     {
         private const int NumberMitigationOptions = 8;
 
-        public const string
-            GNBPvP_Corundum = "GNBPvP_Corundum";
-
+        
         public static UserInt
             GNB_Opener_StartChoice = new ("GNB_Opener_StartChoice", 0),
             GNB_Opener_NM = new("GNB_Opener_NM", 0),
@@ -532,6 +530,13 @@ internal partial class GNB
                         "Replace No Mercy",
                         $"Use this feature instead on {NoMercy.ActionName()}\nWARNING: This WILL conflict with 'No Mercy Features'!", 1);
 
+                    break;
+
+                //PVP section
+
+                case CustomComboPreset.GNBPvP_Rampart:
+                    UserConfig.DrawSliderInt(1, 100, GNBPvP.Config.GNBPvP_RampartThreshold,
+                        "Use Rampart below set threshold for self");
                     break;
 
                 case CustomComboPreset.GNBPvP_Corundum:

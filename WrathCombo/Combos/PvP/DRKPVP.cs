@@ -1,4 +1,5 @@
 ﻿using WrathCombo.CustomComboNS;
+using WrathCombo.CustomComboNS.Functions;
 
 namespace WrathCombo.Combos.PvP
 {
@@ -31,10 +32,11 @@ namespace WrathCombo.Combos.PvP
                 Scorn = 4290;
         }
 
-        public class Config
+        internal class Config
         {
-            public const string
-                ShadowbringerThreshold = nameof(ShadowbringerThreshold);
+            internal static UserInt
+                ShadowbringerThreshold = new("ShadowbringerThreshold"),
+                DRKPvP_RampartThreshold = new("DRKPvP_RampartThreshold");
 
         }
 
@@ -48,6 +50,9 @@ namespace WrathCombo.Combos.PvP
                 {
                     bool canWeave = CanWeave();
                     int shadowBringerThreshold = GetOptionValue(Config.ShadowbringerThreshold);
+
+                    if (IsEnabled(CustomComboPreset.DRKPvP_Rampart) && PvPTank.CanRampart(GetOptionValue(Config.DRKPvP_RampartThreshold)))
+                        return PvPTank.Rampart;
 
                     if (!PvPCommon.TargetImmuneToDamage())
                     {

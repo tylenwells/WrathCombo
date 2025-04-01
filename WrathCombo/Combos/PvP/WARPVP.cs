@@ -36,7 +36,8 @@ namespace WrathCombo.Combos.PvP
         public static class Config
         {
             public static UserInt
-                WARPVP_BlotaTiming = new("WARPVP_BlotaTiming");
+                WARPVP_BlotaTiming = new("WARPVP_BlotaTiming"),
+                WARPvP_RampartThreshold = new ("WARPvP_RampartThreshold");
 
         }
         internal class WARPvP_BurstMode : CustomCombo
@@ -47,6 +48,9 @@ namespace WrathCombo.Combos.PvP
             {
                 if (actionID is HeavySwing or Maim or StormsPath)
                 {
+                    if (IsEnabled(CustomComboPreset.WARPvP_Rampart) && PvPTank.CanRampart(GetOptionValue(Config.WARPvP_RampartThreshold)))
+                        return PvPTank.Rampart;
+
                     if (!PvPCommon.TargetImmuneToDamage())
                     {
                         var canWeave = CanWeave();

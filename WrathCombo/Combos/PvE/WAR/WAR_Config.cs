@@ -365,6 +365,12 @@ internal partial class WAR
                         $"Only uses {Role.Reprisal.ActionName()} when the targeted enemy is a boss.", 1);
                     break;
 
+                // PVP
+                case CustomComboPreset.WARPvP_Rampart:
+                    UserConfig.DrawSliderInt(1, 100, WARPvP.Config.WARPvP_RampartThreshold,
+                        "Use Rampart below set threshold for self");
+                    break;
+
                 #region One-Button Mitigation
 
                 case CustomComboPreset.WAR_Mit_Holmgang_Max:

@@ -324,6 +324,11 @@ internal partial class DRK
 
                     break;
 
+                case CustomComboPreset.DRKPvP_Rampart:
+                    UserConfig.DrawSliderInt(1, 100, DRKPvP.Config.DRKPvP_RampartThreshold,
+                        "Use Rampart below set threshold for self");
+                    break;
+
                 #endregion
 
                 #region One-Button Mitigation

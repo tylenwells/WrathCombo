@@ -1,4 +1,5 @@
 ﻿using WrathCombo.CustomComboNS;
+using WrathCombo.CustomComboNS.Functions;
 
 namespace WrathCombo.Combos.PvP
 {
@@ -48,13 +49,15 @@ namespace WrathCombo.Combos.PvP
                 ReadyToRaze = 4293;
 
         }
-        public class Config
+        internal class Config
         {
-            public const string
-                corundumThreshold = nameof(corundumThreshold),
-                blastingZoneThreshold = nameof(blastingZoneThreshold);
+            internal static UserInt
+                corundumThreshold = new("corundumThreshold"),
+                blastingZoneThreshold = new("blastingZoneThreshold"),
+                GNBPvP_RampartThreshold = new("GNBPvP_RampartThreshold");
 
         }
+      
         internal class GNBPvP_Burst : CustomCombo
         {
             protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.GNBPvP_Burst;
@@ -70,6 +73,9 @@ namespace WrathCombo.Combos.PvP
 
                     if (CanWeave() && IsEnabled(CustomComboPreset.GNBPvP_Corundum) && PlayerHealthPercentageHp() <= corundumThreshold && IsOffCooldown(HeartOfCorundum))
                         return HeartOfCorundum;
+
+                    if (IsEnabled(CustomComboPreset.GNBPvP_Rampart) && PvPTank.CanRampart(GetOptionValue(Config.GNBPvP_RampartThreshold)))
+                        return PvPTank.Rampart;
 
                     if (!PvPCommon.TargetImmuneToDamage())
                     {
