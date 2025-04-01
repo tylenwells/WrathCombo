@@ -190,11 +190,14 @@ internal partial class GNB : TankJob
             if (IsEnabled(CustomComboPreset.GNB_ST_NoMercy) && ShouldUseNoMercy() &&
                 (Config.GNB_ST_NoMercy_SubOption == 0 || Config.GNB_ST_NoMercy_SubOption == 1 && InBossEncounter()))
                 return NoMercy;
-            if (IsEnabled(CustomComboPreset.GNB_ST_Advanced_Cooldowns) && IsEnabled(CustomComboPreset.GNB_ST_Continuation) &&
-                JustUsed(BurstStrike, 5f) &&  LevelChecked(Hypervelocity) && HasEffect(Buffs.ReadyToBlast) && IsEnabled(CustomComboPreset.GNB_ST_NoMercy) && NmCD is > 1 or <= 0.1f)
-                return Hypervelocity;
-            if (IsEnabled(CustomComboPreset.GNB_ST_Advanced_Cooldowns) && IsEnabled(CustomComboPreset.GNB_ST_Continuation) && ShouldUseContinuation())
-                return OriginalHook(Continuation);
+            if (IsEnabled(CustomComboPreset.GNB_ST_Advanced_Cooldowns) && IsEnabled(CustomComboPreset.GNB_ST_Continuation) && IsEnabled(CustomComboPreset.GNB_ST_NoMercy) &&
+                JustUsed(BurstStrike, 5f) && LevelChecked(Hypervelocity) && HasEffect(Buffs.ReadyToBlast) && IsEnabled(CustomComboPreset.GNB_ST_NoMercy))
+            {
+                if (GCDLength >= 2.4800f && NmCD < 1)
+                    return NoMercy;
+                if (GCDLength <= 2.4799f && NmCD > 1)
+                    return Hypervelocity;
+            }
             if (IsEnabled(CustomComboPreset.GNB_ST_Scuffed) &&
                 LevelChecked(DoubleDown) && HasNM && GunStep == 0 && ComboAction is BrutalShell && Ammo == 1)
                 return SolidBarrel;
@@ -206,6 +209,8 @@ internal partial class GNB : TankJob
                     return OriginalHook(DangerZone);
                 if (IsEnabled(CustomComboPreset.GNB_ST_BowShock) && ShouldUseBowShock())
                     return BowShock;
+                if (IsEnabled(CustomComboPreset.GNB_ST_Continuation) && ShouldUseContinuation())
+                    return OriginalHook(Continuation);
                 if (IsEnabled(CustomComboPreset.GNB_ST_GnashingFang) && ShouldUseGnashingFang())
                     return GnashingFang;
                 if (IsEnabled(CustomComboPreset.GNB_ST_DoubleDown) && ShouldUseDoubleDown())
@@ -214,8 +219,15 @@ internal partial class GNB : TankJob
                     return SonicBreak;
                 if (IsEnabled(CustomComboPreset.GNB_ST_Reign) && ShouldUseReignOfBeasts())
                     return OriginalHook(ReignOfBeasts);
-                if (ShouldUseBurstStrike())
-                    return BurstStrike;
+                if (IsEnabled(CustomComboPreset.GNB_ST_BurstStrike))
+                {
+                    if (ShouldUseBurstStrike())
+                        return BurstStrike;
+                    if (IsEnabled(CustomComboPreset.GNB_ST_BurstStrike) && IsEnabled(CustomComboPreset.GNB_ST_NoMercy) &&
+                        (LevelChecked(DoubleDown) && NmCD < 1 && Ammo == 3 && BfCD > 110 && ComboAction is KeenEdge) ||
+                        (LevelChecked(ReignOfBeasts) && NmCD < 1 && Ammo == 3 && !InOdd))
+                        return BurstStrike;
+                }
             }
             if (IsEnabled(CustomComboPreset.GNB_ST_GnashingFang) && GunStep is 1 or 2)
                 return OriginalHook(GnashingFang);
@@ -227,10 +239,9 @@ internal partial class GNB : TankJob
                     return BrutalShell;
                 if (LevelChecked(SolidBarrel) && ComboAction == BrutalShell)
                 {
-                    if (IsEnabled(CustomComboPreset.GNB_ST_Continuation) && IsEnabled(CustomComboPreset.GNB_ST_NoMercy) &&
-                        LevelChecked(Hypervelocity) && HasEffect(Buffs.ReadyToBlast) && NmCD is > 1 or <= 0.1f &&
-                        (Config.GNB_ST_NoMercy_SubOption == 0 || (Config.GNB_ST_NoMercy_SubOption == 1 && InBossEncounter())))
-                        return Hypervelocity;
+                    if (IsEnabled(CustomComboPreset.GNB_ST_Overcap) && Ammo == MaxCartridges() && LevelChecked(BurstStrike))
+                        return BurstStrike;
+
                     return SolidBarrel;
                 }
             }
@@ -488,34 +499,51 @@ internal partial class GNB : TankJob
                 nMchoice && actionID is not NoMercy)
                 return actionID;
 
-            if (IsEnabled(CustomComboPreset.GNB_GF_NoMercy) && ShouldUseNoMercy())
-                return NoMercy;
-            if (IsEnabled(CustomComboPreset.GNB_GF_Continuation) && JustUsed(BurstStrike, 5f) && LevelChecked(Hypervelocity) && HasEffect(Buffs.ReadyToBlast) && IsEnabled(CustomComboPreset.GNB_GF_NoMercy) && NmCD is > 1 or <= 0.1f)
-                return Hypervelocity;
-            if (IsEnabled(CustomComboPreset.GNB_GF_Continuation) && ShouldUseContinuation())
-                return OriginalHook(Continuation);
-            if (IsEnabled(CustomComboPreset.GNB_GF_Scuffed) && LevelChecked(DoubleDown) && HasNM && GunStep == 0 && ComboAction is BrutalShell && Ammo == 1)
-                return SolidBarrel;
-            if (IsEnabled(CustomComboPreset.GNB_GF_Bloodfest) && ShouldUseBloodfest())
-                return Bloodfest;
-            if (IsEnabled(CustomComboPreset.GNB_GF_Zone) && ShouldUseZone())
-                return OriginalHook(DangerZone);
-            if (IsEnabled(CustomComboPreset.GNB_GF_BowShock) && ShouldUseBowShock())
-                return BowShock;
-            if (IsEnabled(CustomComboPreset.GNB_GF_Features) && ShouldUseGnashingFang())
-                return GnashingFang;
-            if (IsEnabled(CustomComboPreset.GNB_GF_DoubleDown) && ShouldUseDoubleDown())
-                return DoubleDown;
-            if (IsEnabled(CustomComboPreset.GNB_GF_SonicBreak) && ShouldUseSonicBreak())
-                return SonicBreak;
-            if (IsEnabled(CustomComboPreset.GNB_GF_Reign) && ShouldUseReignOfBeasts())
-                return OriginalHook(ReignOfBeasts);
-            if (ShouldUseBurstStrike())
-                return BurstStrike;
-            if (IsEnabled(CustomComboPreset.GNB_GF_Features) && GunStep is 1 or 2)
-                return OriginalHook(GnashingFang);
-            if (IsEnabled(CustomComboPreset.GNB_GF_Reign) && GunStep is 3 or 4)
-                return OriginalHook(ReignOfBeasts);
+            if (IsEnabled(CustomComboPreset.GNB_GF_Features))
+            {
+                if (IsEnabled(CustomComboPreset.GNB_GF_NoMercy) && ShouldUseNoMercy())
+                    return NoMercy;
+                if (IsEnabled(CustomComboPreset.GNB_GF_Continuation) && JustUsed(BurstStrike, 5f) && LevelChecked(Hypervelocity) && HasEffect(Buffs.ReadyToBlast) && IsEnabled(CustomComboPreset.GNB_GF_NoMercy) && NmCD is > 1 or <= 0.1f)
+                    return Hypervelocity;
+                if (IsEnabled(CustomComboPreset.GNB_GF_Continuation) && ShouldUseContinuation())
+                    return OriginalHook(Continuation);
+                if (IsEnabled(CustomComboPreset.GNB_GF_Scuffed) && LevelChecked(DoubleDown) && HasNM && GunStep == 0 && ComboAction is BrutalShell && Ammo == 1)
+                    return SolidBarrel;
+                if (IsEnabled(CustomComboPreset.GNB_GF_Bloodfest) && ShouldUseBloodfest())
+                    return Bloodfest;
+                if (IsEnabled(CustomComboPreset.GNB_GF_Zone) && ShouldUseZone())
+                    return OriginalHook(DangerZone);
+                if (IsEnabled(CustomComboPreset.GNB_GF_BowShock) && ShouldUseBowShock())
+                    return BowShock;
+                if (ShouldUseGnashingFang())
+                    return GnashingFang;
+                if (IsEnabled(CustomComboPreset.GNB_GF_DoubleDown) && ShouldUseDoubleDown())
+                    return DoubleDown;
+                if (IsEnabled(CustomComboPreset.GNB_GF_SonicBreak) && ShouldUseSonicBreak())
+                    return SonicBreak;
+                if (IsEnabled(CustomComboPreset.GNB_GF_Reign) && ShouldUseReignOfBeasts())
+                    return OriginalHook(ReignOfBeasts);
+                if (IsEnabled(CustomComboPreset.GNB_GF_Features) &&
+                    IsEnabled(CustomComboPreset.GNB_GF_BurstStrike))
+                {
+                    if (ShouldUseBurstStrike() ||
+                        (IsEnabled(CustomComboPreset.GNB_GF_NoMercy) &&
+                        (LevelChecked(DoubleDown) && NmCD < 1 && Ammo == 3 && BfCD > 110 && ComboAction is KeenEdge) ||
+                        (LevelChecked(ReignOfBeasts) && NmCD < 1 && Ammo == 3 && !InOdd)))
+                        return BurstStrike;
+                }
+                    
+                if (IsEnabled(CustomComboPreset.GNB_GF_Features) &&
+                    IsEnabled(CustomComboPreset.GNB_GF_BurstStrike) &&
+                    IsEnabled(CustomComboPreset.GNB_GF_NoMercy) &&
+                    (LevelChecked(DoubleDown) && NmCD < 1 && Ammo == 3 && BfCD > 110 && ComboAction is KeenEdge) ||
+                    (LevelChecked(ReignOfBeasts) && NmCD < 1 && Ammo == 3 && !InOdd))
+                    return BurstStrike;
+                if (IsEnabled(CustomComboPreset.GNB_GF_Features) && GunStep is 1 or 2)
+                    return OriginalHook(GnashingFang);
+                if (IsEnabled(CustomComboPreset.GNB_GF_Reign) && GunStep is 3 or 4)
+                    return OriginalHook(ReignOfBeasts);
+            }
 
             return actionID;
         }
