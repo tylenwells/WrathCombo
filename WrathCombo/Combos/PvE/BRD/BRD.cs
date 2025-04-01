@@ -378,7 +378,7 @@ internal partial class BRD : PhysRangedJob
             if (HasEffect(Buffs.Barrage))
                 return OriginalHook(WideVolley);
 
-            if (IsEnabled(CustomComboPreset.BRD_Adv_BuffsEncore) && HasEffect(Buffs.RadiantEncoreReady) && RadiantFinaleDuration < 18)
+            if (IsEnabled(CustomComboPreset.BRD_Adv_BuffsEncore) && HasEffect(Buffs.RadiantEncoreReady) && RadiantFinaleDuration < 16)
                 return OriginalHook(RadiantEncore);
 
             if (IsEnabled(CustomComboPreset.BRD_AoE_ApexArrow))
@@ -576,7 +576,7 @@ internal partial class BRD : PhysRangedJob
             if (HasEffect(Buffs.Barrage))
                 return OriginalHook(StraightShot);
 
-            if (IsEnabled(CustomComboPreset.BRD_Adv_BuffsEncore) && HasEffect(Buffs.RadiantEncoreReady) && RadiantFinaleDuration < 17)
+            if (IsEnabled(CustomComboPreset.BRD_Adv_BuffsEncore) && HasEffect(Buffs.RadiantEncoreReady) && RadiantFinaleDuration < 16)
                 return OriginalHook(RadiantEncore);
 
             if (IsEnabled(CustomComboPreset.BRD_ST_ApexArrow))
@@ -728,7 +728,7 @@ internal partial class BRD : PhysRangedJob
             if (HasEffect(Buffs.ResonantArrowReady))
                 return ResonantArrow;
 
-            if (HasEffect(Buffs.RadiantEncoreReady) && RadiantFinaleDuration < 18)
+            if (HasEffect(Buffs.RadiantEncoreReady) && RadiantFinaleDuration < 16)
                 return OriginalHook(RadiantEncore);
 
             if (HasEffect(Buffs.HawksEye))
@@ -878,7 +878,7 @@ internal partial class BRD : PhysRangedJob
             if (HasEffect(Buffs.ResonantArrowReady))
                 return ResonantArrow;
 
-            if (HasEffect(Buffs.RadiantEncoreReady) && RadiantFinaleDuration < 18)
+            if (HasEffect(Buffs.RadiantEncoreReady) && RadiantFinaleDuration < 16)
                 return OriginalHook(RadiantEncore);
 
             if (HasEffect(Buffs.HawksEye))
