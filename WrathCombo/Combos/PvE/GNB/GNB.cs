@@ -90,7 +90,9 @@ internal partial class GNB : TankJob
                 return SonicBreak;
             if (ShouldUseReignOfBeasts())
                 return ReignOfBeasts;
-            if (ShouldUseBurstStrike())
+            if (ShouldUseBurstStrike() ||
+                (LevelChecked(DoubleDown) && NmCD < 1 && Ammo == 3 && BfCD > 110 && ((SlowGNB && ComboAction is KeenEdge) || (FastGNB && ComboAction is BrutalShell)) ||
+                (LevelChecked(ReignOfBeasts) && NmCD < 1 && Ammo == 3 && !InOdd)))
                 return BurstStrike;
             if (GunStep is 1 or 2)
                 return OriginalHook(GnashingFang);
@@ -224,8 +226,8 @@ internal partial class GNB : TankJob
                     if (ShouldUseBurstStrike())
                         return BurstStrike;
                     if (IsEnabled(CustomComboPreset.GNB_ST_BurstStrike) && IsEnabled(CustomComboPreset.GNB_ST_NoMercy) &&
-                        (LevelChecked(DoubleDown) && NmCD < 1 && Ammo == 3 && BfCD > 110 && ComboAction is KeenEdge) ||
-                        (LevelChecked(ReignOfBeasts) && NmCD < 1 && Ammo == 3 && !InOdd))
+                        (LevelChecked(DoubleDown) && NmCD < 1 && Ammo == 3 && BfCD > 110 && ((SlowGNB && ComboAction is KeenEdge) || (FastGNB && ComboAction is BrutalShell)) ||
+                        (LevelChecked(ReignOfBeasts) && NmCD < 1 && Ammo == 3 && !InOdd)))
                         return BurstStrike;
                 }
             }
@@ -528,8 +530,8 @@ internal partial class GNB : TankJob
                 {
                     if (ShouldUseBurstStrike() ||
                         (IsEnabled(CustomComboPreset.GNB_GF_NoMercy) &&
-                        (LevelChecked(DoubleDown) && NmCD < 1 && Ammo == 3 && BfCD > 110 && ComboAction is KeenEdge) ||
-                        (LevelChecked(ReignOfBeasts) && NmCD < 1 && Ammo == 3 && !InOdd)))
+                        (LevelChecked(DoubleDown) && NmCD < 1 && Ammo == 3 && BfCD > 110 && ((SlowGNB && ComboAction is KeenEdge) || (FastGNB && ComboAction is BrutalShell)) ||
+                        (LevelChecked(ReignOfBeasts) && NmCD < 1 && Ammo == 3 && !InOdd))))
                         return BurstStrike;
                 }
                     
