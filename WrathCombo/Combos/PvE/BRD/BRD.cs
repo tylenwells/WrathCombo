@@ -375,7 +375,7 @@ internal partial class BRD : PhysRangedJob
 
             #region GCDS
 
-            if (HasEffect(Buffs.HawksEye) || HasEffect(Buffs.Barrage))
+            if (HasEffect(Buffs.Barrage))
                 return OriginalHook(WideVolley);
 
             if (IsEnabled(CustomComboPreset.BRD_Adv_BuffsEncore) && HasEffect(Buffs.RadiantEncoreReady) && RadiantFinaleDuration < 18)
@@ -395,6 +395,9 @@ internal partial class BRD : PhysRangedJob
                 if (HasEffect(Buffs.ResonantArrowReady))
                     return ResonantArrow;
             }
+
+            if (HasEffect(Buffs.HawksEye))
+                return OriginalHook(WideVolley);
 
             #endregion
 
@@ -451,7 +454,7 @@ internal partial class BRD : PhysRangedJob
 
             #region Songs
 
-            if (IsEnabled(CustomComboPreset.BRD_Adv_Song) && isEnemyHealthHigh && InCombat() && (CanBardWeave || !BardHasTarget))
+            if (IsEnabled(CustomComboPreset.BRD_Adv_Song) && isEnemyHealthHigh && InCombat())
             {
                 if (SongChangePitchPerfect())
                     return PitchPerfect;
@@ -570,10 +573,10 @@ internal partial class BRD : PhysRangedJob
 
             #region GCDS
 
-            if (HasEffect(Buffs.HawksEye) || HasEffect(Buffs.Barrage))
+            if (HasEffect(Buffs.Barrage))
                 return OriginalHook(StraightShot);
 
-            if (IsEnabled(CustomComboPreset.BRD_Adv_BuffsEncore) && HasEffect(Buffs.RadiantEncoreReady) && RadiantFinaleDuration < 18)
+            if (IsEnabled(CustomComboPreset.BRD_Adv_BuffsEncore) && HasEffect(Buffs.RadiantEncoreReady) && RadiantFinaleDuration < 17)
                 return OriginalHook(RadiantEncore);
 
             if (IsEnabled(CustomComboPreset.BRD_ST_ApexArrow))
@@ -587,6 +590,9 @@ internal partial class BRD : PhysRangedJob
 
             if (IsEnabled(CustomComboPreset.BRD_Adv_BuffsResonant) && HasEffect(Buffs.ResonantArrowReady))
                 return ResonantArrow;
+
+            if (HasEffect(Buffs.HawksEye))
+                return OriginalHook(StraightShot);
 
             #endregion
 
@@ -710,7 +716,7 @@ internal partial class BRD : PhysRangedJob
 
             #region GCDS
 
-            if (HasEffect(Buffs.HawksEye) || HasEffect(Buffs.Barrage))
+            if (HasEffect(Buffs.Barrage))
                 return OriginalHook(WideVolley);
 
             if (HasEffect(Buffs.BlastArrowReady))
@@ -724,6 +730,9 @@ internal partial class BRD : PhysRangedJob
 
             if (HasEffect(Buffs.RadiantEncoreReady) && RadiantFinaleDuration < 18)
                 return OriginalHook(RadiantEncore);
+
+            if (HasEffect(Buffs.HawksEye))
+                return OriginalHook(WideVolley);
 
             #endregion
 
@@ -857,7 +866,7 @@ internal partial class BRD : PhysRangedJob
 
             #region GCDS
 
-            if (HasEffect(Buffs.HawksEye) || HasEffect(Buffs.Barrage))
+            if (HasEffect(Buffs.Barrage))
                 return OriginalHook(StraightShot);
 
             if (HasEffect(Buffs.BlastArrowReady))
@@ -871,6 +880,9 @@ internal partial class BRD : PhysRangedJob
 
             if (HasEffect(Buffs.RadiantEncoreReady) && RadiantFinaleDuration < 18)
                 return OriginalHook(RadiantEncore);
+
+            if (HasEffect(Buffs.HawksEye))
+                return OriginalHook(StraightShot);
 
             #endregion
 

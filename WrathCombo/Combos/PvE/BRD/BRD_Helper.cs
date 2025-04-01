@@ -3,10 +3,8 @@
 using Dalamud.Game.ClientState.JobGauge.Enums;
 using Dalamud.Game.ClientState.JobGauge.Types;
 using Dalamud.Game.ClientState.Statuses;
-using Microsoft.Win32.SafeHandles;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Data;
@@ -36,7 +34,7 @@ internal partial class BRD
     //Useful Bools
     internal static bool BardHasTarget => HasBattleTarget();
     internal static bool CanBardWeave => CanWeave() && !ActionWatching.HasDoubleWeaved();
-    internal static bool CanWeaveDelayed => CanDelayedWeave(0.9) && !ActionWatching.HasDoubleWeaved();
+    internal static bool CanWeaveDelayed => CanDelayedWeave() && !ActionWatching.HasDoubleWeaved();
     internal static bool CanIronJaws => LevelChecked(IronJaws);
     internal static bool BuffTime => GetCooldownRemainingTime(RagingStrikes) < 2.7;
     internal static bool BuffWindow => HasEffect(Buffs.RagingStrikes) && 
@@ -95,7 +93,7 @@ internal partial class BRD
         internal static bool UsePooledBloodRain()
         {
             if ((!JustUsed(OriginalHook(Bloodletter)) || !JustUsed(OriginalHook(RainOfDeath))) && 
-               (EmpyrealCD > 1 || !LevelChecked(EmpyrealArrow)))
+               (EmpyrealCD > 2 || !LevelChecked(EmpyrealArrow)))
             {
                 if (BloodletterCharges == 3 && TraitLevelChecked(Traits.EnhancedBloodletter) || 
                     BloodletterCharges == 2 && !TraitLevelChecked(Traits.EnhancedBloodletter) ||
@@ -146,7 +144,7 @@ internal partial class BRD
         //RadiantFinale Buff
         internal static bool UseRadiantBuff()
         {
-            if (ActionReady(RadiantFinale) && RagingCD < 2.3 && CanWeaveDelayed && !HasEffect(Buffs.RadiantEncoreReady))
+            if (ActionReady(RadiantFinale) && RagingCD < 2.2 && CanWeaveDelayed && !HasEffect(Buffs.RadiantEncoreReady))
                 return true;
             return false;
         } 
@@ -183,25 +181,22 @@ internal partial class BRD
     {
         if (ActionReady(WanderersMinuet))
         {
-            if (SongNone)
+            if (SongNone) // No song, use wanderer first
                return true;
                 
-            if (SongArmy && (CanWeaveDelayed || !BardHasTarget) && (SongTimerInSeconds <= 12 || gauge.Repertoire == 4))
+            if (SongArmy && (CanWeaveDelayed || !BardHasTarget) && (SongTimerInSeconds <= 12 || gauge.Repertoire == 4)) //Transition to wanderer as soon as it is ready
                 return true;
         }
         return false;
     }
     internal static bool MagesSong()
     {
-        if (ActionReady(MagesBallad))
+        if (ActionReady(MagesBallad) && (CanBardWeave || !BardHasTarget))
         {
-            if (SongNone && !ActionReady(WanderersMinuet))
+            if (SongNone && !ActionReady(WanderersMinuet)) //No song, Use Mages if wanderer is on cd or not aquaired yet
                 return true;
 
-            if (SongWanderer && SongTimerInSeconds <= 3)
-                return true;
-
-            if (!LevelChecked(WanderersMinuet) && SongTimerInSeconds <= 3 && CanWeaveDelayed)
+            if (SongWanderer && SongTimerInSeconds <= 3 && gauge.Repertoire == 0) //Swap to mages after wanderer and no pitch perfect to spend
                 return true;
         }
         return false;
@@ -209,15 +204,12 @@ internal partial class BRD
 
     internal static bool ArmySong()
     {
-        if (ActionReady(ArmysPaeon))
+        if (ActionReady(ArmysPaeon) && (CanBardWeave || !BardHasTarget))
         {
-            if (SongNone && !ActionReady(MagesBallad) && !ActionReady(WanderersMinuet))
+            if (SongNone && !ActionReady(MagesBallad) && !ActionReady(WanderersMinuet)) //No song, Use army as last resort
                 return true;
 
-            if (SongMage && SongTimerInSeconds <= 3)
-                return true;
-
-            if (!LevelChecked(WanderersMinuet) && SongTimerInSeconds <= 3 && CanWeaveDelayed && !ActionReady(MagesBallad))
+            if (SongMage && SongTimerInSeconds <= 3) //Transition to army after mages
                 return true;
         }
         return false;
@@ -225,7 +217,7 @@ internal partial class BRD
 
     internal static bool SongChangeEmpyreal()
     {
-        if (SongMage && SongTimerInSeconds <= 3 && ActionReady(ArmysPaeon) && ActionReady(EmpyrealArrow) && BardHasTarget)
+        if (SongMage && SongTimerInSeconds <= 3 && ActionReady(ArmysPaeon) && ActionReady(EmpyrealArrow) && BardHasTarget && CanBardWeave) // Uses Empyreal before transiitoning to Army if possible
             return true;
         
         return false;
@@ -233,7 +225,7 @@ internal partial class BRD
 
     internal static bool SongChangePitchPerfect()
     {
-        if (SongWanderer && SongTimerInSeconds <= 3 && gauge.Repertoire > 0 && BardHasTarget)
+        if (SongWanderer && SongTimerInSeconds <= 3 && gauge.Repertoire > 0 && BardHasTarget && CanBardWeave) // Dumps the Pitch perfect stacks before transition to mages
             return true;
 
         return false;
