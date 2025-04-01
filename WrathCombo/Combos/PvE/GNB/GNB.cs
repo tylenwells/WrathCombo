@@ -442,23 +442,28 @@ internal partial class GNB : TankJob
                     return DoubleDown;
                 if (IsEnabled(CustomComboPreset.GNB_AoE_Reign) && (CanReign || GunStep is 3 or 4))
                     return OriginalHook(ReignOfBeasts);
-                if (IsEnabled(CustomComboPreset.GNB_AoE_FatedCircle) && CanFC &&  (HasNM && !ActionReady(DoubleDown) && GunStep == 0 || IsEnabled(CustomComboPreset.GNB_AoE_Bloodfest) && BfCD < 6))
+                if (IsEnabled(CustomComboPreset.GNB_AoE_FatedCircle) && CanFC &&  (HasNM && (!ActionReady(DoubleDown) || !IsEnabled(CustomComboPreset.GNB_AoE_DoubleDown)) && GunStep == 0 || IsEnabled(CustomComboPreset.GNB_AoE_Bloodfest) && BfCD < 6))
                     return FatedCircle;
                 if (IsEnabled(CustomComboPreset.GNB_AoE_noFatedCircle) && Ammo > 0 && !LevelChecked(FatedCircle) && LevelChecked(BurstStrike) && HasNM && GunStep == 0)
                     return BurstStrike;
             }
             if (ComboTimer > 0)
             {
-                if (ComboAction == DemonSlice && LevelChecked(DemonSlaughter))
+                if (ComboAction == DemonSlice && //just used Demon Slice
+                    LevelChecked(DemonSlaughter)) //and we have Demon Slaughter
                 {
-                    if (Ammo == MaxCartridges())
+                    if (Ammo == MaxCartridges()) //if we have max cartridges
                     {
-                        if (IsEnabled(CustomComboPreset.GNB_AoE_Overcap) && LevelChecked(FatedCircle))
-                            return FatedCircle;
-                        if (IsEnabled(CustomComboPreset.GNB_AoE_BSOvercap) && !LevelChecked(FatedCircle))
-                            return BurstStrike;
+                        if (IsEnabled(CustomComboPreset.GNB_AoE_Overcap) && //and we have overcap enabled
+                            LevelChecked(FatedCircle)) //and we have Fated Circle
+                            return FatedCircle; //use Fated Circle
+                        if (IsEnabled(CustomComboPreset.GNB_AoE_BSOvercap) && //or we have Burst Strike overcap enabled 
+                            !LevelChecked(FatedCircle)) //and we don't have Fated Circle
+                            return BurstStrike; //use Burst Strike
                     }
-                    if (Ammo != MaxCartridges() || (Ammo == MaxCartridges() && !LevelChecked(FatedCircle) && !IsEnabled(CustomComboPreset.GNB_AoE_BSOvercap)))
+                    if (Ammo != MaxCartridges() || //if we don't have max cartridges
+                        (Ammo == MaxCartridges() && //or we do have max cartridges
+                        (!LevelChecked(FatedCircle) && !IsEnabled(CustomComboPreset.GNB_AoE_BSOvercap)) || !IsEnabled(CustomComboPreset.GNB_AoE_Overcap)))
                         return DemonSlaughter;
                 }
             }
@@ -467,7 +472,6 @@ internal partial class GNB : TankJob
             return DemonSlice;
         }
     }
-
     #endregion
 
     #region Gnashing Fang Features
