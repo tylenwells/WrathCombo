@@ -46,7 +46,7 @@ internal partial class BLM : CasterJob
                 if (ActionReady(LeyLines) && !HasEffect(Buffs.LeyLines))
                     return LeyLines;
 
-                if (ActionReady(Manafont) && CurMp is 0)
+                if (ActionReady(Manafont) && CurMp is 0 && JustUsed(Despair))
                     return Manafont;
             }
 
@@ -76,11 +76,14 @@ internal partial class BLM : CasterJob
 
             if (Gauge.InAstralFire)
             {
+                if (LevelChecked(Amplifier) && HasPolyglotStacks() &&
+                    (GetCooldownRemainingTime(Amplifier) < 3 || GetCooldownRemainingTime(Amplifier) > 100))
+                    return Xenoglossy;
+
                 if (Gauge.IsParadoxActive && JustUsed(Transpose, 5) && !HasEffect(Buffs.Firestarter))
                     return Paradox;
 
-                if (HasEffect(Buffs.Firestarter) &&
-                    JustUsed(Transpose) && Gauge.AstralFireStacks < 3)
+                if (HasEffect(Buffs.Firestarter) && Gauge.AstralFireStacks < 3)
                     return Fire3;
 
                 if (LevelChecked(FlareStar) && FlarestarReady)
@@ -94,9 +97,6 @@ internal partial class BLM : CasterJob
 
                 if (CurMp >= MP.FireI)
                     return Fire;
-
-                if (CurMp == 0 && ActionReady(Manafont))
-                    return Manafont;
             }
 
             if (Gauge.InUmbralIce)
