@@ -6,6 +6,8 @@ namespace WrathCombo.Combos.PvP
 {
     internal static class BRDPvP
     {
+        #region IDs
+
         public const byte ClassID = 5;
         public const byte JobID = 23;
 
@@ -44,7 +46,9 @@ namespace WrathCombo.Combos.PvP
                 Heavy = 1344,
                 Unguarded = 3021;
         }
+        #endregion
 
+        #region Config
         public static class Config
         {
             public static UserInt
@@ -70,6 +74,7 @@ namespace WrathCombo.Combos.PvP
             }
 
         }
+        #endregion
 
         internal class BRDPvP_BurstMode : CustomCombo
         {

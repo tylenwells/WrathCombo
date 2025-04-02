@@ -396,30 +396,6 @@ internal partial class DNC
 
                     break;
 
-                #region PVP
-
-                case CustomComboPreset.DNCPvP_BurstMode_CuringWaltz:
-                    UserConfig.DrawSliderInt(0, 90,
-                        DNCPvP.Config.DNCPvP_WaltzThreshold,
-                        "Curing Waltz HP% - caps at 90 to prevent waste.");
-
-                    break;
-
-                case CustomComboPreset.DNCPvP_BurstMode_Dash:
-                    UserConfig.DrawSliderInt(0, 3,
-                        DNCPvP.Config.DNCPvP_EnAvantCharges,
-                        "How many to save for manual");
-
-                    break;
-
-                case CustomComboPreset.DNCPvP_Eagle:
-                    UserConfig.DrawSliderInt(0, 100, 
-                        DNCPvP.Config.DNCPvP_EagleThreshold,
-                        "Target HP percent threshold to use Eagle Eye Shot Below.");
-
-                    break;
-
-                    #endregion
             }
         }
 

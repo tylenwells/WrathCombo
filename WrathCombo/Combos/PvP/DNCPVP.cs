@@ -1,11 +1,14 @@
 using WrathCombo.Combos.PvE;
 using WrathCombo.Core;
 using WrathCombo.CustomComboNS;
+using WrathCombo.CustomComboNS.Functions;
+using WrathCombo.Window.Functions;
 
 namespace WrathCombo.Combos.PvP
 {
     internal static class DNCPvP
     {
+        #region IDS
         public const byte JobID = 38;
 
         internal class Role : PvPPhysRanged;
@@ -39,13 +42,46 @@ namespace WrathCombo.Combos.PvP
                 HoningOvation = 3164,
                 ClosedPosition = 2026;
         }
+        #endregion
+
+        #region Config
         public static class Config
         {
-            public const string
-                DNCPvP_EagleThreshold = "DNCPvP_EagleThreshold",
-                DNCPvP_WaltzThreshold = "DNCWaltzThreshold",
-                DNCPvP_EnAvantCharges = "DNCPvP_EnAvantCharges";
+            public static UserInt
+                DNCPvP_EagleThreshold = new("DNCPvP_EagleThreshold"),
+                DNCPvP_WaltzThreshold = new("DNCWaltzThreshold"),
+                DNCPvP_EnAvantCharges = new("DNCPvP_EnAvantCharges");
+        
+
+            internal static void Draw(CustomComboPreset preset)
+            {
+                switch (preset)
+                {
+                    case CustomComboPreset.DNCPvP_BurstMode_CuringWaltz:
+                        UserConfig.DrawSliderInt(0, 90,
+                            DNCPvP.Config.DNCPvP_WaltzThreshold,
+                            "Curing Waltz HP% - caps at 90 to prevent waste.");
+
+                        break;
+
+                    case CustomComboPreset.DNCPvP_BurstMode_Dash:
+                        UserConfig.DrawSliderInt(0, 3,
+                            DNCPvP.Config.DNCPvP_EnAvantCharges,
+                            "How many to save for manual");
+
+                        break;
+
+                    case CustomComboPreset.DNCPvP_Eagle:
+                        UserConfig.DrawSliderInt(0, 100,
+                            DNCPvP.Config.DNCPvP_EagleThreshold,
+                            "Target HP percent threshold to use Eagle Eye Shot Below.");
+
+                        break;
+
+                }
+            }
         }
+        #endregion
 
         internal class DNCPvP_BurstMode : CustomCombo
         {
@@ -55,6 +91,8 @@ namespace WrathCombo.Combos.PvP
             {
                 if (actionID is Cascade or Fountain or ReverseCascade or Fountainfall)
                 {
+                    #region Variables
+
                     bool starfallDanceReady = !GetCooldown(StarfallDance).IsCooldown;
                     bool starfallDance = HasEffect(Buffs.StarfallDance);
                     bool curingWaltzReady = !GetCooldown(CuringWaltz).IsCooldown;
@@ -65,6 +103,8 @@ namespace WrathCombo.Combos.PvP
                     var HPThreshold = PluginConfiguration.GetCustomIntValue(Config.DNCPvP_WaltzThreshold);
                     var HP = PlayerHealthPercentageHp();
                     bool enemyGuarded = TargetHasEffectAny(PvPCommon.Buffs.Guard);
+
+                    #endregion
 
                     // Honing Dance Option
 

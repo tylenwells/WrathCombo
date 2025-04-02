@@ -1,10 +1,15 @@
+using ImGuiNET;
 using WrathCombo.Core;
 using WrathCombo.CustomComboNS;
+using WrathCombo.CustomComboNS.Functions;
+using WrathCombo.Window.Functions;
 
 namespace WrathCombo.Combos.PvP
 {
     internal static class MCHPvP
     {
+        #region IDS
+
         public const byte JobID = 31;
 
         internal class Role : PvPPhysRanged;
@@ -42,15 +47,54 @@ namespace WrathCombo.Combos.PvP
                 Wildfire = 1323;
         }
 
+        #endregion
+
+        #region Config
         public static class Config
         {
-            public const string
-                MCHPVP_MarksmanSpite = "MCHPVP_MarksmanSpite",
-                MCHPVP_FMFOption = "MCHPVP_FMFOption",
-                MCHPVP_EagleThreshold = "MCHPVP_EagleThreshold",
-                MCHPVP_Heat = "MCHPVP_Heat";
+            public static UserInt
+                MCHPvP_MarksmanSpite = new("MCHPvP_MarksmanSpite"),
+                MCHPvP_FMFOption = new("MCHPvP_FMFOption"),
+                MCHPvP_EagleThreshold = new("MCHPvP_EagleThreshold");
+
+            internal static void Draw(CustomComboPreset preset)
+            {
+                switch (preset)
+                {
+                    case CustomComboPreset.MCHPvP_BurstMode_MarksmanSpite:
+                        UserConfig.DrawSliderInt(0, 36000, MCHPvP.Config.MCHPvP_MarksmanSpite,
+                            "Use Marksman's Spite when the target is below set HP");
+
+                        break;
+
+                    case CustomComboPreset.MCHPvP_BurstMode_FullMetalField:
+                        ImGui.Indent();
+                        UserConfig.DrawHorizontalRadioButton(MCHPvP.Config.MCHPvP_FMFOption, "Full Metal Field Wildfire combo",
+                            "Uses Full Metal Field when Wildfire is ready.", 1);
+
+                        UserConfig.DrawHorizontalRadioButton(MCHPvP.Config.MCHPvP_FMFOption, "Full Metal Field only when Overheated",
+                            "Only uses Full Metal Field while Overheated.", 2);
+                        ImGui.Unindent();
+
+                        break;
+
+                    case CustomComboPreset.MCHPvP_Eagle:
+                        UserConfig.DrawSliderInt(0, 100, MCHPvP.Config.MCHPvP_EagleThreshold,
+                            "Target HP percent threshold to use Eagle Eye Shot Below.");
+
+                        break;
+
+
+                }
+            }
+            
+
+
+
+
 
         }
+#endregion
 
         internal class MCHPvP_BurstMode : CustomCombo
         {
@@ -60,19 +104,23 @@ namespace WrathCombo.Combos.PvP
             {
                 if (actionID == BlastCharge)
                 {
+                    #region Variables
+
                     var canWeave = CanWeave();
                     var analysisStacks = GetRemainingCharges(Analysis);
                     var bigDamageStacks = GetRemainingCharges(OriginalHook(Drill));
                     var overheated = HasEffect(Buffs.Overheated);
-                    var FMFOption = PluginConfiguration.GetCustomIntValue(Config.MCHPVP_FMFOption);
+                    var FMFOption = PluginConfiguration.GetCustomIntValue(Config.MCHPvP_FMFOption);
 
-                    if (IsEnabled(CustomComboPreset.BRDPvP_Eagle) && PvPPhysRanged.CanEagleEyeShot() && (PvPCommon.TargetImmuneToDamage() || GetTargetHPPercent() <= GetOptionValue(Config.MCHPVP_EagleThreshold)))
+                    #endregion
+
+                    if (IsEnabled(CustomComboPreset.BRDPvP_Eagle) && PvPPhysRanged.CanEagleEyeShot() && (PvPCommon.TargetImmuneToDamage() || GetTargetHPPercent() <= GetOptionValue(Config.MCHPvP_EagleThreshold)))
                         return PvPPhysRanged.EagleEyeShot;
 
                     if (!PvPCommon.TargetImmuneToDamage() && HasBattleTarget())
                     {
                         // MarksmanSpite execute condition - todo add config
-                        if (IsEnabled(CustomComboPreset.MCHPvP_BurstMode_MarksmanSpite) && HasBattleTarget() && EnemyHealthCurrentHp() < GetOptionValue(Config.MCHPVP_MarksmanSpite) && IsLB1Ready)
+                        if (IsEnabled(CustomComboPreset.MCHPvP_BurstMode_MarksmanSpite) && HasBattleTarget() && EnemyHealthCurrentHp() < GetOptionValue(Config.MCHPvP_MarksmanSpite) && IsLB1Ready)
                             return MarksmanSpite;
 
                         if (IsEnabled(CustomComboPreset.MCHPvP_BurstMode_Wildfire) && canWeave && overheated && IsOffCooldown(Wildfire))
