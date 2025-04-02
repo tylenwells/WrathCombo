@@ -32,24 +32,21 @@ internal partial class BLM
         TraitLevelChecked(Traits.EnhancedPolyglotII) ? 3 :
         TraitLevelChecked(Traits.EnhancedPolyglot) ? 2 : 1;
 
-    internal static bool HasMaxPolyglotStacks =>
-        Gauge.PolyglotStacks == MaxPolyglot;
+    internal static bool HasMaxPolyglotStacks => PolyglotStacks == MaxPolyglot;
 
-    internal static bool FlarestarReady =>
-        Gauge.AstralSoulStacks == 6;
+    internal static int PolyglotStacks => Gauge.PolyglotStacks;
 
-    internal static int RemainingPolyglotCD =>
-        Math.Max(0, (MaxPolyglot - Gauge.PolyglotStacks) * 30000 + (Gauge.EnochianTimer - 30000));
+    internal static bool FlarestarReady => Gauge.AstralSoulStacks == 6;
 
-    internal static Status? ThunderDebuffST =>
-        FindEffect(ThunderList[OriginalHook(Thunder)], CurrentTarget, LocalPlayer?.GameObjectId);
+    internal static int RemainingPolyglotCD => Math.Max(0, (MaxPolyglot - Gauge.PolyglotStacks) * 30000 + (Gauge.EnochianTimer - 30000));
 
-    internal static Status? ThunderDebuffAoE =>
-        FindEffect(ThunderList[OriginalHook(Thunder2)], CurrentTarget, LocalPlayer?.GameObjectId);
+    internal static Status? ThunderDebuffST => FindEffect(ThunderList[OriginalHook(Thunder)], CurrentTarget, LocalPlayer?.GameObjectId);
+
+    internal static Status? ThunderDebuffAoE => FindEffect(ThunderList[OriginalHook(Thunder2)], CurrentTarget, LocalPlayer?.GameObjectId);
 
     internal static float TimeSinceFirestarterBuff => HasEffect(Buffs.Firestarter) ? GetPartyMembers().First().TimeSinceBuffApplied(Buffs.Firestarter) : 0;
 
-    internal static bool HasPolyglotStacks() => Gauge.PolyglotStacks > 0;
+    internal static bool HasPolyglotStacks() => PolyglotStacks > 0;
 
     internal static WrathOpener Opener()
     {
