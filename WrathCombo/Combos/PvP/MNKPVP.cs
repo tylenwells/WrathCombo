@@ -1,9 +1,12 @@
 ﻿using WrathCombo.CustomComboNS;
+using WrathCombo.CustomComboNS.Functions;
+using WrathCombo.Window.Functions;
 
 namespace WrathCombo.Combos.PvP
 {
     internal static class MNKPvP
     {
+        #region IDS
         public const byte ClassID = 2;
         public const byte JobID = 20;
 
@@ -40,11 +43,28 @@ namespace WrathCombo.Combos.PvP
             public const ushort
                 PressurePoint = 3172;
         }
-        internal static class Config
+        #endregion
+
+        #region Config
+        public static class Config
         {
-            internal const string
-                MNKPvP_SmiteThreshold = "MNKPvP_SmiteThreshold";
+            public static UserInt
+               MNKPvP_SmiteThreshold = new("MNKPvP_SmiteThreshold");
+
+            internal static void Draw(CustomComboPreset preset)
+            {
+                switch (preset)
+                {
+                    case CustomComboPreset.MNKPvP_Smite:
+                        UserConfig.DrawSliderInt(0, 100, MNKPvP.Config.MNKPvP_SmiteThreshold,
+                            "Target HP% to smite, Max damage below 25%");
+                        break;
+                }
+            }
         }
+
+        #endregion
+       
         internal class MNKPvP_Burst : CustomCombo
         {
             protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.MNKPvP_Burst;

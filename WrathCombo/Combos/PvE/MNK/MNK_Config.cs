@@ -1,5 +1,4 @@
 using ImGuiNET;
-using WrathCombo.Combos.PvP;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Extensions;
 using static WrathCombo.Window.Functions.UserConfig;
@@ -107,12 +106,7 @@ internal partial class MNK
                     DrawSliderInt(1, 100, MNK_VariantCure, "HP% to be at or under", 200);
 
                     break;
-
-                case CustomComboPreset.MNKPvP_Smite:
-                    DrawSliderInt(0, 100, MNKPvP.Config.MNKPvP_SmiteThreshold,
-                        "Target HP% to smite, Max damage below 25%");
-
-                    break;
+                
             }
         }
     }

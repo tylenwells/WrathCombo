@@ -1,5 +1,4 @@
 using ImGuiNET;
-using WrathCombo.Combos.PvP;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Extensions;
 using static WrathCombo.Window.Functions.UserConfig;
@@ -123,26 +122,8 @@ internal partial class RPR
                 case CustomComboPreset.RPR_Variant_Cure:
                     DrawSliderInt(1, 100, RPR_VariantCure, "HP% to be at or under", 200);
 
-                    break;
-
-                //PVP
-                case CustomComboPreset.RPRPvP_Burst_ImmortalPooling:
-                    DrawSliderInt(0, 8, RPRPvP.Config.RPRPvP_ImmortalStackThreshold,
-                        "Set a value of Immortal Sacrifice Stacks to hold for burst.");
-
-                    break;
-
-                case CustomComboPreset.RPRPvP_Burst_ArcaneCircle:
-                    DrawSliderInt(5, 90, RPRPvP.Config.RPRPvP_ArcaneCircleThreshold,
-                        "Set a HP percentage value. Caps at 90 to prevent waste.");
-
-                    break;
-
-                case CustomComboPreset.RPRPvP_Smite:
-                    DrawSliderInt(0, 100, RPRPvP.Config.RPRPvP_SmiteThreshold,
-                        "Target HP% to smite, Max damage below 25%");
-
-                    break;
+                    break;             
+               
             }
         }
     }

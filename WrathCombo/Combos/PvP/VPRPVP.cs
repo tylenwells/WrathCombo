@@ -1,10 +1,12 @@
 ﻿using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
+using WrathCombo.Window.Functions;
 
 namespace WrathCombo.Combos.PvP
-{
+{   
     internal static class VPRPvP
     {
+        #region IDS
         public const byte JobID = 41;
 
         internal class Role : PvPMelee;
@@ -47,9 +49,12 @@ namespace WrathCombo.Combos.PvP
                 SnakesBane = 4098;
         }
 
-        internal class Config
+        #endregion
+
+        #region Config
+        public static class Config
         {
-            internal static UserInt
+            public static UserInt
                 VPRPvP_Bloodcoil_TargetHP = new("VPRPvP_Bloodcoil_TargetHP", 80),
                 VPRPvP_Bloodcoil_PlayerHP = new("VPRPvP_Bloodcoil_PlayerHP", 80),
                 VPRPvP_UncoiledFury_TargetHP = new("VPRPvP_UncoiledFury_TargetHP", 60),
@@ -62,7 +67,58 @@ namespace WrathCombo.Combos.PvP
 
             public static UserBool
                 VPRPvP_Backlash_SubOption = new("VPRPvP_Backlash_SubOption");
+
+            internal static void Draw(CustomComboPreset preset)
+            {
+                switch (preset)
+                {
+                    // Bloodcoil
+                    case CustomComboPreset.VPRPvP_Bloodcoil:
+                        UserConfig.DrawSliderInt(10, 100, VPRPvP.Config.VPRPvP_Bloodcoil_TargetHP, "Target HP%", 210);
+                        UserConfig.DrawSliderInt(10, 100, VPRPvP.Config.VPRPvP_Bloodcoil_PlayerHP, "Player HP%", 210);
+
+                        break;
+
+                    // Uncoiled Fury
+                    case CustomComboPreset.VPRPvP_UncoiledFury:
+                        UserConfig.DrawSliderInt(10, 100, VPRPvP.Config.VPRPvP_UncoiledFury_TargetHP, "Target HP%", 210);
+
+                        break;
+
+                    // Backlash
+                    case CustomComboPreset.VPRPvP_Backlash:
+                        UserConfig.DrawAdditionalBoolChoice(VPRPvP.Config.VPRPvP_Backlash_SubOption, "Empowered Only",
+                            "Also requires Snake's Bane to be present.");
+
+                        break;
+
+                    // Rattling Coil
+                    case CustomComboPreset.VPRPvP_RattlingCoil:
+                        UserConfig.DrawHorizontalMultiChoice(VPRPvP.Config.VPRPvP_RattlingCoil_SubOptions, "No Uncoiled Fury",
+                            "Must not have charges of Uncoiled Fury.", 2, 0);
+
+                        UserConfig.DrawHorizontalMultiChoice(VPRPvP.Config.VPRPvP_RattlingCoil_SubOptions, "No Snake Scales",
+                            "Snake Scales must be on cooldown.", 2, 1);
+
+                        break;
+
+                    // Slither
+                    case CustomComboPreset.VPRPvP_Slither:
+                        UserConfig.DrawSliderInt(0, 1, VPRPvP.Config.VPRPvP_Slither_Charges, "Charges to Keep", 178);
+                        UserConfig.DrawSliderInt(6, 10, VPRPvP.Config.VPRPvP_Slither_Range, "Maximum Range", 173);
+
+                        break;
+
+                    // Smite
+                    case CustomComboPreset.VPRPvP_Smite:
+                        UserConfig.DrawSliderInt(0, 100, VPRPvP.Config.VPRPvP_SmiteThreshold,
+                            "Target HP% to smite, Max damage below 25%");
+
+                        break;
+                }
+            }
         }
+        #endregion     
 
         internal class VPRPvP_Burst : CustomCombo
         {

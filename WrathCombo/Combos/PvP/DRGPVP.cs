@@ -1,9 +1,13 @@
 ﻿using WrathCombo.CustomComboNS;
+using WrathCombo.CustomComboNS.Functions;
+using WrathCombo.Window.Functions;
 
 namespace WrathCombo.Combos.PvP
 {
     internal static class DRGPvP
     {
+        #region IDS
+
         public const byte ClassID = 4;
         public const byte JobID = 22;
 
@@ -38,15 +42,50 @@ namespace WrathCombo.Combos.PvP
 
 
         }
-        internal static class Config
+        #endregion
+
+        #region Config
+        public static class Config
         {
-            internal const string
-                DRGPvP_LOTD_Duration = "DRGPvP_LOTD_Duration",
-                DRGPvP_LOTD_HPValue = "DRGPvP_LOTD_HPValue",
-                DRGPvP_CS_HP_Threshold = "DRGPvP_CS_HP_Threshold",
-                DRGPvP_Distance_Threshold = "DRGPvP_Distance_Threshold",
-                DRGPvP_SmiteThreshold = "DRGPvP_SmiteThreshold";
+            public static UserInt
+                DRGPvP_LOTD_Duration = new("DRGPvP_LOTD_Duration"),
+                DRGPvP_LOTD_HPValue = new("DRGPvP_LOTD_HPValue"),
+                DRGPvP_CS_HP_Threshold = new("DRGPvP_CS_HP_Threshold"),
+                DRGPvP_Distance_Threshold = new("DRGPvP_Distance_Threshold"),
+                DRGPvP_SmiteThreshold = new("DRGPvP_SmiteThreshold");
+
+            internal static void Draw(CustomComboPreset preset)
+            {
+                switch (preset)
+                {
+                    case CustomComboPreset.DRGPvP_Nastrond:
+                        UserConfig.DrawSliderInt(0, 100, DRGPvP.Config.DRGPvP_LOTD_HPValue, "Ends Life of the Dragon if HP falls below the set percentage");
+
+                        UserConfig.DrawSliderInt(2, 8, DRGPvP.Config.DRGPvP_LOTD_Duration, "Seconds remaining of Life of the Dragon buff before using Nastrond if you are still above the set HP percentage.");
+
+                        break;
+
+                    case CustomComboPreset.DRGPvP_ChaoticSpringSustain:
+                        UserConfig.DrawSliderInt(0, 101, DRGPvP.Config.DRGPvP_CS_HP_Threshold, "Chaotic Spring HP percentage threshold. Set to 100 to use on cd");
+
+                        break;
+
+                    case CustomComboPreset.DRGPvP_WyrmwindThrust:
+                        UserConfig.DrawSliderInt(0, 20, DRGPvP.Config.DRGPvP_Distance_Threshold, "Minimum Distance to use Wyrmwind Thrust. Maximum damage at 15 or more");
+
+                        break;
+
+                    case CustomComboPreset.DRGPvP_Smite:
+                        UserConfig.DrawSliderInt(0, 100, DRGPvP.Config.DRGPvP_SmiteThreshold,
+                            "Target HP% to smite, Max damage below 25%");
+
+                        break;
+                }
+
+            }
+            
         }
+        #endregion      
 
         internal class DRGPvP_Burst : CustomCombo
         {
