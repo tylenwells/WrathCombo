@@ -53,8 +53,7 @@ internal partial class BLM : CasterJob
                     : Foul;
 
             if (HasEffect(Buffs.Thunderhead) && LevelChecked(Thunder) &&
-                (Config.BLM_ST_Thunder_SubOption == 0 ||
-                 Config.BLM_ST_Thunder_SubOption == 1 && InBossEncounter()) &&
+                InBossEncounter() &&
                 (ThunderDebuffST is null || ThunderDebuffST.RemainingTime < 3))
                 return OriginalHook(Thunder);
 
@@ -142,7 +141,7 @@ internal partial class BLM : CasterJob
 
             if (CanSpellWeave())
             {
-                if (Gauge.InAstralFire && JustUsed(Despair) && 
+                if (Gauge.InAstralFire && JustUsed(Despair) &&
                     IsOnCooldown(Manafont) && !JustUsed(Manafont))
                     return Transpose;
 
@@ -193,7 +192,7 @@ internal partial class BLM : CasterJob
                     ActionReady(Triplecast) && !HasEffect(Buffs.Triplecast))
                     return Triplecast;
 
-                if (Config.BLM_ST_MovementOption[2] && 
+                if (Config.BLM_ST_MovementOption[2] &&
                     Gauge.InAstralFire && Gauge.IsParadoxActive)
                     return Paradox;
 

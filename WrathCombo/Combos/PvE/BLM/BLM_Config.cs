@@ -41,7 +41,7 @@ internal partial class BLM
 
                     DrawBossOnlyChoice(BLM_Balance_Content);
                     break;
-                
+
                 case CustomComboPreset.BLM_ST_LeyLines:
                     DrawSliderInt(0, 1, BLM_ST_LeyLinesCharges,
                         $"How many charges of {LeyLines.ActionName()} to keep ready? (0 = Use all)");
@@ -49,10 +49,10 @@ internal partial class BLM
                     break;
 
                 case CustomComboPreset.BLM_ST_Movement:
-                    DrawHorizontalMultiChoice(BLM_ST_MovementOption, $"Use {Role.Swiftcast.ActionName()}", "", 5, 0);
-                    DrawHorizontalMultiChoice(BLM_ST_MovementOption, $"Use {Triplecast.ActionName()}", "", 5, 1);
-                    DrawHorizontalMultiChoice(BLM_ST_MovementOption, $"Use {Foul.ActionName()} / {Xenoglossy.ActionName()}", "", 5, 2);
-                    DrawHorizontalMultiChoice(BLM_ST_MovementOption, $"Use {Paradox.ActionName()}", "", 5, 3);
+                    DrawHorizontalMultiChoice(BLM_ST_MovementOption, $"Use {Role.Swiftcast.ActionName()}", "", 4, 0);
+                    DrawHorizontalMultiChoice(BLM_ST_MovementOption, $"Use {Triplecast.ActionName()}", "", 4, 1);
+                    DrawHorizontalMultiChoice(BLM_ST_MovementOption, $"Use {Foul.ActionName()} / {Xenoglossy.ActionName()}", "", 4, 2);
+                    DrawHorizontalMultiChoice(BLM_ST_MovementOption, $"Use {Paradox.ActionName()}", "", 4, 3);
 
                     break;
 
@@ -64,7 +64,7 @@ internal partial class BLM
                         "Boss encounters Only", $"Only uses {Thunder.ActionName()} when in Boss encounters.", 1);
 
                     break;
-                
+
                 case CustomComboPreset.BLM_AoE_LeyLines:
                     DrawSliderInt(0, 1, BLM_AoE_LeyLinesCharges,
                         $"How many charges of {LeyLines.ActionName()} to keep ready? (0 = Use all)");
