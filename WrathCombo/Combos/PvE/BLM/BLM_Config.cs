@@ -1,13 +1,7 @@
-using Dalamud.Interface.Colors;
-using ECommons.ExcelServices;
-using ECommons.GameHelpers;
-using ECommons.ImGuiMethods;
 using ImGuiNET;
-using System;
 using WrathCombo.Combos.PvP;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Extensions;
-using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
 using static WrathCombo.Window.Functions.UserConfig;
 namespace WrathCombo.Combos.PvE;
 
@@ -39,17 +33,8 @@ internal partial class BLM
             switch (preset)
             {
                 case CustomComboPreset.BLM_ST_Opener:
-                    if (Player.Job is Job.BLM && Player.Level == 100)
-                    {
-                        float gcd = MathF.Round(GetCooldown(Fire3).BaseCooldownTotal, 2, MidpointRounding.ToZero);
-                        ImGuiEx.Text(gcd > 2.45f ? ImGuiColors.DalamudRed : ImGuiColors.HealerGreen, $"Your GCD is currently: {gcd}");
-                    }
-
-                    ImGui.Indent();
-
                     DrawBossOnlyChoice(BLM_ST_Balance_Content);
 
-                    ImGui.Unindent();
                     break;
 
                 case CustomComboPreset.BLM_Variant_Cure:
