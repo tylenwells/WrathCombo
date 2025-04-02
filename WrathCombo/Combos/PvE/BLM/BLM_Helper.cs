@@ -23,7 +23,7 @@ internal partial class BLM
         };
 
     internal static BLMGauge Gauge = GetJobGauge<BLMGauge>();
-    internal static BLMOpenerMaxLevel1 Opener1 = new();
+    internal static BLMStandardOpener standardOpener = new();
 
     internal static uint CurMp => GetPartyMembers().First().CurrentMP;
 
@@ -50,8 +50,8 @@ internal partial class BLM
 
     internal static WrathOpener Opener()
     {
-        if (Opener1.LevelChecked)
-            return Opener1;
+        if (standardOpener.LevelChecked)
+            return standardOpener;
 
         return WrathOpener.Dummy;
     }
@@ -114,7 +114,7 @@ internal partial class BLM
 
     #region Openers
 
-    internal class BLMOpenerMaxLevel1 : WrathOpener
+    internal class BLMStandardOpener : WrathOpener
     {
         public override int MinOpenerLevel => 100;
 
@@ -127,16 +127,14 @@ internal partial class BLM
             Role.Swiftcast,
             Amplifier,
             Fire4,
-            Fire4,
-            Xenoglossy,
-            Triplecast,
             LeyLines,
             Fire4,
             Fire4,
+            Fire4, 
             Fire4,
+            Xenoglossy,
             Manafont,
             Fire4,
-            Triplecast,
             FlareStar,
             Fire4,
             Fire4,
@@ -145,11 +143,24 @@ internal partial class BLM
             Fire4,
             Fire4,
             Fire4,
+            FlareStar,
             Despair,
-            FlareStar
+            Transpose,
+            Triplecast,
+            Blizzard3,
+            Blizzard4,
+            Paradox,
+            Transpose,
+            Paradox,
+            Fire3
         ];
 
         internal override UserData ContentCheckConfig => Config.BLM_ST_Balance_Content;
+
+        public override List<int> DelayedWeaveSteps { get; set; } =
+        [
+            6
+        ];
 
         public override bool HasCooldowns() =>
             GetCooldown(Fire).BaseCooldownTotal <= 2.45 &&
