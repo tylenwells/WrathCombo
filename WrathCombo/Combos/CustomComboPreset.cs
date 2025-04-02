@@ -6908,42 +6908,51 @@ SMN.JobID)]
     [CustomComboInfo("Burst Mode", "Turns Drakesbane Combo into an all-in-one damage button.", DRGPvP.JobID)]
     DRGPvP_Burst = 116000,
 
+    [PvPCustomCombo]
     [ParentCombo(DRGPvP_Burst)]
     [CustomComboInfo("Geirskogul Option", "Adds Geirskogul to Burst Mode.", DRGPvP.JobID)]
     DRGPvP_Geirskogul = 116001,
 
+    [PvPCustomCombo]
     [ParentCombo(DRGPvP_Geirskogul)]
     [CustomComboInfo("Nastrond Option", "Adds Nastrond to Burst Mode.", DRGPvP.JobID)]
     DRGPvP_Nastrond = 116002,
 
+    [PvPCustomCombo]
     [ParentCombo(DRGPvP_Burst)]
     [CustomComboInfo("Horrid Roar Option", "Adds Horrid Roar to Burst Mode.", DRGPvP.JobID)]
     DRGPvP_HorridRoar = 116003,
 
+    [PvPCustomCombo]
     [ParentCombo(DRGPvP_Burst)]
     [CustomComboInfo("Sustain Chaos Spring Option", "Adds Chaos Spring to Burst Mode when below the set HP percentage.",
         DRGPvP.JobID)]
     DRGPvP_ChaoticSpringSustain = 116004,
 
+    [PvPCustomCombo]
     [ParentCombo(DRGPvP_Burst)]
     [CustomComboInfo("Execute Chaos Spring Option",
         "Adds Chaos Spring to Burst Mode when target is below 8k health because it goes through guard.", DRGPvP.JobID)]
     DRGPvP_ChaoticSpringExecute = 116009,
 
+    [PvPCustomCombo]
     [ParentCombo(DRGPvP_Burst)]
     [CustomComboInfo("Wyrmwind Thrust Option", "Adds Wyrmwind Thrust to Burst Mode.", DRGPvP.JobID)]
     DRGPvP_WyrmwindThrust = 116006,
 
+    [PvPCustomCombo]
     [ParentCombo(DRGPvP_Burst)]
     [CustomComboInfo("High Jump Weave Option", "Adds High Jump to Burst Mode.", DRGPvP.JobID)]
     DRGPvP_HighJump = 116007,
 
+    [PvPCustomCombo]
     [ParentCombo(DRGPvP_Burst)]
     [CustomComboInfo("Elusive Jump Burst Option",
         "Using Elusive Jump turns Drakesbane Combo into all-in-one burst damage button once all cooldowns are ready. \n Disables Elusive Jump if Burst is not ready.",
         DRGPvP.JobID)]
     DRGPvP_BurstProtection = 116008,
 
+    [PvPCustomCombo]
     [ParentCombo(DRGPvP_Burst)]
     [CustomComboInfo("Role Action Smite Option",
         "Adds Role Action Smite to Burst Mode below selected health", DRGPvP.JobID)]

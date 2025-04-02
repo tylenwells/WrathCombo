@@ -1,4 +1,5 @@
-﻿using WrathCombo.CustomComboNS;
+﻿using ECommons.DalamudServices;
+using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Window.Functions;
 
@@ -55,30 +56,26 @@ namespace WrathCombo.Combos.PvP
                 DRGPvP_SmiteThreshold = new("DRGPvP_SmiteThreshold");
 
             internal static void Draw(CustomComboPreset preset)
-            {
+            {            
                 switch (preset)
                 {
                     case CustomComboPreset.DRGPvP_Nastrond:
                         UserConfig.DrawSliderInt(0, 100, DRGPvP.Config.DRGPvP_LOTD_HPValue, "Ends Life of the Dragon if HP falls below the set percentage");
-
                         UserConfig.DrawSliderInt(2, 8, DRGPvP.Config.DRGPvP_LOTD_Duration, "Seconds remaining of Life of the Dragon buff before using Nastrond if you are still above the set HP percentage.");
-
                         break;
 
                     case CustomComboPreset.DRGPvP_ChaoticSpringSustain:
                         UserConfig.DrawSliderInt(0, 101, DRGPvP.Config.DRGPvP_CS_HP_Threshold, "Chaotic Spring HP percentage threshold. Set to 100 to use on cd");
-
                         break;
+                        
 
                     case CustomComboPreset.DRGPvP_WyrmwindThrust:
-                        UserConfig.DrawSliderInt(0, 20, DRGPvP.Config.DRGPvP_Distance_Threshold, "Minimum Distance to use Wyrmwind Thrust. Maximum damage at 15 or more");
-
+                        UserConfig.DrawSliderInt(0, 20, DRGPvP.Config.DRGPvP_Distance_Threshold, "Minimum Distance to use Wyrmwind Thrust. Maximum damage at 15 or more");                        
                         break;
 
                     case CustomComboPreset.DRGPvP_Smite:
                         UserConfig.DrawSliderInt(0, 100, DRGPvP.Config.DRGPvP_SmiteThreshold,
-                            "Target HP% to smite, Max damage below 25%");
-
+                            "Target HP% to smite, Max damage below 25%");                       
                         break;
                 }
 
