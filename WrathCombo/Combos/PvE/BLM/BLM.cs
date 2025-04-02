@@ -66,7 +66,7 @@ internal partial class BLM : CasterJob
                 (ThunderDebuffST is null || ThunderDebuffST.RemainingTime < 3))
                 return OriginalHook(Thunder);
 
-            if (IsMoving())
+            if (IsMoving() && InCombat())
             {
                 if (ActionReady(Triplecast) && !HasEffect(Buffs.Triplecast))
                     return Triplecast;
