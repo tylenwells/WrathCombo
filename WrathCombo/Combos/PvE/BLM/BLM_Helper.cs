@@ -62,24 +62,6 @@ internal partial class BLM
         return WrathOpener.Dummy;
     }
 
-    internal static float MPAfterCast()
-    {
-        uint castedSpell = LocalPlayer.CastActionId;
-
-        int mpGain = Gauge.UmbralIceStacks switch
-        {
-            0 => 0,
-            1 => 2500,
-            2 => 5000,
-            3 => 10000,
-            var _ => 0
-        };
-
-        return castedSpell is Blizzard or Blizzard2 or Blizzard3 or Blizzard4 or Freeze or HighBlizzard2
-            ? Math.Max(LocalPlayer.MaxMp, LocalPlayer.CurrentMp + mpGain)
-            : Math.Max(0, LocalPlayer.CurrentMp - GetResourceCost(castedSpell));
-    }
-
     internal static bool DoubleBlizz()
     {
         List<uint> spells = ActionWatching.CombatActions.Where(x =>

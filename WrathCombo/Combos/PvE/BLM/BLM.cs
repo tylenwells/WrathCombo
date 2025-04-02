@@ -26,7 +26,7 @@ internal partial class BLM : CasterJob
             {
                 if (Gauge.InAstralFire)
                 {
-                    if (JustUsed(Despair) && IsOnCooldown(Manafont))
+                    if (JustUsed(Despair) && IsOnCooldown(Manafont) && !JustUsed(Manafont))
                         return Transpose;
                 }
 
@@ -39,24 +39,18 @@ internal partial class BLM : CasterJob
                         return Transpose;
                 }
 
-                if (ActionReady(Amplifier) && RemainingPolyglotCD >= 20000 &&
+                if (ActionReady(Amplifier) && Gauge.EnochianTimer >= 20000 &&
                     !HasMaxPolyglotStacks)
                     return Amplifier;
 
                 if (ActionReady(LeyLines) && !HasEffect(Buffs.LeyLines))
                     return LeyLines;
 
-                if (ActionReady(Triplecast) && !HasEffect(Buffs.Triplecast))
-                    return Triplecast;
-
-                if (ActionReady(Role.Swiftcast) && !HasEffect(Buffs.Triplecast))
-                    return Role.Swiftcast;
-
-                if (ActionReady(Manafont))
+                if (ActionReady(Manafont) && CurMp is 0)
                     return Manafont;
             }
 
-            if (HasMaxPolyglotStacks && RemainingPolyglotCD < 3000)
+            if (HasMaxPolyglotStacks && Gauge.EnochianTimer < 3000)
                 return LevelChecked(Xenoglossy)
                     ? Xenoglossy
                     : Foul;
@@ -68,11 +62,11 @@ internal partial class BLM : CasterJob
 
             if (IsMoving() && InCombat())
             {
-                if (ActionReady(Triplecast) && !HasEffect(Buffs.Triplecast))
-                    return Triplecast;
-
                 if (ActionReady(Role.Swiftcast) && !HasEffect(Buffs.Triplecast))
                     return Role.Swiftcast;
+
+                if (ActionReady(Triplecast) && !HasEffect(Buffs.Triplecast))
+                    return Triplecast;
 
                 if (HasPolyglotStacks())
                     return LevelChecked(Xenoglossy)
@@ -82,11 +76,11 @@ internal partial class BLM : CasterJob
 
             if (Gauge.InAstralFire)
             {
-                if (Gauge.IsParadoxActive && CurMp >= MP.FireI)
+                if (Gauge.IsParadoxActive && JustUsed(Transpose, 5) && !HasEffect(Buffs.Firestarter))
                     return Paradox;
 
                 if (HasEffect(Buffs.Firestarter) &&
-                    JustUsed(Transpose))
+                    JustUsed(Transpose) && Gauge.AstralFireStacks < 3)
                     return Fire3;
 
                 if (LevelChecked(FlareStar) && FlarestarReady)
@@ -98,9 +92,6 @@ internal partial class BLM : CasterJob
                 if (LevelChecked(Fire4) && CurMp >= MP.FireI)
                     return Fire4;
 
-                if (HasEffect(Buffs.Firestarter) && TimeSinceFirestarterBuff >= 2)
-                    return Fire3;
-
                 if (CurMp >= MP.FireI)
                     return Fire;
 
@@ -110,18 +101,22 @@ internal partial class BLM : CasterJob
 
             if (Gauge.InUmbralIce)
             {
-                if (Gauge.UmbralHearts is 3)
+                if (Gauge.UmbralHearts is 3 && Gauge.IsParadoxActive && CurMp is MP.MaxMP)
                     return Paradox;
 
-                if (JustUsed(Blizzard3) && LevelChecked(Blizzard4))
+                if (JustUsed(Blizzard3, 5) && LevelChecked(Blizzard4))
                     return Blizzard4;
 
-                if (ActionReady(Blizzard3) && Gauge.UmbralIceStacks is not 3)
+                if (ActionReady(Blizzard3) && Gauge.UmbralIceStacks < 3)
                     return Blizzard3;
             }
 
-            if (Blizzard3.LevelChecked())
-                return Blizzard3;
+            if (LevelChecked(Fire3))
+            {
+                return CurMp > MP.FireIII
+                    ? Fire3
+                    : Blizzard3;
+            }
 
             return actionID;
         }
