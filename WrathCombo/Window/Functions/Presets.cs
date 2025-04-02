@@ -325,9 +325,8 @@ namespace WrathCombo.Window.Functions
                         case AST.JobID: AST.Config.Draw(preset); break;
                         case BLM.JobID: BLM.Config.Draw(preset); break;
                         case BLU.JobID: BLU.Config.Draw(preset); break;
-                        case BRD.JobID: BRD.Config.Draw(preset); break;
+                        case BRD.JobID: BRDPvP.Config.Draw(preset); break;
                         case DNC.JobID: DNC.Config.Draw(preset); break;
-                        //case DOL.JobID: DOL.Config.Draw(preset); break;
                         case DRG.JobID: DRG.Config.Draw(preset); break;
                         case DRK.JobID: DRK.Config.Draw(preset); break;
                         case GNB.JobID: GNB.Config.Draw(preset); break;
