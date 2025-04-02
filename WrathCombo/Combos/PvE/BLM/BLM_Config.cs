@@ -22,7 +22,8 @@ internal partial class BLM
             BLM_AoE_UsePolyglotMoving_HoldCharges = new("BLM_AoE_UsePolyglotMoving_HoldCharges", 0),
             BLM_AoE_LeyLinesCharges = new("BLM_AoE_LeyLinesCharges", 1),
             BLM_AoE_ThunderHP = new("BLM_AoE_ThunderHP", 5),
-            BLM_ST_Balance_Content = new("BLM_ST_Balance_Content", 1);
+            BLM_SelectedOpener = new("BLM_SelectedOpener", 0),
+            BLM_Balance_Content = new("BLM_Balance_Content", 1);
 
         public static UserFloat
             BLM_ST_Triplecast_ChargeTime = new("BLM_ST_Triplecast_ChargeTime", 20),
@@ -33,9 +34,16 @@ internal partial class BLM
             switch (preset)
             {
                 case CustomComboPreset.BLM_ST_Opener:
-                    DrawBossOnlyChoice(BLM_ST_Balance_Content);
+                    DrawHorizontalRadioButton(BLM_SelectedOpener, "Standard opener", "Uses Standard opener",
+                        0);
 
+                    DrawHorizontalRadioButton(BLM_SelectedOpener, $"{Flare.ActionName()} opener", $"Uses {Flare.ActionName()} opener",
+                        1);
+
+                    ImGui.NewLine();
+                    DrawBossOnlyChoice(BLM_Balance_Content);
                     break;
+
 
                 case CustomComboPreset.BLM_Variant_Cure:
                     DrawSliderInt(1, 100, BLM_VariantCure, "HP% to be at or under", 200);

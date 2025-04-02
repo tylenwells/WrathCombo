@@ -23,7 +23,8 @@ internal partial class BLM
         };
 
     internal static BLMGauge Gauge = GetJobGauge<BLMGauge>();
-    internal static BLMStandardOpener standardOpener = new();
+    internal static BLMStandardOpener StandardOpener = new();
+    internal static BLMFlareOpener FlareOpener = new();
 
     internal static uint CurMp => GetPartyMembers().First().CurrentMP;
 
@@ -45,15 +46,18 @@ internal partial class BLM
 
     internal static Status? ThunderDebuffAoE =>
         FindEffect(ThunderList[OriginalHook(Thunder2)], CurrentTarget, LocalPlayer?.GameObjectId);
-    
+
     internal static float TimeSinceFirestarterBuff => HasEffect(Buffs.Firestarter) ? GetPartyMembers().First().TimeSinceBuffApplied(Buffs.Firestarter) : 0;
 
     internal static bool HasPolyglotStacks() => Gauge.PolyglotStacks > 0;
 
     internal static WrathOpener Opener()
     {
-        if (standardOpener.LevelChecked)
-            return standardOpener;
+        if (StandardOpener.LevelChecked && Config.BLM_SelectedOpener == 0)
+            return StandardOpener;
+
+        if (FlareOpener.LevelChecked && Config.BLM_SelectedOpener == 1)
+            return FlareOpener;
 
         return WrathOpener.Dummy;
     }
@@ -157,7 +161,7 @@ internal partial class BLM
             Fire3
         ];
 
-        internal override UserData ContentCheckConfig => Config.BLM_ST_Balance_Content;
+        internal override UserData ContentCheckConfig => Config.BLM_Balance_Content;
 
         public override List<int> DelayedWeaveSteps { get; set; } =
         [
@@ -165,9 +169,64 @@ internal partial class BLM
         ];
 
         public override bool HasCooldowns() =>
-            GetCooldown(Fire).BaseCooldownTotal <= 2.45 &&
             IsOffCooldown(Manafont) &&
-            GetRemainingCharges(Triplecast) is 2 &&
+            GetRemainingCharges(Triplecast) >= 1 &&
+            GetRemainingCharges(LeyLines) >= 1 &&
+            IsOffCooldown(Role.Swiftcast) &&
+            IsOffCooldown(Amplifier);
+    }
+
+    internal class BLMFlareOpener : WrathOpener
+    {
+        public override int MinOpenerLevel => 100;
+
+        public override int MaxOpenerLevel => 109;
+
+        public override List<uint> OpenerActions { get; set; } =
+        [
+            Fire3,
+            HighThunder,
+            Role.Swiftcast,
+            Amplifier,
+            Fire4,
+            LeyLines,
+            Fire4,
+            Xenoglossy,
+            Fire4,
+            Fire4,
+            Despair,
+            Manafont,
+            Fire4,
+            Fire4,
+            FlareStar,
+            Fire4,
+            HighThunder,
+            Fire4,
+            Fire4,
+            Fire4,
+            Paradox,
+            Triplecast,
+            Flare,
+            FlareStar,
+            Transpose,
+            Blizzard3,
+            Blizzard4,
+            Paradox,
+            Transpose,
+            Fire3
+        ];
+
+        internal override UserData ContentCheckConfig => Config.BLM_Balance_Content;
+
+        public override List<int> DelayedWeaveSteps { get; set; } =
+        [
+            6
+        ];
+
+        public override bool HasCooldowns() =>
+            IsOffCooldown(Manafont) &&
+            GetRemainingCharges(Triplecast) >= 1 &&
+            GetRemainingCharges(LeyLines) >= 1 &&
             IsOffCooldown(Role.Swiftcast) &&
             IsOffCooldown(Amplifier);
     }
