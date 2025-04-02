@@ -1,11 +1,15 @@
 ﻿using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
+using WrathCombo.Window.Functions;
 
 namespace WrathCombo.Combos.PvP
 {
     internal static class SCHPvP
     {
-        public const byte JobID = 28;
+        #region IDS
+
+        public const byte ClassID = 26;
+        public const byte JobID = 28;       
 
         internal class Role : PvPHealer;
 
@@ -29,12 +33,30 @@ namespace WrathCombo.Combos.PvP
                 Biolysis = 3089,
                 Biolytic = 3090;
         }
+        #endregion
 
-        internal class Config
+        #region Config
+        public static class Config
         {
-            internal static UserInt
-                SCHPvP_DiabrosisThreshold = new("SCHPvP_DiabrosisThreshold");
+            public static UserInt
+               SCHPvP_DiabrosisThreshold = new("SCHPvP_DiabrosisThreshold");
+
+            internal static void Draw(CustomComboPreset preset)
+            {
+                switch (preset)
+                {
+                    case CustomComboPreset.SCHPvP_Diabrosis:
+                        UserConfig.DrawSliderInt(0, 100, SCHPvP.Config.SCHPvP_DiabrosisThreshold,
+                            "Target HP% to use Diabrosis");
+
+                        break;
+                }
+            }
         }
+
+        #endregion
+
+       
 
         internal class SCHPvP_Burst : CustomCombo
         {

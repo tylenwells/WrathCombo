@@ -1,10 +1,14 @@
 ﻿using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
+using WrathCombo.Window.Functions;
 
 namespace WrathCombo.Combos.PvP
 {
     internal static class SGEPvP
     {
+        #region IDS
+
+        public const byte JobID = 40;
         internal class Role : PvPHealer;
 
         internal const uint
@@ -37,11 +41,28 @@ namespace WrathCombo.Combos.PvP
                 Haimatinon = 3111;
         }
 
-        internal class Config
+        #endregion
+
+        #region Config
+        public static class Config
         {
-            internal static UserInt
-                SGEPvP_DiabrosisThreshold = new("SGEPvP_DiabrosisThreshold");
+            public static UserInt
+               SGEPvP_DiabrosisThreshold = new("SGEPvP_DiabrosisThreshold");
+
+            internal static void Draw(CustomComboPreset preset)
+            {
+                switch (preset)
+                {
+                    case CustomComboPreset.SGEPvP_Diabrosis:
+                        UserConfig.DrawSliderInt(0, 100, SGEPvP.Config.SGEPvP_DiabrosisThreshold,
+                            "Target HP% to use Diabrosis");
+
+                        break;
+                }
+            }
         }
+
+        #endregion       
 
         internal class SGEPvP_BurstMode : CustomCombo
         {

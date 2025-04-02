@@ -1,12 +1,18 @@
-﻿using Dalamud.Game.ClientState.Objects.Types;
+﻿using System.Drawing;
+using Dalamud.Game.ClientState.Objects.Types;
 using ECommons.DalamudServices;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
+using WrathCombo.Extensions;
+using WrathCombo.Window.Functions;
 
 namespace WrathCombo.Combos.PvP
 {
     internal static class WHMPvP
     {
+        #region IDS
+
+        public const byte ClassID = 6;
         public const byte JobID = 24;
 
         internal class Role : PvPHealer;
@@ -28,12 +34,34 @@ namespace WrathCombo.Combos.PvP
                 SacredSight = 4326;
         }
 
-        internal class Config
+        #endregion
+
+        #region Config
+        public static class Config
         {
-            internal static UserInt
-                WHMPVP_HealOrder = new("WHMPVP_HealOrder"),        
-                WHMPvP_DiabrosisThreshold = new("WHMPvP_DiabrosisThreshold");
+            public static UserInt
+               WHMPVP_HealOrder = new("WHMPVP_HealOrder"),
+               WHMPvP_DiabrosisThreshold = new("WHMPvP_DiabrosisThreshold");
+
+            internal static void Draw(CustomComboPreset preset)
+            {
+                switch (preset)
+                {
+                    case CustomComboPreset.WHMPvP_Heals:
+                        UserConfig.DrawHorizontalRadioButton(WHMPvP.Config.WHMPVP_HealOrder, $"{WHMPvP.Aquaveil.ActionName()} First", $"If Both {WHMPvP.Aquaveil.ActionName()} & {WHMPvP.Cure3.ActionName()} are ready, prioritise {WHMPvP.Aquaveil.ActionName()}", 0);
+                        UserConfig.DrawHorizontalRadioButton(WHMPvP.Config.WHMPVP_HealOrder, $"{WHMPvP.Cure3.ActionName()} First", $"If Both {WHMPvP.Aquaveil.ActionName()} & {WHMPvP.Cure3.ActionName()} are ready, prioritise {WHMPvP.Cure3.ActionName()}", 1);
+                        break;
+
+                    case CustomComboPreset.WHMPvP_Diabrosis:
+                        UserConfig.DrawSliderInt(0, 100, WHMPvP.Config.WHMPvP_DiabrosisThreshold,
+                            "Target HP% to use Diabrosis");
+
+                        break;
+                }
+            }
         }
+
+        #endregion       
 
     internal class WHMPvP_Burst : CustomCombo
         {

@@ -1,6 +1,5 @@
 ﻿using Dalamud.Interface.Colors;
 using ImGuiNET;
-using WrathCombo.Combos.PvP;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Data;
 using static WrathCombo.Extensions.UIntExtensions;
@@ -224,13 +223,7 @@ internal partial class SCH
                     DrawRadioButton(SCH_Recitation_Mode, "Succor", "", 1);
                     DrawRadioButton(SCH_Recitation_Mode, "Indomitability", "", 2);
                     DrawRadioButton(SCH_Recitation_Mode, "Excogitation", "", 3);
-                    break;
-
-                case CustomComboPreset.SCHPvP_Diabrosis:
-                    DrawSliderInt(0, 100, SCHPvP.Config.SCHPvP_DiabrosisThreshold,
-                        "Target HP% to use Diabrosis");
-
-                    break;
+                    break;               
             }
         }
           #region DPS
