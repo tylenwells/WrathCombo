@@ -3,7 +3,6 @@ using WrathCombo.Data;
 using WrathCombo.Extensions;
 namespace WrathCombo.Combos.PvE;
 
-//TODO Cleanup weaves + reorder everything
 internal partial class BLM : CasterJob
 {
     internal class BLM_ST_SimpleMode : CustomCombo
@@ -113,6 +112,7 @@ internal partial class BLM : CasterJob
                     return Blizzard3;
             }
 
+            //TODO fix recover from death
             if (LevelChecked(Fire3))
             {
                 return CurMp > MP.FireIII
@@ -247,7 +247,7 @@ internal partial class BLM : CasterJob
 
             if (LevelChecked(Fire3))
             {
-                return CurMp > MP.FireIII
+                return CurMp >= MP.FireIII
                     ? Fire3
                     : Blizzard3;
             }
@@ -256,6 +256,7 @@ internal partial class BLM : CasterJob
         }
     }
 
+    //TODO Fix AoE
     internal class BLM_AoE_SimpleMode : CustomCombo
     {
         protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.BLM_AoE_SimpleMode;
