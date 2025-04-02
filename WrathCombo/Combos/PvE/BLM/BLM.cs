@@ -59,14 +59,14 @@ internal partial class BLM : CasterJob
 
             if (IsMoving() && InCombat())
             {
-                if (ActionReady(Role.Swiftcast) && !HasEffect(Buffs.Triplecast))
-                    return Role.Swiftcast;
-
                 if (ActionReady(Triplecast) && !HasEffect(Buffs.Triplecast))
                     return Triplecast;
 
                 if (Gauge.InAstralFire && Gauge.IsParadoxActive)
                     return Paradox;
+
+                if (ActionReady(Role.Swiftcast) && !HasEffect(Buffs.Triplecast))
+                    return Role.Swiftcast;
 
                 if (HasPolyglotStacks())
                     return LevelChecked(Xenoglossy)
@@ -184,10 +184,6 @@ internal partial class BLM : CasterJob
 
             if (IsMoving() && InCombat())
             {
-                if (Config.BLM_ST_MovementOption[0] &&
-                    ActionReady(Role.Swiftcast) && !HasEffect(Buffs.Triplecast))
-                    return Role.Swiftcast;
-
                 if (Config.BLM_ST_MovementOption[1] &&
                     ActionReady(Triplecast) && !HasEffect(Buffs.Triplecast))
                     return Triplecast;
@@ -195,6 +191,10 @@ internal partial class BLM : CasterJob
                 if (Config.BLM_ST_MovementOption[2] &&
                     Gauge.InAstralFire && Gauge.IsParadoxActive)
                     return Paradox;
+                
+                if (Config.BLM_ST_MovementOption[0] &&
+                    ActionReady(Role.Swiftcast) && !HasEffect(Buffs.Triplecast))
+                    return Role.Swiftcast;
 
                 if (Config.BLM_ST_MovementOption[3] &&
                     HasPolyglotStacks())
