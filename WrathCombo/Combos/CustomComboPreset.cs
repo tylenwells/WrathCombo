@@ -6779,41 +6779,41 @@ SMN.JobID)]
 
     [PvPCustomCombo]
     [ParentCombo(BRDPvP_BurstMode)]
-    [CustomComboInfo("Silent Nocturne Option", "Adds Silent Nocturne to Burst Mode.", BRD.JobID)]
+    [CustomComboInfo("Silent Nocturne Option", "Adds Silent Nocturne to Burst Mode.", BRDPvP.JobID)]
     BRDPvP_SilentNocturne = 113001,
 
     [PvPCustomCombo]
     [ParentCombo(BRDPvP_BurstMode)]
-    [CustomComboInfo("Apex Arrow Option", "Adds Apex Arrow to Burst Mode.", BRD.JobID)]
+    [CustomComboInfo("Apex Arrow Option", "Adds Apex Arrow to Burst Mode.", BRDPvP.JobID)]
     BRDPvP_ApexArrow = 113002,
 
     [PvPCustomCombo]
     [ParentCombo(BRDPvP_BurstMode)]
-    [CustomComboInfo("Blast Arrow Option", "Adds Blast Arrow to Burst Mode.", BRD.JobID)]
+    [CustomComboInfo("Blast Arrow Option", "Adds Blast Arrow to Burst Mode.", BRDPvP.JobID)]
     BRDPvP_BlastArrow = 113003,
 
     [PvPCustomCombo]
     [ParentCombo(BRDPvP_BurstMode)]
     [CustomComboInfo("Harmonic Arrow Option",
         "Adds Harmonic Arrow to Burst Mode. Will use it at set number of charges AND when target is below the health threshold per charge for execute. ",
-        BRD.JobID)]
+        BRDPvP.JobID)]
     BRDPvP_HarmonicArrow = 113004,
 
     [PvPCustomCombo]
     [ParentCombo(BRDPvP_BurstMode)]
-    [CustomComboInfo("Encore of Light Option", "Adds Encore of Light to Burst Mode.", BRD.JobID)]
+    [CustomComboInfo("Encore of Light Option", "Adds Encore of Light to Burst Mode.", BRDPvP.JobID)]
     BRDPvP_EncoreOfLight = 113005,
 
     [PvPCustomCombo]
     [ParentCombo(BRDPvP_BurstMode)]
     [CustomComboInfo("Wardens Paeon Option", "Auto Self cleanse of soft cc. \n Half Asleep, Heavy, and Bind",
-        BRD.JobID)]
+        BRDPvP.JobID)]
     BRDPvP_Wardens = 113006,
 
     [PvPCustomCombo]
     [ParentCombo(BRDPvP_BurstMode)]
     [CustomComboInfo("Role Action Eagle Eye Shot Option", "Automatically Adds Eagle Eye Shot to Burst Mode when target is guarded or under selected health percentage \n WILL ONLY WORK IN LARGE SCALE PVP",
-        BRD.JobID)]
+        BRDPvP.JobID)]
     BRDPvP_Eagle = 113007,
 
     // Last value = 113007
@@ -6824,37 +6824,37 @@ SMN.JobID)]
 
     [PvPCustomCombo]
     [ReplaceSkill(DNCPvP.Fountain)]
-    [CustomComboInfo("Burst Mode", "Turns Fountain Combo into an all-in-one damage button.", DNC.JobID)]
+    [CustomComboInfo("Burst Mode", "Turns Fountain Combo into an all-in-one damage button.", DNCPvP.JobID)]
     DNCPvP_BurstMode = 114000,
 
     [PvPCustomCombo]
     [ParentCombo(DNCPvP_BurstMode)]
     [CustomComboInfo("Honing Dance Option",
         "Adds Honing Dance to the main combo when in melee range (respects global offset).\nThis option prevents early use of Honing Ovation!\nKeep Honing Dance bound to another key if you want to end early.",
-        DNC.JobID)]
+        DNCPvP.JobID)]
     DNCPvP_BurstMode_HoningDance = 114001,
 
     [PvPCustomCombo]
     [ParentCombo(DNCPvP_BurstMode)]
     [CustomComboInfo("Curing Waltz Option",
-        "Adds Curing Waltz to the combo when available, and your HP is at or below the set percentage.", DNC.JobID)]
+        "Adds Curing Waltz to the combo when available, and your HP is at or below the set percentage.", DNCPvP.JobID)]
     DNCPvP_BurstMode_CuringWaltz = 114002,
 
     [PvPCustomCombo]
     [ParentCombo(DNCPvP_BurstMode)]
-    [CustomComboInfo("Dance Partner Reminder Option", "Adds Closed Position reminder when you have none", DNC.JobID)]
+    [CustomComboInfo("Dance Partner Reminder Option", "Adds Closed Position reminder when you have none", DNCPvP.JobID)]
     DNCPvP_BurstMode_Partner = 114003,
 
     [PvPCustomCombo]
     [ParentCombo(DNCPvP_BurstMode)]
     [CustomComboInfo("En Avant Option", "Uses En Avant if available and buff is missing to boost 1 2 combo damage.",
-        DNC.JobID)]
+        DNCPvP.JobID)]
     DNCPvP_BurstMode_Dash = 114004,
 
     [PvPCustomCombo]
     [ParentCombo(DNCPvP_BurstMode)]
     [CustomComboInfo("Role Action Eagle Eye Shot Option", "Automatically Adds Eagle Eye Shot to Burst Mode when target is guarded or under selected health percentage \n WILL ONLY WORK IN LARGE SCALE PVP",
-       DNC.JobID)]
+       DNCPvP.JobID)]
     DNCPvP_Eagle = 114005,
 
     // Last value = 114005
@@ -7073,7 +7073,7 @@ SMN.JobID)]
     [PvPCustomCombo]
     [ParentCombo(MCHPvP_BurstMode)]
     [CustomComboInfo("Role Action Eagle Eye Shot Option", "Automatically Adds Eagle Eye Shot to Burst Mode when target is guarded or under selected health percentage \n WILL ONLY WORK IN LARGE SCALE PVP",
-       MCH.JobID)]
+       MCHPvP.JobID)]
     MCHPvP_Eagle = 118012,
 
     // Last value = 118012

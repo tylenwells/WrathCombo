@@ -1,6 +1,6 @@
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
-using static WrathCombo.Window.Functions.UserConfig;
+using WrathCombo.Window.Functions;
 
 namespace WrathCombo.Combos.PvP
 {
@@ -61,12 +61,12 @@ namespace WrathCombo.Combos.PvP
                 {
 
                     case CustomComboPreset.BRDPvP_HarmonicArrow:
-                        DrawSliderInt(1, 4, BRDPvP_HarmonicArrowCharges, "How many Charges to use it at \n 1 charge 8000 damage \n 2 charge 12000 damage \n 3 charge 15000 damage \n 4 charge 17000 damage");
+                        UserConfig.DrawSliderInt(1, 4, BRDPvP_HarmonicArrowCharges, "How many Charges to use it at \n 1 charge 8000 damage \n 2 charge 12000 damage \n 3 charge 15000 damage \n 4 charge 17000 damage");
 
                         break;
 
                     case CustomComboPreset.BRDPvP_Eagle:
-                        DrawSliderInt(0, 100, BRDPvP_EagleThreshold,
+                        UserConfig.DrawSliderInt(0, 100, BRDPvP_EagleThreshold,
                             "Target HP percent threshold to use Eagle Eye Shot Below.");
 
                         break;
