@@ -31,6 +31,12 @@ internal partial class BLM
         TraitLevelChecked(Traits.EnhancedPolyglotII) ? 3 :
         TraitLevelChecked(Traits.EnhancedPolyglot) ? 2 : 1;
 
+    internal static bool HasMaxPolyglotStacks =>
+        Gauge.PolyglotStacks == MaxPolyglot;
+
+    internal static bool FlarestarReady =>
+        Gauge.AstralSoulStacks == 6;
+
     internal static int RemainingPolyglotCD =>
         Math.Max(0, (MaxPolyglot - Gauge.PolyglotStacks) * 30000 + (Gauge.EnochianTimer - 30000));
 
@@ -39,11 +45,7 @@ internal partial class BLM
 
     internal static Status? ThunderDebuffAoE =>
         FindEffect(ThunderList[OriginalHook(Thunder2)], CurrentTarget, LocalPlayer?.GameObjectId);
-
-    internal static bool CanSwiftF =>
-        TraitLevelChecked(Traits.AspectMasteryIII) &&
-        IsOffCooldown(Role.Swiftcast);
-
+    
     internal static float TimeSinceFirestarterBuff => HasEffect(Buffs.Firestarter) ? GetPartyMembers().First().TimeSinceBuffApplied(Buffs.Firestarter) : 0;
 
     internal static bool HasPolyglotStacks() => Gauge.PolyglotStacks > 0;
@@ -130,7 +132,7 @@ internal partial class BLM
             LeyLines,
             Fire4,
             Fire4,
-            Fire4, 
+            Fire4,
             Fire4,
             Xenoglossy,
             Manafont,
