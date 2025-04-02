@@ -1,10 +1,15 @@
 ﻿using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
+using WrathCombo.Window.Functions;
 
 namespace WrathCombo.Combos.PvP
 {
     internal class DRKPvP
     {
+        #region IDS
+
+        public const byte JobID = 32;
+
         internal class Role : PvPTank;
 
         public const uint
@@ -31,14 +36,38 @@ namespace WrathCombo.Combos.PvP
                 UndeadRedemption = 3039,
                 Scorn = 4290;
         }
+        #endregion
 
-        internal class Config
+        #region Config
+        public static class Config
         {
-            internal static UserInt
+            public static UserInt
                 ShadowbringerThreshold = new("ShadowbringerThreshold"),
                 DRKPvP_RampartThreshold = new("DRKPvP_RampartThreshold");
 
+
+            internal static void Draw(CustomComboPreset preset)
+            {
+                switch (preset)
+                {
+                    case CustomComboPreset.DRKPvP_Shadowbringer:
+                        UserConfig.DrawSliderInt(20, 100,
+                            DRKPvP.Config.ShadowbringerThreshold,
+                            "HP% to be at or Above to use ",
+                            itemWidth: 150f, sliderIncrement: SliderIncrements.Fives);
+
+                        break;
+
+                    case CustomComboPreset.DRKPvP_Rampart:
+                        UserConfig.DrawSliderInt(1, 100, DRKPvP.Config.DRKPvP_RampartThreshold,
+                            "Use Rampart below set threshold for self");
+                        break;
+
+                }
+            }
         }
+        #endregion
+      
 
         internal class DRKPvP_BurstMode : CustomCombo
         {

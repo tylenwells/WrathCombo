@@ -1,10 +1,13 @@
 ﻿using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
+using WrathCombo.Window.Functions;
 
 namespace WrathCombo.Combos.PvP
 {
     internal static class PLDPvP
     {
+        #region IDS
+
         public const byte JobID = 19;
 
         internal class Role : PvPTank;
@@ -43,12 +46,27 @@ namespace WrathCombo.Combos.PvP
                 Stun = 1343,
                 ShieldSmite = 4283;
         }
+        #endregion
 
-        internal class Config
+        #region Config
+        public static class Config
         {
-            internal static UserInt
+            public static UserInt
                 PLDPvP_RampartThreshold = new("PLDPvP_RampartThreshold");
+
+            internal static void Draw(CustomComboPreset preset)
+            {
+                switch (preset)
+                {
+                    case CustomComboPreset.PLDPvP_Rampart:
+                        UserConfig.DrawSliderInt(1, 100, PLDPvP.Config.PLDPvP_RampartThreshold,
+                            "Use Rampart below set threshold for self");
+                        break;
+
+                }
+            }
         }
+        #endregion
 
         internal class PLDPvP_Burst : CustomCombo
         {

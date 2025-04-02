@@ -1,5 +1,4 @@
 using ImGuiNET;
-using WrathCombo.Combos.PvP;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Data;
 using WrathCombo.Extensions;
@@ -530,31 +529,9 @@ internal partial class GNB
                         "Replace No Mercy",
                         $"Use this feature instead on {NoMercy.ActionName()}\nWARNING: This WILL conflict with 'No Mercy Features'!", 1);
 
-                    break;
+                    break;            
 
-                //PVP section
-
-                case CustomComboPreset.GNBPvP_Rampart:
-                    UserConfig.DrawSliderInt(1, 100, GNBPvP.Config.GNBPvP_RampartThreshold,
-                        "Use Rampart below set threshold for self");
-                    break;
-
-                case CustomComboPreset.GNBPvP_Corundum:
-                    UserConfig.DrawSliderInt(1, 100,
-                        GNBPvP.Config.corundumThreshold,
-                        "HP% to be at or Below to use " +
-                        "(100 = Use Always)",
-                        itemWidth: 150f, sliderIncrement: SliderIncrements.Fives);
-                    break;
-
-                case CustomComboPreset.GNBPvP_BlastingZone:
-
-                    UserConfig.DrawSliderInt(1, 100,
-                        GNBPvP.Config.blastingZoneThreshold,
-                        "Hp % of target to use Blasting zone. Most powerful below 50% " +
-                        "(100 = Use Always)",
-                        itemWidth: 150f, sliderIncrement: SliderIncrements.Fives);
-                    break;
+               
             }
         }
     }

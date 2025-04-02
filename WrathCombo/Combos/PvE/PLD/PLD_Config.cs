@@ -1,7 +1,5 @@
-using ECommons.ImGuiMethods;
 using ImGuiNET;
 using System.Numerics;
-using WrathCombo.Combos.PvP;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Data;
 using WrathCombo.Window.Functions;
@@ -277,12 +275,7 @@ internal partial class PLD
                         "Exclude Mitigations",
                         "Disables the use of mitigations in Simple Mode.", 1);
                     break;
-
-                // PVP
-                case CustomComboPreset.PLDPvP_Rampart:
-                    UserConfig.DrawSliderInt(1, 100, PLDPvP.Config.PLDPvP_RampartThreshold,
-                        "Use Rampart below set threshold for self");
-                    break;
+               
                 #region One-Button Mitigation
 
                 case CustomComboPreset.PLD_Mit_HallowedGround_Max:

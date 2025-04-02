@@ -1,10 +1,14 @@
 ﻿using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
+using WrathCombo.Window.Functions;
 
 namespace WrathCombo.Combos.PvP
 {
     internal static class GNBPvP
     {
+        #region IDS
+        public const byte JobID = 37;
+
         internal class Role : PvPTank;
 
         public const uint
@@ -49,27 +53,58 @@ namespace WrathCombo.Combos.PvP
                 ReadyToRaze = 4293;
 
         }
-        internal class Config
+
+        #endregion
+
+        #region Config
+        public static class Config
         {
-            internal static UserInt
-                corundumThreshold = new("corundumThreshold"),
-                blastingZoneThreshold = new("blastingZoneThreshold"),
+            public static UserInt
+                GNBPvP_CorundumThreshold = new("GNBPvP_CorundumThreshold"),
+                GNBPvP_BlastingZoneThreshold = new("GNBPvP_BlastingZoneThreshold"),
                 GNBPvP_RampartThreshold = new("GNBPvP_RampartThreshold");
 
+            internal static void Draw(CustomComboPreset preset)
+            {
+                switch (preset)
+                {
+                    case CustomComboPreset.GNBPvP_Rampart:
+                        UserConfig.DrawSliderInt(1, 100, GNBPvP.Config.GNBPvP_RampartThreshold,
+                            "Use Rampart below set threshold for self");
+                        break;
+
+                    case CustomComboPreset.GNBPvP_Corundum:
+                        UserConfig.DrawSliderInt(1, 100,
+                            GNBPvP.Config.GNBPvP_CorundumThreshold,
+                            "HP% to be at or Below to use " +
+                            "(100 = Use Always)",
+                            itemWidth: 150f, sliderIncrement: SliderIncrements.Fives);
+                        break;
+
+                    case CustomComboPreset.GNBPvP_BlastingZone:
+
+                        UserConfig.DrawSliderInt(1, 100,
+                            GNBPvP.Config.GNBPvP_BlastingZoneThreshold,
+                            "Hp % of target to use Blasting zone. Most powerful below 50% " +
+                            "(100 = Use Always)",
+                            itemWidth: 150f, sliderIncrement: SliderIncrements.Fives);
+                        break;
+
+                }
+            }
         }
-      
+        #endregion
+            
         internal class GNBPvP_Burst : CustomCombo
         {
             protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.GNBPvP_Burst;
-
-            float GCD = GetCooldown(KeenEdge).CooldownTotal; // 2.4 base in PvP
             
             protected override uint Invoke(uint actionID)
             {
                 if (actionID is KeenEdge or BrutalShell or SolidBarrel or BurstStrike)
                 {
-                    int corundumThreshold = GetOptionValue(Config.corundumThreshold);
-                    int blastingZoneThreshold = GetOptionValue(Config.blastingZoneThreshold); 
+                    int corundumThreshold = GetOptionValue(Config.GNBPvP_CorundumThreshold);
+                    int blastingZoneThreshold = GetOptionValue(Config.GNBPvP_BlastingZoneThreshold); 
 
                     if (CanWeave() && IsEnabled(CustomComboPreset.GNBPvP_Corundum) && PlayerHealthPercentageHp() <= corundumThreshold && IsOffCooldown(HeartOfCorundum))
                         return HeartOfCorundum;
