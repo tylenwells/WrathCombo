@@ -38,7 +38,7 @@ internal partial class BLM : CasterJob
                     if (JustUsed(Paradox))
                         return Transpose;
                 }
-                
+
                 if (ActionReady(Amplifier) && RemainingPolyglotCD >= 20000 &&
                     !HasMaxPolyglotStacks)
                     return Amplifier;
@@ -55,6 +55,11 @@ internal partial class BLM : CasterJob
                 if (ActionReady(Manafont))
                     return Manafont;
             }
+
+            if (HasMaxPolyglotStacks && RemainingPolyglotCD < 3000)
+                return LevelChecked(Xenoglossy)
+                    ? Xenoglossy
+                    : Foul;
 
             if (HasEffect(Buffs.Thunderhead) && LevelChecked(Thunder) &&
                 GetTargetHPPercent() >= Config.BLM_ST_ThunderHP &&
@@ -412,7 +417,7 @@ internal partial class BLM : CasterJob
                     if (ActionReady(Manafont))
                         return Manafont;
 
-                    if (ActionReady(Transpose) && (!TraitLevelChecked(Traits.AspectMasteryIII)))
+                    if (ActionReady(Transpose) && !TraitLevelChecked(Traits.AspectMasteryIII))
                         return Transpose;
 
                     if (ActionReady(Blizzard2) && TraitLevelChecked(Traits.AspectMasteryIII))
@@ -558,7 +563,7 @@ internal partial class BLM : CasterJob
                     return Manafont;
 
                 if (IsEnabled(CustomComboPreset.BLM_AoE_Transpose) &&
-                    ActionReady(Transpose) && (!TraitLevelChecked(Traits.AspectMasteryIII)))
+                    ActionReady(Transpose) && !TraitLevelChecked(Traits.AspectMasteryIII))
                     return Transpose;
 
                 if (ActionReady(Blizzard2) && TraitLevelChecked(Traits.AspectMasteryIII))
