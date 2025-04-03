@@ -1,4 +1,6 @@
-﻿using WrathCombo.CustomComboNS;
+﻿using ECommons.GameHelpers;
+using WrathCombo.Core;
+using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Window.Functions;
 
@@ -83,7 +85,42 @@ namespace WrathCombo.Combos.PvP
                             "Target HP% to smite, Max damage below 25%");
                         break;
 
+                    case CustomComboPreset.NINPvP_ST_Meisui:
+                        string descriptionST = "Set the HP percentage to be at or under for the feature to kick in.\n100% is considered to start at 8,000 less than your max HP to prevent wastage.";
 
+                        if (Player.Object != null)
+                        {
+                            uint maxHP = Player.Object.MaxHp <= 8000 ? 0 : Player.Object.MaxHp - 8000;
+                            if (maxHP > 0)
+                            {
+                                int setting = PluginConfiguration.GetCustomIntValue(NINPvP.Config.NINPvP_Meisui_ST);
+                                float hpThreshold = (float)maxHP / 100 * setting;
+
+                                descriptionST += $"\nHP Value to be at or under: {hpThreshold}";
+                            }
+                        }
+
+                        UserConfig.DrawSliderInt(1, 100, NINPvP.Config.NINPvP_Meisui_ST, descriptionST);
+                        break;
+
+
+                    case CustomComboPreset.NINPvP_AoE_Meisui:
+                        string descriptionAoE = "Set the HP percentage to be at or under for the feature to kick in.\n100% is considered to start at 8,000 less than your max HP to prevent wastage.";
+
+                        if (Player.Object != null)
+                        {
+                            uint maxHP = Player.Object.MaxHp <= 8000 ? 0 : Player.Object.MaxHp - 8000;
+                            if (maxHP > 0)
+                            {
+                                int setting = PluginConfiguration.GetCustomIntValue(NINPvP.Config.NINPvP_Meisui_AoE);
+                                float hpThreshold = (float)maxHP / 100 * setting;
+
+                                descriptionAoE += $"\nHP Value to be at or under: {hpThreshold}";
+                            }
+                        }
+
+                        UserConfig.DrawSliderInt(1, 100, NINPvP.Config.NINPvP_Meisui_AoE, descriptionAoE);
+                        break;
                 }
             }
         }
