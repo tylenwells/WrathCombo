@@ -115,7 +115,7 @@ internal partial class BLM : CasterJob
             //TODO fix recover from death
             if (LevelChecked(Fire3))
             {
-                return CurMp > MP.FireIII
+                return CurMp > 7500
                     ? Fire3
                     : Blizzard3;
             }
@@ -247,7 +247,7 @@ internal partial class BLM : CasterJob
 
             if (LevelChecked(Fire3))
             {
-                return CurMp >= MP.FireIII
+                return CurMp >= 7500
                     ? Fire3
                     : Blizzard3;
             }
