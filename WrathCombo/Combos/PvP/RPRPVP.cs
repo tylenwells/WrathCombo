@@ -62,19 +62,19 @@ namespace WrathCombo.Combos.PvP
                 switch (preset)
                 {
                     case CustomComboPreset.RPRPvP_Burst_ImmortalPooling:
-                        UserConfig.DrawSliderInt(0, 8, RPRPvP.Config.RPRPvP_ImmortalStackThreshold,
+                        UserConfig.DrawSliderInt(0, 8, RPRPvP_ImmortalStackThreshold,
                             "Set a value of Immortal Sacrifice Stacks to hold for burst.");
 
                         break;
 
                     case CustomComboPreset.RPRPvP_Burst_ArcaneCircle:
-                        UserConfig.DrawSliderInt(5, 90, RPRPvP.Config.RPRPvP_ArcaneCircleThreshold,
+                        UserConfig.DrawSliderInt(5, 90, RPRPvP_ArcaneCircleThreshold,
                             "Set a HP percentage value. Caps at 90 to prevent waste.");
 
                         break;
 
                     case CustomComboPreset.RPRPvP_Smite:
-                        UserConfig.DrawSliderInt(0, 100, RPRPvP.Config.RPRPvP_SmiteThreshold,
+                        UserConfig.DrawSliderInt(0, 100, RPRPvP_SmiteThreshold,
                             "Target HP% to smite, Max damage below 25%");
 
                         break;
@@ -101,19 +101,19 @@ namespace WrathCombo.Combos.PvP
                     bool enshrouded = HasEffect(Buffs.Enshrouded);
                     float enshroudStacks = GetBuffStacks(Buffs.Enshrouded);
                     float immortalStacks = GetBuffStacks(Buffs.ImmortalSacrifice);
-                    int immortalThreshold = PluginConfiguration.GetCustomIntValue(Config.RPRPvP_ImmortalStackThreshold);
+                    int immortalThreshold = Config.RPRPvP_ImmortalStackThreshold;
                     #endregion
 
                     // Arcane Cirle Option
                     if (IsEnabled(CustomComboPreset.RPRPvP_Burst_ArcaneCircle)
-                        && ActionReady(ArcaneCrest) && PlayerHealthPercentageHp() <= PluginConfiguration.GetCustomIntValue(Config.RPRPvP_ArcaneCircleThreshold))
+                        && ActionReady(ArcaneCrest) && PlayerHealthPercentageHp() <= Config.RPRPvP_ArcaneCircleThreshold)
                         return ArcaneCrest;
 
                     if (!PvPCommon.TargetImmuneToDamage()) // Guard check on target
                     {
                         //Smite
                         if (IsEnabled(CustomComboPreset.RPRPvP_Smite) && PvPMelee.CanSmite() && GetTargetDistance() <= 10 && HasTarget() &&
-                            GetTargetHPPercent() <= GetOptionValue(Config.RPRPvP_SmiteThreshold))
+                            GetTargetHPPercent() <= Config.RPRPvP_SmiteThreshold)
                             return PvPMelee.Smite;
 
                         // Harvest Moon Ranged Option

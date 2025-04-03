@@ -75,13 +75,13 @@ namespace WrathCombo.Combos.PvP
                 switch (preset)
                 {
                     case CustomComboPreset.NINPvP_ST_SeitonTenchu:
-                        UserConfig.DrawSliderInt(1, 50, NINPvP.Config.NINPVP_SeitonTenchu, "Target's HP% to be at or under", 200);
+                        UserConfig.DrawSliderInt(1, 50, NINPVP_SeitonTenchu, "Target's HP% to be at or under", 200);
                         break;
                     case CustomComboPreset.NINPvP_AoE_SeitonTenchu:
-                        UserConfig.DrawSliderInt(1, 50, NINPvP.Config.NINPVP_SeitonTenchuAoE, "Target's HP% to be at or under", 200);
+                        UserConfig.DrawSliderInt(1, 50, NINPVP_SeitonTenchuAoE, "Target's HP% to be at or under", 200);
                         break;
                     case CustomComboPreset.NINPvP_Smite:
-                        UserConfig.DrawSliderInt(0, 100, NINPvP.Config.NINPvP_SmiteThreshold,
+                        UserConfig.DrawSliderInt(0, 100, NINPvP_SmiteThreshold,
                             "Target HP% to smite, Max damage below 25%");
                         break;
 
@@ -93,14 +93,13 @@ namespace WrathCombo.Combos.PvP
                             uint maxHP = Player.Object.MaxHp <= 8000 ? 0 : Player.Object.MaxHp - 8000;
                             if (maxHP > 0)
                             {
-                                int setting = PluginConfiguration.GetCustomIntValue(NINPvP.Config.NINPvP_Meisui_ST);
-                                float hpThreshold = (float)maxHP / 100 * setting;
+                                float hpThreshold = (float)maxHP / 100 * NINPvP_Meisui_ST;
 
                                 descriptionST += $"\nHP Value to be at or under: {hpThreshold}";
                             }
                         }
 
-                        UserConfig.DrawSliderInt(1, 100, NINPvP.Config.NINPvP_Meisui_ST, descriptionST);
+                        UserConfig.DrawSliderInt(1, 100, NINPvP_Meisui_ST, descriptionST);
                         break;
 
 
@@ -112,14 +111,13 @@ namespace WrathCombo.Combos.PvP
                             uint maxHP = Player.Object.MaxHp <= 8000 ? 0 : Player.Object.MaxHp - 8000;
                             if (maxHP > 0)
                             {
-                                int setting = PluginConfiguration.GetCustomIntValue(NINPvP.Config.NINPvP_Meisui_AoE);
-                                float hpThreshold = (float)maxHP / 100 * setting;
+                                float hpThreshold = (float)maxHP / 100 * NINPvP_Meisui_AoE;
 
                                 descriptionAoE += $"\nHP Value to be at or under: {hpThreshold}";
                             }
                         }
 
-                        UserConfig.DrawSliderInt(1, 100, NINPvP.Config.NINPvP_Meisui_AoE, descriptionAoE);
+                        UserConfig.DrawSliderInt(1, 100, NINPvP_Meisui_AoE, descriptionAoE);
                         break;
                 }
             }

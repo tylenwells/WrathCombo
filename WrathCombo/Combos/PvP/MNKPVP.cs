@@ -56,7 +56,7 @@ namespace WrathCombo.Combos.PvP
                 switch (preset)
                 {
                     case CustomComboPreset.MNKPvP_Smite:
-                        UserConfig.DrawSliderInt(0, 100, MNKPvP.Config.MNKPvP_SmiteThreshold,
+                        UserConfig.DrawSliderInt(0, 100, MNKPvP_SmiteThreshold,
                             "Target HP% to smite, Max damage below 25%");
                         break;
                 }
@@ -80,7 +80,7 @@ namespace WrathCombo.Combos.PvP
                     if (!PvPCommon.TargetImmuneToDamage())
                     {
                         if (IsEnabled(CustomComboPreset.MNKPvP_Smite) && PvPMelee.CanSmite() && GetTargetDistance() <= 10 && HasTarget() &&
-                            GetTargetHPPercent() <= GetOptionValue(Config.MNKPvP_SmiteThreshold))
+                            GetTargetHPPercent() <= Config.MNKPvP_SmiteThreshold)
                             return PvPMelee.Smite;
 
                         if (IsEnabled(CustomComboPreset.MNKPvP_Burst_RisingPhoenix))
