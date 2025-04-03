@@ -748,7 +748,7 @@ public enum CustomComboPreset
     BRD_ST_AdvMode = 3009,
 
     [ParentCombo(BRD_ST_AdvMode)]
-    [ConflictingCombos(BRD_IronJaws_Alternate)]
+    [ConflictingCombos(BRD_IronJaws_Alternate, BRD_IronJaws, BRD_ST_oGCD)]
     [CustomComboInfo("Balance Opener (Level 100)", "Adds the Balance opener at level 100.", BRD.JobID)]
     BRD_ST_Adv_Balance_Standard = 3048,
 
@@ -919,7 +919,7 @@ public enum CustomComboPreset
     BRD_ApexST = 3034,
 
     [ReplaceSkill(BRD.IronJaws)]
-    [ConflictingCombos(BRD_IronJaws_Alternate)]
+    [ConflictingCombos(BRD_IronJaws_Alternate, BRD_ST_Adv_Balance_Standard)]
     [CustomComboInfo("Iron Jaws Feature",
         "Iron Jaws is replaced with Caustic Bite/Stormbite if one or both are not up.\nAlternates between the two if Iron Jaws isn't available.",
         BRD.JobID)]
@@ -948,6 +948,7 @@ public enum CustomComboPreset
     BRD_Apex = 3005,
 
     [ReplaceSkill(BRD.Bloodletter)]
+    [ConflictingCombos(BRD_ST_Adv_Balance_Standard)]
     [CustomComboInfo("Single Target oGCD Feature", "All oGCD's on Bloodletter/Heartbreakshot", BRD.JobID)]
     BRD_ST_oGCD = 3006,
 
