@@ -89,7 +89,7 @@ namespace WrathCombo.Combos.PvP
                     var canWeave = CanWeave(0.5);
                     uint harmonicCharges = GetRemainingCharges(HarmonicArrow);
 
-                    if (IsEnabled(CustomComboPreset.BRDPvP_Eagle) && PvPPhysRanged.CanEagleEyeShot() && (PvPCommon.TargetImmuneToDamage() || GetTargetHPPercent() <= GetOptionValue(Config.BRDPvP_EagleThreshold)))
+                    if (IsEnabled(CustomComboPreset.BRDPvP_Eagle) && PvPPhysRanged.CanEagleEyeShot() && (PvPCommon.TargetImmuneToDamage() || GetTargetHPPercent() <= Config.BRDPvP_EagleThreshold))
                         return PvPPhysRanged.EagleEyeShot;
 
                     if (!PvPCommon.TargetImmuneToDamage())
@@ -114,7 +114,7 @@ namespace WrathCombo.Combos.PvP
                         if (HasEffect(Buffs.FrontlineMarch))
                         {
                             if (IsEnabled(CustomComboPreset.BRDPvP_HarmonicArrow) &&    //Harmonic Logic. Slider plus execute ranges
-                               (harmonicCharges >= GetOptionValue(Config.BRDPvP_HarmonicArrowCharges) ||
+                               (harmonicCharges >= Config.BRDPvP_HarmonicArrowCharges ||
                                harmonicCharges == 1 && EnemyHealthCurrentHp() <= 8000 ||
                                harmonicCharges == 2 && EnemyHealthCurrentHp() <= 12000 ||
                                harmonicCharges == 3 && EnemyHealthCurrentHp() <= 15000))

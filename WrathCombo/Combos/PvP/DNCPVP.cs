@@ -59,21 +59,21 @@ namespace WrathCombo.Combos.PvP
                 {
                     case CustomComboPreset.DNCPvP_BurstMode_CuringWaltz:
                         UserConfig.DrawSliderInt(0, 90,
-                            DNCPvP.Config.DNCPvP_WaltzThreshold,
+                            DNCPvP_WaltzThreshold,
                             "Curing Waltz HP% - caps at 90 to prevent waste.");
 
                         break;
 
                     case CustomComboPreset.DNCPvP_BurstMode_Dash:
                         UserConfig.DrawSliderInt(0, 3,
-                            DNCPvP.Config.DNCPvP_EnAvantCharges,
+                            DNCPvP_EnAvantCharges,
                             "How many to save for manual");
 
                         break;
 
                     case CustomComboPreset.DNCPvP_Eagle:
                         UserConfig.DrawSliderInt(0, 100,
-                            DNCPvP.Config.DNCPvP_EagleThreshold,
+                            DNCPvP_EagleThreshold,
                             "Target HP percent threshold to use Eagle Eye Shot Below.");
 
                         break;
@@ -100,7 +100,6 @@ namespace WrathCombo.Combos.PvP
                     var acclaimStacks = GetBuffStacks(Buffs.Acclaim);
                     bool canWeave = CanWeave();
                     var distance = GetTargetDistance();
-                    var HPThreshold = PluginConfiguration.GetCustomIntValue(Config.DNCPvP_WaltzThreshold);
                     var HP = PlayerHealthPercentageHp();
                     bool enemyGuarded = TargetHasEffectAny(PvPCommon.Buffs.Guard);
 
@@ -111,7 +110,7 @@ namespace WrathCombo.Combos.PvP
                     if (IsEnabled(CustomComboPreset.DNCPvP_BurstMode_Partner) && ActionReady(ClosedPosition) && !HasEffect(Buffs.ClosedPosition) & GetPartyMembers().Count > 1)
                         return ClosedPosition;
 
-                    if (IsEnabled(CustomComboPreset.DNCPvP_Eagle) && PvPPhysRanged.CanEagleEyeShot() && (PvPCommon.TargetImmuneToDamage() || GetTargetHPPercent() <= GetOptionValue(DNCPvP.Config.DNCPvP_EagleThreshold)))
+                    if (IsEnabled(CustomComboPreset.DNCPvP_Eagle) && PvPPhysRanged.CanEagleEyeShot() && (PvPCommon.TargetImmuneToDamage() || GetTargetHPPercent() <= Config.DNCPvP_EagleThreshold))
                         return PvPPhysRanged.EagleEyeShot;
 
                     if (IsEnabled(CustomComboPreset.DNCPvP_BurstMode_HoningDance) && honingDanceReady && HasTarget() && distance <= 5 && !enemyGuarded)
@@ -125,14 +124,14 @@ namespace WrathCombo.Combos.PvP
                     if (canWeave)
                     {
                         // Curing Waltz Option
-                        if (IsEnabled(CustomComboPreset.DNCPvP_BurstMode_CuringWaltz) && curingWaltzReady && HP <= HPThreshold)
+                        if (IsEnabled(CustomComboPreset.DNCPvP_BurstMode_CuringWaltz) && curingWaltzReady && HP <= Config.DNCPvP_WaltzThreshold)
                             return OriginalHook(CuringWaltz);
 
                         // Fan Dance weave
                         if (IsOffCooldown(FanDance) && distance < 13 && !enemyGuarded) // 2y below max to avoid waste
                             return OriginalHook(FanDance);
 
-                        if (IsEnabled(CustomComboPreset.DNCPvP_BurstMode_Dash) && !HasEffect(Buffs.EnAvant) && GetRemainingCharges(EnAvant) > GetOptionValue(Config.DNCPvP_EnAvantCharges))
+                        if (IsEnabled(CustomComboPreset.DNCPvP_BurstMode_Dash) && !HasEffect(Buffs.EnAvant) && GetRemainingCharges(EnAvant) > Config.DNCPvP_EnAvantCharges)
                             return EnAvant;
                     }
 
