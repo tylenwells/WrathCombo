@@ -197,7 +197,7 @@ namespace WrathCombo.CustomComboNS.Functions
             {
                 if (chara.StatusList is null || chara.StatusList.Length == 0) return false;
 
-                foreach (var status in chara.StatusList)
+                foreach (var status in chara.StatusList.Where(x => x is not null && x.StatusId > 0))
                     if (ActionWatching.StatusSheet.TryGetValue(status.StatusId,
                             out var statusItem) && statusItem.CanDispel)
                         return true;
