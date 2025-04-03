@@ -225,7 +225,7 @@ internal partial class GNB : TankJob
                 {
                     if (ShouldUseBurstStrike())
                         return BurstStrike;
-                    if (IsEnabled(CustomComboPreset.GNB_ST_BurstStrike) && IsEnabled(CustomComboPreset.GNB_ST_NoMercy) &&
+                    if (IsEnabled(CustomComboPreset.GNB_ST_NoMercy) &&
                         (LevelChecked(DoubleDown) && NmCD < 1 && Ammo == 3 && BfCD > 110 && ((SlowGNB && ComboAction is KeenEdge) || (FastGNB && ComboAction is BrutalShell)) ||
                         (LevelChecked(ReignOfBeasts) && NmCD < 1 && Ammo == 3 && !InOdd)))
                         return BurstStrike;
