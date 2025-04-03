@@ -748,6 +748,7 @@ public enum CustomComboPreset
     BRD_ST_AdvMode = 3009,
 
     [ParentCombo(BRD_ST_AdvMode)]
+    [ConflictingCombos(BRD_IronJaws_Alternate)]
     [CustomComboInfo("Balance Opener (Level 100)", "Adds the Balance opener at level 100.", BRD.JobID)]
     BRD_ST_Adv_Balance_Standard = 3048,
 
@@ -929,7 +930,7 @@ public enum CustomComboPreset
     BRD_IronJawsApex = 3024,
 
     [ReplaceSkill(BRD.IronJaws)]
-    [ConflictingCombos(BRD_IronJaws)]
+    [ConflictingCombos(BRD_IronJaws, BRD_ST_Adv_Balance_Standard)]
     [CustomComboInfo("Iron Jaws Alternate Feature",
         "Iron Jaws is replaced with Caustic Bite/Stormbite if one or both are not up.\nIron Jaws will only show up when debuffs are about to expire.",
         BRD.JobID)]
