@@ -52,14 +52,14 @@ namespace WrathCombo.Combos.PvP
                 {
                     case CustomComboPreset.DRKPvP_Shadowbringer:
                         UserConfig.DrawSliderInt(20, 100,
-                            DRKPvP.Config.ShadowbringerThreshold,
+                            ShadowbringerThreshold,
                             "HP% to be at or Above to use ",
                             itemWidth: 150f, sliderIncrement: SliderIncrements.Fives);
 
                         break;
 
                     case CustomComboPreset.DRKPvP_Rampart:
-                        UserConfig.DrawSliderInt(1, 100, DRKPvP.Config.DRKPvP_RampartThreshold,
+                        UserConfig.DrawSliderInt(1, 100, DRKPvP_RampartThreshold,
                             "Use Rampart below set threshold for self");
                         break;
 
@@ -78,9 +78,9 @@ namespace WrathCombo.Combos.PvP
                 if (actionID is HardSlash or SyphonStrike or Souleater)
                 {
                     bool canWeave = CanWeave();
-                    int shadowBringerThreshold = GetOptionValue(Config.ShadowbringerThreshold);
+                    int shadowBringerThreshold = Config.ShadowbringerThreshold;
 
-                    if (IsEnabled(CustomComboPreset.DRKPvP_Rampart) && PvPTank.CanRampart(GetOptionValue(Config.DRKPvP_RampartThreshold)))
+                    if (IsEnabled(CustomComboPreset.DRKPvP_Rampart) && PvPTank.CanRampart(Config.DRKPvP_RampartThreshold))
                         return PvPTank.Rampart;
 
                     if (!PvPCommon.TargetImmuneToDamage())

@@ -51,13 +51,13 @@ namespace WrathCombo.Combos.PvP
                 switch (preset)
                 {
                     case CustomComboPreset.WARPvP_Rampart:
-                        UserConfig.DrawSliderInt(1, 100, WARPvP.Config.WARPvP_RampartThreshold,
+                        UserConfig.DrawSliderInt(1, 100, WARPvP_RampartThreshold,
                             "Use Rampart below set threshold for self");
                         break;
 
                     case CustomComboPreset.WARPvP_BurstMode_Blota:
-                        UserConfig.DrawHorizontalRadioButton(WARPvP.Config.WARPVP_BlotaTiming, $"Before {PrimalRend.ActionName()}", "", 0);
-                        UserConfig.DrawHorizontalRadioButton(WARPvP.Config.WARPVP_BlotaTiming, $"After {PrimalRend.ActionName()}", "", 1);
+                        UserConfig.DrawHorizontalRadioButton(WARPVP_BlotaTiming, $"Before {PrimalRend.ActionName()}", "", 0);
+                        UserConfig.DrawHorizontalRadioButton(WARPVP_BlotaTiming, $"After {PrimalRend.ActionName()}", "", 1);
 
                         break;
                 }
@@ -73,7 +73,7 @@ namespace WrathCombo.Combos.PvP
             {
                 if (actionID is HeavySwing or Maim or StormsPath)
                 {
-                    if (IsEnabled(CustomComboPreset.WARPvP_Rampart) && PvPTank.CanRampart(GetOptionValue(Config.WARPvP_RampartThreshold)))
+                    if (IsEnabled(CustomComboPreset.WARPvP_Rampart) && PvPTank.CanRampart(Config.WARPvP_RampartThreshold))
                         return PvPTank.Rampart;
 
                     if (!PvPCommon.TargetImmuneToDamage())

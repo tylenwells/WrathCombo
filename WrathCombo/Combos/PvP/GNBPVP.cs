@@ -69,13 +69,13 @@ namespace WrathCombo.Combos.PvP
                 switch (preset)
                 {
                     case CustomComboPreset.GNBPvP_Rampart:
-                        UserConfig.DrawSliderInt(1, 100, GNBPvP.Config.GNBPvP_RampartThreshold,
+                        UserConfig.DrawSliderInt(1, 100, GNBPvP_RampartThreshold,
                             "Use Rampart below set threshold for self");
                         break;
 
                     case CustomComboPreset.GNBPvP_Corundum:
                         UserConfig.DrawSliderInt(1, 100,
-                            GNBPvP.Config.GNBPvP_CorundumThreshold,
+                            GNBPvP_CorundumThreshold,
                             "HP% to be at or Below to use " +
                             "(100 = Use Always)",
                             itemWidth: 150f, sliderIncrement: SliderIncrements.Fives);
@@ -84,7 +84,7 @@ namespace WrathCombo.Combos.PvP
                     case CustomComboPreset.GNBPvP_BlastingZone:
 
                         UserConfig.DrawSliderInt(1, 100,
-                            GNBPvP.Config.GNBPvP_BlastingZoneThreshold,
+                            GNBPvP_BlastingZoneThreshold,
                             "Hp % of target to use Blasting zone. Most powerful below 50% " +
                             "(100 = Use Always)",
                             itemWidth: 150f, sliderIncrement: SliderIncrements.Fives);
@@ -103,13 +103,13 @@ namespace WrathCombo.Combos.PvP
             {
                 if (actionID is KeenEdge or BrutalShell or SolidBarrel or BurstStrike)
                 {
-                    int corundumThreshold = GetOptionValue(Config.GNBPvP_CorundumThreshold);
-                    int blastingZoneThreshold = GetOptionValue(Config.GNBPvP_BlastingZoneThreshold); 
+                    int corundumThreshold = Config.GNBPvP_CorundumThreshold;
+                    int blastingZoneThreshold = Config.GNBPvP_BlastingZoneThreshold; 
 
                     if (CanWeave() && IsEnabled(CustomComboPreset.GNBPvP_Corundum) && PlayerHealthPercentageHp() <= corundumThreshold && IsOffCooldown(HeartOfCorundum))
                         return HeartOfCorundum;
 
-                    if (IsEnabled(CustomComboPreset.GNBPvP_Rampart) && PvPTank.CanRampart(GetOptionValue(Config.GNBPvP_RampartThreshold)))
+                    if (IsEnabled(CustomComboPreset.GNBPvP_Rampart) && PvPTank.CanRampart(Config.GNBPvP_RampartThreshold))
                         return PvPTank.Rampart;
 
                     if (!PvPCommon.TargetImmuneToDamage())

@@ -59,7 +59,7 @@ namespace WrathCombo.Combos.PvP
                 switch (preset)
                 {
                     case CustomComboPreset.PLDPvP_Rampart:
-                        UserConfig.DrawSliderInt(1, 100, PLDPvP.Config.PLDPvP_RampartThreshold,
+                        UserConfig.DrawSliderInt(1, 100, PLDPvP_RampartThreshold,
                             "Use Rampart below set threshold for self");
                         break;
 
@@ -76,7 +76,7 @@ namespace WrathCombo.Combos.PvP
             {
                 if (actionID is FastBlade or RiotBlade or RoyalAuthority)
                 {
-                    if (IsEnabled(CustomComboPreset.PLDPvP_Rampart) && PvPTank.CanRampart(GetOptionValue(Config.PLDPvP_RampartThreshold)))
+                    if (IsEnabled(CustomComboPreset.PLDPvP_Rampart) && PvPTank.CanRampart(Config.PLDPvP_RampartThreshold))
                         return PvPTank.Rampart;
 
                     if (IsEnabled(CustomComboPreset.PLDPvP_Intervene) && !InMeleeRange() && IsOffCooldown(Intervene) || IsEnabled(CustomComboPreset.PLDPvP_Intervene_Melee) && InMeleeRange() && IsOffCooldown(Intervene))
