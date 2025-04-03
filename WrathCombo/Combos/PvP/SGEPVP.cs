@@ -54,7 +54,7 @@ namespace WrathCombo.Combos.PvP
                 switch (preset)
                 {
                     case CustomComboPreset.SGEPvP_Diabrosis:
-                        UserConfig.DrawSliderInt(0, 100, SGEPvP.Config.SGEPvP_DiabrosisThreshold,
+                        UserConfig.DrawSliderInt(0, 100, SGEPvP_DiabrosisThreshold,
                             "Target HP% to use Diabrosis");
 
                         break;
@@ -78,7 +78,7 @@ namespace WrathCombo.Combos.PvP
                     if (!PvPCommon.TargetImmuneToDamage())
                     {
                         if (IsEnabled(CustomComboPreset.SGEPvP_Diabrosis) && PvPHealer.CanDiabrosis() && HasTarget() &&
-                            GetTargetHPPercent() <= GetOptionValue(Config.SGEPvP_DiabrosisThreshold))
+                            GetTargetHPPercent() <= Config.SGEPvP_DiabrosisThreshold)
                             return PvPHealer.Diabrosis;
 
                         // Psyche after Phlegma

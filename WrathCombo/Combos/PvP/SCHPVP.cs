@@ -46,7 +46,7 @@ namespace WrathCombo.Combos.PvP
                 switch (preset)
                 {
                     case CustomComboPreset.SCHPvP_Diabrosis:
-                        UserConfig.DrawSliderInt(0, 100, SCHPvP.Config.SCHPvP_DiabrosisThreshold,
+                        UserConfig.DrawSliderInt(0, 100, SCHPvP_DiabrosisThreshold,
                             "Target HP% to use Diabrosis");
 
                         break;
@@ -71,7 +71,7 @@ namespace WrathCombo.Combos.PvP
                         return ChainStratagem;
 
                     if (IsEnabled(CustomComboPreset.SCHPvP_Diabrosis) && PvPHealer.CanDiabrosis() && HasTarget() &&
-                            GetTargetHPPercent() <= GetOptionValue(Config.SCHPvP_DiabrosisThreshold))
+                            GetTargetHPPercent() <= Config.SCHPvP_DiabrosisThreshold)
                         return PvPHealer.Diabrosis;
 
                     // Uses Expedient when available and target isn't affected with Biolysis

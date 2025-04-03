@@ -83,7 +83,7 @@ namespace WrathCombo.Combos.PvP
                     if (IsEnabled(CustomComboPreset.ASTPvP_Burst_DrawCard) && IsOffCooldown(MinorArcana) && (!HasEffect(Buffs.LadyOfCrowns) && !HasEffect(Buffs.LordOfCrowns)))
                         return MinorArcana;                                      
                    
-                    var cardPlayOption = PluginConfiguration.GetCustomIntValue(Config.ASTPvP_Burst_PlayCardOption);
+                    int cardPlayOption = Config.ASTPvP_Burst_PlayCardOption;
 
                     if (IsEnabled(CustomComboPreset.ASTPvP_Burst_PlayCard))
                     {
@@ -102,7 +102,7 @@ namespace WrathCombo.Combos.PvP
                     if (!PvPCommon.TargetImmuneToDamage())
                     { 
                         if (IsEnabled(CustomComboPreset.ASTPvP_Diabrosis) && PvPHealer.CanDiabrosis() && HasTarget() &&
-                            GetTargetHPPercent() <= GetOptionValue(Config.ASTPvP_DiabrosisThreshold))
+                            GetTargetHPPercent() <= Config.ASTPvP_DiabrosisThreshold)
                             return PvPHealer.Diabrosis;
 
                         // Macrocosmos only with double gravity or on coodlown when double gravity is disabled

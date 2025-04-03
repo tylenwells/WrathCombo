@@ -48,12 +48,12 @@ namespace WrathCombo.Combos.PvP
                 switch (preset)
                 {
                     case CustomComboPreset.WHMPvP_Heals:
-                        UserConfig.DrawHorizontalRadioButton(WHMPvP.Config.WHMPVP_HealOrder, $"{WHMPvP.Aquaveil.ActionName()} First", $"If Both {WHMPvP.Aquaveil.ActionName()} & {WHMPvP.Cure3.ActionName()} are ready, prioritise {WHMPvP.Aquaveil.ActionName()}", 0);
-                        UserConfig.DrawHorizontalRadioButton(WHMPvP.Config.WHMPVP_HealOrder, $"{WHMPvP.Cure3.ActionName()} First", $"If Both {WHMPvP.Aquaveil.ActionName()} & {WHMPvP.Cure3.ActionName()} are ready, prioritise {WHMPvP.Cure3.ActionName()}", 1);
+                        UserConfig.DrawHorizontalRadioButton(WHMPVP_HealOrder, $"{Aquaveil.ActionName()} First", $"If Both {Aquaveil.ActionName()} & {WHMPvP.Cure3.ActionName()} are ready, prioritise {WHMPvP.Aquaveil.ActionName()}", 0);
+                        UserConfig.DrawHorizontalRadioButton(WHMPVP_HealOrder, $"{Cure3.ActionName()} First", $"If Both {Aquaveil.ActionName()} & {WHMPvP.Cure3.ActionName()} are ready, prioritise {WHMPvP.Cure3.ActionName()}", 1);
                         break;
 
                     case CustomComboPreset.WHMPvP_Diabrosis:
-                        UserConfig.DrawSliderInt(0, 100, WHMPvP.Config.WHMPvP_DiabrosisThreshold,
+                        UserConfig.DrawSliderInt(0, 100, WHMPvP_DiabrosisThreshold,
                             "Target HP% to use Diabrosis");
 
                         break;
@@ -78,7 +78,7 @@ namespace WrathCombo.Combos.PvP
                             return AfflatusPurgation;
 
                         if (IsEnabled(CustomComboPreset.WHMPvP_Diabrosis) && PvPHealer.CanDiabrosis() && HasTarget() &&
-                            GetTargetHPPercent() <= GetOptionValue(Config.WHMPvP_DiabrosisThreshold))
+                            GetTargetHPPercent() <= Config.WHMPvP_DiabrosisThreshold)
                             return PvPHealer.Diabrosis;
 
                         // Afflatus Misery if enabled and off cooldown
