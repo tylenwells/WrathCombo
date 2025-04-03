@@ -1,5 +1,4 @@
-﻿using System.Drawing;
-using Dalamud.Game.ClientState.Objects.Types;
+﻿using Dalamud.Game.ClientState.Objects.Types;
 using ECommons.DalamudServices;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
