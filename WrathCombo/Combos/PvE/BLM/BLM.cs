@@ -42,7 +42,7 @@ internal partial class BLM : CasterJob
                 if (ActionReady(LeyLines) && !HasEffect(Buffs.LeyLines))
                     return LeyLines;
 
-                if (ActionReady(Manafont) && CurMp is 0 && JustUsed(Despair))
+                if (ActionReady(Manafont) && CurMp is 0)
                     return Manafont;
             }
 
@@ -111,8 +111,7 @@ internal partial class BLM : CasterJob
                 if (ActionReady(Blizzard3) && Gauge.UmbralIceStacks < 3)
                     return Blizzard3;
             }
-
-            //TODO fix recover from death
+            
             if (LevelChecked(Fire3))
             {
                 return CurMp > 7500
@@ -165,7 +164,7 @@ internal partial class BLM : CasterJob
                     return LeyLines;
 
                 if (IsEnabled(CustomComboPreset.BLM_ST_Manafont) &&
-                    ActionReady(Manafont) && CurMp is 0 && JustUsed(Despair))
+                    ActionReady(Manafont) && CurMp is 0)
                     return Manafont;
             }
 
