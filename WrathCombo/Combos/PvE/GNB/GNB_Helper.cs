@@ -3,9 +3,11 @@ using Dalamud.Game.ClientState.JobGauge.Types;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using WrathCombo.Combos.PvE.Content;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
+using WrathCombo.Data;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
 using PartyRequirement = WrathCombo.Combos.PvE.All.Enums.PartyRequirement;
 #endregion
@@ -23,7 +25,7 @@ internal partial class GNB : TankJob
     internal static float NmCD => GetCooldownRemainingTime(NoMercy);
     internal static float DdCD => GetCooldownRemainingTime(DoubleDown);
     internal static float BfCD => GetCooldownRemainingTime(Bloodfest);
-    internal static bool HasNM => NmCD is >= 40 and <= 60;
+    internal static bool HasNM => NmCD is >= 39.5f and <= 60;
     internal static bool HasBreak => HasEffect(Buffs.ReadyToBreak);
     internal static bool HasReign => HasEffect(Buffs.ReadyToReign);
     internal static bool CanBS => LevelChecked(BurstStrike) && Ammo > 0;
@@ -37,7 +39,7 @@ internal partial class GNB : TankJob
     internal static bool CanContinue => LevelChecked(Continuation);
     internal static bool CanReign => LevelChecked(ReignOfBeasts) && GunStep == 0 && HasReign;
     internal static bool InOdd => BfCD is < 90 and > 20;
-    internal static bool CanLateWeave => CanDelayedWeave(start: 1);
+    internal static bool CanLateWeave => CanDelayedWeave(start: 0.9f);
     internal static bool MitUsed => JustUsed(OriginalHook(HeartOfStone), 4f) || JustUsed(OriginalHook(Nebula), 5f) || JustUsed(Camouflage, 5f) || JustUsed(Role.Rampart, 5f) || JustUsed(Aurora, 5f) || JustUsed(Superbolide, 9f);
     internal static float GCDLength => ActionManager.GetAdjustedRecastTime(ActionType.Action, KeenEdge) / 1000f;
     internal static bool FastGNB => GCDLength <= 2.4799f;
@@ -387,7 +389,7 @@ internal partial class GNB : TankJob
     #region OGCDs
     internal static bool ShouldUseNoMercy()
     {
-        bool noMercyCondition = ActionReady(NoMercy) && InCombat() && HasTarget() && (LevelChecked(DoubleDown) ? (InOdd && (Ammo >= 2 || (ComboAction is BrutalShell && Ammo == 1)) || (!InOdd && Ammo != 3)) : Ammo > 0);
+        bool noMercyCondition = ActionReady(NoMercy) && InCombat() && HasBattleTarget() && (LevelChecked(DoubleDown) ? (InOdd && (Ammo >= 2 || (ComboAction is BrutalShell && Ammo == 1)) || (!InOdd && Ammo != 3)) : Ammo > 0);
         if (FastGNB && noMercyCondition && CanLateWeave)
             return true;
         if (SlowGNB && noMercyCondition && CanWeave())
@@ -395,10 +397,11 @@ internal partial class GNB : TankJob
 
         return false;
     }
-    internal static bool ShouldUseBloodfest() => InCombat() && HasTarget() && CanWeave() && CanBF && Ammo == 0;
+    internal static bool ShouldUseBloodfest() => HasBattleTarget() && CanWeave() && CanBF && Ammo == 0;
     internal static bool ShouldUseZone() => CanZone && CanWeave() && NmCD is < 57.5f and > 17f;
     internal static bool ShouldUseBowShock() => CanBow && CanWeave() && NmCD is < 57.5f and >= 40;
-    internal static bool ShouldUseContinuation() => CanContinue && (HasEffect(Buffs.ReadyToRip) || HasEffect(Buffs.ReadyToTear) || HasEffect(Buffs.ReadyToGouge) || (LevelChecked(Hypervelocity) && HasEffect(Buffs.ReadyToBlast)));
+    internal static bool ShouldUseContinuation() => CanContinue && (HasEffect(Buffs.ReadyToRip) || HasEffect(Buffs.ReadyToTear) || HasEffect(Buffs.ReadyToGouge) || 
+        (LevelChecked(Hypervelocity) && HasEffect(Buffs.ReadyToBlast) && (LevelChecked(DoubleDown) ? (SlowGNB ? NmCD is > 1.5f || CanDelayedWeave(0.6f, 0) : FastGNB) : !LevelChecked(DoubleDown))));
     #endregion
 
     #region GCDs
@@ -407,7 +410,6 @@ internal partial class GNB : TankJob
     internal static bool ShouldUseDoubleDown() => CanDD && HasNM && (IsOnCooldown(GnashingFang) || Ammo == 1);
     internal static bool ShouldUseSonicBreak() => CanBreak && ((IsOnCooldown(GnashingFang) || !LevelChecked(GnashingFang)) && (IsOnCooldown(DoubleDown) || !LevelChecked(DoubleDown)));
     internal static bool ShouldUseReignOfBeasts() => CanReign && IsOnCooldown(GnashingFang) && IsOnCooldown(DoubleDown) && !HasEffect(Buffs.ReadyToBreak) && GunStep == 0;
-    internal static bool ApproachingOvercap() => ComboTimer > 0 && LevelChecked(SolidBarrel) && ComboAction == BrutalShell && LevelChecked(BurstStrike) && Ammo == MaxCartridges();
     internal static bool ShouldUseBurstStrike() => (CanBS && HasNM && IsOnCooldown(GnashingFang) && (IsOnCooldown(DoubleDown) || (!LevelChecked(DoubleDown) && Ammo > 0)) && !HasReign && GunStep == 0);
     #endregion
 

@@ -66,21 +66,33 @@ internal partial class GNB : TankJob
             #endregion
 
             #region Standard
+            //Priority hack for increasing Continuation priority when inside late weave window
+            if (CanDelayedWeave())
+            {
+                if (ShouldUseContinuation())
+                    return OriginalHook(Continuation);
+            }
             if (ShouldUseLightningShot())
                 return LightningShot;
-            if (ShouldUseNoMercy())
-                return NoMercy;
-            if (JustUsed(BurstStrike, 5f) && LevelChecked(Hypervelocity) && HasEffect(Buffs.ReadyToBlast) && NmCD is > 1 or <= 0.1f)
-                return Hypervelocity;
-            if (ShouldUseContinuation())
-                return OriginalHook(Continuation);
             if (ShouldUseBloodfest())
                 return Bloodfest;
-            if (ShouldUseZone())
-                return OriginalHook(DangerZone);
+            if (ShouldUseNoMercy())
+                return NoMercy;
+            if (JustUsed(BurstStrike, 5f) && LevelChecked(Hypervelocity) && HasEffect(Buffs.ReadyToBlast))
+            {
+                if (NmCD is > 1.5f || //hold if No Mercy is imminent
+                    CanDelayedWeave(0.6f, 0f)) //send asap if about to lose due to GCD
+                    return Hypervelocity;
+            }
             if (ShouldUseBowShock())
                 return BowShock;
-            if (LevelChecked(DoubleDown) && HasNM && GunStep == 0 && ComboAction is BrutalShell && Ammo == 1)
+            if (ShouldUseZone())
+                return OriginalHook(DangerZone);
+            if (ShouldUseContinuation() &&
+                (CanWeave() || //normal
+                CanDelayedWeave(0.6f, 0f))) //send asap if about to lose due to GCD
+                return OriginalHook(Continuation);
+            if (LevelChecked(DoubleDown) && JustUsed(NoMercy, 5f) && GunStep == 0 && ComboAction is BrutalShell && Ammo == 1)
                 return SolidBarrel;
             if (ShouldUseGnashingFang())
                 return GnashingFang;
@@ -91,8 +103,8 @@ internal partial class GNB : TankJob
             if (ShouldUseReignOfBeasts())
                 return ReignOfBeasts;
             if (ShouldUseBurstStrike() ||
-                (LevelChecked(DoubleDown) && NmCD < 1 && Ammo == 3 && BfCD > 110 && ((SlowGNB && ComboAction is KeenEdge) || (FastGNB && ComboAction is BrutalShell)) ||
-                (LevelChecked(ReignOfBeasts) && NmCD < 1 && Ammo == 3 && !InOdd)))
+                (LevelChecked(DoubleDown) && 
+                NmCD < 1 && Ammo == 3 && !InOdd))
                 return BurstStrike;
             if (GunStep is 1 or 2)
                 return OriginalHook(GnashingFang);
@@ -104,8 +116,8 @@ internal partial class GNB : TankJob
                     return BrutalShell;
                 if (LevelChecked(SolidBarrel) && ComboAction == BrutalShell)
                 {
-                    if (LevelChecked(Hypervelocity) &&  HasEffect(Buffs.ReadyToBlast) && NmCD is > 1 or <= 0.1f)
-                        return Hypervelocity;
+                    if (Ammo == MaxCartridges() && LevelChecked(BurstStrike))
+                        return BurstStrike;
                     return SolidBarrel;
                 }
             }
@@ -186,32 +198,42 @@ internal partial class GNB : TankJob
                 if (Opener().FullOpener(ref actionID))
                     return actionID;
             }
-
+            //Priority hack for ensuring Continuation is used on late weave at the very latest
+            if (CanDelayedWeave())
+            {
+                if (IsEnabled(CustomComboPreset.GNB_ST_Continuation) && 
+                    ShouldUseContinuation())
+                    return OriginalHook(Continuation);
+            }
             if (IsEnabled(CustomComboPreset.GNB_ST_RangedUptime) && ShouldUseLightningShot())
                 return LightningShot;
-            if (IsEnabled(CustomComboPreset.GNB_ST_NoMercy) && ShouldUseNoMercy() &&
-                (Config.GNB_ST_NoMercy_SubOption == 0 || Config.GNB_ST_NoMercy_SubOption == 1 && InBossEncounter()))
-                return NoMercy;
-            if (IsEnabled(CustomComboPreset.GNB_ST_Advanced_Cooldowns) && IsEnabled(CustomComboPreset.GNB_ST_Continuation) && IsEnabled(CustomComboPreset.GNB_ST_NoMercy) &&
-                JustUsed(BurstStrike, 5f) && LevelChecked(Hypervelocity) && HasEffect(Buffs.ReadyToBlast) && IsEnabled(CustomComboPreset.GNB_ST_NoMercy))
-            {
-                if (GCDLength >= 2.4800f && NmCD < 1)
-                    return NoMercy;
-                if (GCDLength <= 2.4799f && NmCD > 1)
-                    return Hypervelocity;
-            }
-            if (IsEnabled(CustomComboPreset.GNB_ST_Scuffed) &&
-                LevelChecked(DoubleDown) && HasNM && GunStep == 0 && ComboAction is BrutalShell && Ammo == 1)
-                return SolidBarrel;
             if (IsEnabled(CustomComboPreset.GNB_ST_Advanced_Cooldowns))
             {
                 if (IsEnabled(CustomComboPreset.GNB_ST_Bloodfest) && ShouldUseBloodfest())
                     return Bloodfest;
-                if (IsEnabled(CustomComboPreset.GNB_ST_Zone) && ShouldUseZone())
-                    return OriginalHook(DangerZone);
+                if (IsEnabled(CustomComboPreset.GNB_ST_NoMercy) && ShouldUseNoMercy() &&
+                    (Config.GNB_ST_NoMercy_SubOption == 0 || Config.GNB_ST_NoMercy_SubOption == 1 && InBossEncounter()))
+                    return NoMercy;
+                if (IsEnabled(CustomComboPreset.GNB_ST_Continuation) && IsEnabled(CustomComboPreset.GNB_ST_NoMercy) &&
+                    JustUsed(BurstStrike, 5f) && LevelChecked(Hypervelocity) && HasEffect(Buffs.ReadyToBlast))
+                    {
+                        if (NmCD is > 1.5f || //hold if No Mercy is imminent
+                            CanDelayedWeave(0.6f, 0f)) //send asap if about to lose due to GCD
+                            return Hypervelocity;
+                    }
+            }
+            if (IsEnabled(CustomComboPreset.GNB_ST_Scuffed) &&
+                LevelChecked(DoubleDown) && JustUsed(NoMercy, 5f) && GunStep == 0 && ComboAction is BrutalShell && Ammo == 1)
+                return SolidBarrel;
+            if (IsEnabled(CustomComboPreset.GNB_ST_Advanced_Cooldowns))
+            {
                 if (IsEnabled(CustomComboPreset.GNB_ST_BowShock) && ShouldUseBowShock())
                     return BowShock;
-                if (IsEnabled(CustomComboPreset.GNB_ST_Continuation) && ShouldUseContinuation())
+                if (IsEnabled(CustomComboPreset.GNB_ST_Zone) && ShouldUseZone())
+                    return OriginalHook(DangerZone);
+                if (IsEnabled(CustomComboPreset.GNB_ST_Continuation) && ShouldUseContinuation() &&
+                    (CanWeave() || //normal
+                    CanDelayedWeave(0.6f, 0f))) //send asap if about to lose due to GCD
                     return OriginalHook(Continuation);
                 if (IsEnabled(CustomComboPreset.GNB_ST_GnashingFang) && ShouldUseGnashingFang())
                     return GnashingFang;
@@ -223,11 +245,9 @@ internal partial class GNB : TankJob
                     return OriginalHook(ReignOfBeasts);
                 if (IsEnabled(CustomComboPreset.GNB_ST_BurstStrike))
                 {
-                    if (ShouldUseBurstStrike())
-                        return BurstStrike;
-                    if (IsEnabled(CustomComboPreset.GNB_ST_NoMercy) &&
-                        (LevelChecked(DoubleDown) && NmCD < 1 && Ammo == 3 && BfCD > 110 && ((SlowGNB && ComboAction is KeenEdge) || (FastGNB && ComboAction is BrutalShell)) ||
-                        (LevelChecked(ReignOfBeasts) && NmCD < 1 && Ammo == 3 && !InOdd)))
+                    if (ShouldUseBurstStrike() ||
+                        (IsEnabled(CustomComboPreset.GNB_ST_NoMercy) &&
+                        (LevelChecked(DoubleDown) && NmCD < 1 && Ammo == 3 && !InOdd)))
                         return BurstStrike;
                 }
             }
@@ -241,9 +261,9 @@ internal partial class GNB : TankJob
                     return BrutalShell;
                 if (LevelChecked(SolidBarrel) && ComboAction == BrutalShell)
                 {
-                    if (IsEnabled(CustomComboPreset.GNB_ST_Overcap) && Ammo == MaxCartridges() && LevelChecked(BurstStrike))
+                    if (IsEnabled(CustomComboPreset.GNB_ST_Overcap) &&
+                        LevelChecked(BurstStrike) && Ammo == MaxCartridges())
                         return BurstStrike;
-
                     return SolidBarrel;
                 }
             }
@@ -503,16 +523,29 @@ internal partial class GNB : TankJob
 
             if (IsEnabled(CustomComboPreset.GNB_GF_Features))
             {
-                if (IsEnabled(CustomComboPreset.GNB_GF_NoMercy) && ShouldUseNoMercy())
-                    return NoMercy;
-                if (IsEnabled(CustomComboPreset.GNB_GF_Continuation) && JustUsed(BurstStrike, 5f) && LevelChecked(Hypervelocity) && HasEffect(Buffs.ReadyToBlast) && IsEnabled(CustomComboPreset.GNB_GF_NoMercy) && NmCD is > 1 or <= 0.1f)
-                    return Hypervelocity;
-                if (IsEnabled(CustomComboPreset.GNB_GF_Continuation) && ShouldUseContinuation())
-                    return OriginalHook(Continuation);
-                if (IsEnabled(CustomComboPreset.GNB_GF_Scuffed) && LevelChecked(DoubleDown) && HasNM && GunStep == 0 && ComboAction is BrutalShell && Ammo == 1)
-                    return SolidBarrel;
+                //Priority hack for ensuring Continuation is used on late weave at the very latest
+                if (CanDelayedWeave())
+                {
+                    if (IsEnabled(CustomComboPreset.GNB_GF_Continuation) &&
+                        ShouldUseContinuation())
+                        return OriginalHook(Continuation);
+                }
                 if (IsEnabled(CustomComboPreset.GNB_GF_Bloodfest) && ShouldUseBloodfest())
                     return Bloodfest;
+                if (IsEnabled(CustomComboPreset.GNB_GF_NoMercy) && ShouldUseNoMercy())
+                    return NoMercy;
+                if (IsEnabled(CustomComboPreset.GNB_GF_Continuation) && JustUsed(BurstStrike, 5f) && LevelChecked(Hypervelocity) && HasEffect(Buffs.ReadyToBlast))
+                {
+                    if (NmCD is > 1.5f || //hold if No Mercy is imminent
+                        CanDelayedWeave(0.6f, 0f)) //send asap if about to lose due to GCD
+                        return Hypervelocity;
+                }
+                if (IsEnabled(CustomComboPreset.GNB_GF_Continuation) && ShouldUseContinuation() &&
+                    (CanWeave() || //normal
+                    CanDelayedWeave(0.6f, 0f))) //send asap if about to lose due to GCD
+                    return OriginalHook(Continuation);
+                if (IsEnabled(CustomComboPreset.GNB_GF_Scuffed) && LevelChecked(DoubleDown) && JustUsed(NoMercy, 5f) && GunStep == 0 && ComboAction is BrutalShell && Ammo == 1)
+                    return SolidBarrel;
                 if (IsEnabled(CustomComboPreset.GNB_GF_Zone) && ShouldUseZone())
                     return OriginalHook(DangerZone);
                 if (IsEnabled(CustomComboPreset.GNB_GF_BowShock) && ShouldUseBowShock())
@@ -529,18 +562,10 @@ internal partial class GNB : TankJob
                     IsEnabled(CustomComboPreset.GNB_GF_BurstStrike))
                 {
                     if (ShouldUseBurstStrike() ||
-                        (IsEnabled(CustomComboPreset.GNB_GF_NoMercy) &&
-                        (LevelChecked(DoubleDown) && NmCD < 1 && Ammo == 3 && BfCD > 110 && ((SlowGNB && ComboAction is KeenEdge) || (FastGNB && ComboAction is BrutalShell)) ||
-                        (LevelChecked(ReignOfBeasts) && NmCD < 1 && Ammo == 3 && !InOdd))))
+                        (IsEnabled(CustomComboPreset.GNB_GF_NoMercy) && 
+                        (LevelChecked(DoubleDown) && NmCD < 1 && Ammo == 3 && !InOdd)))
                         return BurstStrike;
                 }
-                    
-                if (IsEnabled(CustomComboPreset.GNB_GF_Features) &&
-                    IsEnabled(CustomComboPreset.GNB_GF_BurstStrike) &&
-                    IsEnabled(CustomComboPreset.GNB_GF_NoMercy) &&
-                    (LevelChecked(DoubleDown) && NmCD < 1 && Ammo == 3 && BfCD > 110 && ComboAction is KeenEdge) ||
-                    (LevelChecked(ReignOfBeasts) && NmCD < 1 && Ammo == 3 && !InOdd))
-                    return BurstStrike;
                 if (IsEnabled(CustomComboPreset.GNB_GF_Features) && GunStep is 1 or 2)
                     return OriginalHook(GnashingFang);
                 if (IsEnabled(CustomComboPreset.GNB_GF_Reign) && GunStep is 3 or 4)
