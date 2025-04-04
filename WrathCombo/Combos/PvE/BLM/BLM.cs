@@ -282,19 +282,17 @@ internal partial class BLM : CasterJob
             if (CanSpellWeave())
             {
                 if (ActionReady(Transpose) &&
-                    (JustUsed(OriginalHook(Thunder2)) || JustUsed(Foul)))
+                    (JustUsed(OriginalHook(Thunder2),5) || JustUsed(Foul)))
                     return Transpose;
 
-                if (IsEnabled(CustomComboPreset.BLM_AoE_Amplifier) &&
-                    ActionReady(Amplifier) && RemainingPolyglotCD >= 20000)
+                if (ActionReady(Amplifier) && RemainingPolyglotCD >= 20000)
                     return Amplifier;
 
-                if (ActionReady(LeyLines) && !HasEffect(Buffs.LeyLines) &&
-                    GetRemainingCharges(LeyLines) > Config.BLM_AoE_LeyLinesCharges)
+                if (ActionReady(LeyLines) && !HasEffect(Buffs.LeyLines))
                     return LeyLines;
 
                 if (Gauge.InAstralFire && ActionReady(Manafont) &&
-                    (JustUsed(FlareStar) || !LevelChecked(FlareStar) && CurMp is 0))
+                    (JustUsed(FlareStar,5) || !LevelChecked(FlareStar) && CurMp is 0))
                     return Manafont;
             }
 
@@ -347,7 +345,7 @@ internal partial class BLM : CasterJob
             if (CanSpellWeave())
             {
                 if (ActionReady(Transpose) &&
-                    (JustUsed(OriginalHook(Thunder2)) || JustUsed(Foul)))
+                    (JustUsed(OriginalHook(Thunder2),5) || JustUsed(Foul)))
                     return Transpose;
 
                 if (IsEnabled(CustomComboPreset.BLM_AoE_Amplifier) &&
@@ -361,7 +359,7 @@ internal partial class BLM : CasterJob
 
                 if (IsEnabled(CustomComboPreset.BLM_AoE_Manafont) &&
                     Gauge.InAstralFire && ActionReady(Manafont) &&
-                    (JustUsed(FlareStar) || !LevelChecked(FlareStar) && CurMp is 0))
+                    (JustUsed(FlareStar,5) || !LevelChecked(FlareStar) && CurMp is 0))
                     return Manafont;
             }
 
