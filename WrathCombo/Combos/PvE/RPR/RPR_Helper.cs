@@ -117,7 +117,7 @@ internal partial class RPR
             {
                 if (Config.RPR_ST_ArcaneCircle_SubOption == 1 && !InBossEncounter())
                 {
-                    if (LevelChecked(PlentifulHarvest) && !HasEffect(Buffs.Enshrouded) &&
+                    if (!HasEffect(Buffs.Enshrouded) &&
                         GetDebuffRemainingTime(Debuffs.DeathsDesign) <= Config.RPR_SoDRefreshRange)
                         return true;
                 }
