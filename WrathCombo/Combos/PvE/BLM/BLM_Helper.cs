@@ -36,7 +36,7 @@ internal partial class BLM
 
     internal static int PolyglotStacks => Gauge.PolyglotStacks;
 
-    internal static bool FlarestarReady => Gauge.AstralSoulStacks == 6;
+    internal static bool FlarestarReady => LevelChecked(FlareStar) && Gauge.AstralSoulStacks == 6;
 
     internal static int RemainingPolyglotCD => Math.Max(0, (MaxPolyglot - Gauge.PolyglotStacks) * 30000 + (Gauge.EnochianTimer - 30000));
 
