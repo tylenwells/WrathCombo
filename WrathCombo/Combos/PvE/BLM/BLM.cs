@@ -22,9 +22,14 @@ internal partial class BLM : CasterJob
 
             if (CanSpellWeave())
             {
-                if (Gauge.InAstralFire && JustUsed(Despair) &&
-                    IsOnCooldown(Manafont) && !JustUsed(Manafont))
-                    return Transpose;
+                if (Gauge.InAstralFire)
+                {
+                    if (ActionReady(Manafont) && JustUsed(Despair))
+                        return Manafont;
+
+                    if (JustUsed(Despair) && !JustUsed(Manafont))
+                        return Transpose;
+                }
 
                 if (Gauge.InUmbralIce)
                 {
@@ -41,9 +46,6 @@ internal partial class BLM : CasterJob
 
                 if (ActionReady(LeyLines) && !HasEffect(Buffs.LeyLines))
                     return LeyLines;
-
-                if (ActionReady(Manafont) && CurMp is 0)
-                    return Manafont;
             }
 
             if (HasMaxPolyglotStacks && Gauge.EnochianTimer < 3000)
@@ -111,7 +113,7 @@ internal partial class BLM : CasterJob
                 if (ActionReady(Blizzard3) && Gauge.UmbralIceStacks < 3)
                     return Blizzard3;
             }
-            
+
             if (LevelChecked(Fire3))
             {
                 return CurMp > 7500
@@ -140,9 +142,15 @@ internal partial class BLM : CasterJob
 
             if (CanSpellWeave())
             {
-                if (Gauge.InAstralFire && JustUsed(Despair) &&
-                    IsOnCooldown(Manafont) && !JustUsed(Manafont))
-                    return Transpose;
+                if (Gauge.InAstralFire)
+                {
+                    if (IsEnabled(CustomComboPreset.BLM_ST_Manafont) &&
+                        ActionReady(Manafont) && JustUsed(Despair))
+                        return Manafont;
+
+                    if (JustUsed(Despair) && !JustUsed(Manafont))
+                        return Transpose;
+                }
 
                 if (Gauge.InUmbralIce)
                 {
@@ -162,10 +170,6 @@ internal partial class BLM : CasterJob
                 if (IsEnabled(CustomComboPreset.BLM_ST_LeyLines) &&
                     ActionReady(LeyLines) && !HasEffect(Buffs.LeyLines))
                     return LeyLines;
-
-                if (IsEnabled(CustomComboPreset.BLM_ST_Manafont) &&
-                    ActionReady(Manafont) && CurMp is 0)
-                    return Manafont;
             }
 
             if (IsEnabled(CustomComboPreset.BLM_ST_UsePolyglot) &&
@@ -190,7 +194,7 @@ internal partial class BLM : CasterJob
                 if (Config.BLM_ST_MovementOption[2] &&
                     Gauge.InAstralFire && Gauge.IsParadoxActive)
                     return Paradox;
-                
+
                 if (Config.BLM_ST_MovementOption[0] &&
                     ActionReady(Role.Swiftcast) && !HasEffect(Buffs.Triplecast))
                     return Role.Swiftcast;
