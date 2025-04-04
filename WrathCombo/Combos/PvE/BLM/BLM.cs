@@ -282,7 +282,7 @@ internal partial class BLM : CasterJob
             if (CanSpellWeave())
             {
                 if (ActionReady(Transpose) &&
-                    (JustUsed(OriginalHook(Thunder2),5) || JustUsed(Foul,5)))
+                    (JustUsed(OriginalHook(Thunder2), 5) || JustUsed(Foul, 5)))
                     return Transpose;
 
                 if (ActionReady(Amplifier) && RemainingPolyglotCD >= 20000)
@@ -292,7 +292,7 @@ internal partial class BLM : CasterJob
                     return LeyLines;
 
                 if (Gauge.InAstralFire && ActionReady(Manafont) &&
-                    (JustUsed(FlareStar,5) || !LevelChecked(FlareStar) && CurMp is 0))
+                    (JustUsed(FlareStar, 5) || !LevelChecked(FlareStar) && CurMp is 0))
                     return Manafont;
             }
 
@@ -312,6 +312,9 @@ internal partial class BLM : CasterJob
 
                 if (ActionReady(Flare))
                     return Flare;
+
+                if (!LevelChecked(Flare) && LevelChecked(Fire2))
+                    return Fire2;
             }
 
             if (Gauge.InUmbralIce)
@@ -345,7 +348,7 @@ internal partial class BLM : CasterJob
             if (CanSpellWeave())
             {
                 if (ActionReady(Transpose) &&
-                    (JustUsed(OriginalHook(Thunder2),5) || JustUsed(Foul,5)))
+                    (JustUsed(OriginalHook(Thunder2), 5) || JustUsed(Foul, 5)))
                     return Transpose;
 
                 if (IsEnabled(CustomComboPreset.BLM_AoE_Amplifier) &&
@@ -359,7 +362,7 @@ internal partial class BLM : CasterJob
 
                 if (IsEnabled(CustomComboPreset.BLM_AoE_Manafont) &&
                     Gauge.InAstralFire && ActionReady(Manafont) &&
-                    (JustUsed(FlareStar,5) || !LevelChecked(FlareStar) && CurMp is 0))
+                    (JustUsed(FlareStar, 5) || !LevelChecked(FlareStar) && CurMp is 0))
                     return Manafont;
             }
 
@@ -381,6 +384,9 @@ internal partial class BLM : CasterJob
 
                 if (ActionReady(Flare))
                     return Flare;
+
+                if (!LevelChecked(Flare) && LevelChecked(Fire2))
+                    return Fire2;
             }
 
             if (Gauge.InUmbralIce)
