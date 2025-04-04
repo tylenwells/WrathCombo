@@ -55,7 +55,7 @@ internal partial class BLM : CasterJob
 
             if (HasEffect(Buffs.Thunderhead) && LevelChecked(Thunder) &&
                 InBossEncounter() &&
-                (ThunderDebuffST is null || ThunderDebuffST.RemainingTime < 3))
+                (ThunderDebuffST is null || ThunderDebuffST.RemainingTime <= 3))
                 return OriginalHook(Thunder);
 
             if (IsMoving() && InCombat())
@@ -189,7 +189,7 @@ internal partial class BLM : CasterJob
                 HasEffect(Buffs.Thunderhead) && LevelChecked(Thunder) &&
                 (Config.BLM_ST_Thunder_SubOption == 0 ||
                  Config.BLM_ST_Thunder_SubOption == 1 && InBossEncounter()) &&
-                (ThunderDebuffST is null || ThunderDebuffST.RemainingTime < 3))
+                (ThunderDebuffST is null || ThunderDebuffST.RemainingTime <= 3))
                 return OriginalHook(Thunder);
 
             if (IsMoving() && InCombat())
@@ -229,7 +229,8 @@ internal partial class BLM : CasterJob
                                                       !LevelChecked(FlareStar) && ActionReady(Despair)))
                     return Paradox;
 
-                if (ActionReady(Fire3) && TimeSinceFirestarterBuff >= 2)
+                if (ActionReady(Fire3) && TimeSinceFirestarterBuff >= 2 ||
+                    JustUsed(Paradox) && GetCooldownRemainingTime(Manafont) < 10)
                     return Fire3;
 
                 if (IsEnabled(CustomComboPreset.BLM_ST_FlareStar) &&
@@ -283,43 +284,38 @@ internal partial class BLM : CasterJob
             if (Variant.CanRampart(CustomComboPreset.BLM_Variant_Rampart))
                 return Variant.Rampart;
 
-            if (WasLastSpell(UmbralSoul))
-                return OriginalHook(Fire2);
-
-            if (HasEffect(Buffs.Thunderhead) && Thunder2.LevelChecked() &&
-                (ThunderDebuffAoE is null || ThunderDebuffAoE.RemainingTime < 3))
-                return OriginalHook(Thunder2);
-
-            if (ActionReady(Amplifier) && RemainingPolyglotCD >= 20000 && CanSpellWeave())
-                return Amplifier;
-
-            if (IsMoving())
+            if (CanSpellWeave())
             {
-                if (ActionReady(Amplifier) && Gauge.PolyglotStacks < MaxPolyglot)
+                if (ActionReady(Amplifier) && RemainingPolyglotCD >= 20000)
                     return Amplifier;
 
-                if (HasPolyglotStacks())
+                if (ActionReady(LeyLines) && !HasEffect(Buffs.LeyLines))
+                    return LeyLines;
+            }
+
+            if (HasEffect(Buffs.Thunderhead) && LevelChecked(Thunder2) &&
+                (ThunderDebuffAoE is null || ThunderDebuffAoE.RemainingTime <= 3))
+                return OriginalHook(Thunder2);
+
+            if (IsMoving() && InCombat())
+            {
+                if (ActionReady(Triplecast) && !HasEffect(Buffs.Triplecast))
+                    return Triplecast;
+
+                if (ActionReady(Role.Swiftcast) && !HasEffect(Buffs.Triplecast))
+                    return Role.Swiftcast;
+
+                if (HasPolyglotStacks() && LevelChecked(Foul))
                     return Foul;
             }
 
-            if (CanSpellWeave() &&
-                ActionReady(LeyLines) && !HasEffect(Buffs.LeyLines))
-                return LeyLines;
-
             if (Gauge.InAstralFire)
             {
-                if (CurMp == 0 && FlareStar.LevelChecked() && Gauge.AstralSoulStacks == 6)
+                if (FlarestarReady)
                     return FlareStar;
-
-                if (!FlareStar.LevelChecked() && Fire2.LevelChecked() && CurMp >= MP.FireAoE &&
-                    (Gauge.UmbralHearts > 1 || !TraitLevelChecked(Traits.UmbralHeart)))
-                    return OriginalHook(Fire2);
 
                 if (Flare.LevelChecked() && CurMp >= MP.AllMPSpells)
                 {
-                    if (ActionReady(Triplecast) && GetBuffStacks(Buffs.Triplecast) == 0 &&
-                        CanSpellWeave())
-                        return Triplecast;
                     if (Flare.LevelChecked() && CurMp >= MP.FlareAoE)
                     {
                         if (ActionReady(Triplecast) && GetBuffStacks(Buffs.Triplecast) == 0 &&
@@ -329,11 +325,7 @@ internal partial class BLM : CasterJob
                         return Flare;
                     }
 
-                    if (Fire2.LevelChecked())
-                        if (CurMp >= MP.FireAoE)
-                            return OriginalHook(Fire2);
-
-                    if (ActionReady(Manafont))
+                    if (ActionReady(Manafont) && (JustUsed(FlareStar) || !LevelChecked(FlareStar) && CurMp is 0))
                         return Manafont;
 
                     if (ActionReady(Transpose) && !TraitLevelChecked(Traits.AspectMasteryIII))
@@ -346,9 +338,6 @@ internal partial class BLM : CasterJob
 
             if (Gauge.InUmbralIce)
             {
-                if (HasPolyglotStacks())
-                    return Foul;
-
                 if (ActionWatching.WhichOfTheseActionsWasLast(OriginalHook(Fire2), OriginalHook(Freeze),
                         OriginalHook(Flare), OriginalHook(FlareStar)) == OriginalHook(Freeze) &&
                     FlareStar.LevelChecked())
@@ -677,14 +666,10 @@ internal partial class BLM : CasterJob
     {
         protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.BLM_FireFlarestar;
 
-        protected override uint Invoke(uint actionID)
-        {
-            return actionID switch
-            {
-                Fire4 when Gauge.InAstralFire && FlarestarReady && LevelChecked(FlareStar) => FlareStar,
-                Flare when Gauge.InAstralFire && FlarestarReady && LevelChecked(FlareStar) => FlareStar,
-                var _ => actionID
-            };
-        }
+        protected override uint Invoke(uint actionID) =>
+            actionID == Fire4 && Gauge.InAstralFire && FlarestarReady && LevelChecked(FlareStar) ||
+            actionID == Flare && Gauge.InAstralFire && FlarestarReady && LevelChecked(FlareStar) 
+                ? FlareStar 
+                : actionID;
     }
 }
