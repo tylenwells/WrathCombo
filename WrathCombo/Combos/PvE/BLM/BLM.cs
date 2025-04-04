@@ -88,7 +88,9 @@ internal partial class BLM : CasterJob
                                                       !LevelChecked(FlareStar) && ActionReady(Despair)))
                     return Paradox;
 
-                if (ActionReady(Fire3) && TimeSinceFirestarterBuff >= 2)
+                if (ActionReady(Fire3) &&
+                    !LevelChecked(Paradox) && TimeSinceFirestarterBuff >= 2 ||
+                    JustUsed(Paradox, 5) && HasEffect(Buffs.Firestarter) && Gauge.AstralFireStacks is 1)
                     return Fire3;
 
                 if (FlarestarReady)
@@ -227,7 +229,9 @@ internal partial class BLM : CasterJob
                                                       !LevelChecked(FlareStar) && ActionReady(Despair)))
                     return Paradox;
 
-                if (ActionReady(Fire3) && TimeSinceFirestarterBuff >= 2)
+                if (ActionReady(Fire3) &&
+                    !LevelChecked(Paradox) && TimeSinceFirestarterBuff >= 2 ||
+                    JustUsed(Paradox, 5) && HasEffect(Buffs.Firestarter) && Gauge.AstralFireStacks is 1)
                     return Fire3;
 
                 if (IsEnabled(CustomComboPreset.BLM_ST_FlareStar) &&
