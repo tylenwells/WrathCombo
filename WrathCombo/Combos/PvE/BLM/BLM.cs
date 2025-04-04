@@ -282,7 +282,7 @@ internal partial class BLM : CasterJob
             if (CanSpellWeave())
             {
                 if (ActionReady(Transpose) &&
-                    (JustUsed(OriginalHook(Thunder2),5) || JustUsed(Foul)))
+                    (JustUsed(OriginalHook(Thunder2),5) || JustUsed(Foul,5)))
                     return Transpose;
 
                 if (ActionReady(Amplifier) && RemainingPolyglotCD >= 20000)
@@ -345,7 +345,7 @@ internal partial class BLM : CasterJob
             if (CanSpellWeave())
             {
                 if (ActionReady(Transpose) &&
-                    (JustUsed(OriginalHook(Thunder2),5) || JustUsed(Foul)))
+                    (JustUsed(OriginalHook(Thunder2),5) || JustUsed(Foul,5)))
                     return Transpose;
 
                 if (IsEnabled(CustomComboPreset.BLM_AoE_Amplifier) &&
