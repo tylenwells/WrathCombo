@@ -49,11 +49,11 @@ internal partial class BLM
                     break;
 
                 case CustomComboPreset.BLM_ST_Movement:
-                    DrawHorizontalMultiChoice(BLM_ST_MovementOption, $"Use {Role.Swiftcast.ActionName()}", "", 4, 0);
-                    DrawHorizontalMultiChoice(BLM_ST_MovementOption, $"Use {Triplecast.ActionName()}", "", 4, 1);
-                    DrawHorizontalMultiChoice(BLM_ST_MovementOption, $"Use {Foul.ActionName()} / {Xenoglossy.ActionName()}", "", 4, 2);
-                    DrawHorizontalMultiChoice(BLM_ST_MovementOption, $"Use {Paradox.ActionName()}", "", 4, 3);
 
+                    DrawHorizontalMultiChoice(BLM_ST_MovementOption, $"Use {Triplecast.ActionName()}", "", 4, 0);
+                    DrawHorizontalMultiChoice(BLM_ST_MovementOption, $"Use {Paradox.ActionName()}", "", 4, 1);
+                    DrawHorizontalMultiChoice(BLM_ST_MovementOption, $"Use {Role.Swiftcast.ActionName()}", "", 4, 2);
+                    DrawHorizontalMultiChoice(BLM_ST_MovementOption, $"Use {Foul.ActionName()} / {Xenoglossy.ActionName()}", "", 4, 3);
                     break;
 
                 case CustomComboPreset.BLM_ST_Thunder:

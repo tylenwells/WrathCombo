@@ -22,6 +22,14 @@ internal partial class BLM : CasterJob
 
             if (CanSpellWeave())
             {
+                if (ActionReady(Amplifier) &&
+                    Gauge.EnochianTimer >= 20000 &&
+                    !HasMaxPolyglotStacks)
+                    return Amplifier;
+
+                if (ActionReady(LeyLines) && !HasEffect(Buffs.LeyLines))
+                    return LeyLines;
+
                 if (Gauge.InAstralFire)
                 {
                     if (ActionReady(Manafont) && JustUsed(Despair))
@@ -33,19 +41,12 @@ internal partial class BLM : CasterJob
 
                 if (Gauge.InUmbralIce)
                 {
-                    if (JustUsed(Transpose) && IsOffCooldown(Role.Swiftcast))
+                    if (ActionReady(Role.Swiftcast) && JustUsed(Transpose))
                         return Role.Swiftcast;
 
                     if (JustUsed(Paradox))
                         return Transpose;
                 }
-
-                if (ActionReady(Amplifier) && Gauge.EnochianTimer >= 20000 &&
-                    !HasMaxPolyglotStacks)
-                    return Amplifier;
-
-                if (ActionReady(LeyLines) && !HasEffect(Buffs.LeyLines))
-                    return LeyLines;
             }
 
             if (HasMaxPolyglotStacks && Gauge.EnochianTimer < 3000)
@@ -85,21 +86,17 @@ internal partial class BLM : CasterJob
                     !HasEffect(Buffs.Firestarter) && (Gauge.AstralFireStacks < 3 || JustUsed(FlareStar)))
                     return Paradox;
 
-                if (HasEffect(Buffs.Firestarter) && Gauge.AstralFireStacks < 3)
+                if (ActionReady(Fire3) && TimeSinceFirestarterBuff >= 2)
                     return Fire3;
 
                 if (LevelChecked(FlareStar) && FlarestarReady)
                     return FlareStar;
 
-                if (CurMp < MP.FireI && LevelChecked(Despair) && CurMp >= MP.Despair)
-                    return Despair;
+                if (ActionReady(FireSpam))
+                    return FireSpam;
 
-                if (CurMp >= MP.FireI)
-                {
-                    return LevelChecked(Fire4)
-                        ? Fire4
-                        : Fire;
-                }
+                if (ActionReady(Despair))
+                    return Despair;
             }
 
             if (Gauge.InUmbralIce)
@@ -116,7 +113,7 @@ internal partial class BLM : CasterJob
 
             if (LevelChecked(Fire3))
             {
-                return CurMp > 7500
+                return CurMp >= 7500
                     ? Fire3
                     : Blizzard3;
             }
@@ -140,8 +137,23 @@ internal partial class BLM : CasterJob
             if (Variant.CanRampart(CustomComboPreset.BLM_Variant_Rampart))
                 return Variant.Rampart;
 
+            // Opener
+            if (IsEnabled(CustomComboPreset.BLM_ST_Opener))
+                if (Opener().FullOpener(ref actionID))
+                    return actionID;
+
             if (CanSpellWeave())
             {
+                if (IsEnabled(CustomComboPreset.BLM_ST_Amplifier) &&
+                    ActionReady(Amplifier) && Gauge.EnochianTimer >= 20000 &&
+                    !HasMaxPolyglotStacks)
+                    return Amplifier;
+
+                if (IsEnabled(CustomComboPreset.BLM_ST_LeyLines) &&
+                    ActionReady(LeyLines) && !HasEffect(Buffs.LeyLines) &&
+                    GetRemainingCharges(LeyLines) > Config.BLM_ST_LeyLinesCharges)
+                    return LeyLines;
+
                 if (Gauge.InAstralFire)
                 {
                     if (IsEnabled(CustomComboPreset.BLM_ST_Manafont) &&
@@ -155,21 +167,12 @@ internal partial class BLM : CasterJob
                 if (Gauge.InUmbralIce)
                 {
                     if (IsEnabled(CustomComboPreset.BLM_ST_Swiftcast) &&
-                        JustUsed(Transpose) && IsOffCooldown(Role.Swiftcast))
+                        ActionReady(Role.Swiftcast) && JustUsed(Transpose))
                         return Role.Swiftcast;
 
                     if (JustUsed(Paradox))
                         return Transpose;
                 }
-
-                if (IsEnabled(CustomComboPreset.BLM_ST_Amplifier) &&
-                    ActionReady(Amplifier) && Gauge.EnochianTimer >= 20000 &&
-                    !HasMaxPolyglotStacks)
-                    return Amplifier;
-
-                if (IsEnabled(CustomComboPreset.BLM_ST_LeyLines) &&
-                    ActionReady(LeyLines) && !HasEffect(Buffs.LeyLines))
-                    return LeyLines;
             }
 
             if (IsEnabled(CustomComboPreset.BLM_ST_UsePolyglot) &&
@@ -187,15 +190,15 @@ internal partial class BLM : CasterJob
 
             if (IsMoving() && InCombat())
             {
-                if (Config.BLM_ST_MovementOption[1] &&
+                if (Config.BLM_ST_MovementOption[0] &&
                     ActionReady(Triplecast) && !HasEffect(Buffs.Triplecast))
                     return Triplecast;
 
-                if (Config.BLM_ST_MovementOption[2] &&
+                if (Config.BLM_ST_MovementOption[1] &&
                     Gauge.InAstralFire && Gauge.IsParadoxActive)
                     return Paradox;
 
-                if (Config.BLM_ST_MovementOption[0] &&
+                if (Config.BLM_ST_MovementOption[2] &&
                     ActionReady(Role.Swiftcast) && !HasEffect(Buffs.Triplecast))
                     return Role.Swiftcast;
 
@@ -217,23 +220,19 @@ internal partial class BLM : CasterJob
                     !HasEffect(Buffs.Firestarter) && (Gauge.AstralFireStacks < 3 || JustUsed(FlareStar)))
                     return Paradox;
 
-                if (HasEffect(Buffs.Firestarter) && Gauge.AstralFireStacks < 3)
+                if (ActionReady(Fire3) && TimeSinceFirestarterBuff >= 2)
                     return Fire3;
 
                 if (IsEnabled(CustomComboPreset.BLM_ST_FlareStar) &&
                     LevelChecked(FlareStar) && FlarestarReady)
                     return FlareStar;
 
-                if (IsEnabled(CustomComboPreset.BLM_ST_Despair) &&
-                    CurMp < MP.FireI && LevelChecked(Despair) && CurMp >= MP.Despair)
-                    return Despair;
+                if (ActionReady(FireSpam))
+                    return FireSpam;
 
-                if (CurMp >= MP.FireI)
-                {
-                    return LevelChecked(Fire4)
-                        ? Fire4
-                        : Fire;
-                }
+                if (IsEnabled(CustomComboPreset.BLM_ST_Despair) &&
+                    ActionReady(Despair))
+                    return Despair;
             }
 
             if (Gauge.InUmbralIce)

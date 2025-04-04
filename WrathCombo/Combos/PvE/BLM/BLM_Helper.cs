@@ -44,6 +44,8 @@ internal partial class BLM
 
     internal static Status? ThunderDebuffAoE => FindEffect(ThunderList[OriginalHook(Thunder2)], CurrentTarget, LocalPlayer?.GameObjectId);
 
+    internal static uint FireSpam => LevelChecked(Fire4) ? Fire4 : Fire;
+
     internal static float TimeSinceFirestarterBuff => HasEffect(Buffs.Firestarter) ? GetPartyMembers().First().TimeSinceBuffApplied(Buffs.Firestarter) : 0;
 
     internal static bool HasPolyglotStacks() => PolyglotStacks > 0;
