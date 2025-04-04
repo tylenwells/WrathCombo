@@ -778,7 +778,7 @@ public enum CustomComboPreset
     BRD_Adv_Buffs_Battlevoice = 3050,
 
     [ParentCombo(BRD_Adv_Buffs)]
-        [CustomComboInfo("Radiant Finale Option", "Adds Radiant Finale", BRD.JobID)]
+    [CustomComboInfo("Radiant Finale Option", "Adds Radiant Finale", BRD.JobID)]
     BRD_Adv_Buffs_RadiantFinale = 3051,
 
     [ParentCombo(BRD_Adv_Buffs)]
@@ -929,7 +929,7 @@ public enum CustomComboPreset
     BRD_IronJawsApex = 3024,
 
     [ReplaceSkill(BRD.IronJaws)]
-    [ConflictingCombos(BRD_IronJaws]
+    [ConflictingCombos(BRD_IronJaws)]
     [CustomComboInfo("Iron Jaws Alternate Feature",
         "Iron Jaws is replaced with Caustic Bite/Stormbite if one or both are not up.\nIron Jaws will only show up when debuffs are about to expire.",
         BRD.JobID)]

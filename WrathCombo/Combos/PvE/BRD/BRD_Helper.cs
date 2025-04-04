@@ -83,7 +83,7 @@ internal partial class BRD
         //Sidewinder Logic
         internal static bool UsePooledSidewinder()
         {
-            if (BuffWindow && RagingStrikesDuration < 18 || RagingCD >= 10)
+            if (BuffWindow && RagingStrikesDuration < 18 || RagingCD > 30)
                     return true;
             
            return false;
@@ -92,7 +92,7 @@ internal partial class BRD
         //Bloodletter & Rain of Death Logic
         internal static bool UsePooledBloodRain()
         {
-            if ((!JustUsed(OriginalHook(Bloodletter)) || !JustUsed(OriginalHook(RainOfDeath))) && 
+            if ((!WasLastAbility(Bloodletter) || !WasLastAbility(RainOfDeath) || !WasLastAbility(HeartbreakShot)) && 
                (EmpyrealCD > 2 || !LevelChecked(EmpyrealArrow)))
             {
                 if (BloodletterCharges == 3 && TraitLevelChecked(Traits.EnhancedBloodletter) || 
