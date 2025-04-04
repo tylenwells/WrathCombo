@@ -88,9 +88,7 @@ internal partial class BLM : CasterJob
                                                       !LevelChecked(FlareStar) && ActionReady(Despair)))
                     return Paradox;
 
-                if (ActionReady(Fire3) &&
-                    !LevelChecked(Paradox) && TimeSinceFirestarterBuff >= 2 ||
-                    JustUsed(Paradox, 5) && HasEffect(Buffs.Firestarter) && Gauge.AstralFireStacks is 1)
+                if (ActionReady(Fire3) && HasEffect(Buffs.Firestarter) && Gauge.AstralFireStacks < 3)
                     return Fire3;
 
                 if (FlarestarReady)
@@ -108,7 +106,7 @@ internal partial class BLM : CasterJob
                 if (Gauge.UmbralHearts is 3 && Gauge.IsParadoxActive)
                     return Paradox;
 
-                if (JustUsed(Blizzard3, 5) && LevelChecked(Blizzard4))
+                if (ActionReady(Blizzard4) && Gauge.UmbralIceStacks is 3)
                     return Blizzard4;
 
                 if (ActionReady(Blizzard3) && Gauge.UmbralIceStacks < 3)
@@ -229,9 +227,7 @@ internal partial class BLM : CasterJob
                                                       !LevelChecked(FlareStar) && ActionReady(Despair)))
                     return Paradox;
 
-                if (ActionReady(Fire3) &&
-                    !LevelChecked(Paradox) && TimeSinceFirestarterBuff >= 2 ||
-                    JustUsed(Paradox, 5) && HasEffect(Buffs.Firestarter) && Gauge.AstralFireStacks is 1)
+                if (ActionReady(Fire3) && HasEffect(Buffs.Firestarter) && Gauge.AstralFireStacks < 3)
                     return Fire3;
 
                 if (IsEnabled(CustomComboPreset.BLM_ST_FlareStar) &&
@@ -245,13 +241,12 @@ internal partial class BLM : CasterJob
                     ActionReady(Despair))
                     return Despair;
             }
-
             if (Gauge.InUmbralIce)
             {
                 if (Gauge.UmbralHearts is 3 && Gauge.IsParadoxActive)
                     return Paradox;
 
-                if (JustUsed(Blizzard3, 5) && LevelChecked(Blizzard4))
+                if (ActionReady(Blizzard4) && Gauge.UmbralIceStacks is 3)
                     return Blizzard4;
 
                 if (ActionReady(Blizzard3) && Gauge.UmbralIceStacks < 3)
@@ -303,15 +298,14 @@ internal partial class BLM : CasterJob
                     return Manafont;
             }
 
-            if (HasEffect(Buffs.Thunderhead) && LevelChecked(Thunder2) &&
-                (ThunderDebuffAoE is null || ThunderDebuffAoE.RemainingTime < 5) &&
-                GetTargetHPPercent() > 5 &&
-                (JustUsed(Freeze) || JustUsed(FlareStar) || !LevelChecked(Freeze)))
-                return OriginalHook(Thunder2);
-
             if (HasPolyglotStacks() && ActionReady(Foul) &&
                 (JustUsed(Freeze) || JustUsed(FlareStar)))
                 return Foul;
+
+            if (HasEffect(Buffs.Thunderhead) && LevelChecked(Thunder2) &&
+                GetTargetHPPercent() > 5 &&
+                (JustUsed(Freeze) || JustUsed(FlareStar) || !LevelChecked(Freeze)))
+                return OriginalHook(Thunder2);
 
             if (Gauge.InAstralFire)
             {
@@ -371,17 +365,16 @@ internal partial class BLM : CasterJob
                     return Manafont;
             }
 
-            if (IsEnabled(CustomComboPreset.BLM_AoE_Thunder) &&
-                HasEffect(Buffs.Thunderhead) && LevelChecked(Thunder2) &&
-                (ThunderDebuffAoE is null || ThunderDebuffAoE.RemainingTime < 5) &&
-                GetTargetHPPercent() > Config.BLM_AoE_ThunderHP &&
-                (JustUsed(Freeze) || JustUsed(FlareStar) || !LevelChecked(Freeze)))
-                return OriginalHook(Thunder2);
-
             if (IsEnabled(CustomComboPreset.BLM_AoE_UsePolyglot) &&
                 HasPolyglotStacks() && ActionReady(Foul) &&
                 (JustUsed(Freeze) || JustUsed(FlareStar)))
                 return Foul;
+
+            if (IsEnabled(CustomComboPreset.BLM_AoE_Thunder) &&
+                HasEffect(Buffs.Thunderhead) && LevelChecked(Thunder2) &&
+                GetTargetHPPercent() > Config.BLM_AoE_ThunderHP &&
+                (JustUsed(Freeze) || JustUsed(FlareStar) || !LevelChecked(Freeze)))
+                return OriginalHook(Thunder2);
 
             if (Gauge.InAstralFire)
             {
