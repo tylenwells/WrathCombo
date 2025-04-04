@@ -291,101 +291,40 @@ internal partial class BLM : CasterJob
 
                 if (ActionReady(LeyLines) && !HasEffect(Buffs.LeyLines))
                     return LeyLines;
+
+                if (Gauge.InAstralFire && ActionReady(Manafont) &&
+                    (JustUsed(FlareStar) || !LevelChecked(FlareStar) && CurMp is 0))
+                    return Manafont;
+
+                if (ActionReady(Transpose) &&
+                    (JustUsed(OriginalHook(Thunder2)) || JustUsed(Foul)))
+                    return Transpose;
             }
 
             if (HasEffect(Buffs.Thunderhead) && LevelChecked(Thunder2) &&
-                (ThunderDebuffAoE is null || ThunderDebuffAoE.RemainingTime <= 3))
+                (JustUsed(Freeze) || JustUsed(FlareStar)))
                 return OriginalHook(Thunder2);
-
-            if (IsMoving() && InCombat())
-            {
-                if (ActionReady(Triplecast) && !HasEffect(Buffs.Triplecast))
-                    return Triplecast;
-
-                if (ActionReady(Role.Swiftcast) && !HasEffect(Buffs.Triplecast))
-                    return Role.Swiftcast;
-
-                if (HasPolyglotStacks() && LevelChecked(Foul))
-                    return Foul;
-            }
 
             if (Gauge.InAstralFire)
             {
                 if (FlarestarReady)
                     return FlareStar;
 
-                if (Flare.LevelChecked() && CurMp >= MP.AllMPSpells)
-                {
-                    if (Flare.LevelChecked() && CurMp >= MP.FlareAoE)
-                    {
-                        if (ActionReady(Triplecast) && GetBuffStacks(Buffs.Triplecast) == 0 &&
-                            CanSpellWeave())
-                            return Triplecast;
-
-                        return Flare;
-                    }
-
-                    if (ActionReady(Manafont) && (JustUsed(FlareStar) || !LevelChecked(FlareStar) && CurMp is 0))
-                        return Manafont;
-
-                    if (ActionReady(Transpose) && !TraitLevelChecked(Traits.AspectMasteryIII))
-                        return Transpose;
-
-                    if (ActionReady(Blizzard2) && TraitLevelChecked(Traits.AspectMasteryIII))
-                        return OriginalHook(Blizzard2);
-                }
+                if (ActionReady(Flare))
+                    return Flare;
             }
 
             if (Gauge.InUmbralIce)
             {
-                if (ActionWatching.WhichOfTheseActionsWasLast(OriginalHook(Fire2), OriginalHook(Freeze),
-                        OriginalHook(Flare), OriginalHook(FlareStar)) == OriginalHook(Freeze) &&
-                    FlareStar.LevelChecked())
-                {
-                    if (ActionReady(Transpose) && CanSpellWeave())
-                        return Transpose;
-
-                    return OriginalHook(Fire2);
-                }
-
-                if (ActionReady(OriginalHook(Blizzard2)) && Gauge.UmbralIceStacks < 3 &&
-                    TraitLevelChecked(Traits.AspectMasteryIII))
-                {
-                    if (ActionReady(Triplecast) && GetBuffStacks(Buffs.Triplecast) == 0 &&
-                        CanSpellWeave())
-                        return Triplecast;
-
-                    if (GetBuffStacks(Buffs.Triplecast) == 0 && IsOffCooldown(Role.Swiftcast) &&
-                        CanSpellWeave())
-                        return Role.Swiftcast;
-
-                    if (HasEffect(MagicRole.Buffs.Swiftcast) || GetBuffStacks(Buffs.Triplecast) > 0)
-                        return OriginalHook(Blizzard2);
-                }
-
-                if (Gauge.UmbralIceStacks < 3 && ActionReady(OriginalHook(Blizzard2)))
-                    return OriginalHook(Blizzard2);
-
-                if (Freeze.LevelChecked() && Gauge.UmbralHearts < 3 && TraitLevelChecked(Traits.UmbralHeart))
+                if (ActionReady(Freeze))
                     return Freeze;
 
-                if (DoubleBlizz() && Fire2.LevelChecked())
-                    return OriginalHook(Fire2);
-
-                if (CurMp < LocalPlayer?.MaxMp)
-                    return Freeze.LevelChecked()
-                        ? OriginalHook(Freeze)
-                        : OriginalHook(Blizzard2);
-
-                if (ActionReady(Transpose) && CanSpellWeave() &&
-                    (Flare.LevelChecked() || !TraitLevelChecked(Traits.AspectMasteryIII)))
-                    return Transpose;
-
-                if (Fire2.LevelChecked() && TraitLevelChecked(Traits.AspectMasteryIII))
-                    return OriginalHook(Fire2);
+                if (HasEffect(Buffs.Thunderhead) && LevelChecked(Thunder2) &&
+                    (ThunderDebuffAoE is null || ThunderDebuffAoE.RemainingTime <= 3))
+                    return OriginalHook(Thunder2);
             }
 
-            if (Blizzard2.LevelChecked())
+            if (LevelChecked(Blizzard2))
                 return OriginalHook(Blizzard2);
 
             return actionID;
@@ -668,8 +607,8 @@ internal partial class BLM : CasterJob
 
         protected override uint Invoke(uint actionID) =>
             actionID == Fire4 && Gauge.InAstralFire && FlarestarReady && LevelChecked(FlareStar) ||
-            actionID == Flare && Gauge.InAstralFire && FlarestarReady && LevelChecked(FlareStar) 
-                ? FlareStar 
+            actionID == Flare && Gauge.InAstralFire && FlarestarReady && LevelChecked(FlareStar)
+                ? FlareStar
                 : actionID;
     }
 }
