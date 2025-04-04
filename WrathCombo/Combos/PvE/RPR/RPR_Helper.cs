@@ -123,7 +123,8 @@ internal partial class RPR
                 }
 
                 if (Config.RPR_ST_ArcaneCircle_SubOption == 0 ||
-                    Config.RPR_ST_ArcaneCircle_SubOption == 1 && InBossEncounter())
+                    Config.RPR_ST_ArcaneCircle_SubOption == 1 && InBossEncounter() ||
+                    IsNotEnabled(CustomComboPreset.RPR_ST_ArcaneCircle))
                 {
                     //1st part double enshroud
                     if (LevelChecked(PlentifulHarvest) && HasEffect(Buffs.Enshrouded) &&
