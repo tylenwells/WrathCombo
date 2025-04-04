@@ -227,8 +227,7 @@ internal partial class BLM : CasterJob
                                                       !LevelChecked(FlareStar) && ActionReady(Despair)))
                     return Paradox;
 
-                if (ActionReady(Fire3) && TimeSinceFirestarterBuff >= 2 ||
-                    JustUsed(Paradox) && GetCooldownRemainingTime(Manafont) < 10)
+                if (ActionReady(Fire3) && TimeSinceFirestarterBuff >= 2)
                     return Fire3;
 
                 if (IsEnabled(CustomComboPreset.BLM_ST_FlareStar) &&
