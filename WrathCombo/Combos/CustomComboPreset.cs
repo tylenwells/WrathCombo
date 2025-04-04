@@ -368,15 +368,13 @@ public enum CustomComboPreset
     [AutoAction(false, false)]
     [ReplaceSkill(BLM.Fire)]
     [ConflictingCombos(BLM_ST_AdvancedMode)]
-    [CustomComboInfo("Simple Mode - Single Target",
-        "Replaces Fire with a full one-button single target rotation.\nThis is the ideal option for newcomers to the job.", BLM.JobID)]
+    [CustomComboInfo("Simple Mode - Single Target", "Replaces Fire with a full one-button single target rotation.\nThis is the ideal option for newcomers to the job.", BLM.JobID)]
     BLM_ST_SimpleMode = 2001,
 
     [AutoAction(true, false)]
     [ReplaceSkill(BLM.Blizzard2, BLM.HighBlizzard2)]
     [ConflictingCombos(BLM_AoE_AdvancedMode)]
-    [CustomComboInfo("Simple Mode - AoE",
-        "Replaces Blizzard II with a full one-button AoE rotation.\nThis is the ideal option for newcomers to the job.", BLM.JobID)]
+    [CustomComboInfo("Simple Mode - AoE", "Replaces Blizzard II with a full one-button AoE rotation.\nThis is the ideal option for newcomers to the job.", BLM.JobID)]
     BLM_AoE_SimpleMode = 2002,
 
     #endregion
@@ -436,8 +434,7 @@ public enum CustomComboPreset
     [AutoAction(true, false)]
     [ReplaceSkill(BLM.Blizzard2, BLM.HighBlizzard2)]
     [ConflictingCombos(BLM_AoE_SimpleMode)]
-    [CustomComboInfo("Advanced Mode - AoE",
-        "Replaces Blizzard II with a full one-button AoE rotation.\nThese features are ideal if you want to customize the rotation.", BLM.JobID)]
+    [CustomComboInfo("Advanced Mode - AoE", "Replaces Blizzard II with a full one-button AoE rotation.\nThese features are ideal if you want to customize the rotation.", BLM.JobID)]
     BLM_AoE_AdvancedMode = 2200,
 
     [ParentCombo(BLM_AoE_AdvancedMode)]
@@ -455,35 +452,11 @@ public enum CustomComboPreset
     [ParentCombo(BLM_AoE_AdvancedMode)]
     [CustomComboInfo("(High) Thunder II Option", "Add (High) Thunder II to the rotation.", BLM.JobID)]
     BLM_AoE_Thunder = 2209,
-
-    [ParentCombo(BLM_AoE_AdvancedMode)]
-    [CustomComboInfo("Flare Option", "Add Flare to the rotation.", BLM.JobID)]
-    BLM_AoE_Flare = 2210,
-
-    [ParentCombo(BLM_AoE_AdvancedMode)]
-    [CustomComboInfo("Flare Star Option", "Add Flare Star to the rotation.", BLM.JobID)]
-    BLM_AoE_FlareStar = 2211,
-
-    [ParentCombo(BLM_AoE_AdvancedMode)]
-    [CustomComboInfo("Swiftcast Option", "Add Swiftcast to the rotation.", BLM.JobID)]
-    BLM_AoE_Swiftcast = 2205,
-
-    [ParentCombo(BLM_AoE_AdvancedMode)]
-    [CustomComboInfo("Triplecast Option", "Add Triplecast to the rotation.", BLM.JobID)]
-    BLM_AoE_Triplecast = 2206,
-
-    [ParentCombo(BLM_AoE_AdvancedMode)]
-    [CustomComboInfo("Transpose Option", "Add Transpose to the rotation.", BLM.JobID)]
-    BLM_AoE_Transpose = 2208,
-
+    
     [ParentCombo(BLM_AoE_AdvancedMode)]
     [CustomComboInfo("Foul Option", "Add Foul to the rotation.", BLM.JobID)]
     BLM_AoE_UsePolyglot = 2203,
-
-    [ParentCombo(BLM_AoE_AdvancedMode)]
-    [CustomComboInfo("Foul for Movement Option", "Add Foul to the rotation as movement option.", BLM.JobID)]
-    BLM_AoE_UsePolyglotMoving = 2204,
-
+    
     #endregion
 
     #region Variant
