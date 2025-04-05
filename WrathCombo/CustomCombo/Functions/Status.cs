@@ -1,4 +1,5 @@
 ﻿using Dalamud.Game.ClientState.Objects.Types;
+using ECommons;
 using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using System;
@@ -301,15 +302,16 @@ namespace WrathCombo.CustomComboNS.Functions
 
             try
             {
-                if (chara.StatusList.Length == 0) return false;
+                if (chara.StatusList is null || chara.StatusList.Length == 0) return false;
 
-                foreach (var status in chara.StatusList)
+                foreach (var status in chara.StatusList.Where(x => x is not null && x.StatusId > 0))
                     if (ActionWatching.StatusSheet.TryGetValue(status.StatusId,
                             out var statusItem) && statusItem.CanDispel)
                         return true;
             }
-            catch (AccessViolationException) // Accessing invalid status lists
+            catch (Exception ex) // Accessing invalid status lists
             {
+                ex.Log();
                 return false;
             }
 
