@@ -5,7 +5,6 @@ using FFXIVClientStructs.FFXIV.Client.Game;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows.Forms;
 using WrathCombo.Combos.PvE;
 using WrathCombo.Data;
 using WrathCombo.Services;
@@ -156,7 +155,7 @@ namespace WrathCombo.CustomComboNS.Functions
         /// <param name="effectId"> Status effect ID. </param>
         /// <param name="isPlayerOwned"> Whether the status effect must be owned by the player or can be owned by anyone. </param>
         /// <returns> The duration of the status effect. </returns>
-        [Obsolete("Replace with GetStatusEffectRemainingTime")]
+        [Obsolete("Replace with GetStatusEffectRemainingTime CurrentTarget")]
         public static unsafe float GetDebuffRemainingTime(ushort effectId, bool isPlayerOwned = true)
         {
             Status? eff = (isPlayerOwned == true)
@@ -382,8 +381,8 @@ namespace WrathCombo.CustomComboNS.Functions
 
             //Jeuno Ark Angel Encounter
             if ((HasStatusEffect(4192) && !tar.StatusList.Any(x => x.StatusId == 4193)) ||
-                (HasEffect(4194) && !tar.StatusList.Any(x => x.StatusId == 4195)) ||
-                (HasEffect(4196) && !tar.StatusList.Any(x => x.StatusId == 4197)))
+                (HasStatusEffect(4194) && !tar.StatusList.Any(x => x.StatusId == 4195)) ||
+                (HasStatusEffect(4196) && !tar.StatusList.Any(x => x.StatusId == 4197)))
                 return true;
 
             // Yorha raid encounter
@@ -393,8 +392,8 @@ namespace WrathCombo.CustomComboNS.Functions
                 return true;
 
             // Omega
-            if ((tar.StatusList.Any(x => x.StatusId == 1674 || x.StatusId == 3454) && (HasEffect(1660) || HasEffect(3499))) ||
-                (tar.StatusList.Any(x => x.StatusId == 1675) && (HasEffect(1661) || HasEffect(3500))))
+            if ((tar.StatusList.Any(x => x.StatusId == 1674 || x.StatusId == 3454) && (HasStatusEffect(1660) || HasStatusEffect(3499))) ||
+                (tar.StatusList.Any(x => x.StatusId == 1675) && (HasStatusEffect(1661) || HasStatusEffect(3500))))
                 return true;
 
 
