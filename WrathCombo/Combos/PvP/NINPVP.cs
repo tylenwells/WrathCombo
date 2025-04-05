@@ -1,5 +1,4 @@
 ﻿using ECommons.GameHelpers;
-using WrathCombo.Core;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Window.Functions;

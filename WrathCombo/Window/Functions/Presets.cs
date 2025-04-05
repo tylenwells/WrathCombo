@@ -330,9 +330,9 @@ namespace WrathCombo.Window.Functions
                         case DRG.JobID: DRGPvP.Config.Draw(preset); break;
                         case DRK.JobID: DRK.Config.Draw(preset); break;
                         case GNB.JobID: GNB.Config.Draw(preset); break;
-                        case MCH.JobID: MCHPvPConfig.Draw(preset); break;
+                        case MCH.JobID: MCHPvP.Config.Draw(preset); break;
                         case MNK.JobID: MNKPvP.Config.Draw(preset); break;
-                        case NIN.JobID: NINPVP.Config.Draw(preset); break;
+                        case NIN.JobID: NINPvP.Config.Draw(preset); break;
                         case PCT.JobID: PCT.Config.Draw(preset); break;
                         case PLD.JobID: PLD.Config.Draw(preset); break;
                         case RPR.JobID: RPRPvP.Config.Draw(preset); break;
