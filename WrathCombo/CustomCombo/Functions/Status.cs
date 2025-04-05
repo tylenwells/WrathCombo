@@ -5,6 +5,7 @@ using FFXIVClientStructs.FFXIV.Client.Game;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Forms;
 using WrathCombo.Combos.PvE;
 using WrathCombo.Data;
 using WrathCombo.Services;
@@ -104,14 +105,13 @@ namespace WrathCombo.CustomComboNS.Functions
 
 
 
-
         /// <summary> Find if an effect on the player exists. The effect may be owned by the player or unowned. </summary>
         /// <param name="effectID"> Status effect ID. </param>
         /// <returns> A value indicating if the effect exists. </returns>
-        [ObsoleteAttribute("Replace with HasStatusEffect")]
+        [Obsolete("Replace with HasStatusEffect")]
         public static bool HasEffect(ushort effectID) => FindEffect(effectID) is not null;
 
-        [ObsoleteAttribute("Replace with GetStatusEffectStacks")]
+        [Obsolete("Replace with GetStatusEffectStacks")]
         public static ushort GetBuffStacks(ushort effectId)
         {
             Status? eff = FindEffect(effectId);
@@ -122,7 +122,7 @@ namespace WrathCombo.CustomComboNS.Functions
         /// <param name="effectId"> Status effect ID. </param>
         /// <param name="isPlayerOwned"> Whether the status effect must be owned by the player or can be owned by anyone. </param>
         /// <returns> The duration of the status effect. </returns>
-        [ObsoleteAttribute("Replace with GetStatusEffectRemainingTime")]
+        [Obsolete("Replace with GetStatusEffectRemainingTime")]
         public unsafe static float GetBuffRemainingTime(ushort effectId, bool isPlayerOwned = true)
         {
             Status? eff = (isPlayerOwned == true)
@@ -137,26 +137,26 @@ namespace WrathCombo.CustomComboNS.Functions
         /// <summary> Finds an effect on the player. The effect must be owned by the player or unowned. </summary>
         /// <param name="effectID"> Status effect ID. </param>
         /// <returns> Status object or null. </returns>
-        [ObsoleteAttribute("Replace with GetStatusEffect")]
+        [Obsolete("Replace with GetStatusEffect")]
         public static Status? FindEffect(ushort effectID) => FindEffect(effectID, LocalPlayer, LocalPlayer.GameObjectId);
 
         /// <summary> Find if an effect on the target exists. The effect must be owned by the player or unowned. </summary>
         /// <param name="effectID"> Status effect ID. </param>
         /// <returns> A value indicating if the effect exists. </returns>
-        [ObsoleteAttribute("Replace with HasStatusEffect")]
+        [Obsolete("Replace with HasStatusEffect with a target (CurrentTarget)")]
         public static bool TargetHasEffect(ushort effectID) => FindTargetEffect(effectID) is not null;
 
         /// <summary> Finds an effect on the current target. The effect must be owned by the player or unowned. </summary>
         /// <param name="effectID"> Status effect ID. </param>
         /// <returns> Status object or null. </returns>
-        [ObsoleteAttribute("Replace with GetStatusEffect")]
+        [Obsolete("Replace with GetStatusEffect with a target (CurrentTarget)")]
         public static Status? FindTargetEffect(ushort effectID) => FindEffect(effectID, CurrentTarget, LocalPlayer.GameObjectId);
 
         /// <summary> Gets the duration of a status effect on the current target. By default, the effect must be owned by the player or unowned. </summary>
         /// <param name="effectId"> Status effect ID. </param>
         /// <param name="isPlayerOwned"> Whether the status effect must be owned by the player or can be owned by anyone. </param>
         /// <returns> The duration of the status effect. </returns>
-        [ObsoleteAttribute("Replace with GetStatusEffectRemainingTime")]
+        [Obsolete("Replace with GetStatusEffectRemainingTime")]
         public static unsafe float GetDebuffRemainingTime(ushort effectId, bool isPlayerOwned = true)
         {
             Status? eff = (isPlayerOwned == true)
@@ -171,31 +171,31 @@ namespace WrathCombo.CustomComboNS.Functions
         /// <summary> Find if an effect on the player exists. The effect may be owned by anyone or unowned. </summary>
         /// <param name="effectID"> Status effect ID. </param>
         /// <returns> A value indicating if the effect exists. </returns>
-        [ObsoleteAttribute("Replace with HasStatusEffect anyowner true")]
+        [Obsolete("Replace with HasStatusEffect anyowner true")]
         public static bool HasEffectAny(ushort effectID) => FindEffectAny(effectID) is not null;
 
         /// <summary> Finds an effect on the player. The effect may be owned by anyone or unowned. </summary>
         /// <param name="effectID"> Status effect ID. </param>
         /// <returns> Status object or null. </returns>
-        [ObsoleteAttribute("Replace with GetStatusEffect anyowner true")]
+        [Obsolete("Replace with GetStatusEffect anyowner true")]
         public static Status? FindEffectAny(ushort effectID) => FindEffect(effectID, LocalPlayer, null);
 
         /// <summary> Find if an effect on the target exists. The effect may be owned by anyone or unowned. </summary>
         /// <param name="effectID"> Status effect ID. </param>
         /// <returns> A value indicating if the effect exists. </returns>
-        [ObsoleteAttribute("Replace with HasStatusEffect anyowner true")]
+        [Obsolete("Replace with HasStatusEffect TargetObject anyowner true")]
         public static bool TargetHasEffectAny(ushort effectID) => FindTargetEffectAny(effectID) is not null;
 
-        [ObsoleteAttribute("Replace with HasStatusEffect anyowner true")]
+        [Obsolete("Replace with HasStatusEffect TargetObject anyowner true")]
         public static bool TargetHasEffectAny(ushort effectID, IGameObject target) => FindTargetEffectAny(effectID, target) is not null;
 
         /// <summary> Finds an effect on the current target. The effect may be owned by anyone or unowned. </summary>
         /// <param name="effectID"> Status effect ID. </param>
         /// <returns> Status object or null. </returns>
-        [ObsoleteAttribute("Replace with GetStatuseffect anyowner: true")]
+        [Obsolete("Replace with GetStatuseffect anyowner: true")]
         public static Status? FindTargetEffectAny(ushort effectID) => FindEffect(effectID, CurrentTarget, null);
         
-        [ObsoleteAttribute("Replace with GetStatusEffect anyowner: true")]
+        [Obsolete("Replace with GetStatusEffect anyowner: true")]
         public static Status? FindTargetEffectAny(ushort effectID, IGameObject target) => FindEffect(effectID, target, null);
 
         /// <summary> Finds an effect on the given object. </summary>
@@ -203,7 +203,7 @@ namespace WrathCombo.CustomComboNS.Functions
         /// <param name="obj"> Object to look for effects on. </param>
         /// <param name="sourceID"> Source object ID. </param>
         /// <returns> Status object or null. </returns>
-        [ObsoleteAttribute("Replace with GetStatusEffect, verify player ownership")]
+        [Obsolete("Replace with GetStatusEffect, verify player ownership")]
         public static Status? FindEffect(ushort effectID, IGameObject? obj, ulong? sourceID) => Service.ComboCache.GetStatus(effectID, obj, sourceID);
 
         ///<summary> Checks a member object for an effect. The effect may be owned by anyone or unowned. </summary>
@@ -211,7 +211,7 @@ namespace WrathCombo.CustomComboNS.Functions
         /// <param name="obj"></param>
         /// <param name="playerOwned"> Checks if the player created the status effect</param>
         /// <return> Status object or null. </return>
-        [ObsoleteAttribute("Replace with GetStatusEffect, verify player ownership")]
+        [Obsolete("Replace with GetStatusEffect, verify player ownership. Presumes Any owner unless true")]
         public static Status? FindEffectOnMember(ushort effectID, IGameObject? obj, bool playerOwned = false) => Service.ComboCache.GetStatus(effectID, obj, playerOwned ? Player.Object.GameObjectId : null);
 
         /// <summary>
@@ -222,7 +222,7 @@ namespace WrathCombo.CustomComboNS.Functions
         /// <param name="playerOwned"></param>
         /// <param name="status"></param>
         /// <returns></returns>
-        [ObsoleteAttribute("Replace with GetStatusEffect with out, verify player ownership")]
+        [Obsolete("Replace with GetStatusEffect with out, verify player ownership")]
         public static bool MemberHasEffect(ushort effectID, IGameObject? obj, bool playerOwned, out Status? status)
         {
             status = Service.ComboCache.GetStatus(effectID, obj, playerOwned ? LocalPlayer.GameObjectId : null);
