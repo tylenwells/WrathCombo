@@ -42,13 +42,13 @@ namespace WrathCombo.Combos.PvP
                         return ChainStratagem;
 
                     // Uses Expedient when available and target isn't affected with Biolysis
-                    if (IsEnabled(CustomComboPreset.SCHPvP_Expedient) && IsOffCooldown(Expedient) && !TargetHasEffect(Debuffs.Biolysis))
+                    if (IsEnabled(CustomComboPreset.SCHPvP_Expedient) && IsOffCooldown(Expedient) && !HasStatusEffect(Debuffs.Biolysis, CurrentTarget))
                         return Expedient;
 
                     // Uses Biolysis under Recitation, or on cooldown when option active
                     if (IsEnabled(CustomComboPreset.SCHPvP_Biolysis))
                     {
-                        if (IsOffCooldown(Biolysis) || (HasEffect(Buffs.Recitation) && IsOffCooldown(Biolysis)))
+                        if (IsOffCooldown(Biolysis) || (HasStatusEffect(Buffs.Recitation) && IsOffCooldown(Biolysis)))
                             return Biolysis;
                     }
 

@@ -35,16 +35,16 @@ internal partial class BLM
         Math.Max(0, (MaxPolyglot - Gauge.PolyglotStacks) * 30000 + (Gauge.EnochianTimer - 30000));
 
     internal static Status? ThunderDebuffST =>
-        FindEffect(ThunderList[OriginalHook(Thunder)], CurrentTarget, LocalPlayer?.GameObjectId);
+        GetStatusEffect(ThunderList[OriginalHook(Thunder)], CurrentTarget);
 
     internal static Status? ThunderDebuffAoE =>
-        FindEffect(ThunderList[OriginalHook(Thunder2)], CurrentTarget, LocalPlayer?.GameObjectId);
+        GetStatusEffect(ThunderList[OriginalHook(Thunder2)], CurrentTarget);
 
     internal static bool CanSwiftF =>
         TraitLevelChecked(Traits.AspectMasteryIII) &&
         IsOffCooldown(Role.Swiftcast);
 
-    internal static float TimeSinceFirestarterBuff => HasEffect(Buffs.Firestarter) ? GetPartyMembers().First().TimeSinceBuffApplied(Buffs.Firestarter) : 0;
+    internal static float TimeSinceFirestarterBuff => HasStatusEffect(Buffs.Firestarter) ? GetPartyMembers().First().TimeSinceBuffApplied(Buffs.Firestarter) : 0;
 
     internal static bool HasPolyglotStacks() => Gauge.PolyglotStacks > 0;
 

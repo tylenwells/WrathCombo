@@ -117,7 +117,7 @@ class Melee : PhysicalRole
     public static bool CanBloodBath(int healthpercent) =>
         ActionReady(Bloodbath) && PlayerHealthPercentageHp() <= healthpercent;
     public static bool CanTrueNorth() =>
-        ActionReady(TrueNorth) && TargetNeedsPositionals() && !HasEffect(Buffs.TrueNorth);
+        ActionReady(TrueNorth) && TargetNeedsPositionals() && !HasStatusEffect(Buffs.TrueNorth);
 }
 
 class Tank : PhysicalRole

@@ -59,13 +59,13 @@ namespace WrathCombo.Combos.PvP
                     {
                         if (CanWeave())
                         {
-                            if (IsEnabled(CustomComboPreset.DRGPvP_HighJump) && IsOffCooldown(HighJump) && !HasEffect(Buffs.StarCrossReady) && (HasEffect(Buffs.LifeOfTheDragon) || GetCooldownRemainingTime(Geirskogul) > 5)) // Will high jump after Gierskogul OR if Geir will be on cd for 2 more gcds.
+                            if (IsEnabled(CustomComboPreset.DRGPvP_HighJump) && IsOffCooldown(HighJump) && !HasStatusEffect(Buffs.StarCrossReady) && (HasStatusEffect(Buffs.LifeOfTheDragon) || GetCooldownRemainingTime(Geirskogul) > 5)) // Will high jump after Gierskogul OR if Geir will be on cd for 2 more gcds.
                                 return HighJump;
 
                             if (IsEnabled(CustomComboPreset.DRGPvP_Nastrond)) // Nastrond Finisher logic
                             {
-                                if (HasEffect(Buffs.LifeOfTheDragon) && PlayerHealthPercentageHp() < GetOptionValue(Config.DRGPvP_LOTD_HPValue)
-                                 || HasEffect(Buffs.LifeOfTheDragon) && GetBuffRemainingTime(Buffs.LifeOfTheDragon) < GetOptionValue(Config.DRGPvP_LOTD_Duration))
+                                if (HasStatusEffect(Buffs.LifeOfTheDragon) && PlayerHealthPercentageHp() < GetOptionValue(Config.DRGPvP_LOTD_HPValue)
+                                 || HasStatusEffect(Buffs.LifeOfTheDragon) && GetStatusEffectRemainingTime(Buffs.LifeOfTheDragon) < GetOptionValue(Config.DRGPvP_LOTD_Duration))
                                     return Nastrond;
                             }
 
@@ -75,16 +75,16 @@ namespace WrathCombo.Combos.PvP
                        
                         if (IsEnabled(CustomComboPreset.DRGPvP_Geirskogul) && IsOffCooldown(Geirskogul)) 
                         {
-                            if (IsEnabled(CustomComboPreset.DRGPvP_BurstProtection) && WasLastAbility(ElusiveJump) && HasEffect(Buffs.FirstmindsFocus))  // With evasive burst mode
+                            if (IsEnabled(CustomComboPreset.DRGPvP_BurstProtection) && WasLastAbility(ElusiveJump) && HasStatusEffect(Buffs.FirstmindsFocus))  // With evasive burst mode
                                 return Geirskogul;
                             if (!IsEnabled(CustomComboPreset.DRGPvP_BurstProtection))                                                                    // Without evasive burst mode so you can still use Gier, which will let you still use high jump
                                 return Geirskogul;
                         }                       
                                                    
-                        if (IsEnabled(CustomComboPreset.DRGPvP_WyrmwindThrust) && HasEffect(Buffs.FirstmindsFocus) && GetTargetDistance() >= GetOptionValue(Config.DRGPvP_Distance_Threshold))
+                        if (IsEnabled(CustomComboPreset.DRGPvP_WyrmwindThrust) && HasStatusEffect(Buffs.FirstmindsFocus) && GetTargetDistance() >= GetOptionValue(Config.DRGPvP_Distance_Threshold))
                             return WyrmwindThrust;
 
-                        if (IsEnabled(CustomComboPreset.DRGPvP_Geirskogul) && HasEffect(Buffs.StarCrossReady))
+                        if (IsEnabled(CustomComboPreset.DRGPvP_Geirskogul) && HasStatusEffect(Buffs.StarCrossReady))
                             return Starcross;
                        
                     }
@@ -108,7 +108,7 @@ namespace WrathCombo.Combos.PvP
             {
                 if (actionID is ElusiveJump)
                 {
-                    if (HasEffect(Buffs.FirstmindsFocus) || IsOnCooldown(Geirskogul))
+                    if (HasStatusEffect(Buffs.FirstmindsFocus) || IsOnCooldown(Geirskogul))
                     {
                         return 26;
                     }

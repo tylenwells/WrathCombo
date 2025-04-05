@@ -89,7 +89,7 @@ internal partial class BLU : CasterJob
         {
             if (actionID is SongOfTorment)
             {
-                if (!HasEffect(Buffs.Bristle) && IsSpellActive(Bristle))
+                if (!HasStatusEffect(Buffs.Bristle) && IsSpellActive(Bristle))
                     return Bristle;
                 if (IsSpellActive(SongOfTorment))
                     return SongOfTorment;
@@ -110,11 +110,11 @@ internal partial class BLU : CasterJob
                 //If Triple Trident is saved for Crit/Det builds
                 if (GetCooldownRemainingTime(TripleTrident) <= 3 && IsSpellActive(TripleTrident))
                 {
-                    if (!HasEffect(Buffs.Whistle) && IsSpellActive(Whistle) && !WasLastSpell(Whistle) && IsOffCooldown(JKick))
+                    if (!HasStatusEffect(Buffs.Whistle) && IsSpellActive(Whistle) && !WasLastSpell(Whistle) && IsOffCooldown(JKick))
                         return Whistle;
-                    if (!HasEffect(Buffs.Tingle) && IsSpellActive(Tingle) && !WasLastSpell(Tingle) && IsOffCooldown(JKick))
+                    if (!HasStatusEffect(Buffs.Tingle) && IsSpellActive(Tingle) && !WasLastSpell(Tingle) && IsOffCooldown(JKick))
                         return Tingle;
-                    if (!HasEffect(Buffs.MoonFlute) && !HasEffect(Buffs.WaningNocturne) && IsSpellActive(MoonFlute) && !WasLastSpell(MoonFlute))
+                    if (!HasStatusEffect(Buffs.MoonFlute) && !HasStatusEffect(Buffs.WaningNocturne) && IsSpellActive(MoonFlute) && !WasLastSpell(MoonFlute))
                         return MoonFlute;
                     if (IsOffCooldown(JKick) && IsSpellActive(JKick))
                         return JKick;
@@ -125,11 +125,11 @@ internal partial class BLU : CasterJob
                 //If Triple Trident is used on CD for Crit/Sps builds or Triple Trident isn't active
                 if ((GetCooldownRemainingTime(TripleTrident) > 3 && IsSpellActive(TripleTrident)) || !IsSpellActive(TripleTrident))
                 {
-                    if (!HasEffect(Buffs.Whistle) && IsOffCooldown(JKick) && !WasLastSpell(Whistle) && IsSpellActive(Whistle) && IsOffCooldown(JKick))
+                    if (!HasStatusEffect(Buffs.Whistle) && IsOffCooldown(JKick) && !WasLastSpell(Whistle) && IsSpellActive(Whistle) && IsOffCooldown(JKick))
                         return Whistle;
-                    if (!HasEffect(Buffs.Tingle) && IsSpellActive(Tingle) && !WasLastSpell(Tingle) && IsOffCooldown(JKick))
+                    if (!HasStatusEffect(Buffs.Tingle) && IsSpellActive(Tingle) && !WasLastSpell(Tingle) && IsOffCooldown(JKick))
                         return Tingle;
-                    if (!HasEffect(Buffs.MoonFlute) && !HasEffect(Buffs.WaningNocturne) && IsSpellActive(MoonFlute))
+                    if (!HasStatusEffect(Buffs.MoonFlute) && !HasStatusEffect(Buffs.WaningNocturne) && IsSpellActive(MoonFlute))
                         return MoonFlute;
                     if (IsOffCooldown(JKick) && IsSpellActive(JKick))
                         return JKick;
@@ -143,7 +143,7 @@ internal partial class BLU : CasterJob
                     return FeatherRain;
                 if (IsOffCooldown(Eruption) && IsSpellActive(Eruption))
                     return Eruption;
-                if (!HasEffect(Buffs.Bristle) && IsOffCooldown(Role.Swiftcast) && IsSpellActive(Bristle))
+                if (!HasStatusEffect(Buffs.Bristle) && IsOffCooldown(Role.Swiftcast) && IsSpellActive(Bristle))
                     return Bristle;
                 if (IsOffCooldown(Role.Swiftcast) && LevelChecked(Role.Swiftcast))
                     return Role.Swiftcast;
@@ -151,11 +151,11 @@ internal partial class BLU : CasterJob
                     return GlassDance;
                 if (GetCooldownRemainingTime(Surpanakha) < 95 && IsSpellActive(Surpanakha))
                     return Surpanakha;
-                if (IsOffCooldown(MatraMagic) && HasEffect(Buffs.DPSMimicry) && IsSpellActive(MatraMagic))
+                if (IsOffCooldown(MatraMagic) && HasStatusEffect(Buffs.DPSMimicry) && IsSpellActive(MatraMagic))
                     return MatraMagic;
                 if (IsOffCooldown(ShockStrike) && IsSpellActive(ShockStrike))
                     return ShockStrike;
-                if ((IsOffCooldown(PhantomFlurry) && IsSpellActive(PhantomFlurry)) || HasEffect(Buffs.PhantomFlurry))
+                if ((IsOffCooldown(PhantomFlurry) && IsSpellActive(PhantomFlurry)) || HasStatusEffect(Buffs.PhantomFlurry))
                     return PhantomFlurry;
             }
 
@@ -171,13 +171,13 @@ internal partial class BLU : CasterJob
         {
             if (actionID is FinalSting)
             {
-                if (IsEnabled(CustomComboPreset.BLU_SoloMode) && HasCondition(ConditionFlag.BoundByDuty) && !HasEffect(Buffs.BasicInstinct) && GetPartyMembers().Count == 0 && IsSpellActive(BasicInstinct))
+                if (IsEnabled(CustomComboPreset.BLU_SoloMode) && HasCondition(ConditionFlag.BoundByDuty) && !HasStatusEffect(Buffs.BasicInstinct) && GetPartyMembers().Count == 0 && IsSpellActive(BasicInstinct))
                     return BasicInstinct;
-                if (!HasEffect(Buffs.Whistle) && IsSpellActive(Whistle) && !WasLastAction(Whistle))
+                if (!HasStatusEffect(Buffs.Whistle) && IsSpellActive(Whistle) && !WasLastAction(Whistle))
                     return Whistle;
-                if (!HasEffect(Buffs.Tingle) && IsSpellActive(Tingle) && !WasLastSpell(Tingle))
+                if (!HasStatusEffect(Buffs.Tingle) && IsSpellActive(Tingle) && !WasLastSpell(Tingle))
                     return Tingle;
-                if (!HasEffect(Buffs.MoonFlute) && !WasLastSpell(MoonFlute) && IsSpellActive(MoonFlute))
+                if (!HasStatusEffect(Buffs.MoonFlute) && !WasLastSpell(MoonFlute) && IsSpellActive(MoonFlute))
                     return MoonFlute;
                 if (IsEnabled(CustomComboPreset.BLU_Primals))
                 {
@@ -241,9 +241,9 @@ internal partial class BLU : CasterJob
             {
                 if (!HasStatusEffect(Debuffs.Offguard, CurrentTarget, true) && IsOffCooldown(Offguard) && IsSpellActive(Offguard))
                     return Offguard;
-                if (!HasStatusEffect(Debuffs.Malodorous, CurrentTarget, true) && HasEffect(Buffs.TankMimicry) && IsSpellActive(BadBreath))
+                if (!HasStatusEffect(Debuffs.Malodorous, CurrentTarget, true) && HasStatusEffect(Buffs.TankMimicry) && IsSpellActive(BadBreath))
                     return BadBreath;
-                if (IsOffCooldown(Devour) && HasEffect(Buffs.TankMimicry) && IsSpellActive(Devour))
+                if (IsOffCooldown(Devour) && HasStatusEffect(Buffs.TankMimicry) && IsSpellActive(Devour))
                     return Devour;
                 if (Role.CanLucidDream(9000))
                     return Role.LucidDreaming;
@@ -269,12 +269,12 @@ internal partial class BLU : CasterJob
         {
             if (actionID is FeatherRain or Eruption)
             {
-                if (HasEffect(Buffs.PhantomFlurry))
+                if (HasStatusEffect(Buffs.PhantomFlurry))
                     return OriginalHook(PhantomFlurry);
 
-                if (!HasEffect(Buffs.PhantomFlurry))
+                if (!HasStatusEffect(Buffs.PhantomFlurry))
                 {
-                    if (IsEnabled(CustomComboPreset.BLU_PrimalCombo_WingedReprobation) && FindEffect(Buffs.WingedReprobation)?.Param > 1 && IsOffCooldown(WingedReprobation))
+                    if (IsEnabled(CustomComboPreset.BLU_PrimalCombo_WingedReprobation) && GetStatusEffect(Buffs.WingedReprobation)?.Param > 1 && IsOffCooldown(WingedReprobation))
                         return OriginalHook(WingedReprobation);
 
                     if (IsOffCooldown(FeatherRain) && IsSpellActive(FeatherRain) &&
@@ -397,12 +397,12 @@ internal partial class BLU : CasterJob
         {
             if (actionID is MoonFlute)
             {
-                if (!HasEffect(Buffs.MoonFlute))
+                if (!HasStatusEffect(Buffs.MoonFlute))
                 {
-                    if (IsSpellActive(Whistle) && !HasEffect(Buffs.Whistle) && !WasLastAction(Whistle))
+                    if (IsSpellActive(Whistle) && !HasStatusEffect(Buffs.Whistle) && !WasLastAction(Whistle))
                         return Whistle;
 
-                    if (IsSpellActive(Tingle) && !HasEffect(Buffs.Tingle))
+                    if (IsSpellActive(Tingle) && !HasStatusEffect(Buffs.Tingle))
                         return Tingle;
 
                     if (IsSpellActive(RoseOfDestruction) && GetCooldown(RoseOfDestruction).CooldownRemaining < 1f)
@@ -425,7 +425,7 @@ internal partial class BLU : CasterJob
                 {
                     if ((!HasStatusEffect(Debuffs.BreathOfMagic, CurrentTarget, true) && IsSpellActive(BreathOfMagic)) || (!HasStatusEffect(Debuffs.MortalFlame, CurrentTarget, true) && IsSpellActive(MortalFlame)))
                     {
-                        if (IsSpellActive(Bristle) && !HasEffect(Buffs.Bristle))
+                        if (IsSpellActive(Bristle) && !HasStatusEffect(Buffs.Bristle))
                             return Bristle;
 
                         if (IsSpellActive(FeatherRain) && IsOffCooldown(FeatherRain))
@@ -442,7 +442,7 @@ internal partial class BLU : CasterJob
                 }
                 else
                 {
-                    if (IsSpellActive(WingedReprobation) && IsOffCooldown(WingedReprobation) && !WasLastSpell(WingedReprobation) && !WasLastAbility(FeatherRain) && (!HasEffect(Buffs.WingedReprobation) || FindEffect(Buffs.WingedReprobation)?.Param < 2))
+                    if (IsSpellActive(WingedReprobation) && IsOffCooldown(WingedReprobation) && !WasLastSpell(WingedReprobation) && !WasLastAbility(FeatherRain) && (!HasStatusEffect(Buffs.WingedReprobation) || GetStatusEffect(Buffs.WingedReprobation)?.Param < 2))
                         return WingedReprobation;
 
                     if (IsSpellActive(FeatherRain) && IsOffCooldown(FeatherRain))
@@ -452,7 +452,7 @@ internal partial class BLU : CasterJob
                         return SeaShanty;
                 }
 
-                if (IsSpellActive(WingedReprobation) && IsOffCooldown(WingedReprobation) && !WasLastAbility(ShockStrike) && FindEffect(Buffs.WingedReprobation)?.Param < 2)
+                if (IsSpellActive(WingedReprobation) && IsOffCooldown(WingedReprobation) && !WasLastAbility(ShockStrike) && GetStatusEffect(Buffs.WingedReprobation)?.Param < 2)
                     return WingedReprobation;
 
                 if (IsSpellActive(ShockStrike) && IsOffCooldown(ShockStrike))
@@ -461,7 +461,7 @@ internal partial class BLU : CasterJob
                 if (IsSpellActive(BeingMortal) && IsOffCooldown(BeingMortal) && IsNotEnabled(CustomComboPreset.BLU_NewMoonFluteOpener_DoTOpener))
                     return BeingMortal;
 
-                if (IsSpellActive(Bristle) && !HasEffect(Buffs.Bristle) && IsOffCooldown(MatraMagic) && IsSpellActive(MatraMagic))
+                if (IsSpellActive(Bristle) && !HasStatusEffect(Buffs.Bristle) && IsOffCooldown(MatraMagic) && IsSpellActive(MatraMagic))
                     return Bristle;
 
                 if (IsOffCooldown(Role.Swiftcast))
@@ -473,7 +473,7 @@ internal partial class BLU : CasterJob
                         return Surpanakha;
                 }
 
-                if (IsSpellActive(MatraMagic) && HasEffect(Role.Buffs.Swiftcast))
+                if (IsSpellActive(MatraMagic) && HasStatusEffect(Role.Buffs.Swiftcast))
                     return MatraMagic;
 
                 if (IsSpellActive(BeingMortal) && IsOffCooldown(BeingMortal) && IsEnabled(CustomComboPreset.BLU_NewMoonFluteOpener_DoTOpener))
@@ -482,10 +482,10 @@ internal partial class BLU : CasterJob
                 if (IsSpellActive(PhantomFlurry) && IsOffCooldown(PhantomFlurry))
                     return PhantomFlurry;
 
-                if (HasEffect(Buffs.PhantomFlurry) && FindEffect(Buffs.PhantomFlurry)?.RemainingTime < 2)
+                if (HasStatusEffect(Buffs.PhantomFlurry) && GetStatusEffect(Buffs.PhantomFlurry)?.RemainingTime < 2)
                     return OriginalHook(PhantomFlurry);
 
-                if (HasEffect(Buffs.MoonFlute))
+                if (HasStatusEffect(Buffs.MoonFlute))
                     return All.SavageBlade;
             }
 

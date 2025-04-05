@@ -75,9 +75,9 @@ namespace WrathCombo.Combos.PvP
                     bool inCombat = InCombat();
                     bool hasTarget = HasTarget();
                     bool inMeleeRange = targetDistance <= 5;
-                    bool hasKaiten = HasEffect(Buffs.Kaiten);
+                    bool hasKaiten = HasStatusEffect(Buffs.Kaiten);
                     bool hasZanshin = OriginalHook(Chiten) is Zanshin;
-                    bool hasBind = HasEffectAny(PvPCommon.Debuffs.Bind);
+                    bool hasBind = HasStatusEffect(PvPCommon.Debuffs.Bind, anyOwner: true);
                     bool targetHasImmunity = PvPCommon.TargetImmuneToDamage();
                     bool isTargetPrimed = hasTarget && !targetHasImmunity;
                     bool targetHasKuzushi = HasStatusEffect(Debuffs.Kuzushi, CurrentTarget);
