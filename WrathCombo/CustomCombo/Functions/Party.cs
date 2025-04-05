@@ -29,6 +29,7 @@ namespace WrathCombo.CustomComboNS.Functions
             if (!EzThrottler.Throttle("PartyUpdateThrottle", 2000))
                 return _partyList;
 
+            _partyList.Clear();
             for (int i = 1; i <= 8; i++)
             {
                 var member = GetPartySlot(i);
@@ -38,7 +39,6 @@ namespace WrathCombo.CustomComboNS.Functions
                     WrathPartyMember wmember = new()
                     {
                         GameObjectId = chara.GameObjectId,
-                        BattleChara = chara,
                         CurrentHP = chara.CurrentHp
                     };
 
@@ -59,7 +59,6 @@ namespace WrathCombo.CustomComboNS.Functions
                             WrathPartyMember wmember = new()
                             {
                                 GameObjectId = npc.GameObjectId,
-                                BattleChara = npc,
                                 CurrentHP = npc.CurrentHp
                             };
 
@@ -148,7 +147,7 @@ namespace WrathCombo.CustomComboNS.Functions
         public bool HPUpdatePending = false;
         public bool MPUpdatePending = false;
         public ulong GameObjectId;
-        public IBattleChara BattleChara = null!;
+        public IBattleChara? BattleChara => Svc.Objects.Any(x => x.GameObjectId == GameObjectId) ? Svc.Objects.First(x => x.GameObjectId == GameObjectId) as IBattleChara : null;
         public Dictionary<ushort, long> BuffsGainedAt = new();
         public uint CurrentHP
         {
