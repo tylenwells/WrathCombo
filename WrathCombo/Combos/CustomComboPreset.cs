@@ -450,6 +450,14 @@ public enum CustomComboPreset
     BLM_AoE_Manafont = 2207,
 
     [ParentCombo(BLM_AoE_AdvancedMode)]
+    [CustomComboInfo("Triplecast Option", "Adds Triplecast to the rotation.", BLM.JobID)]
+    BLM_AoE_Triplecast = 2208,
+
+    [ParentCombo(BLM_AoE_AdvancedMode)]
+    [CustomComboInfo("Paradox Filler Option", "Adds Paradox as a filler at max level to the rotation.", BLM.JobID)]
+    BLM_AoE_ParadoxFiller = 2210,
+
+    [ParentCombo(BLM_AoE_AdvancedMode)]
     [CustomComboInfo("(High) Thunder II Option", "Add (High) Thunder II to the rotation.", BLM.JobID)]
     BLM_AoE_Thunder = 2209,
     

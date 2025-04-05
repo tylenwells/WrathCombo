@@ -71,6 +71,10 @@ internal partial class BLM
 
                     break;
 
+                case CustomComboPreset.BLM_AoE_Triplecast:
+                    DrawSliderInt(0, 1, BLM_AoE_Triplecast_HoldCharges, $"How many charges of {Triplecast.ActionName()} to keep ready? (0 = Use all)");
+                    break;
+
                 case CustomComboPreset.BLM_AoE_Thunder:
                     DrawSliderInt(0, 10, BLM_AoE_ThunderHP,
                         $"Stop Using {Thunder2.ActionName()} When Target HP% is at or Below (Set to 0 to Disable This Check)");
