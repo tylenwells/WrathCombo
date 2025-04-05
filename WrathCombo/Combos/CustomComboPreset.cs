@@ -464,6 +464,10 @@ public enum CustomComboPreset
     [ParentCombo(BLM_AoE_AdvancedMode)]
     [CustomComboInfo("Foul Option", "Add Foul to the rotation.", BLM.JobID)]
     BLM_AoE_UsePolyglot = 2203,
+
+    [ParentCombo(BLM_AoE_AdvancedMode)]
+    [CustomComboInfo("Blizzard IV on 2 Targets Option", "Substitutes Freeze for Blizzard 4 whenever it would hit 2 targets.", BLM.JobID)]
+    BLM_AoE_Blizzard4Sub = 2211,
     
     #endregion
 

@@ -379,7 +379,12 @@ internal partial class BLM : CasterJob
                 }
 
                 if (ActionReady(Freeze) && (Gauge.UmbralIceStacks == 3 || TraitLevelChecked(Traits.EnhancedAstralFire)))
+                {
+                    if (HasBattleTarget() && NumberOfEnemiesInRange(Freeze, CurrentTarget) == 2)
+                        return Blizzard4;
+
                     return Freeze;
+                }
 
                 if (!LevelChecked(Freeze) && ActionReady(Blizzard2))
                     return OriginalHook(Blizzard2);
@@ -479,7 +484,13 @@ internal partial class BLM : CasterJob
                 }
 
                 if (ActionReady(Freeze) && (Gauge.UmbralIceStacks == 3 || TraitLevelChecked(Traits.EnhancedAstralFire)))
+                {
+                    if (IsEnabled(CustomComboPreset.BLM_AoE_Blizzard4Sub) && 
+                        HasBattleTarget() && NumberOfEnemiesInRange(Freeze, CurrentTarget) == 2)
+                        return Blizzard4;
+
                     return Freeze;
+                }
 
                 if (!LevelChecked(Freeze) && ActionReady(Blizzard2))
                     return OriginalHook(Blizzard2);
