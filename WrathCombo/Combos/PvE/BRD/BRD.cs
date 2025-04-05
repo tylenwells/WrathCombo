@@ -28,7 +28,7 @@ internal partial class BRD : PhysRangedJob
                     return CanIronJaws
                         ? IronJaws
                         : Windbite;
-                }
+            }
 
             if (IsEnabled(CustomComboPreset.BRD_ApexST))
             {
@@ -283,15 +283,15 @@ internal partial class BRD : PhysRangedJob
                     return EmpyrealArrow;
 
                 if (WandererSong())
-                                return WanderersMinuet;
+                    return WanderersMinuet;
 
                 if (MagesSong())
-                                return MagesBallad;
+                    return MagesBallad;
 
                 if (ArmySong())
-                                return ArmysPaeon;
+                    return ArmysPaeon;
 
-                    }
+            }
             #endregion
 
             #region Buffs
@@ -316,17 +316,17 @@ internal partial class BRD : PhysRangedJob
                 if (!allBuffsEnabled || !LevelChecked(MagesBallad))
                 {
                     if (ActionReady(RadiantFinale) && radiantEnabled)
-                    return RadiantFinale;
+                        return RadiantFinale;
 
                     if (ActionReady(BattleVoice) && battleVoiceEnabled)
-                    return BattleVoice;
+                        return BattleVoice;
 
                     if (ActionReady(RagingStrikes) && ragingEnabled)
-                    return RagingStrikes;
+                        return RagingStrikes;
 
                     if (ActionReady(Barrage) && barrageEnabled)
-                    return Barrage;
-            }
+                        return Barrage;
+                }
             }
 
             #endregion
@@ -344,14 +344,14 @@ internal partial class BRD : PhysRangedJob
 
                 if (ActionReady(Sidewinder) &&
                     (IsEnabled(CustomComboPreset.BRD_AoE_Pooling) && UsePooledSidewinder() || !IsEnabled(CustomComboPreset.BRD_AoE_Pooling)))
-                            return Sidewinder;
+                    return Sidewinder;
             
                 if (Role.CanHeadGraze(CustomComboPreset.BRD_AoE_Adv_Interrupt) && CanWeaveDelayed)
-                return Role.HeadGraze;
+                    return Role.HeadGraze;
 
                 if (ActionReady(RainOfDeath) &&
                     (IsEnabled(CustomComboPreset.BRD_AoE_Pooling) && UsePooledBloodRain() || !IsEnabled(CustomComboPreset.BRD_AoE_Pooling)))
-                                return OriginalHook(RainOfDeath);
+                    return OriginalHook(RainOfDeath);
 
                 if (!LevelChecked(RainOfDeath) && !(WasLastAction(Bloodletter) && BloodletterCharges > 0))
                     return OriginalHook(Bloodletter);
@@ -368,8 +368,8 @@ internal partial class BRD : PhysRangedJob
 
                 // Could be upgraded with a targetting system in the future
                 if (IsEnabled(CustomComboPreset.BRD_ST_Wardens) && ActionReady(TheWardensPaeon) && HasCleansableDebuff(LocalPlayer))
-                        return OriginalHook(TheWardensPaeon);
-                }
+                    return OriginalHook(TheWardensPaeon);
+            }
 
             #endregion
 
@@ -379,7 +379,7 @@ internal partial class BRD : PhysRangedJob
                 return OriginalHook(WideVolley);
 
             if (IsEnabled(CustomComboPreset.BRD_Adv_BuffsEncore) && HasEffect(Buffs.RadiantEncoreReady) && RadiantFinaleDuration < 16)
-                    return OriginalHook(RadiantEncore);
+                return OriginalHook(RadiantEncore);
 
             if (IsEnabled(CustomComboPreset.BRD_AoE_ApexArrow))
             {
@@ -387,8 +387,8 @@ internal partial class BRD : PhysRangedJob
                     return BlastArrow;
 
                 if (IsEnabled(CustomComboPreset.BRD_AoE_ApexPooling) && UsePooledApex() || !IsEnabled(CustomComboPreset.BRD_AoE_ApexPooling) && gauge.SoulVoice == 100)
-                        return ApexArrow;
-                }
+                    return ApexArrow;
+            }
 
             if (IsEnabled(CustomComboPreset.BRD_Adv_BuffsResonant))
             {
@@ -463,15 +463,15 @@ internal partial class BRD : PhysRangedJob
                     return EmpyrealArrow;
 
                 if (WandererSong())
-                                return WanderersMinuet;
+                    return WanderersMinuet;
 
                 if (MagesSong())
-                                return MagesBallad;
+                    return MagesBallad;
 
                 if (ArmySong())
-                                return ArmysPaeon;
+                    return ArmysPaeon;
 
-                    }
+            }
 
             #endregion
 
@@ -497,17 +497,17 @@ internal partial class BRD : PhysRangedJob
                 if (!allBuffsEnabled || !LevelChecked(MagesBallad))
                 {
                     if (ActionReady(RadiantFinale) && radiantEnabled)
-                    return RadiantFinale;
+                        return RadiantFinale;
 
                     if (ActionReady(BattleVoice) && battleVoiceEnabled)
-                    return BattleVoice;
+                        return BattleVoice;
 
                     if (ActionReady(RagingStrikes) && ragingEnabled)
-                    return RagingStrikes;
+                        return RagingStrikes;
 
                     if (ActionReady(Barrage) && barrageEnabled)
-                    return Barrage;
-            }
+                        return Barrage;
+                }
             }
             #endregion
 
@@ -524,15 +524,15 @@ internal partial class BRD : PhysRangedJob
 
                 if (ActionReady(Sidewinder) && 
                     (IsEnabled(CustomComboPreset.BRD_Adv_Pooling) && UsePooledSidewinder() || !IsEnabled(CustomComboPreset.BRD_Adv_Pooling)))
-                                return Sidewinder;
+                    return Sidewinder;
 
                 if (Role.CanHeadGraze(CustomComboPreset.BRD_Adv_Interrupt) && CanWeaveDelayed)
-                return Role.HeadGraze;
+                    return Role.HeadGraze;
 
                 if (ActionReady(Bloodletter) &&
                     (IsEnabled(CustomComboPreset.BRD_Adv_Pooling) && UsePooledBloodRain() || !IsEnabled(CustomComboPreset.BRD_Adv_Pooling)))
-                                return OriginalHook(Bloodletter);
-                        }
+                    return OriginalHook(Bloodletter);
+            }
 
             #endregion
 
@@ -544,8 +544,8 @@ internal partial class BRD : PhysRangedJob
                     return Role.SecondWind;
 
                 if (IsEnabled(CustomComboPreset.BRD_ST_Wardens) && ActionReady(TheWardensPaeon) && HasCleansableDebuff(LocalPlayer))
-                        return OriginalHook(TheWardensPaeon);
-                }
+                    return OriginalHook(TheWardensPaeon);
+            }
 
             #endregion
 
@@ -566,8 +566,8 @@ internal partial class BRD : PhysRangedJob
 
                     if (IsEnabled(CustomComboPreset.BRD_Adv_RagingJaws) && RagingJawsRefresh() && RagingStrikesDuration < ragingJawsRenewTime)
                         return IronJaws;
-                    }
                 }
+            }
 
             #endregion
 
@@ -577,7 +577,7 @@ internal partial class BRD : PhysRangedJob
                 return OriginalHook(StraightShot);
 
             if (IsEnabled(CustomComboPreset.BRD_Adv_BuffsEncore) && HasEffect(Buffs.RadiantEncoreReady) && RadiantFinaleDuration < 16)
-                    return OriginalHook(RadiantEncore);
+                return OriginalHook(RadiantEncore);
 
             if (IsEnabled(CustomComboPreset.BRD_ST_ApexArrow))
             {
@@ -585,11 +585,11 @@ internal partial class BRD : PhysRangedJob
                     return BlastArrow;
 
                 if (IsEnabled(CustomComboPreset.BRD_Adv_ApexPooling) && UsePooledApex() || !IsEnabled(CustomComboPreset.BRD_Adv_ApexPooling) && gauge.SoulVoice == 100)
-                        return ApexArrow;
-                }
+                    return ApexArrow;
+            }
 
             if (IsEnabled(CustomComboPreset.BRD_Adv_BuffsResonant) && HasEffect(Buffs.ResonantArrowReady))
-                    return ResonantArrow;
+                return ResonantArrow;
 
             if (HasEffect(Buffs.HawksEye))
                 return OriginalHook(StraightShot);
@@ -634,24 +634,24 @@ internal partial class BRD : PhysRangedJob
                     return EmpyrealArrow;
 
                 if (WandererSong())
-                            return WanderersMinuet;
+                    return WanderersMinuet;
 
                 if (MagesSong())
-                            return MagesBallad;
+                    return MagesBallad;
 
                 if (ArmySong())
-                            return ArmysPaeon;
+                    return ArmysPaeon;
 
-                    }
+            }
 
             #endregion
 
             #region Buffs
 
             if (CanBardWeave)
-                {
-                if (!SongNone && LevelChecked(MagesBallad))
             {
+                if (!SongNone && LevelChecked(MagesBallad))
+                {
                     if (UseRadiantBuff())
                         return RadiantFinale;
 
@@ -666,19 +666,19 @@ internal partial class BRD : PhysRangedJob
                 }
 
                 if (!LevelChecked(MagesBallad))
-            {
+                {
                     if (ActionReady(RadiantFinale))
-                    return RadiantFinale;
+                        return RadiantFinale;
 
                     if (ActionReady(BattleVoice))
-                    return BattleVoice;
+                        return BattleVoice;
 
                     if (ActionReady(RagingStrikes))
-                    return RagingStrikes;
+                        return RagingStrikes;
 
                     if (ActionReady(Barrage))
-                    return Barrage;
-            }
+                        return Barrage;
+                }
             }
 
             #endregion
@@ -694,13 +694,13 @@ internal partial class BRD : PhysRangedJob
                     return OriginalHook(PitchPerfect);
 
                 if (ActionReady(Sidewinder) && UsePooledSidewinder())
-                            return Sidewinder;
+                    return Sidewinder;
 
                 if (Role.CanHeadGraze(CustomComboPreset.BRD_AoE_SimpleMode) && CanWeaveDelayed)
                     return Role.HeadGraze;
 
                 if (ActionReady(RainOfDeath) && UsePooledBloodRain())
-                                return OriginalHook(RainOfDeath);
+                    return OriginalHook(RainOfDeath);
 
                 if (!LevelChecked(RainOfDeath) && !(WasLastAction(Bloodletter) && BloodletterCharges > 0))
                     return OriginalHook(Bloodletter);
@@ -770,24 +770,24 @@ internal partial class BRD : PhysRangedJob
                     return EmpyrealArrow;
 
                 if (WandererSong())
-                            return WanderersMinuet;
+                    return WanderersMinuet;
 
                 if (MagesSong())
-                            return MagesBallad;
+                    return MagesBallad;
 
                 if (ArmySong())
-                            return ArmysPaeon;
+                    return ArmysPaeon;
 
-                    }
+            }
 
             #endregion
 
             #region Buffs
 
             if (CanBardWeave)
-                {
-                if (!SongNone && LevelChecked(MagesBallad))
             {
+                if (!SongNone && LevelChecked(MagesBallad))
+                {
                     if (UseRadiantBuff())
                         return RadiantFinale;
 
@@ -802,19 +802,19 @@ internal partial class BRD : PhysRangedJob
                 }
 
                 if (!LevelChecked(MagesBallad))
-            {
+                {
                     if (ActionReady(RadiantFinale))
-                    return RadiantFinale;
+                        return RadiantFinale;
 
                     if (ActionReady(BattleVoice))
-                    return BattleVoice;
+                        return BattleVoice;
 
                     if (ActionReady(RagingStrikes))
-                    return RagingStrikes;
+                        return RagingStrikes;
 
                     if (ActionReady(Barrage))
-                    return Barrage;
-            }
+                        return Barrage;
+                }
             }
 
             #endregion
@@ -836,7 +836,7 @@ internal partial class BRD : PhysRangedJob
                     return Role.HeadGraze;
 
                 if (ActionReady(Bloodletter) && UsePooledBloodRain())
-                                return OriginalHook(Bloodletter);
+                    return OriginalHook(Bloodletter);
 
                 if (Role.CanSecondWind(40))
                     return Role.SecondWind;
@@ -856,10 +856,10 @@ internal partial class BRD : PhysRangedJob
                 return OriginalHook(Windbite);
 
             if (ApplyPurpleDot())
-                    return OriginalHook(VenomousBite);
+                return OriginalHook(VenomousBite);
 
             if (RagingJawsRefresh() && RagingStrikesDuration < 6)
-                    return IronJaws;
+                return IronJaws;
 
 
             #endregion
@@ -873,7 +873,7 @@ internal partial class BRD : PhysRangedJob
                 return BlastArrow;
 
             if (UsePooledApex())
-                    return ApexArrow;
+                return ApexArrow;
 
             if (HasEffect(Buffs.ResonantArrowReady))
                 return ResonantArrow;
