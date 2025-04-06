@@ -5833,8 +5833,12 @@ SMN.JobID)]
     VPR_ST_Reawaken = 30011,
 
     [ParentCombo(VPR_ST_AdvancedMode)]
-    [CustomComboInfo("Reawaken Combo", "Adds Generation and Legacy to the rotation.", VPR.JobID)]
-    VPR_ST_ReawakenCombo = 30012,
+    [CustomComboInfo("Generations Combo", "Adds Generations to the rotation.", VPR.JobID)]
+    VPR_ST_GenerationCombo = 30012,
+
+    [ParentCombo(VPR_ST_AdvancedMode)]
+    [CustomComboInfo("Legacy weaves", "Adds Legacy weaves to the rotation.", VPR.JobID)]
+    VPR_ST_LegacyWeaves = 30014,
 
     [ParentCombo(VPR_ST_AdvancedMode)]
     [CustomComboInfo("Dynamic True North Option",
@@ -5936,6 +5940,8 @@ SMN.JobID)]
 
     #endregion
 
+    #region Miscellaneous
+
     [ReplaceSkill(VPR.Vicewinder)]
     [CustomComboInfo("Vicewinder - Coils",
         "Replaces Vicewinder with Hunter's/Swiftskin's Coils.\nWill automatically swap depending on your position.", VPR.JobID)]
@@ -5980,6 +5986,12 @@ SMN.JobID)]
     [ConflictingCombos(VPR_ST_SimpleMode, VPR_AoE_SimpleMode, VPR_ST_AdvancedMode, VPR_AoE_AdvancedMode, VPR_Legacies)]
     [CustomComboInfo("Serpents Tail", "Replaces basic combo with Death Rattle or Last Lash when applicable.", VPR.JobID)]
     VPR_SerpentsTail = 30210,
+    
+    #endregion
+    
+    //ST 30014
+    //AoE 30115
+    //Misc 30210
 
     #endregion
 
