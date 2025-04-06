@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
+using ECommons;
+using ECommons.DalamudServices;
 using ECommons.ExcelServices;
 using ECommons.EzIpcManager;
 using ECommons.GameHelpers;
@@ -102,17 +104,25 @@ public partial class Helper(ref Leasing leasing)
                 ? ComboSimplicityLevelKeys.Advanced
                 : ComboSimplicityLevelKeys.Simple;
 
-        // Get the opposite mode
-        var categorizedPreset =
-            P.IPCSearch.CurrentJobComboStatesCategorized
-                [(Job)attr.CustomComboInfo.JobID]
-                [targetType][simplicityLevelToSearchFor];
+        try
+        {
+            // Get the opposite mode
+            var categorizedPreset =
+                P.IPCSearch.CurrentJobComboStatesCategorized
+                    [(Job)attr.CustomComboInfo.JobID]
+                    [targetType][simplicityLevelToSearchFor];
 
-        // Return the opposite mode, as a proper preset
-        var oppositeMode = categorizedPreset.FirstOrDefault().Key;
-        var oppositeModePreset = (CustomComboPreset)
-            Enum.Parse(typeof(CustomComboPreset), oppositeMode, true);
-        return oppositeModePreset;
+            // Return the opposite mode, as a proper preset
+            var oppositeMode = categorizedPreset.FirstOrDefault().Key;
+            var oppositeModePreset = (CustomComboPreset)
+                Enum.Parse(typeof(CustomComboPreset), oppositeMode, true);
+            return oppositeModePreset;
+        }
+        catch(Exception ex)
+        {
+            ex.LogWarning("No opposite combo found, this is probably correct if this is a healer.");
+            return null;
+        }
     }
 
     #region Auto-Rotation Ready
