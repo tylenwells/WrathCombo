@@ -75,6 +75,41 @@ internal partial class VPR
 
     #region Awaken
 
+    internal static bool UseReawaken(VPRGauge gauge)
+    {
+        if (LevelChecked(Reawaken) && !HasEffect(Buffs.Reawakened) && InActionRange(Reawaken) &&
+            !HasEffect(Buffs.HuntersVenom) && !HasEffect(Buffs.SwiftskinsVenom) &&
+            !HasEffect(Buffs.PoisedForTwinblood) && !HasEffect(Buffs.PoisedForTwinfang) &&
+            !IsEmpowermentExpiring(6))
+        {
+            //2min burst
+            if (!JustUsed(SerpentsIre, 2.2f) && HasEffect(Buffs.ReadyToReawaken) ||
+                WasLastWeaponskill(Ouroboros) && Gauge.SerpentOffering >= 50 && IreCD >= 50)
+                return true;
+
+            //1min
+            if (Gauge.SerpentOffering is >= 50 and <= 80 && IreCD is >= 50 and <= 62)
+                return true;
+
+            //overcap protection
+            if (Gauge.SerpentOffering >= 100)
+                return true;
+
+            //non boss encounters
+            if ((IsEnabled(CustomComboPreset.VPR_ST_SimpleMode) && !InBossEncounter() ||
+                 IsEnabled(CustomComboPreset.VPR_ST_AdvancedMode) && Config.VPR_ST_SerpentsIre_SubOption == 1 && !InBossEncounter()) &&
+                gauge.SerpentOffering >= 50)
+                return true;
+
+            //Lower lvl
+            if (Gauge.SerpentOffering >= 50 &&
+                WasLastWeaponskill(FourthGeneration) && !LevelChecked(Ouroboros))
+                return true;
+        }
+
+        return false;
+    }
+
     internal static bool ReawakenComboST(ref uint actionID)
     {
         if (HasEffect(Buffs.Reawakened))
@@ -191,41 +226,6 @@ internal partial class VPR
 
                 #endregion
         }
-        return false;
-    }
-
-    internal static bool UseReawaken(VPRGauge gauge)
-    {
-        if (LevelChecked(Reawaken) && !HasEffect(Buffs.Reawakened) && InActionRange(Reawaken) &&
-            !HasEffect(Buffs.HuntersVenom) && !HasEffect(Buffs.SwiftskinsVenom) &&
-            !HasEffect(Buffs.PoisedForTwinblood) && !HasEffect(Buffs.PoisedForTwinfang) &&
-            !IsEmpowermentExpiring(6))
-        {
-            //2min burst
-            if (!JustUsed(SerpentsIre, 2.2f) && HasEffect(Buffs.ReadyToReawaken) ||
-                WasLastWeaponskill(Ouroboros) && Gauge.SerpentOffering >= 50 && IreCD >= 50)
-                return true;
-
-            //1min
-            if (Gauge.SerpentOffering is >= 50 and <= 80 && IreCD is >= 50 and <= 62)
-                return true;
-
-            //overcap protection
-            if (Gauge.SerpentOffering >= 100)
-                return true;
-
-            //non boss encounters
-            if ((IsEnabled(CustomComboPreset.VPR_ST_SimpleMode) && !InBossEncounter() ||
-                 IsEnabled(CustomComboPreset.VPR_ST_AdvancedMode) && Config.VPR_ST_SerpentsIre_SubOption == 1 && !InBossEncounter()) &&
-                gauge.SerpentOffering >= 50)
-                return true;
-
-            //Lower lvl
-            if (Gauge.SerpentOffering >= 50 &&
-                WasLastWeaponskill(FourthGeneration) && !LevelChecked(Ouroboros))
-                return true;
-        }
-
         return false;
     }
 
