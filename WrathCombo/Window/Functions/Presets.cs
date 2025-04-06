@@ -328,13 +328,13 @@ namespace WrathCombo.Window.Functions
                         case BRD.JobID: BRDPvP.Config.Draw(preset); break;
                         case DNC.JobID: DNCPvP.Config.Draw(preset); break;
                         case DRG.JobID: DRGPvP.Config.Draw(preset); break;
-                        case DRK.JobID: DRK.Config.Draw(preset); break;
-                        case GNB.JobID: GNB.Config.Draw(preset); break;
+                        case DRK.JobID: DRKPvP.Config.Draw(preset); break;
+                        case GNB.JobID: GNBPvP.Config.Draw(preset); break;
                         case MCH.JobID: MCHPvP.Config.Draw(preset); break;
                         case MNK.JobID: MNKPvP.Config.Draw(preset); break;
                         case NIN.JobID: NINPvP.Config.Draw(preset); break;
                         case PCT.JobID: PCT.Config.Draw(preset); break;
-                        case PLD.JobID: PLD.Config.Draw(preset); break;
+                        case PLD.JobID: PLDPvP.Config.Draw(preset); break;
                         case RPR.JobID: RPRPvP.Config.Draw(preset); break;
                         case RDM.JobID: RDMPvP.Config.Draw(preset); break;
                         case SAM.JobID: SAMPvP.Config.Draw(preset); break;
@@ -342,7 +342,7 @@ namespace WrathCombo.Window.Functions
                         case SGE.JobID: SGEPvP.Config.Draw(preset); break;
                         case SMN.JobID: SMN.Config.Draw(preset); break;
                         case VPR.JobID: VPRPvP.Config.Draw(preset); break;
-                        case WAR.JobID: WAR.Config.Draw(preset); break;
+                        case WAR.JobID: WARPvP.Config.Draw(preset); break;
                         case WHM.JobID: WHMPvP.Config.Draw(preset); break;
                         default: UserConfigItems.Draw(preset, enabled); break;
                     }
