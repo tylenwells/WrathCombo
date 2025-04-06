@@ -368,15 +368,13 @@ public enum CustomComboPreset
     [AutoAction(false, false)]
     [ReplaceSkill(BLM.Fire)]
     [ConflictingCombos(BLM_ST_AdvancedMode)]
-    [CustomComboInfo("Simple Mode - Single Target",
-        "Replaces Fire with a full one-button single target rotation.\nThis is the ideal option for newcomers to the job.", BLM.JobID)]
+    [CustomComboInfo("Simple Mode - Single Target", "Replaces Fire with a full one-button single target rotation.\nThis is the ideal option for newcomers to the job.", BLM.JobID)]
     BLM_ST_SimpleMode = 2001,
 
     [AutoAction(true, false)]
     [ReplaceSkill(BLM.Blizzard2, BLM.HighBlizzard2)]
     [ConflictingCombos(BLM_AoE_AdvancedMode)]
-    [CustomComboInfo("Simple Mode - AoE",
-        "Replaces Blizzard II with a full one-button AoE rotation.\nThis is the ideal option for newcomers to the job.", BLM.JobID)]
+    [CustomComboInfo("Simple Mode - AoE", "Replaces Blizzard II with a full one-button AoE rotation.\nThis is the ideal option for newcomers to the job.", BLM.JobID)]
     BLM_AoE_SimpleMode = 2002,
 
     #endregion
@@ -386,13 +384,11 @@ public enum CustomComboPreset
     [AutoAction(false, false)]
     [ReplaceSkill(BLM.Fire)]
     [ConflictingCombos(BLM_ST_SimpleMode)]
-    [CustomComboInfo("Advanced Mode - Single Target",
-        "Replaces Fire with a full one-button single target rotation.\nThese features are ideal if you want to customize the rotation.", BLM.JobID)]
+    [CustomComboInfo("Advanced Mode - Single Target", "Replaces Fire with a full one-button single target rotation.\nThese features are ideal if you want to customize the rotation.", BLM.JobID)]
     BLM_ST_AdvancedMode = 2100,
 
     [ParentCombo(BLM_ST_AdvancedMode)]
-    [CustomComboInfo("Balance Opener (Level 100)",
-        "Adds the Balance opener at level 100.\nNeed a GCD of 2.45 or lower to use.", BLM.JobID)]
+    [CustomComboInfo("Balance Opener (Level 100)", "Adds the Balance opener at level 100.", BLM.JobID)]
     BLM_ST_Opener = 2101,
 
     [ParentCombo(BLM_ST_AdvancedMode)]
@@ -422,23 +418,15 @@ public enum CustomComboPreset
     [ParentCombo(BLM_ST_AdvancedMode)]
     [CustomComboInfo("Swiftcast Option", "Add Swiftcast to the rotation.", BLM.JobID)]
     BLM_ST_Swiftcast = 2106,
-
-    [ParentCombo(BLM_ST_AdvancedMode)]
-    [CustomComboInfo("Triplecast Option", "Add Triplecast to the rotation.", BLM.JobID)]
-    BLM_ST_Triplecast = 2107,
-
-    [ParentCombo(BLM_ST_AdvancedMode)]
-    [CustomComboInfo("Transpose Option", "Add Transpose to the rotation.", BLM.JobID)]
-    BLM_ST_Transpose = 2109,
-
+    
     [ParentCombo(BLM_ST_AdvancedMode)]
     [CustomComboInfo("Foul/Xenoglossy Option", "Add Foul/Xenoglossy to the rotation.", BLM.JobID)]
     BLM_ST_UsePolyglot = 2104,
 
     [ParentCombo(BLM_ST_AdvancedMode)]
-    [CustomComboInfo("Foul/Xenoglossy for Movement Option", "Add Foul / Xenoglossy to the rotation as movement option.", BLM.JobID)]
-    BLM_ST_UsePolyglotMoving = 2105,
-
+    [CustomComboInfo("Movement Option", "Add chosen options for movement.", BLM.JobID)]
+    BLM_ST_Movement = 2113,
+    
     #endregion
 
     #region AoE - Advanced
@@ -446,8 +434,7 @@ public enum CustomComboPreset
     [AutoAction(true, false)]
     [ReplaceSkill(BLM.Blizzard2, BLM.HighBlizzard2)]
     [ConflictingCombos(BLM_AoE_SimpleMode)]
-    [CustomComboInfo("Advanced Mode - AoE",
-        "Replaces Blizzard II with a full one-button AoE rotation.\nThese features are ideal if you want to customize the rotation.", BLM.JobID)]
+    [CustomComboInfo("Advanced Mode - AoE", "Replaces Blizzard II with a full one-button AoE rotation.\nThese features are ideal if you want to customize the rotation.", BLM.JobID)]
     BLM_AoE_AdvancedMode = 2200,
 
     [ParentCombo(BLM_AoE_AdvancedMode)]
@@ -463,37 +450,25 @@ public enum CustomComboPreset
     BLM_AoE_Manafont = 2207,
 
     [ParentCombo(BLM_AoE_AdvancedMode)]
+    [CustomComboInfo("Triplecast Option", "Adds Triplecast to the rotation.", BLM.JobID)]
+    BLM_AoE_Triplecast = 2208,
+
+    [ParentCombo(BLM_AoE_AdvancedMode)]
+    [CustomComboInfo("Paradox Filler Option", "Adds Paradox as a filler at max level to the rotation.", BLM.JobID)]
+    BLM_AoE_ParadoxFiller = 2210,
+
+    [ParentCombo(BLM_AoE_AdvancedMode)]
     [CustomComboInfo("(High) Thunder II Option", "Add (High) Thunder II to the rotation.", BLM.JobID)]
     BLM_AoE_Thunder = 2209,
-
-    [ParentCombo(BLM_AoE_AdvancedMode)]
-    [CustomComboInfo("Flare Option", "Add Flare to the rotation.", BLM.JobID)]
-    BLM_AoE_Flare = 2210,
-
-    [ParentCombo(BLM_AoE_AdvancedMode)]
-    [CustomComboInfo("Flare Star Option", "Add Flare Star to the rotation.", BLM.JobID)]
-    BLM_AoE_FlareStar = 2211,
-
-    [ParentCombo(BLM_AoE_AdvancedMode)]
-    [CustomComboInfo("Swiftcast Option", "Add Swiftcast to the rotation.", BLM.JobID)]
-    BLM_AoE_Swiftcast = 2205,
-
-    [ParentCombo(BLM_AoE_AdvancedMode)]
-    [CustomComboInfo("Triplecast Option", "Add Triplecast to the rotation.", BLM.JobID)]
-    BLM_AoE_Triplecast = 2206,
-
-    [ParentCombo(BLM_AoE_AdvancedMode)]
-    [CustomComboInfo("Transpose Option", "Add Transpose to the rotation.", BLM.JobID)]
-    BLM_AoE_Transpose = 2208,
-
+    
     [ParentCombo(BLM_AoE_AdvancedMode)]
     [CustomComboInfo("Foul Option", "Add Foul to the rotation.", BLM.JobID)]
     BLM_AoE_UsePolyglot = 2203,
 
     [ParentCombo(BLM_AoE_AdvancedMode)]
-    [CustomComboInfo("Foul for Movement Option", "Add Foul to the rotation as movement option.", BLM.JobID)]
-    BLM_AoE_UsePolyglotMoving = 2204,
-
+    [CustomComboInfo("Blizzard IV on 2 Targets Option", "Substitutes Freeze for Blizzard 4 whenever it would hit 2 targets.", BLM.JobID)]
+    BLM_AoE_Blizzard4Sub = 2211,
+    
     #endregion
 
     #region Variant
@@ -517,27 +492,27 @@ public enum CustomComboPreset
     #region Miscellaneous
 
     [ReplaceSkill(BLM.Triplecast)]
-    [CustomComboInfo("Triplecast Protection",
-        "Replaces Triplecast with Savage Blade when you already have triplecast active.", BLM.JobID)]
+    [CustomComboInfo("Triplecast Protection", "Replaces Triplecast with Savage Blade when you already have triplecast active.", BLM.JobID)]
     BLM_TriplecastProtection = 2056,
 
     [ReplaceSkill(BLM.Fire)]
-    [CustomComboInfo("Fire I/III Feature",
-        "Replaces Fire I with Fire III outside of Astral Fire or when Firestarter is up.", BLM.JobID)]
+    [CustomComboInfo("Fire I/III Feature", "Replaces Fire I with Fire III outside of Astral Fire or when Firestarter is up.", BLM.JobID)]
     BLM_Fire_1to3 = 2054,
 
     [ReplaceSkill(BLM.Blizzard, BLM.Freeze)]
-    [CustomComboInfo("Blizzard I/III Feature",
-        "Replaces Blizzard I with Blizzard III when out of Umbral Ice.\nReplaces Freeze with Blizzard II when synced below Lv.40.", BLM.JobID)]
+    [CustomComboInfo("Blizzard I/III Feature", "Replaces Blizzard I with Blizzard III when out of Umbral Ice.\nReplaces Freeze with Blizzard II when synced below Lv.40.", BLM.JobID)]
     BLM_Blizzard_1to3 = 2052,
 
-    [ReplaceSkill(BLM.Fire4)]
-    [CustomComboInfo("Fire & Ice", "Replaces Fire4 with Blizzard4 when in Umbral Ice.", BLM.JobID)]
+    [ReplaceSkill(BLM.Fire4, BLM.Flare)]
+    [CustomComboInfo("Fire & Ice", "Replaces Fire4 with Blizzard4 when in Umbral Ice.\nReplaces Flare with Freeze when in Umbral Ice.", BLM.JobID)]
     BLM_FireandIce = 2057,
 
+    [ReplaceSkill(BLM.Fire4, BLM.Flare)]
+    [CustomComboInfo(" Fire and Flare to Star", "Replaces Fire4 and Flare to Flarestar when on max stacks.", BLM.JobID)]
+    BLM_FireFlarestar = 2058,
+
     [ReplaceSkill(BLM.Transpose)]
-    [CustomComboInfo("Umbral Soul/Transpose Feature",
-        "Replaces Transpose with Umbral Soul when Umbral Soul is available.", BLM.JobID)]
+    [CustomComboInfo("Umbral Soul/Transpose Feature", "Replaces Transpose with Umbral Soul when Umbral Soul is available.", BLM.JobID)]
     BLM_UmbralSoul = 2050,
 
     [ReplaceSkill(BLM.Scathe)]
@@ -545,19 +520,18 @@ public enum CustomComboPreset
     BLM_Scathe_Xeno = 2053,
 
     [ReplaceSkill(BLM.LeyLines)]
-    [CustomComboInfo("Between the Ley Lines Feature",
-        "Replaces Ley Lines with Between the Lines when Ley Lines is active.", BLM.JobID)]
+    [CustomComboInfo("Between the Ley Lines Feature", "Replaces Ley Lines with Between the Lines when Ley Lines is active.", BLM.JobID)]
     BLM_Between_The_LeyLines = 2051,
 
     [ReplaceSkill(BLM.AetherialManipulation)]
-    [CustomComboInfo("Aetherial Manipulation Feature",
-        "Replaces Aetherial Manipulation with Between the Lines when you are out of active Ley Lines and standing still.", BLM.JobID)]
+    [CustomComboInfo("Aetherial Manipulation Feature", "Replaces Aetherial Manipulation with Between the Lines when you are out of active Ley Lines and standing still.", BLM.JobID)]
     BLM_Aetherial_Manipulation = 2055,
 
     #endregion
 
     // Last value ST = 2112
     //Last Value AoE = 2211
+    //Last Value misc = 2058
 
     #endregion
 
@@ -2351,19 +2325,19 @@ public enum CustomComboPreset
     GNB_AoE_FatedCircle = 7208,
 
     [ParentCombo(GNB_AoE_FatedCircle)]
+    [CustomComboInfo("Ammo Overcap Option",
+        "Adds Fated Circle into the AoE rotation when overcapping cartridges is imminent.",
+        GNB.JobID)]
+    GNB_AoE_Overcap = 7209,
+
+    [ParentCombo(GNB_AoE_FatedCircle)]
     [CustomComboInfo("Burst Strike Option",
         "Adds Burst Strike into the AoE rotation if you do not have Fated Circle unlocked yet.", GNB.JobID)]
     GNB_AoE_noFatedCircle = 7212,
 
-    [ParentCombo(GNB_AoE_Advanced)]
-    [CustomComboInfo("Ammo Overcap Option",
-        "Adds Fated Circle into the AoE rotation if you have max cartridges & your last combo action was Demon Slice.",
-        GNB.JobID)]
-    GNB_AoE_Overcap = 7209,
-
-    [ParentCombo(GNB_AoE_Overcap)]
+    [ParentCombo(GNB_AoE_noFatedCircle)]
     [CustomComboInfo("Ammo Overcap Burst Strike Option",
-        "Adds Burst Strike into the AoE rotation if you have max cartridges, your last combo action was Demon Slice, & you do not have Fated Circle unlocked yet.",
+        "Adds Burst Strike into the AoE rotation when overcapping cartridges is imminent.",
         GNB.JobID)]
     GNB_AoE_BSOvercap = 7211,
 
@@ -6691,46 +6665,59 @@ SMN.JobID)]
 
     [PvPCustomCombo]
     [ReplaceSkill(ASTPvP.Malefic)]
-    [CustomComboInfo("Burst Mode", "Turns Fall Malefic into an all-in-one damage button.", AST.JobID)]
+    [CustomComboInfo("Burst Mode", "Turns Fall Malefic into an all-in-one damage button.", ASTPvP.JobID)]
     ASTPvP_Burst = 111000,
 
+    [PvPCustomCombo]
     [ParentCombo(ASTPvP_Burst)]
-    [CustomComboInfo("Card Draw Option", "Adds Drawing Cards to Burst Mode.", AST.JobID)]
+    [CustomComboInfo("Card Draw Option", "Adds Drawing Cards to Burst Mode.", ASTPvP.JobID)]
     ASTPvP_Burst_DrawCard = 111002,
 
+    [PvPCustomCombo]
     [ParentCombo(ASTPvP_Burst)]
-    [CustomComboInfo("Card Play Option", "Adds Playing Cards to Burst Mode.", AST.JobID)]
+    [CustomComboInfo("Card Play Option", "Adds Playing Cards to Burst Mode.", ASTPvP.JobID)]
     ASTPvP_Burst_PlayCard = 111003,
 
     [PvPCustomCombo]
     [ReplaceSkill(ASTPvP.AspectedBenefic)]
-    [CustomComboInfo("Double Cast Heal Feature", "Adds Double Cast to Aspected Benefic.", AST.JobID)]
+    [CustomComboInfo("Double Cast Heal Feature", "Adds Double Cast to Aspected Benefic.", ASTPvP.JobID)]
     ASTPvP_Heal = 111004,
 
+    [PvPCustomCombo]
     [ParentCombo(ASTPvP_Burst)]
-    [CustomComboInfo("Double Malefic Cast Option", "Adds Double Malefic Cast to Burst Mode.", AST.JobID)]
+    [CustomComboInfo("Double Malefic Cast Option", "Adds Double Malefic Cast to Burst Mode.", ASTPvP.JobID)]
     ASTPvP_Burst_DoubleMalefic = 111005,
 
+    [PvPCustomCombo]
     [ParentCombo(ASTPvP_Burst_Gravity)]
-    [CustomComboInfo("Double Gravity Cast Option", "Adds Double Gravity Cast to Burst Mode.", AST.JobID)]
+    [CustomComboInfo("Double Gravity Cast Option", "Adds Double Gravity Cast to Burst Mode.", ASTPvP.JobID)]
     ASTPvP_Burst_DoubleGravity = 111009,
 
+    [PvPCustomCombo]
     [ParentCombo(ASTPvP_Burst)]
-    [CustomComboInfo("Gravity Burst Option", "Adds Gravity Cast to Burst Mode.", AST.JobID)]
+    [CustomComboInfo("Gravity Burst Option", "Adds Gravity Cast to Burst Mode.", ASTPvP.JobID)]
     ASTPvP_Burst_Gravity = 111006,
 
+    [PvPCustomCombo]
     [ParentCombo(ASTPvP_Burst)]
     [CustomComboInfo("Macrocosmos Option",
         "Adds Macrocosmos to Burst Mode. \n If Double Gravity is enabled, it will hold Macrocosmos for the double gravity burst.",
-        AST.JobID)]
+        ASTPvP.JobID)]
     ASTPvP_Burst_Macrocosmos = 111007,
 
     [PvPCustomCombo]
+    [ParentCombo(ASTPvP_Burst)]
+    [CustomComboInfo("Role Action Diabrosis Option",
+        "Adds Role Action Diabrosis to Burst Mode below selected health",
+        ASTPvP.JobID)]
+    ASTPvP_Diabrosis = 111010,
+
+    [PvPCustomCombo]
     [ReplaceSkill(ASTPvP.Epicycle)]
-    [CustomComboInfo("Epicycle Burst Feature", "Turns Epicycle into burst combo.", AST.JobID)]
+    [CustomComboInfo("Epicycle Burst Feature", "Turns Epicycle into burst combo.", ASTPvP.JobID)]
     ASTPvP_Epicycle = 111008,
 
-    // Last value = 111009
+    // Last value = 111010
 
     #endregion
 
@@ -7476,38 +7463,52 @@ SMN.JobID)]
 
     [PvPCustomCombo]
     [ReplaceSkill(SGEPvP.Dosis)]
-    [CustomComboInfo("Burst Mode", "Turns Dosis III into an all-in-one damage button.", SGE.JobID)]
+    [CustomComboInfo("Burst Mode", "Turns Dosis III into an all-in-one damage button.", SGEPvP.JobID)]
     SGEPvP_BurstMode = 124000,
 
+    [PvPCustomCombo]
     [ParentCombo(SGEPvP_BurstMode)]
-    [CustomComboInfo("Pneuma Option", "Adds Pneuma to Burst Mode.", SGE.JobID)]
+    [CustomComboInfo("Pneuma Option", "Adds Pneuma to Burst Mode.", SGEPvP.JobID)]
     SGEPvP_BurstMode_Pneuma = 124001,
 
+    [PvPCustomCombo]
     [ParentCombo(SGEPvP_BurstMode)]
-    [CustomComboInfo("Eukrasia Option", "Adds Eukrasia to Burst Mode.", SGE.JobID)]
+    [CustomComboInfo("Eukrasia Option", "Adds Eukrasia to Burst Mode.", SGEPvP.JobID)]
     SGEPvP_BurstMode_Eukrasia = 124002,
 
+    [PvPCustomCombo]
     [ParentCombo(SGEPvP_BurstMode)]
-    [CustomComboInfo("Phlegma Option", "Adds Phlegma to Burst Mode.", SGE.JobID)]
+    [CustomComboInfo("Phlegma Option", "Adds Phlegma to Burst Mode.", SGEPvP.JobID)]
     SGEPvP_BurstMode_Phlegma = 124003,
 
+    [PvPCustomCombo]
     [ParentCombo(SGEPvP_BurstMode)]
-    [CustomComboInfo("Psyche Option", "Adds Psyche to Burst Mode.", SGE.JobID)]
+    [CustomComboInfo("Psyche Option", "Adds Psyche to Burst Mode.", SGEPvP.JobID)]
     SGEPvP_BurstMode_Psyche = 124004,
 
+    [PvPCustomCombo]
     [ParentCombo(SGEPvP_BurstMode)]
-    [CustomComboInfo("Toxikon Option", "Adds Toxikon to Burst Mode.", SGE.JobID)]
+    [CustomComboInfo("Toxikon Option", "Adds Toxikon to Burst Mode.", SGEPvP.JobID)]
     SGEPvP_BurstMode_Toxikon = 124005,
 
+    [PvPCustomCombo]
     [ParentCombo(SGEPvP_BurstMode)]
-    [CustomComboInfo("Toxikon II Option", "Adds Toxikon II to Burst Mode.", SGE.JobID)]
+    [CustomComboInfo("Toxikon II Option", "Adds Toxikon II to Burst Mode.", SGEPvP.JobID)]
     SGEPvP_BurstMode_Toxikon2 = 124006,
 
+    [PvPCustomCombo]
     [ParentCombo(SGEPvP_BurstMode)]
-    [CustomComboInfo("Kardia Reminder Option", "Adds Kardia to Burst Mode.", SGE.JobID)]
+    [CustomComboInfo("Kardia Reminder Option", "Adds Kardia to Burst Mode.", SGEPvP.JobID)]
     SGEPvP_BurstMode_KardiaReminder = 124007,
 
-    // Last value = 124007
+    [PvPCustomCombo]
+    [ParentCombo(SGEPvP_BurstMode)]
+    [CustomComboInfo("Role Action Diabrosis Option",
+       "Adds Role Action Diabrosis to Burst Mode below selected health",
+       SGEPvP.JobID)]
+    SGEPvP_Diabrosis = 124008,
+
+    // Last value = 124008
 
     #endregion
 
@@ -7569,26 +7570,37 @@ SMN.JobID)]
 
     [PvPCustomCombo]
     [ReplaceSkill(SCHPvP.Broil)]
-    [CustomComboInfo("Burst Mode", "Turns Broil IV into all-in-one damage button.", SCH.JobID)]
+    [CustomComboInfo("Burst Mode", "Turns Broil IV into all-in-one damage button.", SCHPvP.JobID)]
     SCHPvP_Burst = 126000,
 
+    [PvPCustomCombo]
     [ParentCombo(SCHPvP_Burst)]
-    [CustomComboInfo("Expedient Option", "Adds Expedient to Burst Mode to empower Biolysis.", SCH.JobID)]
+    [CustomComboInfo("Expedient Option", "Adds Expedient to Burst Mode to empower Biolysis.", SCHPvP.JobID)]
     SCHPvP_Expedient = 126001,
 
+    [PvPCustomCombo]
     [ParentCombo(SCHPvP_Burst)]
-    [CustomComboInfo("Biolysis Option", "Adds Biolysis use on cooldown to Burst Mode.", SCH.JobID)]
+    [CustomComboInfo("Biolysis Option", "Adds Biolysis use on cooldown to Burst Mode.", SCHPvP.JobID)]
     SCHPvP_Biolysis = 126002,
 
+    [PvPCustomCombo]
     [ParentCombo(SCHPvP_Burst)]
-    [CustomComboInfo("Deployment Tactics Option", "Adds Deployment Tactics to Burst Mode when available.", SCH.JobID)]
+    [CustomComboInfo("Deployment Tactics Option", "Adds Deployment Tactics to Burst Mode when available.", SCHPvP.JobID)]
     SCHPvP_DeploymentTactics = 126003,
 
+    [PvPCustomCombo]
     [ParentCombo(SCHPvP_Burst)]
-    [CustomComboInfo("Chain Stratagem Option", "Adds Chain Stratagem to Burst Mode when available.", SCH.JobID)]
+    [CustomComboInfo("Chain Stratagem Option", "Adds Chain Stratagem to Burst Mode when available.", SCHPvP.JobID)]
     SCHPvP_ChainStratagem = 126004,
 
-    // Last value = 126004
+    [PvPCustomCombo]
+    [ParentCombo(SCHPvP_Burst)]
+    [CustomComboInfo("Role Action Diabrosis Option",
+       "Adds Role Action Diabrosis to Burst Mode below selected health",
+       SCHPvP.JobID)]
+    SCHPvP_Diabrosis = 126005,
+
+    // Last value = 126005
 
     #endregion
 
@@ -7751,41 +7763,52 @@ SMN.JobID)]
 
     [PvPCustomCombo]
     [ReplaceSkill(WHMPvP.Glare)]
-    [CustomComboInfo("Burst Mode", "Turns Glare into an all-in-one damage button.", WHM.JobID)]
+    [CustomComboInfo("Burst Mode", "Turns Glare into an all-in-one damage button.", WHMPvP.JobID)]
     WHMPvP_Burst = 129000,
 
+    [PvPCustomCombo]
     [ParentCombo(WHMPvP_Burst)]
-    [CustomComboInfo("Misery Option", "Adds Afflatus Misery to Burst Mode.", WHM.JobID)]
+    [CustomComboInfo("Misery Option", "Adds Afflatus Misery to Burst Mode.", WHMPvP.JobID)]
     WHMPvP_Afflatus_Misery = 129001,
 
+    [PvPCustomCombo]
     [ParentCombo(WHMPvP_Burst)]
-    [CustomComboInfo("Miracle of Nature Option", "Adds Miracle of Nature to Burst Mode.", WHM.JobID)]
+    [CustomComboInfo("Miracle of Nature Option", "Adds Miracle of Nature to Burst Mode.", WHMPvP.JobID)]
     WHMPvP_Mirace_of_Nature = 129002,
 
+    [PvPCustomCombo]
     [ParentCombo(WHMPvP_Burst)]
-    [CustomComboInfo("Seraph Strike Option", "Adds Seraph Strike to Burst Mode.", WHM.JobID)]
+    [CustomComboInfo("Seraph Strike Option", "Adds Seraph Strike to Burst Mode.", WHMPvP.JobID)]
     WHMPvP_Seraph_Strike = 129003,
 
+    [PvPCustomCombo]
     [ParentCombo(WHMPvP_Burst)]
-    [CustomComboInfo("Afflatus Purgation Option", "Adds Afflatus Purgation (Limit Break) to Burst Mode.", WHM.JobID)]
+    [CustomComboInfo("Afflatus Purgation Option", "Adds Afflatus Purgation (Limit Break) to Burst Mode.", WHMPvP.JobID)]
     WHMPvP_AfflatusPurgation = 129008,
 
     [PvPCustomCombo]
     [ReplaceSkill(WHMPvP.Cure2)]
-    [CustomComboInfo("Heal Feature", "Adds the below options onto Cure II.", WHM.JobID)]
+    [CustomComboInfo("Heal Feature", "Adds the below options onto Cure II.", WHMPvP.JobID)]
     WHMPvP_Heals = 129004,
 
     [PvPCustomCombo]
     [ParentCombo(WHMPvP_Heals)]
-    [CustomComboInfo("Cure III Option", "Adds Cure III to Cure II when available.", WHM.JobID)]
+    [CustomComboInfo("Cure III Option", "Adds Cure III to Cure II when available.", WHMPvP.JobID)]
     WHMPvP_Cure3 = 129005,
 
     [PvPCustomCombo]
     [ParentCombo(WHMPvP_Heals)]
-    [CustomComboInfo("Aquaveil Option", "Adds Aquaviel to Cure II when available.", WHM.JobID)]
+    [CustomComboInfo("Aquaveil Option", "Adds Aquaviel to Cure II when available.", WHMPvP.JobID)]
     WHMPvP_Aquaveil = 129007,
 
-    // Last value = 129007
+    [PvPCustomCombo]
+    [ParentCombo(WHMPvP_Burst)]
+    [CustomComboInfo("Role Action Diabrosis Option",
+       "Adds Role Action Diabrosis to Burst Mode below selected health",
+       WHMPvP.JobID)]
+    WHMPvP_Diabrosis = 129009,
+
+    // Last value = 129009
 
     #endregion
 
