@@ -38,7 +38,7 @@ internal partial class BLM : CasterJob
 
                 if (Gauge.InUmbralIce)
                 {
-                    if (ActionReady(Role.Swiftcast) && JustUsed(Transpose))
+                    if (ActionReady(Role.Swiftcast) && JustUsed(Transpose) && !HasEffect(Buffs.Triplecast))
                         return Role.Swiftcast;
 
                     if (JustUsed(Paradox) || !LevelChecked(Paradox) && CurMp is MP.MaxMP)
@@ -185,7 +185,7 @@ internal partial class BLM : CasterJob
                 if (Gauge.InUmbralIce)
                 {
                     if (IsEnabled(CustomComboPreset.BLM_ST_Swiftcast) &&
-                        ActionReady(Role.Swiftcast) && JustUsed(Transpose))
+                        ActionReady(Role.Swiftcast) && JustUsed(Transpose) && !HasEffect(Buffs.Triplecast))
                         return Role.Swiftcast;
 
                     if (JustUsed(Paradox) || !LevelChecked(Paradox) && CurMp is MP.MaxMP)
