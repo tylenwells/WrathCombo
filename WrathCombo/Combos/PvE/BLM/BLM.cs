@@ -57,7 +57,7 @@ internal partial class BLM : CasterJob
 
             if (IsMoving() && InCombat())
             {
-                if (HasPolyglotStacks())
+                if (HasPolyglotStacks() && !HasEffect(Buffs.Triplecast))
                     return LevelChecked(Xenoglossy)
                         ? Xenoglossy
                         : Foul;
@@ -222,7 +222,7 @@ internal partial class BLM : CasterJob
                     return Role.Swiftcast;
 
                 if (Config.BLM_ST_MovementOption[3] &&
-                    HasPolyglotStacks())
+                    HasPolyglotStacks() && !HasEffect(Buffs.Triplecast))
                     return LevelChecked(Xenoglossy)
                         ? Xenoglossy
                         : Foul;
