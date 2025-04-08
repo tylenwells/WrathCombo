@@ -414,9 +414,9 @@ public class Search(Leasing leasing)
     {
         get
         {
-            if (File.GetLastWriteTime(ConfigFilePath) <=
-                _lastCacheUpdateForComboStatesByJobCategorized)
-                return field ?? [];
+            //if (File.GetLastWriteTime(ConfigFilePath) <=
+            //    _lastCacheUpdateForComboStatesByJobCategorized)
+            //    return field ?? [];
 
 
             var job = (Job)CustomComboFunctions.JobIDs.ClassToJob((uint)Player.Job);
