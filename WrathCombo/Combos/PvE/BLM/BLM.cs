@@ -7,7 +7,7 @@ internal partial class BLM : CasterJob
     {
         protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.BLM_ST_SimpleMode;
 
-         protected override uint Invoke(uint actionID)
+        protected override uint Invoke(uint actionID)
         {
             if (actionID is not Fire)
                 return actionID;
@@ -17,7 +17,7 @@ internal partial class BLM : CasterJob
 
             if (Variant.CanRampart(CustomComboPreset.BLM_Variant_Rampart))
                 return Variant.Rampart;
-            
+
             if (CanSpellWeave())
             {
                 if (ActionReady(Amplifier) && Gauge.EnochianTimer >= 20000 &&
@@ -57,17 +57,17 @@ internal partial class BLM : CasterJob
 
             if (IsMoving() && InCombat())
             {
-                if (ActionReady(Triplecast) && !HasEffect(Buffs.Triplecast) && !HasEffect(Role.Buffs.Swiftcast))
+                if (ActionReady(Triplecast) && !HasEffect(Buffs.Triplecast) && !HasEffect(MagicRole.Buffs.Swiftcast))
                     return Triplecast;
 
                 if (ActionReady(Paradox) &&
                     Gauge.InAstralFire && Gauge.IsParadoxActive)
                     return Paradox;
 
-                if ( ActionReady(Role.Swiftcast) && !HasEffect(Buffs.Triplecast))
+                if (ActionReady(Role.Swiftcast) && !HasEffect(Buffs.Triplecast))
                     return Role.Swiftcast;
 
-                if (HasPolyglotStacks() && !HasEffect(Buffs.Triplecast) && !HasEffect(Role.Buffs.Swiftcast))
+                if (HasPolyglotStacks() && !HasEffect(Buffs.Triplecast) && !HasEffect(MagicRole.Buffs.Swiftcast))
                     return LevelChecked(Xenoglossy)
                         ? Xenoglossy
                         : Foul;
@@ -211,9 +211,9 @@ internal partial class BLM : CasterJob
             if (IsMoving() && InCombat())
             {
                 if (Config.BLM_ST_MovementOption[0] &&
-                    ActionReady(Triplecast) && 
-                    !HasEffect(Buffs.Triplecast) && 
-                    !HasEffect(Role.Buffs.Swiftcast))
+                    ActionReady(Triplecast) &&
+                    !HasEffect(Buffs.Triplecast) &&
+                    !HasEffect(MagicRole.Buffs.Swiftcast))
                     return Triplecast;
 
                 if (Config.BLM_ST_MovementOption[1] &&
@@ -226,9 +226,9 @@ internal partial class BLM : CasterJob
                     return Role.Swiftcast;
 
                 if (Config.BLM_ST_MovementOption[3] &&
-                    HasPolyglotStacks() && 
-                    !HasEffect(Buffs.Triplecast) && 
-                    !HasEffect(Role.Buffs.Swiftcast))
+                    HasPolyglotStacks() &&
+                    !HasEffect(Buffs.Triplecast) &&
+                    !HasEffect(MagicRole.Buffs.Swiftcast))
                     return LevelChecked(Xenoglossy)
                         ? Xenoglossy
                         : Foul;
