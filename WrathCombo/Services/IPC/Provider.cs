@@ -95,9 +95,9 @@ public partial class Provider : IDisposable
     /// </summary>
     /// <param name="output">The IPC provider instance to set ready.</param>
     /// <returns>An Action of <see cref="BuildCaches" /></returns>
-    private static Action BuildCachesAction(Provider output)
+    internal static Action BuildCachesAction(Provider? output = null)
     {
-        return () => BuildCaches(output);
+        return () => BuildCaches(output ?? P.IPC);
     }
 
     /// <summary>
