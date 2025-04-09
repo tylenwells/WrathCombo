@@ -383,7 +383,7 @@ public partial class Provider : IDisposable
         // Log if not ready
         if (!allGood && (DateTime.Now - _lastJobReadyLog).TotalSeconds > 15)
         {
-            Logging.Warn(
+            Logging.Log(
                 $"Current job is not fully ready for Auto-Rotation.\n" +
                 $"jobOn: {JsonConvert.SerializeObject(jobOn)}\n" +
                 $"jobAutoOn: {JsonConvert.SerializeObject(jobAutoOn)}"
