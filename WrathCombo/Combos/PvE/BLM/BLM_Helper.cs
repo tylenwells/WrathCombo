@@ -160,6 +160,7 @@ internal partial class BLM
         ];
 
         public override bool HasCooldowns() =>
+            CurMp == MP.MaxMP &&
             IsOffCooldown(Manafont) &&
             GetRemainingCharges(Triplecast) >= 1 &&
             GetRemainingCharges(LeyLines) >= 1 &&
@@ -215,6 +216,7 @@ internal partial class BLM
         ];
 
         public override bool HasCooldowns() =>
+            CurMp == MP.MaxMP &&
             IsOffCooldown(Manafont) &&
             GetRemainingCharges(Triplecast) >= 1 &&
             GetRemainingCharges(LeyLines) >= 1 &&
