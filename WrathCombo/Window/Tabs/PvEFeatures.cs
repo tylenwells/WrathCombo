@@ -45,8 +45,10 @@ namespace WrathCombo.Window.Tabs
 
                     ColCount = (int)(ImGui.GetContentRegionAvail().X / 200f.Scale());
 
-                    using (var tab = ImRaii.Table("SexyTable", ColCount))
+                    using (var tab = ImRaii.Table("PvETable", ColCount))
                     {
+                        ImGui.TableNextColumn();
+
                         if (!tab)
                             return;
 
