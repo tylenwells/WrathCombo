@@ -1,5 +1,4 @@
-﻿using Dalamud.Game.ClientState.JobGauge.Enums;
-using Dalamud.Game.ClientState.JobGauge.Types;
+﻿using Dalamud.Game.ClientState.JobGauge.Types;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using System;
 using System.Collections.Generic;
@@ -17,21 +16,7 @@ internal partial class SAM
 
     internal static int MeikyoUsed => ActionWatching.CombatActions.Count(x => x == MeikyoShisui);
 
-    internal static float GCD => GetCooldown(Hakaze).CooldownTotal;
-
     internal static int SenCount => GetSenCount();
-
-    internal static bool ComboStarted => GetComboStarted();
-
-    internal static int NumSen => GetNumSen();
-
-    internal static WrathOpener Opener()
-    {
-        if (Opener1.LevelChecked)
-            return Opener1;
-
-        return WrathOpener.Dummy;
-    }
 
     private static int GetSenCount()
     {
@@ -47,24 +32,6 @@ internal partial class SAM
             senCount++;
 
         return senCount;
-    }
-
-    private static unsafe bool GetComboStarted()
-    {
-        uint comboAction = ActionManager.Instance()->Combo.Action;
-
-        return comboAction == OriginalHook(Hakaze) ||
-               comboAction == Jinpu ||
-               comboAction == Shifu;
-    }
-
-    private static int GetNumSen()
-    {
-        bool ka = Gauge.Sen.HasFlag(Sen.Ka);
-        bool getsu = Gauge.Sen.HasFlag(Sen.Getsu);
-        bool setsu = Gauge.Sen.HasFlag(Sen.Setsu);
-
-        return (ka ? 1 : 0) + (getsu ? 1 : 0) + (setsu ? 1 : 0);
     }
 
     internal static bool UseMeikyo()
@@ -120,6 +87,14 @@ internal partial class SAM
     }
 
     #region Openers
+
+    internal static WrathOpener Opener()
+    {
+        if (Opener1.LevelChecked)
+            return Opener1;
+
+        return WrathOpener.Dummy;
+    }
 
     internal class SAMOpenerMaxLevel1 : WrathOpener
     {
