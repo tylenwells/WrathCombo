@@ -62,7 +62,6 @@ public static class StancePartner
     private static readonly Action CheckStancePartner = () =>
     {
         PluginLog.Verbose("OnIPCInstanceChange: Trying to run StancePartner ..");
-        DuoLog.Information("OnIPCInstanceChange: Trying to run StancePartner ..");
 
         // Whether we'll loop again, passed to Cast below
         var callAgainToConfirm = false;
