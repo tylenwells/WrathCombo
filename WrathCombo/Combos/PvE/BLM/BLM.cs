@@ -265,7 +265,9 @@ internal partial class BLM : CasterJob
                     ActionReady(Despair))
                     return Despair;
 
-                if (ActionReady(Blizzard3) && !ActionReady(Role.Swiftcast) && !HasEffect(Buffs.Triplecast))
+                if (ActionReady(Blizzard3) &&
+                    (IsEnabled(CustomComboPreset.BLM_ST_Swiftcast) && !ActionReady(Role.Swiftcast) || 
+                     IsNotEnabled(CustomComboPreset.BLM_ST_Swiftcast)) && !HasEffect(Buffs.Triplecast))
                     return Blizzard3;
 
                 if (ActionReady(Transpose))
