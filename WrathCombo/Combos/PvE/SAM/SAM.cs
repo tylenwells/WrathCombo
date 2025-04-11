@@ -182,12 +182,12 @@ internal partial class SAM : MeleeJob
                     return OriginalHook(OgiNamikiri);
 
                 // Iaijutsu Features
-                if (ActionReady(Iaijutsu))
+                if (LevelChecked(Iaijutsu))
                 {
-                    if (ActionReady(TendoKaeshiSetsugekka) && HasEffect(Buffs.TendoKaeshiSetsugekkaReady))
+                    if (LevelChecked(TendoKaeshiSetsugekka) && HasEffect(Buffs.TendoKaeshiSetsugekkaReady))
                         return OriginalHook(TsubameGaeshi);
 
-                    if (ActionReady(TsubameGaeshi) && HasEffect(Buffs.TsubameReady) &&
+                    if (LevelChecked(TsubameGaeshi) && HasEffect(Buffs.TsubameReady) &&
                         (TraitLevelChecked(Traits.EnhancedHissatsu) && GetCooldownRemainingTime(Senei) > 33 ||
                          SenCount is 3))
                         return OriginalHook(TsubameGaeshi);
@@ -197,10 +197,10 @@ internal partial class SAM : MeleeJob
                          !TargetHasEffect(Debuffs.Higanbana)))
                         return OriginalHook(Iaijutsu);
 
-                    if (SenCount is 2 && !ActionReady(MidareSetsugekka))
+                    if (SenCount is 2 && !LevelChecked(MidareSetsugekka))
                         return OriginalHook(Iaijutsu);
 
-                    if (SenCount is 3 && ActionReady(MidareSetsugekka) && !HasEffect(Buffs.TsubameReady))
+                    if (SenCount is 3 && LevelChecked(MidareSetsugekka) && !HasEffect(Buffs.TsubameReady))
                         return OriginalHook(Iaijutsu);
                 }
             }
@@ -392,12 +392,12 @@ internal partial class SAM : MeleeJob
 
                 // Iaijutsu Features
                 if (IsEnabled(CustomComboPreset.SAM_ST_CDs_Iaijutsu) &&
-                    ActionReady(Iaijutsu))
+                    LevelChecked(Iaijutsu))
                 {
-                    if (ActionReady(TendoKaeshiSetsugekka) && HasEffect(Buffs.TendoKaeshiSetsugekkaReady))
+                    if (LevelChecked(TendoKaeshiSetsugekka) && HasEffect(Buffs.TendoKaeshiSetsugekkaReady))
                         return OriginalHook(TsubameGaeshi);
 
-                    if (ActionReady(TsubameGaeshi) && HasEffect(Buffs.TsubameReady) &&
+                    if (LevelChecked(TsubameGaeshi) && HasEffect(Buffs.TsubameReady) &&
                         (TraitLevelChecked(Traits.EnhancedHissatsu) && GetCooldownRemainingTime(Senei) > 33 ||
                          SenCount is 3))
                         return OriginalHook(TsubameGaeshi);
@@ -412,10 +412,10 @@ internal partial class SAM : MeleeJob
                              !TargetHasEffect(Debuffs.Higanbana)))
                             return OriginalHook(Iaijutsu);
 
-                        if (SenCount is 2 && !ActionReady(MidareSetsugekka))
+                        if (SenCount is 2 && !LevelChecked(MidareSetsugekka))
                             return OriginalHook(Iaijutsu);
 
-                        if (SenCount is 3 && ActionReady(MidareSetsugekka) && !HasEffect(Buffs.TsubameReady))
+                        if (SenCount is 3 && LevelChecked(MidareSetsugekka) && !HasEffect(Buffs.TsubameReady))
                             return OriginalHook(Iaijutsu);
                     }
                 }
@@ -594,16 +594,16 @@ internal partial class SAM : MeleeJob
                 !IsMoving() && (HasEffect(Buffs.OgiNamikiriReady) || Gauge.Kaeshi is Kaeshi.Namikiri))
                 return OriginalHook(OgiNamikiri);
 
-            if (ActionReady(TenkaGoken) && !IsMoving())
+            if (LevelChecked(TenkaGoken) && !IsMoving())
             {
-                if (ActionReady(TsubameGaeshi) &&
+                if (LevelChecked(TsubameGaeshi) &&
                     (HasEffect(Buffs.KaeshiGokenReady) || HasEffect(Buffs.TendoKaeshiGokenReady)))
                     return OriginalHook(TsubameGaeshi);
 
                 if (OriginalHook(Iaijutsu) is TenkaGoken)
                     return OriginalHook(Iaijutsu);
 
-                if (ActionReady(TendoGoken) && OriginalHook(Iaijutsu) is TendoGoken)
+                if (LevelChecked(TendoGoken) && OriginalHook(Iaijutsu) is TendoGoken)
                     return OriginalHook(Iaijutsu);
             }
 
@@ -712,16 +712,16 @@ internal partial class SAM : MeleeJob
                 return OriginalHook(OgiNamikiri);
 
             if (IsEnabled(CustomComboPreset.SAM_AoE_TenkaGoken) &&
-                ActionReady(TenkaGoken))
+                LevelChecked(TenkaGoken))
             {
-                if (ActionReady(TsubameGaeshi) &&
+                if (LevelChecked(TsubameGaeshi) &&
                     (HasEffect(Buffs.KaeshiGokenReady) || HasEffect(Buffs.TendoKaeshiGokenReady)))
                     return OriginalHook(TsubameGaeshi);
 
                 if (!IsMoving() && OriginalHook(Iaijutsu) is TenkaGoken)
                     return OriginalHook(Iaijutsu);
 
-                if (!IsMoving() && ActionReady(TendoGoken) && OriginalHook(Iaijutsu) is TendoGoken)
+                if (!IsMoving() && LevelChecked(TendoGoken) && OriginalHook(Iaijutsu) is TendoGoken)
                     return OriginalHook(Iaijutsu);
             }
 
@@ -801,10 +801,10 @@ internal partial class SAM : MeleeJob
                 return OriginalHook(OgiNamikiri);
 
             if (IsEnabled(CustomComboPreset.SAM_Iaijutsu_TsubameGaeshi) &&
-                (ActionReady(TsubameGaeshi) &&
+                (LevelChecked(TsubameGaeshi) &&
                  (HasEffect(Buffs.TsubameReady) ||
                   HasEffect(Buffs.KaeshiGokenReady)) ||
-                 ActionReady(TendoKaeshiSetsugekka) &&
+                 LevelChecked(TendoKaeshiSetsugekka) &&
                  (HasEffect(Buffs.TendoKaeshiSetsugekkaReady) ||
                   HasEffect(Buffs.TendoKaeshiGokenReady))))
                 return OriginalHook(TsubameGaeshi);
