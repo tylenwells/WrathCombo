@@ -8,8 +8,12 @@ namespace WrathCombo.Combos.PvE;
 
 internal partial class WHM
 {
+    #region Variables
+
+    //Lists
     internal static readonly List<uint>
         StoneGlareList = [Stone1, Stone2, Stone3, Stone4, Glare1, Glare3];
+
     internal static readonly Dictionary<uint, ushort>
         AeroList = new()
         {
@@ -17,17 +21,19 @@ internal partial class WHM
             { Aero2, Debuffs.Aero2 },
             { Dia, Debuffs.Dia }
         };
+
+    // Gauge Stuff
     internal static WHMGauge gauge = GetJobGauge<WHMGauge>();
-    internal static WHMOpenerMaxLevel1 Opener1 = new();
+    internal static bool CanLily => gauge.Lily > 0;
+    internal static bool FullLily => gauge.Lily == 3;
+    internal static bool AlmostFullLily => gauge.Lily == 2 && gauge.LilyTimer >= 17000;
+    internal static bool BloodLilyReady => gauge.BloodLily == 3;
 
-    internal static WrathOpener Opener()
-    {
-        if (Opener1.LevelChecked)
-            return Opener1;
 
-        return WrathOpener.Dummy;
-    }
 
+    #endregion
+
+    #region Heal Priority
     public static int GetMatchingConfigST(int i, IGameObject? optionalTarget, out uint action,
         out bool enabled)
     {
@@ -79,6 +85,19 @@ internal partial class WHM
 
         return 0;
     }
+    #endregion
+
+    #region Opener
+
+    internal static WHMOpenerMaxLevel1 Opener1 = new();
+
+    internal static WrathOpener Opener()
+    {
+        if (Opener1.LevelChecked)
+            return Opener1;
+
+        return WrathOpener.Dummy;
+    }
 
     internal class WHMOpenerMaxLevel1 : WrathOpener
     {
@@ -118,6 +137,7 @@ internal partial class WHM
             return true;
         }
     }
+    #endregion
 
     #region ID's
 

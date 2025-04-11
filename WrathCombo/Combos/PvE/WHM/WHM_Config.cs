@@ -10,6 +10,8 @@ internal partial class WHM
 {
     public static class Config
     {
+        #region Variables
+
         internal static UserInt
             WHM_STDPS_Lucid = new("WHMLucidDreamingFeature"),
             WHM_STDPS_MainCombo_DoT = new("WHM_ST_MainCombo_DoT"),
@@ -50,11 +52,17 @@ internal partial class WHM
         internal static UserIntArray
             WHM_ST_Heals_Priority = new("WHM_ST_Heals_Priority"),
             WHM_AoE_Heals_Priority = new("WHM_AoE_Heals_Priority");
+        #endregion 
+
 
         internal static void Draw(CustomComboPreset preset)
         {
             switch (preset)
             {
+                #region DPS
+                
+                // Single Target
+
                 case CustomComboPreset.WHM_ST_MainCombo_Opener:
                     DrawBossOnlyChoice(WHM_Balance_Content);
                     break;
@@ -97,16 +105,15 @@ internal partial class WHM
 
                     break;
 
+                
+                // AOE
                 case CustomComboPreset.WHM_AoE_DPS_Lucid:
                     DrawSliderInt(4000, 9500, WHM_AoEDPS_Lucid, "Set value for your MP to be at or under for this feature to work", 150, Hundreds);
                     break;
 
-                case CustomComboPreset.WHM_AoE_DPS_PresenceOfMind:
-                    DrawAdditionalBoolChoice(WHM_AoEDPS_PresenceOfMindWeave, "Only Weave or Use Whilst Moving.", "");
-                    break;
-                case CustomComboPreset.WHM_AoEHeals_Lucid:
-                    DrawSliderInt(4000, 9500, WHM_AoEHeals_Lucid, "Set value for your MP to be at or under for this feature to work", 150, Hundreds);
-                    break;
+                #endregion
+
+                #region ST Heals
 
                 case CustomComboPreset.WHM_STHeals_Lucid:
                     DrawSliderInt(4000, 9500, WHM_STHeals_Lucid, "Set value for your MP to be at or under for this feature to work", 150, Hundreds);
@@ -114,14 +121,6 @@ internal partial class WHM
 
                 case CustomComboPreset.WHM_STHeals_Esuna:
                     DrawSliderInt(0, 100, WHM_STHeals_Esuna, "Stop using when below HP %. Set to Zero to disable this check");
-                    break;
-
-                case CustomComboPreset.WHM_AoEHeals_ThinAir:
-                    DrawSliderInt(0, 1, WHM_AoEHeals_ThinAir, "How many charges to keep ready? (0 = Use all)");
-                    break;
-
-                case CustomComboPreset.WHM_AoEHeals_Cure3:
-                    DrawSliderInt(1500, 8500, WHM_AoEHeals_Cure3MP, "Use when MP is above", sliderIncrement: 500);
                     break;
 
                 case CustomComboPreset.WHM_STHeals:
@@ -160,6 +159,21 @@ internal partial class WHM
                     DrawSliderInt(1, 100, WHM_STHeals_AquaveilHP, "Use when target HP% is at or below.");
                     DrawPriorityInput(WHM_ST_Heals_Priority, 4, 3, $"{Aquaveil.ActionName()} Priority: ");
                     break;
+                #endregion
+
+                #region AOE Heals
+
+                case CustomComboPreset.WHM_AoEHeals_Lucid:
+                    DrawSliderInt(4000, 9500, WHM_AoEHeals_Lucid, "Set value for your MP to be at or under for this feature to work", 150, Hundreds);
+                    break;
+
+                case CustomComboPreset.WHM_AoEHeals_ThinAir:
+                    DrawSliderInt(0, 1, WHM_AoEHeals_ThinAir, "How many charges to keep ready? (0 = Use all)");
+                    break;
+
+                case CustomComboPreset.WHM_AoEHeals_Cure3:
+                    DrawSliderInt(1500, 8500, WHM_AoEHeals_Cure3MP, "Use when MP is above", sliderIncrement: 500);
+                    break;
 
                 case CustomComboPreset.WHM_AoEHeals_Assize:
                     DrawAdditionalBoolChoice(WHM_AoEHeals_AssizeWeave, "Only Weave", "");
@@ -174,7 +188,7 @@ internal partial class WHM
                     DrawAdditionalBoolChoice(WHM_AoEHeals_MedicaMO, "Party UI Mousover Checking", "Check your mouseover target for the Medica II/III buff.\nTo be used in conjunction with Redirect/Reaction/etc.");
                     break;
 
-                
+                    #endregion
             }
         }
     }

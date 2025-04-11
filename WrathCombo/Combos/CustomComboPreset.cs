@@ -6402,7 +6402,7 @@ SMN.JobID)]
 
     [ParentCombo(WHM_AoE_DPS)]
     [CustomComboInfo("Presence of Mind Option",
-        "Adds Presence of Mind to the AoE combo, this will delay your GCD by default.", WHM.JobID)]
+        "Adds Presence of Mind to the AoE combo", WHM.JobID)]
     WHM_AoE_DPS_PresenceOfMind = 19195,
 
     [ParentCombo(WHM_AoE_DPS)]
@@ -6413,6 +6413,8 @@ SMN.JobID)]
 
     #endregion
 
+    #region DPS Small Features
+
     [ReplaceSkill(WHM.AfflatusSolace)]
     [CustomComboInfo("Solace into Misery Feature",
         "Replaces Afflatus Solace with Afflatus Misery when it is ready to be used.", WHM.JobID)]
@@ -6422,6 +6424,8 @@ SMN.JobID)]
     [CustomComboInfo("Rapture into Misery Feature",
         "Replaces Afflatus Rapture with Afflatus Misery when it is ready to be used.", WHM.JobID)]
     WHM_RaptureMisery = 19001,
+
+    #endregion
 
     #region AoE Heals Feature
 
@@ -6515,6 +6519,8 @@ SMN.JobID)]
 
     #endregion
 
+    #region Heals Small Features
+
     [ReplaceSkill(WHM.Cure2)]
     [CustomComboInfo("Cure II Sync Feature", "Changes Cure II to Cure when synced below Lv.30.", WHM.JobID)]
     WHM_CureSync = 19002,
@@ -6529,6 +6535,10 @@ SMN.JobID)]
         WHM.JobID)]
     WHM_ThinAirRaise = 19014,
 
+    #endregion
+
+    #region Variants
+
     [Variant]
     [VariantParent(WHM_ST_MainCombo_DoT, WHM_AoE_DPS)]
     [CustomComboInfo("Spirit Dart Option",
@@ -6539,6 +6549,8 @@ SMN.JobID)]
     [VariantParent(WHM_ST_MainCombo, WHM_AoE_DPS)]
     [CustomComboInfo("Rampart Option", "Use Variant Rampart on cooldown.", WHM.JobID)]
     WHM_DPS_Variant_Rampart = 19026,
+
+    #endregion
 
     // Last value = 19027
 
