@@ -3,7 +3,7 @@ using System;
 using WrathCombo.CustomComboNS;
 namespace WrathCombo.Combos.PvE;
 
-internal partial class SGE : HealerJob
+internal partial class SGE : Healer
 {
     /*
      * SGE_Kardia
@@ -291,7 +291,7 @@ internal partial class SGE : HealerJob
         protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.SGE_Raise;
 
         protected override uint Invoke(uint actionID) =>
-            actionID is Role.Swiftcast && IsOnCooldown(Role.Swiftcast)
+            actionID == Role.Swiftcast && IsOnCooldown(Role.Swiftcast)
                 ? Egeiro
                 : actionID;
     }

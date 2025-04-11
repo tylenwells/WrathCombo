@@ -7,7 +7,7 @@ using WrathCombo.Data;
 using WrathCombo.Extensions;
 namespace WrathCombo.Combos.PvE;
 
-internal partial class AST : HealerJob
+internal partial class AST : Healer
 {
     internal class AST_Benefic : CustomCombo
     {
@@ -24,7 +24,7 @@ internal partial class AST : HealerJob
         protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.AST_Raise_Alternative;
 
         protected override uint Invoke(uint actionID) =>
-            actionID is Role.Swiftcast && IsOnCooldown(Role.Swiftcast)
+            actionID == Role.Swiftcast && IsOnCooldown(Role.Swiftcast)
                 ? Ascend
                 : actionID;
     }

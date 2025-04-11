@@ -3,7 +3,7 @@ using WrathCombo.Data;
 
 namespace WrathCombo.Combos.PvE;
 
-internal partial class RDM : CasterJob
+internal partial class RDM : Caster
 {
     internal class RDM_VariantVerCure : CustomCombo
     {
@@ -341,7 +341,7 @@ internal partial class RDM : CasterJob
         protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.RDM_Raise;
         protected override uint Invoke(uint actionID)
         {
-            if (actionID is not Role.Swiftcast)
+            if (actionID != Role.Swiftcast)
                 return actionID;
 
             if (Variant.CanRaise(CustomComboPreset.RDM_Variant_Raise))

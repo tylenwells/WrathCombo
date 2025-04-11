@@ -3,7 +3,7 @@ using WrathCombo.Data;
 using WrathCombo.Extensions;
 namespace WrathCombo.Combos.PvE;
 
-internal partial class MCH : PhysRangedJob
+internal partial class MCH : PhysRanged
 {
     internal class MCH_ST_SimpleMode : CustomCombo
     {
