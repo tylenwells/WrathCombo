@@ -418,8 +418,7 @@ internal partial class RPR : MeleeJob
 
             if (CanWeave())
             {
-                if (LevelChecked(ArcaneCircle) &&
-                    (GetCooldownRemainingTime(ArcaneCircle) <= GCD + 0.25 || ActionReady(ArcaneCircle)))
+                if (ActionReady(ArcaneCircle))
                     return ArcaneCircle;
 
                 if (!HasEffect(Buffs.SoulReaver) && !HasEffect(Buffs.Enshrouded) &&
@@ -441,6 +440,15 @@ internal partial class RPR : MeleeJob
                         (Gauge.Soul is 100 || GetCooldownRemainingTime(Gluttony) > GCD * 5)))
                     return GrimSwathe;
 
+                if (HasEffect(Buffs.Enshrouded))
+                {
+                    if (Gauge.LemureShroud is 2 && Gauge.VoidShroud is 1 && HasEffect(Buffs.Oblatio))
+                        return OriginalHook(Gluttony);
+
+                    if (Gauge.VoidShroud >= 2 && LevelChecked(LemuresScythe))
+                        return OriginalHook(GrimSwathe);
+                }
+
                 if (Role.CanSecondWind(25))
                     return Role.SecondWind;
 
@@ -449,8 +457,8 @@ internal partial class RPR : MeleeJob
             }
 
             if (LevelChecked(WhorlOfDeath) &&
-                GetDebuffRemainingTime(Debuffs.DeathsDesign) < 6 && !HasEffect(Buffs.SoulReaver) &&
-                !HasEffect(Buffs.Executioner))
+                GetDebuffRemainingTime(Debuffs.DeathsDesign) < 6 && 
+                !HasEffect(Buffs.SoulReaver) && !HasEffect(Buffs.Executioner))
                 return WhorlOfDeath;
 
             if (HasEffect(Buffs.PerfectioParata) && LevelChecked(Perfectio))
@@ -468,14 +476,8 @@ internal partial class RPR : MeleeJob
 
             if (HasEffect(Buffs.Enshrouded))
             {
-                if (Gauge.LemureShroud is 1 && Gauge.VoidShroud is 0 && ActionReady(Communio))
+                if (Gauge.LemureShroud is 1 && ActionReady(Communio))
                     return Communio;
-
-                if (Gauge.LemureShroud is 2 && Gauge.VoidShroud is 1 && HasEffect(Buffs.Oblatio))
-                    return OriginalHook(Gluttony);
-
-                if (Gauge.VoidShroud >= 2 && LevelChecked(LemuresScythe) && CanWeave())
-                    return OriginalHook(GrimSwathe);
 
                 if (Gauge.LemureShroud > 0)
                     return OriginalHook(Guillotine);
@@ -538,9 +540,21 @@ internal partial class RPR : MeleeJob
                     !HasEffect(Buffs.SoulReaver) && !HasEffect(Buffs.ImmortalSacrifice) &&
                     Gauge.Soul >= 50 &&
                     (!LevelChecked(Gluttony) ||
-                     LevelChecked(Gluttony) && (Gauge.Soul is 100 ||
-                                                GetCooldownRemainingTime(Gluttony) > GCD * 5)))
+                     LevelChecked(Gluttony) &&
+                     (Gauge.Soul is 100 ||
+                      GetCooldownRemainingTime(Gluttony) > GCD * 5)))
                     return GrimSwathe;
+
+                if (HasEffect(Buffs.Enshrouded))
+                {
+                    if (IsEnabled(CustomComboPreset.RPR_AoE_Sacrificium) &&
+                        Gauge.LemureShroud is 2 && Gauge.VoidShroud is 1 && HasEffect(Buffs.Oblatio))
+                        return OriginalHook(Gluttony);
+
+                    if (IsEnabled(CustomComboPreset.RPR_AoE_Lemure) &&
+                        Gauge.VoidShroud >= 2 && LevelChecked(LemuresScythe))
+                        return OriginalHook(GrimSwathe);
+                }
 
                 if (IsEnabled(CustomComboPreset.RPR_AoE_ComboHeals))
                 {
@@ -577,17 +591,8 @@ internal partial class RPR : MeleeJob
             if (HasEffect(Buffs.Enshrouded))
             {
                 if (IsEnabled(CustomComboPreset.RPR_AoE_Communio) &&
-                    Gauge.LemureShroud is 1 && Gauge.VoidShroud is 0 && ActionReady(Communio))
+                    Gauge.LemureShroud is 1 && ActionReady(Communio))
                     return Communio;
-
-                if (IsEnabled(CustomComboPreset.RPR_AoE_Sacrificium) &&
-                    Gauge.LemureShroud is 2 && Gauge.VoidShroud is 1 && HasEffect(Buffs.Oblatio) &&
-                    CanWeave())
-                    return OriginalHook(Gluttony);
-
-                if (IsEnabled(CustomComboPreset.RPR_AoE_Lemure) &&
-                    Gauge.VoidShroud >= 2 && LevelChecked(LemuresScythe) && CanWeave())
-                    return OriginalHook(GrimSwathe);
 
                 if (IsEnabled(CustomComboPreset.RPR_AoE_Reaping) &&
                     Gauge.LemureShroud > 0)
