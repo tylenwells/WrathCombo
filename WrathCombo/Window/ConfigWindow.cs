@@ -79,6 +79,10 @@ namespace WrathCombo.Window
 
             SizeCondition = ImGuiCond.FirstUseEver;
             Size = new Vector2(800, 650).Scale();
+            this.SizeConstraints = new()
+            {
+                MinimumSize = new Vector2(800, 650).Scale(),
+            };
             SetMinSize();
 
             Svc.PluginInterface.UiBuilder.DefaultFontHandle.ImFontChanged += SetMinSize;
