@@ -457,7 +457,7 @@ internal partial class RPR : MeleeJob
             }
 
             if (LevelChecked(WhorlOfDeath) &&
-                GetDebuffRemainingTime(Debuffs.DeathsDesign) < 6 && 
+                GetDebuffRemainingTime(Debuffs.DeathsDesign) < 6 &&
                 !HasEffect(Buffs.SoulReaver) && !HasEffect(Buffs.Executioner))
                 return WhorlOfDeath;
 
@@ -476,7 +476,7 @@ internal partial class RPR : MeleeJob
 
             if (HasEffect(Buffs.Enshrouded))
             {
-                if (Gauge.LemureShroud is 1 && ActionReady(Communio))
+                if (Gauge.LemureShroud is 1 && LevelChecked(Communio))
                     return Communio;
 
                 if (Gauge.LemureShroud > 0)
@@ -591,7 +591,7 @@ internal partial class RPR : MeleeJob
             if (HasEffect(Buffs.Enshrouded))
             {
                 if (IsEnabled(CustomComboPreset.RPR_AoE_Communio) &&
-                    Gauge.LemureShroud is 1 && ActionReady(Communio))
+                    Gauge.LemureShroud is 1 && LevelChecked(Communio))
                     return Communio;
 
                 if (IsEnabled(CustomComboPreset.RPR_AoE_Reaping) &&
