@@ -57,7 +57,7 @@ internal partial class BLM : CasterJob
 
             if (IsMoving() && InCombat())
             {
-                if (ActionReady(Triplecast) && !HasEffect(Buffs.Triplecast) && !HasEffect(MagicRole.Buffs.Swiftcast))
+                if (ActionReady(Triplecast) && !HasEffect(Buffs.Triplecast) && !HasEffect(Role.Buffs.Swiftcast))
                     return Triplecast;
 
                 if (ActionReady(Paradox) &&
@@ -67,7 +67,7 @@ internal partial class BLM : CasterJob
                 if (ActionReady(Role.Swiftcast) && !HasEffect(Buffs.Triplecast))
                     return Role.Swiftcast;
 
-                if (HasPolyglotStacks() && !HasEffect(Buffs.Triplecast) && !HasEffect(MagicRole.Buffs.Swiftcast))
+                if (HasPolyglotStacks() && !HasEffect(Buffs.Triplecast) && !HasEffect(Role.Buffs.Swiftcast))
                     return LevelChecked(Xenoglossy)
                         ? Xenoglossy
                         : Foul;
@@ -124,7 +124,7 @@ internal partial class BLM : CasterJob
                 }
 
                 if (ActionReady(Blizzard3) && Gauge.UmbralIceStacks < 3 &&
-                    (HasEffect(Buffs.Triplecast) || HasEffect(MagicRole.Buffs.Swiftcast)))
+                    (HasEffect(Buffs.Triplecast) || HasEffect(Role.Buffs.Swiftcast)))
                     return Blizzard3;
 
                 if (ActionReady(BlizzardSpam))
@@ -213,7 +213,7 @@ internal partial class BLM : CasterJob
                 if (Config.BLM_ST_MovementOption[0] &&
                     ActionReady(Triplecast) &&
                     !HasEffect(Buffs.Triplecast) &&
-                    !HasEffect(MagicRole.Buffs.Swiftcast))
+                    !HasEffect(Role.Buffs.Swiftcast))
                     return Triplecast;
 
                 if (Config.BLM_ST_MovementOption[1] &&
@@ -228,7 +228,7 @@ internal partial class BLM : CasterJob
                 if (Config.BLM_ST_MovementOption[3] &&
                     HasPolyglotStacks() &&
                     !HasEffect(Buffs.Triplecast) &&
-                    !HasEffect(MagicRole.Buffs.Swiftcast))
+                    !HasEffect(Role.Buffs.Swiftcast))
                     return LevelChecked(Xenoglossy)
                         ? Xenoglossy
                         : Foul;
@@ -266,7 +266,7 @@ internal partial class BLM : CasterJob
                     return Despair;
 
                 if (ActionReady(Blizzard3) &&
-                    (IsEnabled(CustomComboPreset.BLM_ST_Swiftcast) && !ActionReady(Role.Swiftcast) || 
+                    (IsEnabled(CustomComboPreset.BLM_ST_Swiftcast) && !ActionReady(Role.Swiftcast) ||
                      IsNotEnabled(CustomComboPreset.BLM_ST_Swiftcast)) && !HasEffect(Buffs.Triplecast))
                     return Blizzard3;
 
@@ -276,11 +276,8 @@ internal partial class BLM : CasterJob
 
             if (Gauge.InUmbralIce)
             {
-                if (Gauge.UmbralHearts is 3)
-                {
-                    if (Gauge.IsParadoxActive)
-                        return Paradox;
-                }
+                if (Gauge.UmbralHearts is 3 && Gauge.IsParadoxActive)
+                    return Paradox;
 
                 if (CurMp == MP.MaxMP)
                 {
@@ -292,7 +289,7 @@ internal partial class BLM : CasterJob
                 }
 
                 if (ActionReady(Blizzard3) && Gauge.UmbralIceStacks < 3 &&
-                    (HasEffect(Buffs.Triplecast) || HasEffect(MagicRole.Buffs.Swiftcast)))
+                    (HasEffect(Buffs.Triplecast) || HasEffect(Role.Buffs.Swiftcast)))
                     return Blizzard3;
 
                 if (ActionReady(BlizzardSpam))
