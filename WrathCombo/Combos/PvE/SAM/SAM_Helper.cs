@@ -56,20 +56,19 @@ internal partial class SAM
                 switch (gcd)
                 {
                     //Even windows
-                    case >= 2.09f when GetCooldownRemainingTime(Ikishoten) > 60 &&
-                                       (MeikyoUsed % 7 is 2 && SenCount is 3 ||
-                                        MeikyoUsed % 7 is 4 && SenCount is 2 ||
-                                        MeikyoUsed % 7 is 6 && SenCount is 1):
+                    case >= 2.09f when MeikyoUsed % 7 is 2 && SenCount is 3 && GetCooldownRemainingTime(Ikishoten) <= gcd * 4 ||
+                                       MeikyoUsed % 7 is 4 && SenCount is 2 && GetCooldownRemainingTime(Ikishoten) <= gcd * 5 ||
+                                       MeikyoUsed % 7 is 6 && SenCount is 1 && GetCooldownRemainingTime(Ikishoten) <= gcd * 6:
                     //Odd windows
-                    case >= 2.09f when GetCooldownRemainingTime(Ikishoten) is <= 60 &&
+                    case >= 2.09f when GetCooldownRemainingTime(Ikishoten) is <= 85 and > 40 &&
                                        (MeikyoUsed % 7 is 1 && SenCount is 3 ||
                                         MeikyoUsed % 7 is 3 && SenCount is 2 ||
                                         MeikyoUsed % 7 is 5 && SenCount is 1):
                     //Even windows
-                    case <= 2.08f when GetCooldownRemainingTime(Ikishoten) > 60 && SenCount is 3:
+                    case <= 2.08f when GetCooldownRemainingTime(Ikishoten) <= gcd * 4 && SenCount is 3:
 
                     //Odd windows
-                    case <= 2.08f when GetCooldownRemainingTime(Ikishoten) is <= 60 && SenCount is 3:
+                    case <= 2.08f when GetCooldownRemainingTime(Ikishoten) is <= 65 and > 50 && SenCount is 3:
                         return true;
                 }
             }

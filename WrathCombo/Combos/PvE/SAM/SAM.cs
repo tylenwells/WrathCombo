@@ -126,7 +126,7 @@ internal partial class SAM : MeleeJob
                         case >= 50:
                             return Shinten;
 
-                        case < 50 when SenCount is 1:
+                        case < 50 when SenCount is 1 || JustUsed(Higanbana, 5):
                             return Ikishoten;
                     }
                 }
@@ -150,7 +150,7 @@ internal partial class SAM : MeleeJob
                 if (ActionReady(Zanshin) && Gauge.Kenki >= 50 &&
                     InActionRange(Zanshin) &&
                     HasEffect(Buffs.ZanshinReady) &&
-                    (JustUsed(Higanbana) ||
+                    (JustUsed(Higanbana, 5) ||
                      GetBuffRemainingTime(Buffs.ZanshinReady) <= 6))
                     return Zanshin;
 
@@ -159,6 +159,7 @@ internal partial class SAM : MeleeJob
                     return Shoha;
 
                 if (ActionReady(Shinten) &&
+                    !HasEffect(Buffs.ZanshinReady) &&
                     (Gauge.Kenki >= 65 ||
                      GetTargetHPPercent() <= 1 && Gauge.Kenki >= 25))
                     return Shinten;
@@ -320,7 +321,7 @@ internal partial class SAM : MeleeJob
                             case >= 50:
                                 return Shinten;
 
-                            case < 50 when SenCount is 1:
+                            case < 50 when SenCount is 1 || JustUsed(Higanbana, 5):
                                 return Ikishoten;
                         }
                     }
@@ -348,7 +349,7 @@ internal partial class SAM : MeleeJob
                         ActionReady(Zanshin) && Gauge.Kenki >= 50 &&
                         InActionRange(Zanshin) &&
                         HasEffect(Buffs.ZanshinReady) &&
-                        (JustUsed(Higanbana) ||
+                        (JustUsed(Higanbana, 5) ||
                          GetBuffRemainingTime(Buffs.ZanshinReady) <= 6))
                         return Zanshin;
 
@@ -359,9 +360,8 @@ internal partial class SAM : MeleeJob
                 }
 
                 if (IsEnabled(CustomComboPreset.SAM_ST_Shinten) &&
-                    ActionReady(Shinten) &&
-                    (Gauge.Kenki >= kenkiOvercap ||
-                     GetTargetHPPercent() <= shintenTreshhold && Gauge.Kenki >= 25))
+                    ActionReady(Shinten) && !HasEffect(Buffs.ZanshinReady) &&
+                    (Gauge.Kenki >= kenkiOvercap || GetTargetHPPercent() <= shintenTreshhold && Gauge.Kenki >= 25))
                     return Shinten;
 
                 // healing
