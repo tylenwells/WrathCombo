@@ -1,64 +1,23 @@
+#region
+
 using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Game.ClientState.Statuses;
 using System.Linq;
 using WrathCombo.CustomComboNS;
 using WrathCombo.Data;
+
+// ReSharper disable AccessToStaticMemberViaDerivedType
+// ReSharper disable UnusedType.Global
+// ReSharper disable ClassNeverInstantiated.Global
+// ReSharper disable InconsistentNaming
+// ReSharper disable CheckNamespace
+
+#endregion
+
 namespace WrathCombo.Combos.PvE;
 
 internal partial class WHM : HealerJob
 {
-    #region Small Features
-
-    internal class WHM_SolaceMisery : CustomCombo
-    {
-        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.WHM_SolaceMisery;
-
-        protected override uint Invoke(uint actionID) =>
-            actionID is AfflatusSolace && gauge.BloodLily == 3
-                ? AfflatusMisery
-                : actionID;
-    }
-
-    internal class WHM_RaptureMisery : CustomCombo
-    {
-        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.WHM_RaptureMisery;
-
-        protected override uint Invoke(uint actionID) =>
-            actionID is AfflatusRapture && gauge.BloodLily == 3
-                ? AfflatusMisery
-                : actionID;
-    }
-
-    internal class WHM_CureSync : CustomCombo
-    {
-        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.WHM_CureSync;
-
-        protected override uint Invoke(uint actionID) => actionID is Cure2 && !LevelChecked(Cure2)
-            ? Cure
-            : actionID;
-    }
-
-    internal class WHM_Raise : CustomCombo
-    {
-        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.WHM_Raise;
-
-        protected override uint Invoke(uint actionID)
-        {
-            if (actionID is not Role.Swiftcast)
-                return actionID;
-
-            bool thinAirReady = !HasEffect(Buffs.ThinAir) && LevelChecked(ThinAir) && HasCharges(ThinAir);
-
-            if (HasEffect(Role.Buffs.Swiftcast))
-                return IsEnabled(CustomComboPreset.WHM_ThinAirRaise) && thinAirReady
-                    ? ThinAir
-                    : Raise;
-
-            return actionID;
-        }
-    }
-    #endregion
-
     #region DPS
 
     internal class WHM_ST_MainCombo : CustomCombo
@@ -166,7 +125,7 @@ internal partial class WHM : HealerJob
     {
         protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.WHM_AoE_DPS;
 
-        internal static int AssizeCount => ActionWatching.CombatActions.Count(x => x == Assize);
+        private static int AssizeCount => ActionWatching.CombatActions.Count(x => x == Assize);
 
         protected override uint Invoke(uint actionID)
         {
@@ -371,5 +330,57 @@ internal partial class WHM : HealerJob
     }
 
     
+    #endregion
+
+    #region Small Features
+
+    internal class WHM_SolaceMisery : CustomCombo
+    {
+        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.WHM_SolaceMisery;
+
+        protected override uint Invoke(uint actionID) =>
+            actionID is AfflatusSolace && gauge.BloodLily == 3
+                ? AfflatusMisery
+                : actionID;
+    }
+
+    internal class WHM_RaptureMisery : CustomCombo
+    {
+        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.WHM_RaptureMisery;
+
+        protected override uint Invoke(uint actionID) =>
+            actionID is AfflatusRapture && gauge.BloodLily == 3
+                ? AfflatusMisery
+                : actionID;
+    }
+
+    internal class WHM_CureSync : CustomCombo
+    {
+        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.WHM_CureSync;
+
+        protected override uint Invoke(uint actionID) => actionID is Cure2 && !LevelChecked(Cure2)
+            ? Cure
+            : actionID;
+    }
+
+    internal class WHM_Raise : CustomCombo
+    {
+        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.WHM_Raise;
+
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not Role.Swiftcast)
+                return actionID;
+
+            var thinAirReady = !HasEffect(Buffs.ThinAir) && ActionReady(ThinAir);
+
+            if (HasEffect(Role.Buffs.Swiftcast))
+                return IsEnabled(CustomComboPreset.WHM_ThinAirRaise) && thinAirReady
+                    ? ThinAir
+                    : Raise;
+
+            return actionID;
+        }
+    }
     #endregion
 }

@@ -1,9 +1,24 @@
-﻿using Dalamud.Game.ClientState.JobGauge.Types;
+﻿#region
+
+using Dalamud.Game.ClientState.JobGauge.Types;
 using Dalamud.Game.ClientState.Objects.Types;
 using System.Collections.Generic;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
+
+// ReSharper disable AccessToStaticMemberViaDerivedType
+// ReSharper disable ConditionIsAlwaysTrueOrFalse
+// ReSharper disable ReturnTypeCanBeNotNullable
+// ReSharper disable UnusedType.Global
+// ReSharper disable ClassNeverInstantiated.Global
+// ReSharper disable InconsistentNaming
+// ReSharper disable CheckNamespace
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable MemberHidesStaticFromOuterClass
+
+#endregion
+
 namespace WrathCombo.Combos.PvE;
 
 internal partial class WHM
@@ -26,10 +41,8 @@ internal partial class WHM
     internal static WHMGauge gauge = GetJobGauge<WHMGauge>();
     internal static bool CanLily => gauge.Lily > 0;
     internal static bool FullLily => gauge.Lily == 3;
-    internal static bool AlmostFullLily => gauge.Lily == 2 && gauge.LilyTimer >= 17000;
+    internal static bool AlmostFullLily => gauge is { Lily: 2, LilyTimer: >= 17000 };
     internal static bool BloodLilyReady => gauge.BloodLily == 3;
-
-
 
     #endregion
 

@@ -1,60 +1,27 @@
-﻿using Dalamud.Interface.Colors;
+﻿#region
+
+using Dalamud.Interface.Colors;
 using ImGuiNET;
 using WrathCombo.CustomComboNS.Functions;
 using static WrathCombo.Extensions.UIntExtensions;
 using static WrathCombo.Window.Functions.SliderIncrements;
 using static WrathCombo.Window.Functions.UserConfig;
+
+// ReSharper disable AccessToStaticMemberViaDerivedType
+// ReSharper disable once GrammarMistakeInComment
+// ReSharper disable SwitchStatementMissingSomeEnumCasesNoDefault
+// ReSharper disable InconsistentNaming
+// ReSharper disable CheckNamespace
+// ReSharper disable ClassNeverInstantiated.Global
+
+#endregion
+
 namespace WrathCombo.Combos.PvE;
 
 internal partial class WHM
 {
     public static class Config
     {
-        #region Variables
-
-        internal static UserInt
-            WHM_STDPS_Lucid = new("WHMLucidDreamingFeature"),
-            WHM_STDPS_MainCombo_DoT = new("WHM_ST_MainCombo_DoT"),
-            WHM_ST_DPS_AeroOption = new("WHM_ST_DPS_AeroOption"),
-            WHM_ST_DPS_AeroOptionSubOption = new("WHM_ST_DPS_AeroOptionSubOption", 0),
-            WHM_AoEDPS_Lucid = new("WHM_AoE_Lucid", 6500),
-            WHM_STHeals_Lucid = new("WHM_STHeals_Lucid"),
-            WHM_STHeals_ThinAir = new("WHM_STHeals_ThinAir"),
-            WHM_STHeals_Esuna = new("WHM_Cure2_Esuna", 100),
-            WHM_STHeals_BenedictionHP = new("WHM_STHeals_BenedictionHP", 99),
-            WHM_STHeals_TetraHP = new("WHM_STHeals_TetraHP", 99),
-            WHM_STHeals_BenisonHP = new("WHM_STHeals_BenisonHP", 99),
-            WHM_STHeals_AquaveilHP = new("WHM_STHeals_AquaveilHP", 99),
-            WHM_AoEHeals_Lucid = new("WHM_AoEHeals_Lucid", 6500),
-            WHM_AoEHeals_ThinAir = new("WHM_AoE_ThinAir"),
-            WHM_AoEHeals_Cure3MP = new("WHM_AoE_Cure3MP"),
-            WHM_Balance_Content = new("WHM_Balance_Content");
-        internal static UserBool
-            WHM_ST_MainCombo_DoT_Adv = new("WHM_ST_MainCombo_DoT_Adv"),
-            WHM_ST_MainCombo_Adv = new("WHM_ST_MainCombo_Adv"),
-            WHM_ST_MainCombo_Opener_Swiftcast = new("WHM_ST_Opener_Swiftcast"),
-            WHM_AoEDPS_PresenceOfMindWeave = new("WHM_AoEDPS_PresenceOfMindWeave"),
-            WHM_STHeals_UIMouseOver = new("WHM_STHeals_UIMouseOver"),
-            WHM_STHeals_IncludeShields = new("WHM_STHeals_IncludeShields"),
-            WHM_STHeals_BenedictionWeave = new("WHM_STHeals_BenedictionWeave"),
-            WHM_STHeals_TetraWeave = new("WHM_STHeals_TetraWeave"),
-            WHM_STHeals_BenisonWeave = new("WHM_STHeals_BenisonWeave"),
-            WHM_STHeals_AquaveilWeave = new("WHM_STHeals_AquaveilWeave"),
-            WHM_AoEHeals_PlenaryWeave = new("WHM_AoEHeals_PlenaryWeave"),
-            WHM_AoEHeals_AssizeWeave = new("WHM_AoEHeals_AssizeWeave"),
-            WHM_AoEHeals_MedicaMO = new("WHM_AoEHeals_MedicaMO");
-        internal static UserFloat
-            WHM_ST_MainCombo_DoT_Threshold = new("WHM_ST_MainCombo_DoT_Threshold"),
-            WHM_STHeals_RegenTimer = new("WHM_STHeals_RegenTimer"),
-            WHM_AoEHeals_MedicaTime = new("WHM_AoEHeals_MedicaTime");
-        public static UserBoolArray
-            WHM_ST_MainCombo_Adv_Actions = new("WHM_ST_MainCombo_Adv_Actions");
-        internal static UserIntArray
-            WHM_ST_Heals_Priority = new("WHM_ST_Heals_Priority"),
-            WHM_AoE_Heals_Priority = new("WHM_AoE_Heals_Priority");
-        #endregion 
-
-
         internal static void Draw(CustomComboPreset preset)
         {
             switch (preset)
@@ -185,11 +152,55 @@ internal partial class WHM
 
                 case CustomComboPreset.WHM_AoEHeals_Medica2:
                     DrawRoundedSliderFloat(0f, 6f, WHM_AoEHeals_MedicaTime, "Time Remaining on Buff to Renew");
-                    DrawAdditionalBoolChoice(WHM_AoEHeals_MedicaMO, "Party UI Mousover Checking", "Check your mouseover target for the Medica II/III buff.\nTo be used in conjunction with Redirect/Reaction/etc.");
+                    DrawAdditionalBoolChoice(WHM_AoEHeals_MedicaMO, "Party UI Mouseover Checking", "Check your mouseover target for the Medica II/III buff.\nTo be used in conjunction with Redirect/Reaction/etc.");
                     break;
 
                     #endregion
             }
         }
+
+        #region Variables
+
+        internal static UserInt
+            WHM_STDPS_Lucid = new("WHMLucidDreamingFeature"),
+            WHM_STDPS_MainCombo_DoT = new("WHM_ST_MainCombo_DoT"),
+            WHM_ST_DPS_AeroOption = new("WHM_ST_DPS_AeroOption"),
+            WHM_ST_DPS_AeroOptionSubOption = new("WHM_ST_DPS_AeroOptionSubOption", 0),
+            WHM_AoEDPS_Lucid = new("WHM_AoE_Lucid", 6500),
+            WHM_STHeals_Lucid = new("WHM_STHeals_Lucid"),
+            WHM_STHeals_ThinAir = new("WHM_STHeals_ThinAir"),
+            WHM_STHeals_Esuna = new("WHM_Cure2_Esuna", 100),
+            WHM_STHeals_BenedictionHP = new("WHM_STHeals_BenedictionHP", 99),
+            WHM_STHeals_TetraHP = new("WHM_STHeals_TetraHP", 99),
+            WHM_STHeals_BenisonHP = new("WHM_STHeals_BenisonHP", 99),
+            WHM_STHeals_AquaveilHP = new("WHM_STHeals_AquaveilHP", 99),
+            WHM_AoEHeals_Lucid = new("WHM_AoEHeals_Lucid", 6500),
+            WHM_AoEHeals_ThinAir = new("WHM_AoE_ThinAir"),
+            WHM_AoEHeals_Cure3MP = new("WHM_AoE_Cure3MP"),
+            WHM_Balance_Content = new("WHM_Balance_Content");
+        internal static UserBool
+            WHM_ST_MainCombo_DoT_Adv = new("WHM_ST_MainCombo_DoT_Adv"),
+            WHM_ST_MainCombo_Adv = new("WHM_ST_MainCombo_Adv"),
+            WHM_ST_MainCombo_Opener_Swiftcast = new("WHM_ST_Opener_Swiftcast"),
+            WHM_AoEDPS_PresenceOfMindWeave = new("WHM_AoEDPS_PresenceOfMindWeave"),
+            WHM_STHeals_UIMouseOver = new("WHM_STHeals_UIMouseOver"),
+            WHM_STHeals_IncludeShields = new("WHM_STHeals_IncludeShields"),
+            WHM_STHeals_BenedictionWeave = new("WHM_STHeals_BenedictionWeave"),
+            WHM_STHeals_TetraWeave = new("WHM_STHeals_TetraWeave"),
+            WHM_STHeals_BenisonWeave = new("WHM_STHeals_BenisonWeave"),
+            WHM_STHeals_AquaveilWeave = new("WHM_STHeals_AquaveilWeave"),
+            WHM_AoEHeals_PlenaryWeave = new("WHM_AoEHeals_PlenaryWeave"),
+            WHM_AoEHeals_AssizeWeave = new("WHM_AoEHeals_AssizeWeave"),
+            WHM_AoEHeals_MedicaMO = new("WHM_AoEHeals_MedicaMO");
+        internal static UserFloat
+            WHM_ST_MainCombo_DoT_Threshold = new("WHM_ST_MainCombo_DoT_Threshold"),
+            WHM_STHeals_RegenTimer = new("WHM_STHeals_RegenTimer"),
+            WHM_AoEHeals_MedicaTime = new("WHM_AoEHeals_MedicaTime");
+        public static UserBoolArray
+            WHM_ST_MainCombo_Adv_Actions = new("WHM_ST_MainCombo_Adv_Actions");
+        internal static UserIntArray
+            WHM_ST_Heals_Priority = new("WHM_ST_Heals_Priority"),
+            WHM_AoE_Heals_Priority = new("WHM_AoE_Heals_Priority");
+        #endregion
     }
 }
