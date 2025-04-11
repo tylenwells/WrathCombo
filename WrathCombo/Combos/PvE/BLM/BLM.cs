@@ -32,18 +32,17 @@ internal partial class BLM : CasterJob
                     if (ActionReady(Manafont) && EndOfFirePhase)
                         return Manafont;
 
-                    if (ActionReady(Transpose) && (ActionReady(Role.Swiftcast) || HasEffect(Buffs.Triplecast)))
-                        return Transpose;
-                }
-
-                if (Gauge.InUmbralIce)
-                {
-                    if (ActionReady(Role.Swiftcast) && JustUsed(Transpose,4) && !HasEffect(Buffs.Triplecast))
+                    if (ActionReady(Role.Swiftcast) && JustUsed(Despair) &&
+                        !ActionReady(Manafont) && !HasEffect(Buffs.Triplecast))
                         return Role.Swiftcast;
 
-                    if (JustUsed(Paradox) && CurMp is MP.MaxMP)
+                    if (ActionReady(Transpose) && (HasEffect(Role.Buffs.Swiftcast) || HasEffect(Buffs.Triplecast)))
                         return Transpose;
                 }
+
+                if (Gauge.InUmbralIce &&
+                    JustUsed(Paradox) && CurMp is MP.MaxMP)
+                    return Transpose;
             }
 
             if (HasMaxPolyglotStacks && Gauge.EnochianTimer < 3000)
@@ -102,7 +101,8 @@ internal partial class BLM : CasterJob
                 if (ActionReady(Despair))
                     return Despair;
 
-                if (ActionReady(Blizzard3) && !ActionReady(Role.Swiftcast) && !HasEffect(Buffs.Triplecast))
+                if (ActionReady(Blizzard3) && 
+                    !HasEffect(Role.Buffs.Swiftcast) && !HasEffect(Buffs.Triplecast))
                     return Blizzard3;
 
                 if (ActionReady(Transpose))
@@ -182,19 +182,18 @@ internal partial class BLM : CasterJob
                         ActionReady(Manafont) && EndOfFirePhase)
                         return Manafont;
 
-                    if (ActionReady(Transpose) && (ActionReady(Role.Swiftcast) || HasEffect(Buffs.Triplecast)))
-                        return Transpose;
-                }
-
-                if (Gauge.InUmbralIce)
-                {
                     if (IsEnabled(CustomComboPreset.BLM_ST_Swiftcast) &&
-                        ActionReady(Role.Swiftcast) && JustUsed(Transpose,4) && !HasEffect(Buffs.Triplecast))
+                        ActionReady(Role.Swiftcast) && JustUsed(Despair) &&
+                        !ActionReady(Manafont) && !HasEffect(Buffs.Triplecast))
                         return Role.Swiftcast;
 
-                    if (JustUsed(Paradox) && CurMp is MP.MaxMP)
+                    if (ActionReady(Transpose) && (HasEffect(Role.Buffs.Swiftcast) || HasEffect(Buffs.Triplecast)))
                         return Transpose;
                 }
+
+                if (Gauge.InUmbralIce &&
+                    JustUsed(Paradox) && CurMp is MP.MaxMP)
+                    return Transpose;
             }
 
             if (IsEnabled(CustomComboPreset.BLM_ST_UsePolyglot) &&
@@ -268,8 +267,7 @@ internal partial class BLM : CasterJob
                     return Despair;
 
                 if (ActionReady(Blizzard3) &&
-                    (IsEnabled(CustomComboPreset.BLM_ST_Swiftcast) && !ActionReady(Role.Swiftcast) ||
-                     IsNotEnabled(CustomComboPreset.BLM_ST_Swiftcast)) && !HasEffect(Buffs.Triplecast))
+                    !HasEffect(Role.Buffs.Swiftcast) && !HasEffect(Buffs.Triplecast))
                     return Blizzard3;
 
                 if (ActionReady(Transpose))
