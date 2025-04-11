@@ -211,9 +211,7 @@ internal partial class WHM : HealerJob
             #region GCDS and Casts
 
             // Glare IV
-            if (IsEnabled(CustomComboPreset.WHM_AoE_DPS_GlareIV)
-                && HasEffect(Buffs.SacredSight)
-                && GetBuffStacks(Buffs.SacredSight) > 0)
+            if (IsEnabled(CustomComboPreset.WHM_AoE_DPS_GlareIV) && HasEffect(Buffs.SacredSight))
                 return OriginalHook(Glare4);
 
             if (IsEnabled(CustomComboPreset.WHM_AoE_DPS_LilyOvercap) && ActionReady(AfflatusRapture) && (FullLily || AlmostFullLily))
