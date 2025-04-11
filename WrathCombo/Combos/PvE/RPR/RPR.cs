@@ -469,23 +469,24 @@ internal partial class RPR : MeleeJob
                 (GetBuffRemainingTime(Buffs.BloodsownCircle) <= 1 || JustUsed(Communio)))
                 return PlentifulHarvest;
 
-            if (!HasEffect(Buffs.Enshrouded) && !HasEffect(Buffs.SoulReaver) && !HasEffect(Buffs.Executioner) &&
-                !HasEffect(Buffs.PerfectioParata) &&
-                ActionReady(SoulScythe) && Gauge.Soul <= 50)
-                return SoulScythe;
+            if (HasEffect(Buffs.SoulReaver) ||
+                HasEffect(Buffs.Executioner) && !HasEffect(Buffs.Enshrouded) && LevelChecked(Guillotine))
+                return OriginalHook(Guillotine);
 
             if (HasEffect(Buffs.Enshrouded))
             {
-                if (Gauge.LemureShroud is 1 && LevelChecked(Communio))
+                if (LevelChecked(Communio) &&
+                    Gauge.LemureShroud is 1  && Gauge.VoidShroud is 0)
                     return Communio;
 
                 if (Gauge.LemureShroud > 0)
                     return OriginalHook(Guillotine);
             }
 
-            if (HasEffect(Buffs.SoulReaver) ||
-                HasEffect(Buffs.Executioner) && !HasEffect(Buffs.Enshrouded) && LevelChecked(Guillotine))
-                return OriginalHook(Guillotine);
+            if (!HasEffect(Buffs.Enshrouded) && !HasEffect(Buffs.SoulReaver) && !HasEffect(Buffs.Executioner) &&
+                !HasEffect(Buffs.PerfectioParata) &&
+                ActionReady(SoulScythe) && Gauge.Soul <= 50)
+                return SoulScythe;
 
             return ComboAction == OriginalHook(SpinningScythe) && LevelChecked(NightmareScythe)
                 ? OriginalHook(NightmareScythe)
@@ -518,8 +519,7 @@ internal partial class RPR : MeleeJob
             if (CanWeave())
             {
                 if (IsEnabled(CustomComboPreset.RPR_AoE_ArcaneCircle) &&
-                    LevelChecked(ArcaneCircle) &&
-                    (GetCooldownRemainingTime(ArcaneCircle) <= GCD + 0.25 || ActionReady(ArcaneCircle)))
+                    ActionReady(ArcaneCircle))
                     return ArcaneCircle;
 
                 if (IsEnabled(CustomComboPreset.RPR_AoE_Enshroud) &&
@@ -582,16 +582,16 @@ internal partial class RPR : MeleeJob
                 (GetBuffRemainingTime(Buffs.BloodsownCircle) <= 1 || JustUsed(Communio)))
                 return PlentifulHarvest;
 
-            if (IsEnabled(CustomComboPreset.RPR_AoE_SoulScythe) &&
-                !HasEffect(Buffs.Enshrouded) && !HasEffect(Buffs.SoulReaver) && !HasEffect(Buffs.Executioner) &&
-                !HasEffect(Buffs.PerfectioParata) &&
-                ActionReady(SoulScythe) && Gauge.Soul <= 50)
-                return SoulScythe;
-
+            if (IsEnabled(CustomComboPreset.RPR_AoE_Guillotine) &&
+                (HasEffect(Buffs.SoulReaver) || HasEffect(Buffs.Executioner)
+                    && !HasEffect(Buffs.Enshrouded) && LevelChecked(Guillotine)))
+                return OriginalHook(Guillotine);
+            
             if (HasEffect(Buffs.Enshrouded))
             {
                 if (IsEnabled(CustomComboPreset.RPR_AoE_Communio) &&
-                    Gauge.LemureShroud is 1 && LevelChecked(Communio))
+                    LevelChecked(Communio) &&
+                    Gauge.LemureShroud is 1 && Gauge.VoidShroud is 0)
                     return Communio;
 
                 if (IsEnabled(CustomComboPreset.RPR_AoE_Reaping) &&
@@ -599,10 +599,11 @@ internal partial class RPR : MeleeJob
                     return OriginalHook(Guillotine);
             }
 
-            if (IsEnabled(CustomComboPreset.RPR_AoE_Guillotine) &&
-                (HasEffect(Buffs.SoulReaver) || HasEffect(Buffs.Executioner)
-                    && !HasEffect(Buffs.Enshrouded) && LevelChecked(Guillotine)))
-                return OriginalHook(Guillotine);
+            if (IsEnabled(CustomComboPreset.RPR_AoE_SoulScythe) &&
+                !HasEffect(Buffs.Enshrouded) && !HasEffect(Buffs.SoulReaver) && !HasEffect(Buffs.Executioner) &&
+                !HasEffect(Buffs.PerfectioParata) &&
+                ActionReady(SoulScythe) && Gauge.Soul <= 50)
+                return SoulScythe;
 
             return ComboAction == OriginalHook(SpinningScythe) && LevelChecked(NightmareScythe)
                 ? OriginalHook(NightmareScythe)
