@@ -244,7 +244,7 @@ namespace WrathCombo.Combos.PvE
             IPhysicalRoleBuffs Buffs { get; }
         }
 
-        internal interface IPhysRanged : IPhysicalRoleShared, ILegGraze, IFootGraze, IPeloton, IHeadGraze
+        internal interface IPhysicalRanged : IPhysicalRoleShared, ILegGraze, IFootGraze, IPeloton, IHeadGraze
         {
             IPhysRangedBuffs Buffs { get; }
         }

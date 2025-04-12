@@ -3,7 +3,7 @@ using WrathCombo.CustomComboNS;
 using WrathCombo.Data;
 namespace WrathCombo.Combos.PvE;
 
-internal partial class BRD : PhysRanged
+internal partial class BRD : PhysicalRanged
 {
     #region Smaller features
 

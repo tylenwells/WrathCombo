@@ -43,11 +43,11 @@ namespace WrathCombo.Combos.PvE.Content
             }
 
             // VariantPhysRanged: Cure, Ultimatum, Raise, Rampart
-            internal static class PhysRanged
+            internal static class PhysicalRanged
             {
-                public static IPhysRangedVariant Instance { get; } = new VariantPhysRangedImpl();
+                public static IPhysicalRangedVariant Instance { get; } = new VariantPhysRangedImpl();
 
-                private class VariantPhysRangedImpl : IPhysRangedVariant
+                private class VariantPhysRangedImpl : IPhysicalRangedVariant
                 {
                     public uint Cure => Variant.VariantCure;
                     public uint Ultimatum => Variant.VariantUltimatum;

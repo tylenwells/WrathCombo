@@ -28,11 +28,11 @@ internal class Melee
     protected Melee() { }
 }
 
-internal class PhysRanged
+internal class PhysicalRanged
 {
-    public static IPhysRangedVariant Variant { get; } = VariantRoles.PhysRanged.Instance;
-    public static IPhysRanged Role { get; } = Roles.PhysRanged.Instance;
-    protected PhysRanged() { }
+    public static IPhysicalRangedVariant Variant { get; } = VariantRoles.PhysicalRanged.Instance;
+    public static IPhysicalRanged Role { get; } = Roles.PhysicalRanged.Instance;
+    protected PhysicalRanged() { }
 }
 
 internal class Caster

@@ -128,11 +128,11 @@ namespace WrathCombo.Combos.PvE
                 }
             }
 
-            internal static class PhysRanged
+            internal static class PhysicalRanged
             {
-                public static IPhysRanged Instance { get; } = new PhysRangedImpl();
+                public static IPhysicalRanged Instance { get; } = new PhysRangedImpl();
 
-                private class PhysRangedImpl : IPhysRanged
+                private class PhysRangedImpl : IPhysicalRanged
                 {
                     public IPhysRangedBuffs Buffs { get; } = new PhysRangedBuffs();
 

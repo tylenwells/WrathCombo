@@ -51,7 +51,7 @@ namespace WrathCombo.Combos.PvE.Content
         {
         }
 
-        internal interface IPhysRangedVariant : IVariantCure, IVariantUltimatum, IVariantRaise, IVariantRampart
+        internal interface IPhysicalRangedVariant : IVariantCure, IVariantUltimatum, IVariantRaise, IVariantRampart
         {
         }
 
