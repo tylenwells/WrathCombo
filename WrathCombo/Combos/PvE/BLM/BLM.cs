@@ -1,4 +1,5 @@
 using WrathCombo.CustomComboNS;
+using WrathCombo.Extensions;
 namespace WrathCombo.Combos.PvE;
 
 internal partial class BLM : CasterJob
@@ -92,7 +93,7 @@ internal partial class BLM : CasterJob
                 if (FlarestarReady)
                     return FlareStar;
 
-                if ((LevelChecked(Paradox) && HasEffect(Buffs.Firestarter) || TimeSinceFirestarterBuff >= 2) && Gauge.AstralFireStacks < 3)
+                if (((LevelChecked(Paradox) && HasEffect(Buffs.Firestarter) || TimeSinceFirestarterBuff >= 2) && Gauge.AstralFireStacks < 3) || (!Fire4.LevelChecked() && TimeSinceFirestarterBuff >= 2 && ActionReady(Fire3)))
                     return Fire3;
 
                 if (ActionReady(FireSpam) && (LevelChecked(Despair) && CurMp - MP.FireI >= 800 || !LevelChecked(Despair)))
@@ -256,7 +257,7 @@ internal partial class BLM : CasterJob
                     FlarestarReady)
                     return FlareStar;
 
-                if ((LevelChecked(Paradox) && HasEffect(Buffs.Firestarter) || TimeSinceFirestarterBuff >= 2) && Gauge.AstralFireStacks < 3)
+                if (((LevelChecked(Paradox) && HasEffect(Buffs.Firestarter) || TimeSinceFirestarterBuff >= 2) && Gauge.AstralFireStacks < 3) || (!Fire4.LevelChecked() && TimeSinceFirestarterBuff >= 2 && ActionReady(Fire3)))
                     return Fire3;
 
                 if (ActionReady(FireSpam) && (LevelChecked(Despair) && CurMp - MP.FireI >= 800 || !LevelChecked(Despair)))
