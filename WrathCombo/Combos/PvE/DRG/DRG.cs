@@ -281,7 +281,8 @@ internal partial class DRG : MeleeJob
                         LevelChecked(MirageDive) &&
                         CanDRGWeave(MirageDive) &&
                         HasEffect(Buffs.DiveReady) &&
-                        Gauge.IsLOTDActive)
+                        (IsEnabled(CustomComboPreset.DRG_ST_DoubleMirage) && Gauge.IsLOTDActive ||
+                         IsNotEnabled(CustomComboPreset.DRG_ST_DoubleMirage)))
                         return MirageDive;
 
                     //Geirskogul Feature
@@ -296,11 +297,14 @@ internal partial class DRG : MeleeJob
                         ActionReady(OriginalHook(Jump)) &&
                         CanDRGWeave(OriginalHook(Jump)) &&
                         !HasEffect(Buffs.DiveReady) &&
-                        (LevelChecked(HighJump) && (GetCooldownRemainingTime(Geirskogul) < 15 || Gauge.IsLOTDActive) ||
+                        (LevelChecked(HighJump) &&
+                         (IsEnabled(CustomComboPreset.DRG_ST_DoubleMirage) && 
+                          (GetCooldownRemainingTime(Geirskogul) < 15 || Gauge.IsLOTDActive) ||
+                          IsNotEnabled(CustomComboPreset.DRG_ST_DoubleMirage)) ||
                          !LevelChecked(HighJump)) &&
                         (IsNotEnabled(CustomComboPreset.DRG_ST_HighJump_Melee) ||
-                         IsEnabled(CustomComboPreset.DRG_ST_HighJump_Melee) && TimeMoving.Ticks == 0 &&
-                         GetTargetDistance() <= 1))
+                         IsEnabled(CustomComboPreset.DRG_ST_HighJump_Melee) &&
+                         TimeMoving.Ticks == 0 && GetTargetDistance() <= 1))
                         return OriginalHook(Jump);
 
                     //Dragonfire Dive Feature
