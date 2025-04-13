@@ -541,7 +541,7 @@ internal partial class BLM : CasterJob
         {
             switch (actionID)
             {
-                case Blizzard when LevelChecked(Freeze) && !Gauge.InUmbralIce:
+                case Blizzard when LevelChecked(Blizzard3) && !Gauge.InUmbralIce:
                     return Blizzard3;
 
                 case Freeze when !LevelChecked(Freeze):
