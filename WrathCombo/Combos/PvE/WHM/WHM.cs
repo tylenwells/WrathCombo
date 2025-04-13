@@ -14,7 +14,7 @@ using WrathCombo.Data;
 
 namespace WrathCombo.Combos.PvE;
 
-internal partial class WHM : HealerJob
+internal partial class WHM : Healer
 {
     #region DPS
 
@@ -99,17 +99,17 @@ internal partial class WHM : HealerJob
 
             #region GCDS and Casts
 
-            // DoTs
+                // DoTs
             if (IsEnabled(CustomComboPreset.WHM_ST_MainCombo_DoT) &&
                 ActionReady(OriginalHook(Aero)) &&
                 HasBattleTarget() &&
                 AeroList.TryGetValue(OriginalHook(Aero),
                     out var dotDebuffID) &&
                 GetStatusEffectRemainingTime(dotDebuffID) <= refreshTimer &&
-                GetTargetHPPercent() > hpThreshold)
-                return OriginalHook(Aero);
+                        GetTargetHPPercent() > hpThreshold)
+                        return OriginalHook(Aero);
 
-            // Glare IV
+                // Glare IV
             if (IsEnabled(CustomComboPreset.WHM_ST_MainCombo_GlareIV) &&
                 HasStatusEffect(Buffs.SacredSight))
                 return Glare4;
@@ -118,15 +118,15 @@ internal partial class WHM : HealerJob
             if (IsEnabled(CustomComboPreset.WHM_ST_MainCombo_LilyOvercap) &&
                 ActionReady(AfflatusRapture) &&
                 (FullLily || AlmostFullLily))
-                return AfflatusRapture;
+                    return AfflatusRapture;
 
             // Blood Lily Spend
             if (IsEnabled(CustomComboPreset.WHM_ST_MainCombo_Misery_oGCD) &&
                 BloodLilyReady)
-                return AfflatusMisery;
+                    return AfflatusMisery;
 
             // Needed Because of Button Selection
-            return OriginalHook(Stone1);
+                return OriginalHook(Stone1);
 
             #endregion
         }
@@ -164,7 +164,7 @@ internal partial class WHM : HealerJob
             {
                 if (IsEnabled(CustomComboPreset.WHM_AoE_DPS_Assize) &&
                     ActionReady(Assize))
-                    return Assize;
+                return Assize;
 
                 if (IsEnabled(CustomComboPreset.WHM_AoE_DPS_PresenceOfMind) &&
                     ActionReady(PresenceOfMind))
@@ -172,7 +172,7 @@ internal partial class WHM : HealerJob
 
                 if (IsEnabled(CustomComboPreset.WHM_AoE_DPS_Lucid) &&
                     Role.CanLucidDream(Config.WHM_AoEDPS_Lucid))
-                    return Role.LucidDreaming;
+                return Role.LucidDreaming;
 
                 if (Variant.CanRampart(CustomComboPreset.WHM_DPS_Variant_Rampart))
                     return Variant.Rampart;
@@ -232,7 +232,7 @@ internal partial class WHM : HealerJob
                                Config.WHM_STHeals_ThinAir;
 
             var regenReady = ActionReady(Regen) &&
-                             !JustUsed(Regen, 4) &&
+                              !JustUsed(Regen, 4) &&
                              GetStatusEffect(Buffs.Regen, healTarget)?
                                  .RemainingTime <= Config.WHM_STHeals_RegenTimer &&
                              GetTargetHPPercent(healTarget,
@@ -270,8 +270,8 @@ internal partial class WHM : HealerJob
 
                 if (GetTargetHPPercent(healTarget,
                         Config.WHM_STHeals_IncludeShields) <= config &&
-                    ActionReady(spell))
-                    return spell;
+                        ActionReady(spell))
+                        return spell;
             }
 
             #endregion
@@ -287,8 +287,8 @@ internal partial class WHM : HealerJob
 
             if (ActionReady(Cure2))
             {
-                if (IsEnabled(CustomComboPreset.WHM_STHeals_ThinAir) && thinAirReady)
-                    return ThinAir;
+            if (IsEnabled(CustomComboPreset.WHM_STHeals_ThinAir) && thinAirReady)
+                return ThinAir;
                 return Cure2;
             }
 
@@ -397,7 +397,7 @@ internal partial class WHM : HealerJob
     #region Small Features
 
     internal class WHM_SolaceMisery : CustomCombo
-    {
+            {
         protected internal override CustomComboPreset Preset { get; } =
             CustomComboPreset.WHM_SolaceMisery;
 
@@ -416,7 +416,7 @@ internal partial class WHM : HealerJob
             actionID is AfflatusRapture && gauge.BloodLily == 3
                 ? AfflatusMisery
                 : actionID;
-    }
+            }
 
     internal class WHM_CureSync : CustomCombo
     {
@@ -436,13 +436,13 @@ internal partial class WHM : HealerJob
 
         protected override uint Invoke(uint actionID)
         {
-            if (actionID is not Role.Swiftcast)
-                return actionID;
+            if (actionID != Role.Swiftcast)
+            return actionID;
 
             var thinAirReady = !HasStatusEffect(Buffs.ThinAir) && ActionReady
                 (ThinAir);
 
-            if (HasStatusEffect(MagicRole.Buffs.Swiftcast))
+            if (HasStatusEffect(Role.Buffs.Swiftcast))
                 return IsEnabled(CustomComboPreset.WHM_ThinAirRaise) && thinAirReady
                     ? ThinAir
                     : Raise;

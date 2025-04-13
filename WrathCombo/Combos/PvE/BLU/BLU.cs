@@ -3,7 +3,7 @@ using WrathCombo.CustomComboNS;
 
 namespace WrathCombo.Combos.PvE;
 
-internal partial class BLU : CasterJob
+internal partial class BLU : Caster
 {
     public const byte JobID = 36;
 

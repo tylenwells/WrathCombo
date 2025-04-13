@@ -5,7 +5,7 @@ using WrathCombo.Data;
 using WrathCombo.Extensions;
 namespace WrathCombo.Combos.PvE;
 
-internal partial class SCH : HealerJob
+internal partial class SCH : Healer
 {
     /*
      * SCH_Consolation
@@ -129,7 +129,7 @@ internal partial class SCH : HealerJob
     {
         protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.SCH_Raise;
         protected override uint Invoke(uint actionID) =>
-            actionID is Role.Swiftcast && IsOnCooldown(Role.Swiftcast)
+            actionID == Role.Swiftcast && IsOnCooldown(Role.Swiftcast)
                 ? Resurrection
                 : actionID;
     }

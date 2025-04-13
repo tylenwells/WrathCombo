@@ -3,7 +3,7 @@ using WrathCombo.CustomComboNS;
 
 namespace WrathCombo.Combos.PvE;
 
-internal partial class SMN : CasterJob
+internal partial class SMN : Caster
 {
     #region Small Features
 

@@ -6,7 +6,6 @@ using System.Linq;
 using Dalamud.Game.ClientState.JobGauge.Types;
 using Dalamud.Game.ClientState.Objects.Types;
 using WrathCombo.AutoRotation;
-using WrathCombo.Combos.PvE.Content;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Data;
@@ -164,7 +163,7 @@ internal partial class DRK
             if ((flags.HasFlag(Combo.Simple) ||
                  (flags.HasFlag(Combo.Adv) && IsEnabled(Preset.DRK_Var_Dart))) &&
                 ActionReady(Variant.SpiritDart) &&
-                GetStatusEffectRemainingTime(VariantActions.Debuffs.SustainedDamage, CurrentTarget) <=3)
+                GetStatusEffectRemainingTime(Content.Variant.Debuffs.SustainedDamage, CurrentTarget) <=3)
                 return (action = Variant.SpiritDart) != 0;
 
             #endregion

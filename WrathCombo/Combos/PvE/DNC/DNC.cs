@@ -10,7 +10,7 @@ using WrathCombo.CustomComboNS;
 
 namespace WrathCombo.Combos.PvE;
 
-internal partial class DNC : PhysRangedJob
+internal partial class DNC : PhysicalRanged
 {
     internal class DNC_ST_AdvancedMode : CustomCombo
     {

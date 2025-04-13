@@ -6,7 +6,7 @@ using WrathCombo.Data;
 
 namespace WrathCombo.Combos.PvE;
 
-internal partial class WAR : TankJob
+internal partial class WAR : Tank
 {
     #region Simple Mode - Single Target
     internal class WAR_ST_Simple : CustomCombo
