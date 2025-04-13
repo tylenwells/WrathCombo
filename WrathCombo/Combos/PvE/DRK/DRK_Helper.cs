@@ -163,7 +163,7 @@ internal partial class DRK
             if ((flags.HasFlag(Combo.Simple) ||
                  (flags.HasFlag(Combo.Adv) && IsEnabled(Preset.DRK_Var_Dart))) &&
                 ActionReady(Variant.SpiritDart) &&
-                GetStatusEffectRemainingTime(VariantActions.Debuffs.SustainedDamage, CurrentTarget) <=3)
+                GetStatusEffectRemainingTime(Content.Variant.Debuffs.SustainedDamage, CurrentTarget) <=3)
                 return (action = Variant.SpiritDart) != 0;
 
             #endregion

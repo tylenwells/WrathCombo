@@ -46,7 +46,7 @@ internal static partial class RoleActions
         }
 
         public static bool CanAddle() =>
-            ActionReady(Addle) && !TargetHasEffectAny(Debuffs.Addle);
+            ActionReady(Addle) && !HasStatusEffect(Debuffs.Addle, CurrentTarget, true);
 
         public static bool CanSleep() =>
             ActionReady(Sleep);
@@ -150,10 +150,10 @@ internal static partial class RoleActions
             ActionReady(Bloodbath) && PlayerHealthPercentageHp() <= healthpercent;
 
         public static bool CanFeint() =>
-            ActionReady(Feint) && !TargetHasEffectAny(Debuffs.Feint);
+            ActionReady(Feint) && !HasStatusEffect(Debuffs.Feint, CurrentTarget, true);
 
         public static bool CanTrueNorth() =>
-            ActionReady(TrueNorth) && TargetNeedsPositionals() && !HasEffect(Buffs.TrueNorth);
+            ActionReady(TrueNorth) && TargetNeedsPositionals() && !HasStatusEffect(Buffs.TrueNorth);
     }
 
     public static class Tank
@@ -187,7 +187,7 @@ internal static partial class RoleActions
             ActionReady(Interject) && CanInterruptEnemy();
 
         public static bool CanReprisal(int healthPercent = 101, int? enemyCount = null, bool checkTargetForDebuff = true) =>
-            (checkTargetForDebuff && !TargetHasEffectAny(Debuffs.Reprisal) || !checkTargetForDebuff) &&
+            (checkTargetForDebuff && !HasStatusEffect(Debuffs.Reprisal, CurrentTarget, true) || !checkTargetForDebuff) &&
             (enemyCount is null ? InActionRange(Reprisal) : CanCircleAoe(5) >= enemyCount) &&
             ActionReady(Reprisal) && PlayerHealthPercentageHp() < healthPercent;
 

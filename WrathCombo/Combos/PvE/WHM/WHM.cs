@@ -436,13 +436,13 @@ internal partial class WHM : Healer
 
         protected override uint Invoke(uint actionID)
         {
-            if (actionID is not Role.Swiftcast)
+            if (actionID != Role.Swiftcast)
             return actionID;
 
             var thinAirReady = !HasStatusEffect(Buffs.ThinAir) && ActionReady
                 (ThinAir);
 
-            if (HasStatusEffect(MagicRole.Buffs.Swiftcast))
+            if (HasStatusEffect(Role.Buffs.Swiftcast))
                 return IsEnabled(CustomComboPreset.WHM_ThinAirRaise) && thinAirReady
                     ? ThinAir
                     : Raise;

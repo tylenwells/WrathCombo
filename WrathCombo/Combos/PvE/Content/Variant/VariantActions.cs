@@ -58,7 +58,7 @@ internal static partial class Variant
 
     internal static bool CanSpiritDart(CustomComboPreset preset) =>
         IsEnabled(preset) && ActionReady(VariantSpiritDart) &&
-        HasBattleTarget() && GetDebuffRemainingTime(Debuffs.SustainedDamage) <= 3;
+        HasBattleTarget() && GetStatusEffectRemainingTime(Debuffs.SustainedDamage) <= 3;
 
     internal static bool CanCure(CustomComboPreset preset, int healthpercent) =>
         IsEnabled(preset) && ActionReady(VariantCure) &&
@@ -66,7 +66,7 @@ internal static partial class Variant
 
     internal static bool CanRaise(CustomComboPreset preset) =>
         IsEnabled(preset) && ActionReady(VariantRaise)
-        && HasEffect(Magic.Buffs.Swiftcast);
+        && HasStatusEffect(Magic.Buffs.Swiftcast);
 
     internal static bool CanUltimatum(CustomComboPreset preset, WeaveTypes weave = WeaveTypes.None) =>
         IsEnabled(preset) && ActionReady(VariantUltimatum)

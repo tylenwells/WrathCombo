@@ -83,7 +83,7 @@ internal partial class All
         protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.ALL_Tank_Reprisal;
 
         protected override uint Invoke(uint actionID) =>
-            actionID is RoleActions.Tank.Reprisal && HasStatusEffect(RoleActions.Tank.Debuffs.Reprisal, CurrentTarget, true) && IsOffCooldown(Tank.Reprisal)
+            actionID is RoleActions.Tank.Reprisal && HasStatusEffect(RoleActions.Tank.Debuffs.Reprisal, CurrentTarget, true) && IsOffCooldown(RoleActions.Tank.Reprisal)
                 ? SavageBlade
                 : actionID;
     }
@@ -122,7 +122,7 @@ internal partial class All
         protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.ALL_Caster_Addle;
 
         protected override uint Invoke(uint actionID) =>
-            actionID is Caster.Addle && HasStatusEffect(RoleActions.Caster.Debuffs.Addle, CurrentTarget, true) && IsOffCooldown(RoleActions.Caster.Addle)
+            actionID is RoleActions.Caster.Addle && HasStatusEffect(RoleActions.Caster.Debuffs.Addle, CurrentTarget, true) && IsOffCooldown(RoleActions.Caster.Addle)
                 ? SavageBlade
                 : actionID;
     }
