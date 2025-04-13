@@ -1937,6 +1937,10 @@ public enum CustomComboPreset
     [CustomComboInfo("Mirage Dive Option", "Adds Mirage Dive to the rotation.", DRG.JobID)]
     DRG_ST_Mirage = 6115,
 
+    [ParentCombo(DRG_ST_Mirage)]
+    [CustomComboInfo("Burst Mirage Dive During LotD", "Adds Mirage Dive to the rotation when under Life of the Dragon.", DRG.JobID)]
+    DRG_ST_DoubleMirage = 6119,
+
     [ParentCombo(DRG_ST_CDs)]
     [CustomComboInfo("Dragonfire Dive Option", "Adds Dragonfire Dive to the rotation.", DRG.JobID)]
     DRG_ST_DragonfireDive = 6107,
@@ -2123,7 +2127,7 @@ public enum CustomComboPreset
         "Turns Lance Charge into Battle Litany when the former is on cooldown.", DRG.JobID)]
     DRG_BurstCDFeature = 6301,
 
-    // Last value ST = 6117
+    // Last value ST = 6119
     // Last value AoE = 6216
 
     #endregion
