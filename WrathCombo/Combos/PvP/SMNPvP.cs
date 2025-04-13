@@ -63,7 +63,7 @@ namespace WrathCombo.Combos.PvP
                         UserConfig.DrawSliderInt(0, 90, SMNPvP.Config.SMNPvP_RadiantAegisThreshold,
                             "Caps at 90 to prevent waste.");
                         break;
-                }
+        }
             }
         }
         #endregion
@@ -103,7 +103,7 @@ namespace WrathCombo.Combos.PvP
                         if (IsEnabled(CustomComboPreset.SMNPvP_BurstMode_DeathFlare) && bahamutBurst && IsOffCooldown(DeathFlare))
                             return DeathFlare;
 
-                        if (IsEnabled(CustomComboPreset.SMNPvP_BurstMode_Necrotize) && GetRemainingCharges(Necrotize) > 0 && !HasEffect(Buffs.FurtherRuin))
+                        if (IsEnabled(CustomComboPreset.SMNPvP_BurstMode_Necrotize) && GetRemainingCharges(Necrotize) > 0 && !HasStatusEffect(Buffs.FurtherRuin))
                             return Necrotize;
                         
                         // Ifrit (check CrimsonCyclone conditions)
