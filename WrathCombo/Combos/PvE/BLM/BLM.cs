@@ -188,12 +188,13 @@ internal partial class BLM : CasterJob
                         !ActionReady(Manafont) && !HasEffect(Buffs.Triplecast))
                         return Role.Swiftcast;
 
-                    if (ActionReady(Transpose) && (HasEffect(Role.Buffs.Swiftcast) || HasEffect(Buffs.Triplecast)))
+                    if (IsEnabled(CustomComboPreset.BLM_ST_Transpose) && 
+                        ActionReady(Transpose) && (HasEffect(Role.Buffs.Swiftcast) || HasEffect(Buffs.Triplecast)))
                         return Transpose;
                 }
 
-                if (Gauge.InUmbralIce &&
-                    JustUsed(Paradox) && CurMp is MP.MaxMP)
+                if (IsEnabled(CustomComboPreset.BLM_ST_Transpose) && 
+                    Gauge.InUmbralIce && JustUsed(Paradox) && CurMp is MP.MaxMP)
                     return Transpose;
             }
 
@@ -271,7 +272,8 @@ internal partial class BLM : CasterJob
                     !HasEffect(Role.Buffs.Swiftcast) && !HasEffect(Buffs.Triplecast))
                     return Blizzard3;
 
-                if (ActionReady(Transpose))
+                if (IsEnabled(CustomComboPreset.BLM_ST_Transpose) && 
+                    ActionReady(Transpose))
                     return Transpose; //Level 4-34
             }
 
@@ -287,7 +289,8 @@ internal partial class BLM : CasterJob
                     if (ActionReady(Fire3))
                         return Fire3; //35-100, pre-Paradox/scuffed starting combat
 
-                    if (ActionReady(Transpose))
+                    if (IsEnabled(CustomComboPreset.BLM_ST_Transpose) && 
+                        ActionReady(Transpose))
                         return Transpose; //Levels 4-34
                 }
 
@@ -429,7 +432,8 @@ internal partial class BLM : CasterJob
                     EndOfFirePhase)
                     return Manafont;
 
-                if (ActionReady(Transpose) && (EndOfFirePhase || EndOfIcePhaseAoEMaxLevel))
+                if (IsEnabled(CustomComboPreset.BLM_AoE_Transpose) && 
+                    ActionReady(Transpose) && (EndOfFirePhase || EndOfIcePhaseAoEMaxLevel))
                     return Transpose;
 
                 if (IsEnabled(CustomComboPreset.BLM_AoE_Amplifier) &&
@@ -481,7 +485,8 @@ internal partial class BLM : CasterJob
                 if (ActionReady(Blizzard2) && TraitLevelChecked(Traits.AspectMasteryIII))
                     return OriginalHook(Blizzard2);
 
-                if (ActionReady(Transpose))
+                if (IsEnabled(CustomComboPreset.BLM_AoE_Transpose) && 
+                    ActionReady(Transpose))
                     return Transpose;
             }
 
@@ -492,7 +497,8 @@ internal partial class BLM : CasterJob
                     if (ActionReady(Fire2) && TraitLevelChecked(Traits.AspectMasteryIII))
                         return OriginalHook(Fire2);
 
-                    if (ActionReady(Transpose))
+                    if (IsEnabled(CustomComboPreset.BLM_AoE_Transpose) && 
+                        ActionReady(Transpose))
                         return Transpose;
                 }
 

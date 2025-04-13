@@ -392,6 +392,10 @@ public enum CustomComboPreset
     BLM_ST_Opener = 2101,
 
     [ParentCombo(BLM_ST_AdvancedMode)]
+    [CustomComboInfo("Transpose Option", "Add Transpose to the rotation.", BLM.JobID)]
+    BLM_ST_Transpose = 2114,
+
+    [ParentCombo(BLM_ST_AdvancedMode)]
     [CustomComboInfo("Leylines Option", "Add Leylines to the rotation.", BLM.JobID)]
     BLM_ST_LeyLines = 2103,
 
@@ -414,7 +418,7 @@ public enum CustomComboPreset
     [ParentCombo(BLM_ST_AdvancedMode)]
     [CustomComboInfo("Flare Star Option", "Add Flare Star to the rotation.", BLM.JobID)]
     BLM_ST_FlareStar = 2112,
-
+    
     [ParentCombo(BLM_ST_AdvancedMode)]
     [CustomComboInfo("Swiftcast Option", "Add Swiftcast to the rotation.", BLM.JobID)]
     BLM_ST_Swiftcast = 2106,
@@ -436,6 +440,10 @@ public enum CustomComboPreset
     [ConflictingCombos(BLM_AoE_SimpleMode)]
     [CustomComboInfo("Advanced Mode - AoE", "Replaces Blizzard II with a full one-button AoE rotation.\nThese features are ideal if you want to customize the rotation.", BLM.JobID)]
     BLM_AoE_AdvancedMode = 2200,
+
+    [ParentCombo(BLM_AoE_AdvancedMode)]
+    [CustomComboInfo("Transpose Option", "Add Transpose to the rotation.", BLM.JobID)]
+    BLM_AoE_Transpose = 2212,
 
     [ParentCombo(BLM_AoE_AdvancedMode)]
     [CustomComboInfo("Leylines Option", "Add Leylines to the rotation.", BLM.JobID)]
@@ -538,8 +546,8 @@ public enum CustomComboPreset
 
     #endregion
 
-    // Last value ST = 2112
-    //Last Value AoE = 2211
+    // Last value ST = 2114
+    //Last Value AoE = 2212
     //Last Value misc = 2060
 
     #endregion
