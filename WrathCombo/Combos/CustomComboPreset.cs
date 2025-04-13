@@ -6427,52 +6427,6 @@ SMN.JobID)]
 
     #endregion
 
-    #region AoE Heals Feature
-
-    [AutoAction(true, true)]
-    [ReplaceSkill(WHM.Medica1)]
-    [CustomComboInfo("Simple Heals - AoE", "Replaces Medica with a one button AoE healing setup.", WHM.JobID)]
-    WHM_AoEHeals = 19007,
-
-    [ParentCombo(WHM_AoEHeals)]
-    [CustomComboInfo("Afflatus Rapture Option", "Uses Afflatus Rapture when available.", WHM.JobID)]
-    WHM_AoEHeals_Rapture = 19011,
-
-    [ParentCombo(WHM_AoEHeals)]
-    [CustomComboInfo("Afflatus Misery Option", "Uses Afflatus Misery when available.", WHM.JobID)]
-    WHM_AoEHeals_Misery = 19010,
-
-    [ParentCombo(WHM_AoEHeals)]
-    [CustomComboInfo("Thin Air Option", "Uses Thin Air when available.", WHM.JobID)]
-    WHM_AoEHeals_ThinAir = 19200,
-
-    [ParentCombo(WHM_AoEHeals)]
-    [CustomComboInfo("Cure III Option", "Replaces Medica with Cure III when available.", WHM.JobID)]
-    WHM_AoEHeals_Cure3 = 19201,
-
-    [ParentCombo(WHM_AoEHeals)]
-    [CustomComboInfo("Assize Option", "Uses Assize when available.", WHM.JobID)]
-    WHM_AoEHeals_Assize = 19202,
-
-    [ParentCombo(WHM_AoEHeals)]
-    [CustomComboInfo("Plenary Indulgence Option", "Uses Plenary Indulgence when available.", WHM.JobID)]
-    WHM_AoEHeals_Plenary = 19203,
-
-    [ParentCombo(WHM_AoEHeals)]
-    [CustomComboInfo("Lucid Dreaming Option", "Uses Lucid Dreaming when available.", WHM.JobID)]
-    WHM_AoEHeals_Lucid = 19204,
-
-    [ParentCombo(WHM_AoEHeals)]
-    [CustomComboInfo("Medica II Option", "Uses Medica II when current target doesn't have Medica II buff." +
-                                         "\nUpgrades to Medica III when level allows.", WHM.JobID)]
-    WHM_AoEHeals_Medica2 = 19205,
-
-    [ParentCombo(WHM_AoEHeals)]
-    [CustomComboInfo("Divine Caress", "Uses Divine Caress when Divine Grace from Temperance is active.", WHM.JobID)]
-    WHM_AoEHeals_DivineCaress = 19207,
-
-    #endregion
-
     #region Single Target Heals
 
     [AutoAction(false, true)]
@@ -6516,6 +6470,52 @@ SMN.JobID)]
     [ParentCombo(WHM_STHeals)]
     [CustomComboInfo("Esuna Option", "Applies Esuna to your target if there is a cleansable debuff.", WHM.JobID)]
     WHM_STHeals_Esuna = 19309,
+
+    #endregion
+
+    #region AoE Heals Feature
+
+    [AutoAction(true, true)]
+    [ReplaceSkill(WHM.Medica1)]
+    [CustomComboInfo("Simple Heals - AoE", "Replaces Medica with a one button AoE healing setup.", WHM.JobID)]
+    WHM_AoEHeals = 19007,
+
+    [ParentCombo(WHM_AoEHeals)]
+    [CustomComboInfo("Afflatus Rapture Option", "Uses Afflatus Rapture when available.", WHM.JobID)]
+    WHM_AoEHeals_Rapture = 19011,
+
+    [ParentCombo(WHM_AoEHeals)]
+    [CustomComboInfo("Afflatus Misery Option", "Uses Afflatus Misery when available.", WHM.JobID)]
+    WHM_AoEHeals_Misery = 19010,
+
+    [ParentCombo(WHM_AoEHeals)]
+    [CustomComboInfo("Thin Air Option", "Uses Thin Air when available.", WHM.JobID)]
+    WHM_AoEHeals_ThinAir = 19200,
+
+    [ParentCombo(WHM_AoEHeals)]
+    [CustomComboInfo("Cure III Option", "Replaces Medica with Cure III when available.", WHM.JobID)]
+    WHM_AoEHeals_Cure3 = 19201,
+
+    [ParentCombo(WHM_AoEHeals)]
+    [CustomComboInfo("Assize Option", "Uses Assize when available.", WHM.JobID)]
+    WHM_AoEHeals_Assize = 19202,
+
+    [ParentCombo(WHM_AoEHeals)]
+    [CustomComboInfo("Plenary Indulgence Option", "Uses Plenary Indulgence when available.", WHM.JobID)]
+    WHM_AoEHeals_Plenary = 19203,
+
+    [ParentCombo(WHM_AoEHeals)]
+    [CustomComboInfo("Lucid Dreaming Option", "Uses Lucid Dreaming when available.", WHM.JobID)]
+    WHM_AoEHeals_Lucid = 19204,
+
+    [ParentCombo(WHM_AoEHeals)]
+    [CustomComboInfo("Medica II Option", "Uses Medica II when current target doesn't have Medica II buff." +
+                                         "\nUpgrades to Medica III when level allows.", WHM.JobID)]
+    WHM_AoEHeals_Medica2 = 19205,
+
+    [ParentCombo(WHM_AoEHeals)]
+    [CustomComboInfo("Divine Caress", "Uses Divine Caress when Divine Grace from Temperance is active.", WHM.JobID)]
+    WHM_AoEHeals_DivineCaress = 19207,
 
     #endregion
 
