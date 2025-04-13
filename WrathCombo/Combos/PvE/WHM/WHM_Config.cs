@@ -30,7 +30,8 @@ internal partial class WHM
                 #region Single Target DPS
 
                 case CustomComboPreset.WHM_ST_MainCombo:
-                    DrawAdditionalBoolChoice(WHM_ST_MainCombo_Adv, "Advanced Action Options",
+                    DrawAdditionalBoolChoice(WHM_ST_MainCombo_Adv,
+                        "Advanced Action Options",
                         "Change how actions are handled",
                         isConditionalChoice: true);
 
@@ -38,17 +39,21 @@ internal partial class WHM
                     {
                         ImGui.Indent();
                         ImGui.Spacing();
-                        DrawHorizontalMultiChoice(WHM_ST_MainCombo_Adv_Actions, "On Stone/Glare",
+                        DrawHorizontalMultiChoice(WHM_ST_MainCombo_Adv_Actions,
+                            "On Stone/Glare",
                             "Apply options to all Stones and Glares.",
                             3, 0);
-                        DrawHorizontalMultiChoice(WHM_ST_MainCombo_Adv_Actions, "On Aero/Dia",
+                        DrawHorizontalMultiChoice(WHM_ST_MainCombo_Adv_Actions,
+                            "On Aero/Dia",
                             "Apply options to Aeros and Dia.",
                             3, 1);
-                        DrawHorizontalMultiChoice(WHM_ST_MainCombo_Adv_Actions, $"On {Stone2.ActionName()}",
+                        DrawHorizontalMultiChoice(WHM_ST_MainCombo_Adv_Actions,
+                            $"On {Stone2.ActionName()}",
                             $"Apply options to On {Stone2.ActionName()}.",
                             3, 2);
                         ImGui.Unindent();
                     }
+
                     break;
 
                 case CustomComboPreset.WHM_ST_MainCombo_Opener:
@@ -66,13 +71,15 @@ internal partial class WHM
                         "Select what kind of enemies the HP check should be applied to:");
                     ImGui.NewLine();
 
-                    DrawHorizontalRadioButton(WHM_ST_DPS_AeroOptionSubOption, "Non-Bosses",
+                    DrawHorizontalRadioButton(WHM_ST_DPS_AeroOptionSubOption,
+                        "Non-Bosses",
                         "Only applies the HP check above to non-bosses.\n" +
                         "Allows you to only stop DoTing early when it's not a boss.",
                         (int)BossAvoidance.Off,
                         descriptionColor: ImGuiColors.DalamudWhite);
 
-                    DrawHorizontalRadioButton(WHM_ST_DPS_AeroOptionSubOption, "All Enemies",
+                    DrawHorizontalRadioButton(WHM_ST_DPS_AeroOptionSubOption,
+                        "All Enemies",
                         "Applies the HP check above to all enemies.",
                         (int)BossAvoidance.On,
                         descriptionColor: ImGuiColors.DalamudWhite);
@@ -109,7 +116,8 @@ internal partial class WHM
                         mouseoverCheckingDescription,
                         "Check party member's HP & Debuffs by using mouseover on the party list.\n" +
                         "To be used in conjunction with Redirect/Reaction/etc.");
-                    DrawAdditionalBoolChoice(WHM_STHeals_IncludeShields, "Include Shields in HP Percent Sliders",
+                    DrawAdditionalBoolChoice(WHM_STHeals_IncludeShields,
+                        "Include Shields in HP Percent Sliders",
                         "");
                     break;
 
@@ -194,7 +202,8 @@ internal partial class WHM
                     break;
 
                 case CustomComboPreset.WHM_AoEHeals_Plenary:
-                    DrawAdditionalBoolChoice(WHM_AoEHeals_PlenaryWeave, weaveDescription,
+                    DrawAdditionalBoolChoice(WHM_AoEHeals_PlenaryWeave,
+                        weaveDescription,
                         "");
                     break;
 
