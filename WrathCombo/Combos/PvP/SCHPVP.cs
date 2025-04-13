@@ -63,10 +63,8 @@ namespace WrathCombo.Combos.PvP
         }
 
         #endregion
-
-       
-
-        internal class SCHPvP_Burst : CustomCombo
+          
+       internal class SCHPvP_Burst : CustomCombo
         {
             protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.SCHPvP_Burst;
 
