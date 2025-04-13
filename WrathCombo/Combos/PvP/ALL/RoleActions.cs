@@ -109,7 +109,7 @@ namespace WrathCombo.Combos.PvP
             ActionReady(Rampage);
 
         public static bool CanRampart(int healthPercent) =>
-            ActionReady(Rampart) && PlayerHealthPercentageHp() < healthPercent;
+            ActionReady(Rampart) && PlayerHealthPercentageHp() <= healthPercent;
 
         public static bool CanFullSwing() =>
             ActionReady(FullSwing);
