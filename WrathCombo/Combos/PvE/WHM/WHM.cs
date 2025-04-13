@@ -105,13 +105,13 @@ internal partial class WHM : HealerJob
                 HasBattleTarget() &&
                 AeroList.TryGetValue(OriginalHook(Aero),
                     out var dotDebuffID) &&
-                GetDebuffRemainingTime(dotDebuffID) <= refreshTimer &&
+                GetStatusEffectRemainingTime(dotDebuffID) <= refreshTimer &&
                 GetTargetHPPercent() > hpThreshold)
                 return OriginalHook(Aero);
 
             // Glare IV
             if (IsEnabled(CustomComboPreset.WHM_ST_MainCombo_GlareIV) &&
-                HasEffect(Buffs.SacredSight))
+                HasStatusEffect(Buffs.SacredSight))
                 return Glare4;
 
             // Lily Heal Overcap
@@ -188,7 +188,7 @@ internal partial class WHM : HealerJob
 
             // Glare IV
             if (IsEnabled(CustomComboPreset.WHM_AoE_DPS_GlareIV) &&
-                HasEffect(Buffs.SacredSight))
+                HasStatusEffect(Buffs.SacredSight))
                 return OriginalHook(Glare4);
 
             if (IsEnabled(CustomComboPreset.WHM_AoE_DPS_LilyOvercap) &&
@@ -227,15 +227,14 @@ internal partial class WHM : HealerJob
                              GetHealTarget(Config.WHM_STHeals_UIMouseOver);
 
             var thinAirReady = LevelChecked(ThinAir) &&
-                               !HasEffect(Buffs.ThinAir) &&
+                               !HasStatusEffect(Buffs.ThinAir) &&
                                GetRemainingCharges(ThinAir) >
                                Config.WHM_STHeals_ThinAir;
 
             var regenReady = ActionReady(Regen) &&
                              !JustUsed(Regen, 4) &&
-                             (!MemberHasEffect(Buffs.Regen, healTarget, false,
-                                  out var regen) ||
-                              regen?.RemainingTime <= Config.WHM_STHeals_RegenTimer) &&
+                             GetStatusEffect(Buffs.Regen, healTarget)?
+                                 .RemainingTime <= Config.WHM_STHeals_RegenTimer &&
                              GetTargetHPPercent(healTarget,
                                  Config.WHM_STHeals_IncludeShields) >=
                              Config.WHM_STHeals_RegenHP;
@@ -312,7 +311,7 @@ internal partial class WHM : HealerJob
             #region Variables
 
             var thinAirReady = LevelChecked(ThinAir) &&
-                               !HasEffect(Buffs.ThinAir) &&
+                               !HasStatusEffect(Buffs.ThinAir) &&
                                GetRemainingCharges(ThinAir) >
                                Config.WHM_AoEHeals_ThinAir;
 
@@ -331,10 +330,8 @@ internal partial class WHM : HealerJob
                                  ? GetHealTarget(Config.WHM_AoEHeals_MedicaMO)
                                  : LocalPlayer);
 
-            var hasMedica2 = FindEffect(Buffs.Medica2, healTarget,
-                LocalPlayer?.GameObjectId);
-            var hasMedica3 = FindEffect(Buffs.Medica3, healTarget,
-                LocalPlayer?.GameObjectId);
+            var hasMedica2 = GetStatusEffect(Buffs.Medica2, healTarget);
+            var hasMedica3 = GetStatusEffect(Buffs.Medica3, healTarget);
 
             #endregion
 
@@ -386,7 +383,7 @@ internal partial class WHM : HealerJob
             if (IsEnabled(CustomComboPreset.WHM_AoEHeals_Cure3) &&
                 ActionReady(Cure3) &&
                 (LocalPlayer.CurrentMp >= Config.WHM_AoEHeals_Cure3MP ||
-                 HasEffect(Buffs.ThinAir)))
+                 HasStatusEffect(Buffs.ThinAir)))
                 return Cure3;
 
             #endregion
@@ -442,9 +439,10 @@ internal partial class WHM : HealerJob
             if (actionID is not Role.Swiftcast)
                 return actionID;
 
-            var thinAirReady = !HasEffect(Buffs.ThinAir) && ActionReady(ThinAir);
+            var thinAirReady = !HasStatusEffect(Buffs.ThinAir) && ActionReady
+                (ThinAir);
 
-            if (HasEffect(MagicRole.Buffs.Swiftcast))
+            if (HasStatusEffect(MagicRole.Buffs.Swiftcast))
                 return IsEnabled(CustomComboPreset.WHM_ThinAirRaise) && thinAirReady
                     ? ThinAir
                     : Raise;
