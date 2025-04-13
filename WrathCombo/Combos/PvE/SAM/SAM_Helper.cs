@@ -83,6 +83,69 @@ internal partial class SAM
         return false;
     }
 
+    // Iaijutsu Features
+    internal static bool UseIaijutsu(ref uint actionID)
+    {
+        int higanbanaThreshold = Config.SAM_ST_Higanbana_Threshold;
+
+        if (LevelChecked(Iaijutsu))
+        {
+            if ((Config.SAM_ST_CDs_IaijutsuOption[3] ||
+                 IsEnabled(CustomComboPreset.SAM_ST_SimpleMode)) &&
+                (LevelChecked(TsubameGaeshi) && HasEffect(Buffs.TsubameReady) &&
+                 (TraitLevelChecked(Traits.EnhancedHissatsu) && GetCooldownRemainingTime(Senei) > 33 || SenCount is 3) ||
+                 LevelChecked(TendoKaeshiSetsugekka) && HasEffect(Buffs.TendoKaeshiSetsugekkaReady)))
+            {
+                actionID = OriginalHook(TsubameGaeshi);
+                return true;
+            }
+
+            if (!IsEnabled(CustomComboPreset.SAM_ST_CDs_Iaijutsu_Movement) ||
+                (IsEnabled(CustomComboPreset.SAM_ST_CDs_Iaijutsu_Movement) || 
+                 IsEnabled(CustomComboPreset.SAM_ST_SimpleMode)) && !IsMoving())
+            {
+                if (IsEnabled(CustomComboPreset.SAM_ST_AdvancedMode) &&
+                    Config.SAM_ST_CDs_IaijutsuOption[0] &&
+                    SenCount is 1 && GetTargetHPPercent() > higanbanaThreshold &&
+                    (Config.SAM_ST_Higanbana_Suboption == 0 ||
+                     Config.SAM_ST_Higanbana_Suboption == 1 && TargetIsBoss()) &&
+                    (GetDebuffRemainingTime(Debuffs.Higanbana) <= 10 && JustUsed(Gekko) && JustUsed(MeikyoShisui, 15f) ||
+                     !TargetHasEffect(Debuffs.Higanbana)))
+                {
+                    actionID = OriginalHook(Iaijutsu);
+                    return true;
+                }
+
+                if (IsEnabled(CustomComboPreset.SAM_ST_SimpleMode) &&
+                    SenCount is 1 && GetTargetHPPercent() > 1 && TargetIsBoss() &&
+                    (GetDebuffRemainingTime(Debuffs.Higanbana) <= 10 && JustUsed(Gekko) && JustUsed(MeikyoShisui, 15f) ||
+                     !TargetHasEffect(Debuffs.Higanbana)))
+                {
+                    actionID = OriginalHook(Iaijutsu);
+                    return true;
+                }
+
+                if ((Config.SAM_ST_CDs_IaijutsuOption[1] ||
+                     IsEnabled(CustomComboPreset.SAM_ST_SimpleMode)) &&
+                    SenCount is 2 && !LevelChecked(MidareSetsugekka))
+                {
+                    actionID = OriginalHook(Iaijutsu);
+                    return true;
+                }
+
+                if ((Config.SAM_ST_CDs_IaijutsuOption[2] ||
+                     IsEnabled(CustomComboPreset.SAM_ST_SimpleMode)) &&
+                    SenCount is 3 && LevelChecked(MidareSetsugekka) && !HasEffect(Buffs.TsubameReady))
+                {
+                    actionID = OriginalHook(Iaijutsu);
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
     #region Openers
 
     internal static WrathOpener Opener()

@@ -151,6 +151,7 @@ internal partial class SAM : MeleeJob
                     InActionRange(Zanshin) &&
                     HasEffect(Buffs.ZanshinReady) &&
                     (JustUsed(Higanbana, 5) ||
+                     !TargetIsBoss() ||
                      GetBuffRemainingTime(Buffs.ZanshinReady) <= 6))
                     return Zanshin;
 
@@ -175,35 +176,18 @@ internal partial class SAM : MeleeJob
             if (HasEffect(Buffs.Fugetsu) && HasEffect(Buffs.Fuka))
             {
                 //Ogi Namikiri Features
-                if (ActionReady(OgiNamikiri) && InActionRange(OriginalHook(OgiNamikiri)) &&
-                    (JustUsed(Higanbana, 5f) && HasEffect(Buffs.OgiNamikiriReady) ||
-                     HasEffect(Buffs.OgiNamikiriReady) && !TargetIsBoss() ||
+                if (ActionReady(OgiNamikiri) &&
+                    InActionRange(OriginalHook(OgiNamikiri)) &&
+                    HasEffect(Buffs.OgiNamikiriReady) &&
+                    (JustUsed(Higanbana, 5f) ||
+                     !TargetIsBoss() ||
                      GetBuffRemainingTime(Buffs.OgiNamikiriReady) <= 8) ||
                     Gauge.Kaeshi == Kaeshi.Namikiri)
                     return OriginalHook(OgiNamikiri);
 
                 // Iaijutsu Features
-                if (LevelChecked(Iaijutsu))
-                {
-                    if (LevelChecked(TendoKaeshiSetsugekka) && HasEffect(Buffs.TendoKaeshiSetsugekkaReady))
-                        return OriginalHook(TsubameGaeshi);
-
-                    if (LevelChecked(TsubameGaeshi) && HasEffect(Buffs.TsubameReady) &&
-                        (TraitLevelChecked(Traits.EnhancedHissatsu) && GetCooldownRemainingTime(Senei) > 33 ||
-                         SenCount is 3))
-                        return OriginalHook(TsubameGaeshi);
-
-                    if (SenCount is 1 && TargetIsBoss() &&
-                        (GetDebuffRemainingTime(Debuffs.Higanbana) <= 10 && JustUsed(Gekko) && JustUsed(MeikyoShisui, 15f) ||
-                         !TargetHasEffect(Debuffs.Higanbana)))
-                        return OriginalHook(Iaijutsu);
-
-                    if (SenCount is 2 && !LevelChecked(MidareSetsugekka))
-                        return OriginalHook(Iaijutsu);
-
-                    if (SenCount is 3 && LevelChecked(MidareSetsugekka) && !HasEffect(Buffs.TsubameReady))
-                        return OriginalHook(Iaijutsu);
-                }
+                if (UseIaijutsu(ref actionID))
+                    return actionID;
             }
 
             if (HasEffect(Buffs.MeikyoShisui))
@@ -274,7 +258,7 @@ internal partial class SAM : MeleeJob
 
             int kenkiOvercap = Config.SAM_ST_KenkiOvercapAmount;
             int shintenTreshhold = Config.SAM_ST_ExecuteThreshold;
-            int higanbanaThreshold = Config.SAM_ST_Higanbana_Threshold;
+
 
             //Meikyo to start before combat
             if (IsEnabled(CustomComboPreset.SAM_ST_CDs) &&
@@ -298,8 +282,6 @@ internal partial class SAM : MeleeJob
             if (IsEnabled(CustomComboPreset.SAM_ST_RangedUptime) &&
                 ActionReady(Enpi) && !InMeleeRange() && HasBattleTarget())
                 return Enpi;
-
-
 
             //oGCDs
             if (CanWeave())
@@ -354,6 +336,7 @@ internal partial class SAM : MeleeJob
                         InActionRange(Zanshin) &&
                         HasEffect(Buffs.ZanshinReady) &&
                         (JustUsed(Higanbana, 5) ||
+                         Config.SAM_ST_Higanbana_Suboption == 1 && !TargetIsBoss() ||
                          GetBuffRemainingTime(Buffs.ZanshinReady) <= 6))
                         return Zanshin;
 
@@ -395,33 +378,8 @@ internal partial class SAM : MeleeJob
 
                 // Iaijutsu Features
                 if (IsEnabled(CustomComboPreset.SAM_ST_CDs_Iaijutsu) &&
-                    LevelChecked(Iaijutsu))
-                {
-                    if (LevelChecked(TendoKaeshiSetsugekka) && HasEffect(Buffs.TendoKaeshiSetsugekkaReady))
-                        return OriginalHook(TsubameGaeshi);
-
-                    if (LevelChecked(TsubameGaeshi) && HasEffect(Buffs.TsubameReady) &&
-                        (TraitLevelChecked(Traits.EnhancedHissatsu) && GetCooldownRemainingTime(Senei) > 33 ||
-                         SenCount is 3))
-                        return OriginalHook(TsubameGaeshi);
-
-                    if (!IsEnabled(CustomComboPreset.SAM_ST_CDs_Iaijutsu_Movement) ||
-                        IsEnabled(CustomComboPreset.SAM_ST_CDs_Iaijutsu_Movement) && !IsMoving())
-                    {
-                        if (SenCount is 1 && GetTargetHPPercent() > higanbanaThreshold &&
-                            (Config.SAM_ST_Higanbana_Suboption == 0 ||
-                             Config.SAM_ST_Higanbana_Suboption == 1 && TargetIsBoss()) &&
-                            (GetDebuffRemainingTime(Debuffs.Higanbana) <= 10 && JustUsed(Gekko) && JustUsed(MeikyoShisui, 15f) ||
-                             !TargetHasEffect(Debuffs.Higanbana)))
-                            return OriginalHook(Iaijutsu);
-
-                        if (SenCount is 2 && !LevelChecked(MidareSetsugekka))
-                            return OriginalHook(Iaijutsu);
-
-                        if (SenCount is 3 && LevelChecked(MidareSetsugekka) && !HasEffect(Buffs.TsubameReady))
-                            return OriginalHook(Iaijutsu);
-                    }
-                }
+                    UseIaijutsu(ref actionID))
+                    return actionID;
             }
 
             if (HasEffect(Buffs.MeikyoShisui))
@@ -485,6 +443,7 @@ internal partial class SAM : MeleeJob
                     ComboAction is Shifu && LevelChecked(Kasha))
                     return Kasha;
             }
+
             return actionID;
         }
     }
