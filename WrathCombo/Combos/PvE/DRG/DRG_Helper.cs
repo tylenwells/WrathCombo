@@ -35,9 +35,10 @@ internal partial class DRG
         DragonfireDive
     ];
 
-    internal static Status? ChaosDoTDebuff => LevelChecked(ChaoticSpring)
-                ? GetStatusEffect(Debuffs.ChaoticSpring, CurrentTarget)
-                : GetStatusEffect(Debuffs.ChaosThrust, CurrentTarget);
+    internal static Status? ChaosDoTDebuff =>
+        FindTargetEffect(LevelChecked(ChaoticSpring)
+            ? Debuffs.ChaoticSpring
+            : Debuffs.ChaosThrust);
 
     internal static uint SlowLock => Stardiver;
 
@@ -74,10 +75,10 @@ internal partial class DRG
 
     internal static bool UseLifeSurge()
     {
-        if (ActionReady(LifeSurge) && CanDRGWeave(LifeSurge) && !HasStatusEffect(Buffs.LifeSurge))
+        if (ActionReady(LifeSurge) && CanDRGWeave(LifeSurge) && !HasEffect(Buffs.LifeSurge))
         {
             if (LevelChecked(Drakesbane) && Gauge.IsLOTDActive &&
-                (HasStatusEffect(Buffs.LanceCharge) || HasStatusEffect(Buffs.BattleLitany)) &&
+                (HasEffect(Buffs.LanceCharge) || HasEffect(Buffs.BattleLitany)) &&
                 (JustUsed(WheelingThrust) ||
                  JustUsed(FangAndClaw) ||
                  JustUsed(OriginalHook(VorpalThrust)) && LevelChecked(HeavensThrust)))

@@ -34,10 +34,10 @@ internal partial class BLM : Caster
                         return Manafont;
 
                     if (ActionReady(Role.Swiftcast) && JustUsed(Despair) &&
-                        !ActionReady(Manafont) && !HasEffect(Buffs.Triplecast))
+                        !ActionReady(Manafont) && !HasStatusEffect(Buffs.Triplecast))
                         return Role.Swiftcast;
 
-                    if (ActionReady(Transpose) && (HasEffect(Role.Buffs.Swiftcast) || HasEffect(Buffs.Triplecast)))
+                    if (ActionReady(Transpose) && (HasStatusEffect(Role.Buffs.Swiftcast) || HasStatusEffect(Buffs.Triplecast)))
                         return Transpose;
                 }
 
@@ -51,23 +51,23 @@ internal partial class BLM : Caster
                     ? Xenoglossy
                     : Foul;
 
-            if (HasEffect(Buffs.Thunderhead) && LevelChecked(Thunder) &&
+            if (HasStatusEffect(Buffs.Thunderhead) && LevelChecked(Thunder) &&
                 (ThunderDebuffST is null || ThunderDebuffST.RemainingTime <= 3))
                 return OriginalHook(Thunder);
 
             if (IsMoving() && InCombat())
             {
-                if (ActionReady(Triplecast) && !HasEffect(Buffs.Triplecast) && !HasEffect(Role.Buffs.Swiftcast))
+                if (ActionReady(Triplecast) && !HasStatusEffect(Buffs.Triplecast) && !HasStatusEffect(Role.Buffs.Swiftcast))
                     return Triplecast;
 
                 if (ActionReady(Paradox) &&
                     Gauge.InAstralFire && Gauge.IsParadoxActive)
                     return Paradox;
 
-                if (ActionReady(Role.Swiftcast) && !HasEffect(Buffs.Triplecast))
+                if (ActionReady(Role.Swiftcast) && !HasStatusEffect(Buffs.Triplecast))
                     return Role.Swiftcast;
 
-                if (HasPolyglotStacks() && !HasEffect(Buffs.Triplecast) && !HasEffect(Role.Buffs.Swiftcast))
+                if (HasPolyglotStacks() && !HasStatusEffect(Buffs.Triplecast) && !HasStatusEffect(Role.Buffs.Swiftcast))
                     return LevelChecked(Xenoglossy)
                         ? Xenoglossy
                         : Foul;
@@ -84,7 +84,7 @@ internal partial class BLM : Caster
                 //        ? Xenoglossy
                 //        : Foul;
 
-                if (Gauge.IsParadoxActive && !HasEffect(Buffs.Firestarter) &&
+                if (Gauge.IsParadoxActive && !HasStatusEffect(Buffs.Firestarter) &&
                     (Gauge.AstralFireStacks < 3 ||
                      JustUsed(FlareStar) ||
                      !LevelChecked(FlareStar) && ActionReady(Despair)))
@@ -93,7 +93,9 @@ internal partial class BLM : Caster
                 if (FlarestarReady)
                     return FlareStar;
 
-                if (((LevelChecked(Paradox) && HasEffect(Buffs.Firestarter) || TimeSinceFirestarterBuff >= 2) && Gauge.AstralFireStacks < 3) || (!Fire4.LevelChecked() && TimeSinceFirestarterBuff >= 2 && ActionReady(Fire3)))
+                if ((LevelChecked(Paradox) && HasStatusEffect(Buffs.Firestarter) || 
+                     TimeSinceFirestarterBuff >= 2) && Gauge.AstralFireStacks < 3 ||
+                    !Fire4.LevelChecked() && TimeSinceFirestarterBuff >= 2 && ActionReady(Fire3))
                     return Fire3;
 
                 if (ActionReady(FireSpam) && (LevelChecked(Despair) && CurMp - MP.FireI >= 800 || !LevelChecked(Despair)))
@@ -102,8 +104,9 @@ internal partial class BLM : Caster
                 if (ActionReady(Despair))
                     return Despair;
 
-                if (ActionReady(Blizzard3) && 
-                    !HasEffect(Role.Buffs.Swiftcast) && !HasEffect(Buffs.Triplecast))
+                if (ActionReady(Blizzard3) &&
+                    !HasStatusEffect(Role.Buffs.Swiftcast) && 
+                    !HasStatusEffect(Buffs.Triplecast))
                     return Blizzard3;
 
                 if (ActionReady(Transpose))
@@ -127,7 +130,8 @@ internal partial class BLM : Caster
                 }
 
                 if (ActionReady(Blizzard3) && Gauge.UmbralIceStacks < 3 &&
-                    (HasEffect(Buffs.Triplecast) || HasEffect(Role.Buffs.Swiftcast)))
+                    (HasStatusEffect(Buffs.Triplecast) || 
+                     HasStatusEffect(Role.Buffs.Swiftcast)))
                     return Blizzard3;
 
                 if (ActionReady(BlizzardSpam))
@@ -185,15 +189,15 @@ internal partial class BLM : Caster
 
                     if (IsEnabled(CustomComboPreset.BLM_ST_Swiftcast) &&
                         ActionReady(Role.Swiftcast) && JustUsed(Despair) &&
-                        !ActionReady(Manafont) && !HasEffect(Buffs.Triplecast))
+                        !ActionReady(Manafont) && !HasStatusEffect(Buffs.Triplecast))
                         return Role.Swiftcast;
 
-                    if (IsEnabled(CustomComboPreset.BLM_ST_Transpose) && 
-                        ActionReady(Transpose) && (HasEffect(Role.Buffs.Swiftcast) || HasEffect(Buffs.Triplecast)))
+                    if (IsEnabled(CustomComboPreset.BLM_ST_Transpose) &&
+                        ActionReady(Transpose) && (HasStatusEffect(Role.Buffs.Swiftcast) || HasStatusEffect(Buffs.Triplecast)))
                         return Transpose;
                 }
 
-                if (IsEnabled(CustomComboPreset.BLM_ST_Transpose) && 
+                if (IsEnabled(CustomComboPreset.BLM_ST_Transpose) &&
                     Gauge.InUmbralIce && JustUsed(Paradox) && CurMp is MP.MaxMP)
                     return Transpose;
             }
@@ -215,8 +219,8 @@ internal partial class BLM : Caster
             {
                 if (Config.BLM_ST_MovementOption[0] &&
                     ActionReady(Triplecast) &&
-                    !HasEffect(Buffs.Triplecast) &&
-                    !HasEffect(Role.Buffs.Swiftcast))
+                    !HasStatusEffect(Buffs.Triplecast) &&
+                    !HasStatusEffect(Role.Buffs.Swiftcast))
                     return Triplecast;
 
                 if (Config.BLM_ST_MovementOption[1] &&
@@ -230,8 +234,8 @@ internal partial class BLM : Caster
 
                 if (Config.BLM_ST_MovementOption[3] &&
                     HasPolyglotStacks() &&
-                    !HasEffect(Buffs.Triplecast) &&
-                    !HasEffect(Role.Buffs.Swiftcast))
+                    !HasStatusEffect(Buffs.Triplecast) &&
+                    !HasStatusEffect(Role.Buffs.Swiftcast))
                     return LevelChecked(Xenoglossy)
                         ? Xenoglossy
                         : Foul;
@@ -248,7 +252,7 @@ internal partial class BLM : Caster
                 //        ? Xenoglossy
                 //        : Foul;
 
-                if (Gauge.IsParadoxActive && !HasEffect(Buffs.Firestarter) &&
+                if (Gauge.IsParadoxActive && !HasStatusEffect(Buffs.Firestarter) &&
                     (Gauge.AstralFireStacks < 3 ||
                      JustUsed(FlareStar) ||
                      !LevelChecked(FlareStar) && ActionReady(Despair)))
@@ -258,7 +262,7 @@ internal partial class BLM : Caster
                     FlarestarReady)
                     return FlareStar;
 
-                if (((LevelChecked(Paradox) && HasEffect(Buffs.Firestarter) || TimeSinceFirestarterBuff >= 2) && Gauge.AstralFireStacks < 3) || (!Fire4.LevelChecked() && TimeSinceFirestarterBuff >= 2 && ActionReady(Fire3)))
+                if ((LevelChecked(Paradox) && HasStatusEffect(Buffs.Firestarter) || TimeSinceFirestarterBuff >= 2) && Gauge.AstralFireStacks < 3 || !Fire4.LevelChecked() && TimeSinceFirestarterBuff >= 2 && ActionReady(Fire3))
                     return Fire3;
 
                 if (ActionReady(FireSpam) && (LevelChecked(Despair) && CurMp - MP.FireI >= 800 || !LevelChecked(Despair)))
@@ -269,10 +273,10 @@ internal partial class BLM : Caster
                     return Despair;
 
                 if (ActionReady(Blizzard3) &&
-                    !HasEffect(Role.Buffs.Swiftcast) && !HasEffect(Buffs.Triplecast))
+                    !HasStatusEffect(Role.Buffs.Swiftcast) && !HasStatusEffect(Buffs.Triplecast))
                     return Blizzard3;
 
-                if (IsEnabled(CustomComboPreset.BLM_ST_Transpose) && 
+                if (IsEnabled(CustomComboPreset.BLM_ST_Transpose) &&
                     ActionReady(Transpose))
                     return Transpose; //Level 4-34
             }
@@ -289,13 +293,13 @@ internal partial class BLM : Caster
                     if (ActionReady(Fire3))
                         return Fire3; //35-100, pre-Paradox/scuffed starting combat
 
-                    if (IsEnabled(CustomComboPreset.BLM_ST_Transpose) && 
+                    if (IsEnabled(CustomComboPreset.BLM_ST_Transpose) &&
                         ActionReady(Transpose))
                         return Transpose; //Levels 4-34
                 }
 
                 if (ActionReady(Blizzard3) && Gauge.UmbralIceStacks < 3 &&
-                    (HasEffect(Buffs.Triplecast) || HasEffect(Role.Buffs.Swiftcast)))
+                    (HasStatusEffect(Buffs.Triplecast) || HasStatusEffect(Role.Buffs.Swiftcast)))
                     return Blizzard3;
 
                 if (ActionReady(BlizzardSpam))
@@ -432,7 +436,7 @@ internal partial class BLM : Caster
                     EndOfFirePhase)
                     return Manafont;
 
-                if (IsEnabled(CustomComboPreset.BLM_AoE_Transpose) && 
+                if (IsEnabled(CustomComboPreset.BLM_AoE_Transpose) &&
                     ActionReady(Transpose) && (EndOfFirePhase || EndOfIcePhaseAoEMaxLevel))
                     return Transpose;
 
@@ -485,7 +489,7 @@ internal partial class BLM : Caster
                 if (ActionReady(Blizzard2) && TraitLevelChecked(Traits.AspectMasteryIII))
                     return OriginalHook(Blizzard2);
 
-                if (IsEnabled(CustomComboPreset.BLM_AoE_Transpose) && 
+                if (IsEnabled(CustomComboPreset.BLM_AoE_Transpose) &&
                     ActionReady(Transpose))
                     return Transpose;
             }
@@ -497,7 +501,7 @@ internal partial class BLM : Caster
                     if (ActionReady(Fire2) && TraitLevelChecked(Traits.AspectMasteryIII))
                         return OriginalHook(Fire2);
 
-                    if (IsEnabled(CustomComboPreset.BLM_AoE_Transpose) && 
+                    if (IsEnabled(CustomComboPreset.BLM_AoE_Transpose) &&
                         ActionReady(Transpose))
                         return Transpose;
                 }

@@ -80,15 +80,15 @@ namespace WrathCombo.Combos.PvP
                 if (actionID is Malefic)
                 {
                     // Card Draw
-                    if (IsEnabled(CustomComboPreset.ASTPvP_Burst_DrawCard) && IsOffCooldown(MinorArcana) && (!HasStatusEffect(Buffs.LadyOfCrowns) && !HasStatusEffect(Buffs.LordOfCrowns)))
+                    if (IsEnabled(CustomComboPreset.ASTPvP_Burst_DrawCard) && IsOffCooldown(MinorArcana) && (!HasEffect(Buffs.LadyOfCrowns) && !HasEffect(Buffs.LordOfCrowns)))
                         return MinorArcana;                                      
                    
                     int cardPlayOption = Config.ASTPvP_Burst_PlayCardOption;
 
                     if (IsEnabled(CustomComboPreset.ASTPvP_Burst_PlayCard))
                     {
-                        bool hasLadyOfCrowns = HasStatusEffect(Buffs.LadyOfCrowns);
-                        bool hasLordOfCrowns = HasStatusEffect(Buffs.LordOfCrowns);
+                        bool hasLadyOfCrowns = HasEffect(Buffs.LadyOfCrowns);
+                        bool hasLordOfCrowns = HasEffect(Buffs.LordOfCrowns);
 
                         // Card Playing Split so Lady can still be used if target is immune
                         if ((cardPlayOption == 1 && hasLordOfCrowns && !PvPCommon.TargetImmuneToDamage()) ||
@@ -144,9 +144,9 @@ namespace WrathCombo.Combos.PvP
                         if (IsOffCooldown(MinorArcana))
                             return MinorArcana;
 
-                        if (HasStatusEffect(Buffs.RetrogradeReady))
+                        if (HasEffect(Buffs.RetrogradeReady))
                         {
-                            if (HasStatusEffect(Buffs.LordOfCrowns))
+                            if (HasEffect(Buffs.LordOfCrowns))
                                 return OriginalHook(MinorArcana);
                             if (IsOffCooldown(Macrocosmos))
                                 return Macrocosmos;

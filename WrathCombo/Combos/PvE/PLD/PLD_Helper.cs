@@ -101,9 +101,10 @@ internal partial class PLD
     ///     <c>Logic</c> is the logic for whether to use the action.
     /// </value>
     /// <remarks>
-    ///     Each logic check is already combined with checking if the preset is
-    ///     enabled and if the action is <see cref="ActionReady(uint)">ready</see>
-    ///     and <see cref="LevelChecked(uint)">level-checked</see>.<br />
+    ///     Each logic check is already combined with checking if the preset
+    ///     <see cref="IsEnabled(uint)">is enabled</see>
+    ///     and if the action is <see cref="ActionReady(uint)">ready</see> and
+    ///     <see cref="LevelChecked(uint)">level-checked</see>.<br />
     ///     Do not add any of these checks to <c>Logic</c>.
     /// </remarks>
     private static (uint Action, CustomComboPreset Preset, System.Func<bool> Logic)[]
