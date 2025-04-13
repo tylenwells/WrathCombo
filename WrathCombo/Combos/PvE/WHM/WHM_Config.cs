@@ -227,12 +227,6 @@ internal partial class WHM
         /// 2nd smallest bar width
         private const float medium = 150f;
 
-        /// 2nd biggest bar width
-        private const float bigger = 175f;
-
-        /// Biggest bar width
-        private const float biggest = 200f;
-
         /// Bar Description for target HP% to start using plus disable text
         private const string targetStartUsingAtDescription =
             "Target HP% to use at or below (100 = Disable check)";

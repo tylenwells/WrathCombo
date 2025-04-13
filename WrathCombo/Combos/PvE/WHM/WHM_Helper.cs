@@ -135,8 +135,9 @@ internal partial class WHM
             Glare3,
             Glare3,
             Glare3,
-            Dia
+            Dia,
         ];
+
         internal override UserData ContentCheckConfig => Config.WHM_Balance_Content;
 
         public override bool HasCooldowns()
