@@ -108,14 +108,14 @@ internal partial class SAM : MeleeJob
             if (ActionReady(Enpi) &&
                 !InMeleeRange() && HasBattleTarget())
                 return Enpi;
-
-            //Meikyo Features
-            if (UseMeikyo())
-                return MeikyoShisui;
-
+            
             //oGCDs
             if (CanWeave())
             {
+                //Meikyo Features
+                if (UseMeikyo())
+                    return MeikyoShisui;
+                
                 //Ikishoten Features
                 //TODO Revisit when Raidbuffs are in
                 if (ActionReady(Ikishoten) && !HasEffect(Buffs.ZanshinReady))
@@ -258,8 +258,7 @@ internal partial class SAM : MeleeJob
 
             int kenkiOvercap = Config.SAM_ST_KenkiOvercapAmount;
             int shintenTreshhold = Config.SAM_ST_ExecuteThreshold;
-
-
+            
             //Meikyo to start before combat
             if (IsEnabled(CustomComboPreset.SAM_ST_CDs) &&
                 IsEnabled(CustomComboPreset.SAM_ST_CDs_MeikyoShisui) &&
