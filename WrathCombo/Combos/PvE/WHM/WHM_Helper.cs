@@ -1,8 +1,8 @@
 ﻿#region
 
+using System.Collections.Generic;
 using Dalamud.Game.ClientState.JobGauge.Types;
 using Dalamud.Game.ClientState.Objects.Types;
-using System.Collections.Generic;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
@@ -23,37 +23,18 @@ namespace WrathCombo.Combos.PvE;
 
 internal partial class WHM
 {
-    #region Variables
-
-    //Lists
-    internal static readonly List<uint>
-        StoneGlareList = [Stone1, Stone2, Stone3, Stone4, Glare1, Glare3];
-
-    internal static readonly Dictionary<uint, ushort>
-        AeroList = new()
-        {
-            { Aero, Debuffs.Aero },
-            { Aero2, Debuffs.Aero2 },
-            { Dia, Debuffs.Dia }
-        };
-
-    // Gauge Stuff
-    internal static WHMGauge gauge = GetJobGauge<WHMGauge>();
-    internal static bool CanLily => gauge.Lily > 0;
-    internal static bool FullLily => gauge.Lily == 3;
-    internal static bool AlmostFullLily => gauge is { Lily: 2, LilyTimer: >= 17000 };
-    internal static bool BloodLilyReady => gauge.BloodLily == 3;
-
-    #endregion
-
     #region Heal Priority
-    public static int GetMatchingConfigST(int i, IGameObject? optionalTarget, out uint action,
+
+    public static int GetMatchingConfigST(
+        int i,
+        IGameObject? optionalTarget,
+        out uint action,
         out bool enabled)
     {
         //var healTarget = optionalTarget ?? GetHealTarget(Config.WHM_STHeals_UIMouseOver);
-        //leaving incase Regen gets a slider and is added
+        //leaving in case Regen gets a slider and is added
 
-        bool canWeave = CanWeave(0.3);
+        var canWeave = CanWeave(0.3);
 
         switch (i)
         {
@@ -70,7 +51,8 @@ internal partial class WHM
                 action = Tetragrammaton;
 
                 enabled = IsEnabled(CustomComboPreset.WHM_STHeals_Tetragrammaton) &&
-                          (!Config.WHM_STHeals_TetraWeave || Config.WHM_STHeals_TetraWeave && canWeave);
+                          (!Config.WHM_STHeals_TetraWeave ||
+                           Config.WHM_STHeals_TetraWeave && canWeave);
 
                 return Config.WHM_STHeals_TetraHP;
 
@@ -98,6 +80,30 @@ internal partial class WHM
 
         return 0;
     }
+
+    #endregion
+
+    #region Variables
+
+    //Lists
+    internal static readonly List<uint>
+        StoneGlareList = [Stone1, Stone2, Stone3, Stone4, Glare1, Glare3];
+
+    internal static readonly Dictionary<uint, ushort>
+        AeroList = new()
+        {
+            { Aero, Debuffs.Aero },
+            { Aero2, Debuffs.Aero2 },
+            { Dia, Debuffs.Dia }
+        };
+
+    // Gauge Stuff
+    internal static WHMGauge gauge = GetJobGauge<WHMGauge>();
+    internal static bool CanLily => gauge.Lily > 0;
+    internal static bool FullLily => gauge.Lily == 3;
+    internal static bool AlmostFullLily => gauge is { Lily: 2, LilyTimer: >= 17000 };
+    internal static bool BloodLilyReady => gauge.BloodLily == 3;
+
     #endregion
 
     #region Opener
@@ -151,6 +157,7 @@ internal partial class WHM
             return true;
         }
     }
+
     #endregion
 
     #region ID's
@@ -159,6 +166,22 @@ internal partial class WHM
     public const byte JobID = 24;
 
     public const uint
+        // DPS
+        Glare1 = 16533,
+        Glare3 = 25859,
+        Glare4 = 37009,
+        Stone1 = 119,
+        Stone2 = 127,
+        Stone3 = 3568,
+        Stone4 = 7431,
+        Assize = 3571,
+        Holy = 139,
+        Holy3 = 25860,
+
+        // DoT
+        Aero = 121,
+        Aero2 = 132,
+        Dia = 16532,
 
         // Heals
         Cure = 120,
@@ -178,32 +201,10 @@ internal partial class WHM
         Aquaveil = 25861,
         DivineCaress = 37011,
 
-        // DPS
-        Glare1 = 16533,
-        Glare3 = 25859,
-        Glare4 = 37009,
-        Stone1 = 119,
-        Stone2 = 127,
-        Stone3 = 3568,
-        Stone4 = 7431,
-        Assize = 3571,
-        Holy = 139,
-        Holy3 = 25860,
-
-        // DoT
-        Aero = 121,
-        Aero2 = 132,
-        Dia = 16532,
-
         // Buffs
         ThinAir = 7430,
         PresenceOfMind = 136,
         PlenaryIndulgence = 7433;
-
-    //Action Groups
-
-
-    //Debuff Pairs of Actions and Debuff
 
 
     public static class Buffs
