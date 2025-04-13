@@ -96,7 +96,7 @@ namespace WrathCombo.AutoRotation
                 TimeToHeal = null;
 
             uint _ = 0;
-            
+
             bool actCheck = autoActions.Any(x =>
             {
                 var attr = x.Key.Attributes();
@@ -295,12 +295,12 @@ namespace WrathCombo.AutoRotation
             if (!LevelChecked(SGE.Kardia)) return;
             if (CombatEngageDuration().TotalSeconds < 3) return;
 
-            foreach (var member in GetPartyMembers().Where(x => !x.BattleChara.IsDead).OrderByDescending(x => x.BattleChara.GetRole() is CombatRole.Tank))
+            foreach (var member in GetPartyMembers().Where(x => !x.BattleChara.IsDead).OrderByDescending(x => x.BattleChara?.GetRole() is CombatRole.Tank))
             {
-                if (cfg.HealerSettings.KardiaTanksOnly && member.BattleChara.GetRole() is not CombatRole.Tank &&
+                if (cfg.HealerSettings.KardiaTanksOnly && member.BattleChara?.GetRole() is not CombatRole.Tank &&
                     !HasStatusEffect(3615, member.BattleChara, true)) continue;
 
-                var enemiesTargeting = Svc.Objects.Where(x => x.IsTargetable && x.IsHostile() && x.TargetObjectId == member.BattleChara.GameObjectId).Count();
+                var enemiesTargeting = Svc.Objects.Count(x => x.IsTargetable && x.IsHostile() && x.TargetObjectId == member.BattleChara.GameObjectId);
                 if (enemiesTargeting > 0 && !HasStatusEffect(SGE.Buffs.Kardion, member.BattleChara))
                 {
                     ActionManager.Instance()->UseAction(ActionType.Action, SGE.Kardia, member.BattleChara.GameObjectId);
@@ -482,8 +482,8 @@ namespace WrathCombo.AutoRotation
 
                     //Chance target of target.GameObjectID can be null
                     var ret = ActionManager.Instance()->UseAction(
-                        ActionType.Action, 
-                        Service.ActionReplacer.getActionHook.IsEnabled ? gameAct : outAct, 
+                        ActionType.Action,
+                        Service.ActionReplacer.getActionHook.IsEnabled ? gameAct : outAct,
                         (mustTarget && target != null) || switched ? target.GameObjectId : Player.Object.GameObjectId);
 
                     if (outAct is NIN.Ten or NIN.Chi or NIN.Jin or NIN.TenCombo or NIN.ChiCombo or NIN.JinCombo && ret)
@@ -608,7 +608,7 @@ namespace WrathCombo.AutoRotation
 
             public static IGameObject? GetTankTarget()
             {
-                var tank = GetPartyMembers().Where(x => x.BattleChara.GetRole() == CombatRole.Tank || HasStatusEffect(3615, x.BattleChara, true)).FirstOrDefault();
+                var tank = GetPartyMembers().FirstOrDefault(x => x.BattleChara?.GetRole() == CombatRole.Tank || HasStatusEffect(3615, x.BattleChara, true));
                 if (tank == null)
                     return null;
 
