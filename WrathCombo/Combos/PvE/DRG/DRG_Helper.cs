@@ -36,8 +36,8 @@ internal partial class DRG
     ];
 
     internal static Status? ChaosDoTDebuff => LevelChecked(ChaoticSpring)
-                ? GetStatusEffect(Debuffs.ChaoticSpring, CurrentTarget)
-                : GetStatusEffect(Debuffs.ChaosThrust, CurrentTarget);
+        ? GetStatusEffect(Debuffs.ChaoticSpring, CurrentTarget)
+        : GetStatusEffect(Debuffs.ChaosThrust, CurrentTarget);
 
     internal static uint SlowLock => Stardiver;
 

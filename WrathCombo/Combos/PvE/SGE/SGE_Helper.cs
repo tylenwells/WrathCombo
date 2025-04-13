@@ -9,6 +9,7 @@ namespace WrathCombo.Combos.PvE;
 internal partial class SGE
 {
     // Sage Gauge & Extensions
+
     internal static readonly List<uint>
         AddersgallList = [Taurochole, Druochole, Ixochole, Kerachole],
         DyskrasiaList = [Dyskrasia, Dyskrasia2];

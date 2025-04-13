@@ -14,7 +14,7 @@ using PartyRequirement = WrathCombo.Combos.PvE.All.Enums.PartyRequirement;
 
 namespace WrathCombo.Combos.PvE;
 
-internal partial class GNB : TankJob
+internal partial class GNB : Tank
 {
     #region Variables
     internal static byte Ammo => GetJobGauge<GNBGauge>().Ammo;
@@ -358,7 +358,7 @@ internal partial class GNB : TankJob
         {
         (CustomComboPreset.GNB_Bozja_LostDeath, Bozja.LostDeath, true),
         (CustomComboPreset.GNB_Bozja_LostCure, Bozja.LostCure, PlayerHealthPercentageHp() <= Config.GNB_Bozja_LostCure_Health),
-        (CustomComboPreset.GNB_Bozja_LostArise, Bozja.LostArise, GetTargetHPPercent() == 0 && !HasStatusEffect(MagicRole.Buffs.Raise)),
+        (CustomComboPreset.GNB_Bozja_LostArise, Bozja.LostArise, GetTargetHPPercent() == 0 && !HasStatusEffect(RoleActions.Magic.Buffs.Raise)),
         (CustomComboPreset.GNB_Bozja_LostReraise, Bozja.LostReraise, PlayerHealthPercentageHp() <= Config.GNB_Bozja_LostReraise_Health),
         (CustomComboPreset.GNB_Bozja_LostProtect, Bozja.LostProtect, !HasStatusEffect(Bozja.Buffs.LostProtect)),
         (CustomComboPreset.GNB_Bozja_LostShell, Bozja.LostShell, !HasStatusEffect(Bozja.Buffs.LostShell)),
@@ -522,7 +522,7 @@ internal partial class GNB : TankJob
     ///     Each logic check is already combined with checking if the preset is
     ///     enabled and if the action is <see cref="ActionReady(uint)">ready</see>
     ///     and <see cref="LevelChecked(uint)">level-checked</see>.<br />
-    ///     Do not add any of these checks to <c>Logic</c>.
+    ///    Do not add any of these checks to <c>Logic</c>.
     /// </remarks>
     private static (uint Action, CustomComboPreset Preset, System.Func<bool> Logic)[]
         PrioritizedMitigation =>

@@ -2,7 +2,7 @@ using Dalamud.Game.ClientState.JobGauge.Enums;
 using WrathCombo.CustomComboNS;
 namespace WrathCombo.Combos.PvE;
 
-internal partial class SAM : MeleeJob
+internal partial class SAM : Melee
 {
     internal class SAM_ST_YukikazeCombo : CustomCombo
     {

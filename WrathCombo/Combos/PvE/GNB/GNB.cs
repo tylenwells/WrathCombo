@@ -7,7 +7,7 @@ using WrathCombo.Data;
 
 namespace WrathCombo.Combos.PvE;
 
-internal partial class GNB : TankJob
+internal partial class GNB : Tank
 {
     #region Simple Mode - Single Target
     internal class GNB_ST_Simple : CustomCombo
