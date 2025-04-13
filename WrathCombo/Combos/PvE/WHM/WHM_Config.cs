@@ -75,13 +75,13 @@ internal partial class WHM
                         "Non-Bosses",
                         "Only applies the HP check above to non-bosses.\n" +
                         "Allows you to only stop DoTing early when it's not a boss.",
-                        (int)BossAvoidance.Off,
+                        (int)BossAvoidance.On,
                         descriptionColor: ImGuiColors.DalamudWhite);
 
                     DrawHorizontalRadioButton(WHM_ST_DPS_AeroOptionSubOption,
                         "All Enemies",
                         "Applies the HP check above to all enemies.",
-                        (int)BossAvoidance.On,
+                        (int)BossAvoidance.Off,
                         descriptionColor: ImGuiColors.DalamudWhite);
 
                     DrawRoundedSliderFloat(0, 4, WHM_ST_MainCombo_DoT_Threshold,
@@ -270,8 +270,8 @@ internal partial class WHM
         /// </summary>
         internal enum BossAvoidance
         {
-            Off = 0,
-            On = 1,
+            On = 0,
+            Off = 1,
         }
 
         #endregion
@@ -341,12 +341,12 @@ internal partial class WHM
         ///     Enemy type to apply the HP threshold check to.
         /// </summary>
         /// <value>
-        ///     <b>Default</b>: <see cref="BossAvoidance.Off" /> <br />
+        ///     <b>Default</b>: <see cref="BossAvoidance.On" /> <br />
         ///     <b>Options</b>: <see cref="BossAvoidance">BossAvoidance Enum</see>
         /// </value>
         /// <seealso cref="CustomComboPreset.WHM_ST_MainCombo_DoT" />
         internal static UserInt WHM_ST_DPS_AeroOptionSubOption =
-            new("WHM_ST_DPS_AeroOptionSubOption", (int)BossAvoidance.Off);
+            new("WHM_ST_DPS_AeroOptionSubOption", (int)BossAvoidance.On);
 
         /// <summary>
         ///     MP threshold to use Lucid Dreaming in single target rotations.

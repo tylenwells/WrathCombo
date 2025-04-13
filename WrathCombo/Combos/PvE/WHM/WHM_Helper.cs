@@ -6,8 +6,6 @@ using Dalamud.Game.ClientState.Objects.Types;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
-using Dalamud.Game.ClientState.Statuses;
-using System;
 
 // ReSharper disable AccessToStaticMemberViaDerivedType
 // ReSharper disable ConditionIsAlwaysTrueOrFalse
@@ -25,6 +23,23 @@ namespace WrathCombo.Combos.PvE;
 
 internal partial class WHM
 {
+    internal static bool NeedsDoT()
+    {
+        var dotAction = OriginalHook(Aero);
+        var hpThreshold = Config.WHM_ST_DPS_AeroOptionSubOption ==
+                          (int)Config.BossAvoidance.Off ||
+                          !InBossEncounter()
+            ? Config.WHM_ST_DPS_AeroOption
+            : 0;
+        AeroList.TryGetValue(dotAction, out var dotDebuffID);
+        var dotRemaining = GetStatusEffectRemainingTime(dotDebuffID, CurrentTarget);
+
+        return ActionReady(dotAction) &&
+               HasBattleTarget() &&
+               GetTargetHPPercent() > hpThreshold &&
+               dotRemaining <= Config.WHM_ST_MainCombo_DoT_Threshold;
+    }
+
     #region Heal Priority
 
     public static int GetMatchingConfigST(
@@ -96,7 +111,7 @@ internal partial class WHM
         {
             { Aero, Debuffs.Aero },
             { Aero2, Debuffs.Aero2 },
-            { Dia, Debuffs.Dia }
+            { Dia, Debuffs.Dia },
         };
 
     // Gauge Stuff
@@ -106,19 +121,7 @@ internal partial class WHM
     internal static bool AlmostFullLily => gauge is { Lily: 2, LilyTimer: >= 17000 };
     internal static bool BloodLilyReady => gauge.BloodLily == 3;
 
-    // Dot Stuff
-    internal static Status? Dotted => GetStatusEffect(Debuffs.Aero, CurrentTarget) ?? GetStatusEffect(Debuffs.Aero2, CurrentTarget) ?? GetStatusEffect(Debuffs.Dia, CurrentTarget);
-    internal static float DotRemaining => Dotted?.RemainingTime ?? 0;
-   
     #endregion
-
-    internal static bool ApplyWhiteDot()
-    {
-        if (ActionReady(OriginalHook(Aero)) && HasBattleTarget() && 
-            (Dotted is null || DotRemaining <= Config.WHM_ST_MainCombo_DoT_Threshold))              
-            return true;
-        return false;
-    }
 
     #region Opener
 

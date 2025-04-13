@@ -61,15 +61,6 @@ internal partial class WHM : Healer
 
             if (!InCombat()) return actionID;
 
-            #region Variables
-
-            var hpThreshold =
-                Config.WHM_ST_DPS_AeroOptionSubOption == 1 || !InBossEncounter()
-                    ? Config.WHM_ST_DPS_AeroOption
-                    : 0;
-
-            #endregion
-
             #region Weaves
 
             if (CanSpellWeave())
@@ -99,8 +90,7 @@ internal partial class WHM : Healer
             #region GCDS and Casts
 
             // DoTs
-            if (IsEnabled(CustomComboPreset.WHM_ST_MainCombo_DoT) && 
-                ApplyWhiteDot() && GetTargetHPPercent() > hpThreshold)
+            if (IsEnabled(CustomComboPreset.WHM_ST_MainCombo_DoT) && NeedsDoT())
                 return OriginalHook(Aero);
 
             // Glare IV
