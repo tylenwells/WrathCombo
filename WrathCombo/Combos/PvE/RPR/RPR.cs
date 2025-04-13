@@ -440,9 +440,9 @@ internal partial class RPR : Melee
                         (Gauge.Soul is 100 || GetCooldownRemainingTime(Gluttony) > GCD * 5)))
                     return GrimSwathe;
 
-                if (HasEffect(Buffs.Enshrouded))
+                if (HasStatusEffect(Buffs.Enshrouded))
                 {
-                    if (Gauge.LemureShroud is 2 && Gauge.VoidShroud is 1 && HasEffect(Buffs.Oblatio))
+                    if (Gauge.LemureShroud is 2 && Gauge.VoidShroud is 1 && HasStatusEffect(Buffs.Oblatio))
                         return OriginalHook(Gluttony);
 
                     if (Gauge.VoidShroud >= 2 && LevelChecked(LemuresScythe))
@@ -457,8 +457,8 @@ internal partial class RPR : Melee
             }
 
             if (LevelChecked(WhorlOfDeath) &&
-                GetDebuffRemainingTime(Debuffs.DeathsDesign) < 6 &&
-                !HasEffect(Buffs.SoulReaver) && !HasEffect(Buffs.Executioner))
+                GetStatusEffectRemainingTime(Debuffs.DeathsDesign, CurrentTarget) < 6 &&
+                !HasStatusEffect(Buffs.SoulReaver) && !HasStatusEffect(Buffs.Executioner))
                 return WhorlOfDeath;
 
             if (HasStatusEffect(Buffs.PerfectioParata) && LevelChecked(Perfectio))
@@ -469,22 +469,22 @@ internal partial class RPR : Melee
                 (GetStatusEffectRemainingTime(Buffs.BloodsownCircle) <= 1 || JustUsed(Communio)))
                 return PlentifulHarvest;
 
-            if (HasEffect(Buffs.SoulReaver) ||
-                HasEffect(Buffs.Executioner) && !HasEffect(Buffs.Enshrouded) && LevelChecked(Guillotine))
+            if (HasStatusEffect(Buffs.SoulReaver) ||
+                HasStatusEffect(Buffs.Executioner) && !HasStatusEffect(Buffs.Enshrouded) && LevelChecked(Guillotine))
                 return OriginalHook(Guillotine);
 
-            if (HasEffect(Buffs.Enshrouded))
+            if (HasStatusEffect(Buffs.Enshrouded))
             {
                 if (LevelChecked(Communio) &&
-                    Gauge.LemureShroud is 1  && Gauge.VoidShroud is 0)
+                    Gauge.LemureShroud is 1 && Gauge.VoidShroud is 0)
                     return Communio;
 
                 if (Gauge.LemureShroud > 0)
                     return OriginalHook(Guillotine);
             }
 
-            if (!HasEffect(Buffs.Enshrouded) && !HasEffect(Buffs.SoulReaver) && !HasEffect(Buffs.Executioner) &&
-                !HasEffect(Buffs.PerfectioParata) &&
+            if (!HasStatusEffect(Buffs.Enshrouded) && !HasStatusEffect(Buffs.SoulReaver) && !HasStatusEffect(Buffs.Executioner) &&
+                !HasStatusEffect(Buffs.PerfectioParata) &&
                 ActionReady(SoulScythe) && Gauge.Soul <= 50)
                 return SoulScythe;
 
@@ -545,10 +545,10 @@ internal partial class RPR : Melee
                       GetCooldownRemainingTime(Gluttony) > GCD * 5)))
                     return GrimSwathe;
 
-                if (HasEffect(Buffs.Enshrouded))
+                if (HasStatusEffect(Buffs.Enshrouded))
                 {
                     if (IsEnabled(CustomComboPreset.RPR_AoE_Sacrificium) &&
-                        Gauge.LemureShroud is 2 && Gauge.VoidShroud is 1 && HasEffect(Buffs.Oblatio))
+                        Gauge.LemureShroud is 2 && Gauge.VoidShroud is 1 && HasStatusEffect(Buffs.Oblatio))
                         return OriginalHook(Gluttony);
 
                     if (IsEnabled(CustomComboPreset.RPR_AoE_Lemure) &&
@@ -583,11 +583,11 @@ internal partial class RPR : Melee
                 return PlentifulHarvest;
 
             if (IsEnabled(CustomComboPreset.RPR_AoE_Guillotine) &&
-                (HasEffect(Buffs.SoulReaver) || HasEffect(Buffs.Executioner)
-                    && !HasEffect(Buffs.Enshrouded) && LevelChecked(Guillotine)))
+                (HasStatusEffect(Buffs.SoulReaver) || HasStatusEffect(Buffs.Executioner)
+                    && !HasStatusEffect(Buffs.Enshrouded) && LevelChecked(Guillotine)))
                 return OriginalHook(Guillotine);
-            
-            if (HasEffect(Buffs.Enshrouded))
+
+            if (HasStatusEffect(Buffs.Enshrouded))
             {
                 if (IsEnabled(CustomComboPreset.RPR_AoE_Communio) &&
                     LevelChecked(Communio) &&
@@ -600,8 +600,8 @@ internal partial class RPR : Melee
             }
 
             if (IsEnabled(CustomComboPreset.RPR_AoE_SoulScythe) &&
-                !HasEffect(Buffs.Enshrouded) && !HasEffect(Buffs.SoulReaver) && !HasEffect(Buffs.Executioner) &&
-                !HasEffect(Buffs.PerfectioParata) &&
+                !HasStatusEffect(Buffs.Enshrouded) && !HasStatusEffect(Buffs.SoulReaver) && !HasStatusEffect(Buffs.Executioner) &&
+                !HasStatusEffect(Buffs.PerfectioParata) &&
                 ActionReady(SoulScythe) && Gauge.Soul <= 50)
                 return SoulScythe;
 
