@@ -192,7 +192,7 @@ internal partial class SAM
         public override List<uint> OpenerActions { get; set; } =
         [
             MeikyoShisui,
-            rolTrueNorth, //2
+            Role.TrueNorth, //2
             Gekko,
             Kasha,
             Ikishoten,

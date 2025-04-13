@@ -1,4 +1,3 @@
-using FFXIVClientStructs.FFXIV.Client.System.Input.SoftKeyboards;
 using ImGuiNET;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Extensions;
@@ -168,7 +167,6 @@ internal partial class SAM
 
                     break;
                 }
-               
             }
         }
     }

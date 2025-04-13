@@ -666,7 +666,7 @@ internal partial class SAM : Melee
                     if (Role.CanSecondWind(Config.SAM_AoESecondWindThreshold))
                         return Role.SecondWind;
 
-                    if (CanBloodBath(Config.SAM_AoEBloodbathThreshold))
+                    if (Role.CanBloodBath(Config.SAM_AoEBloodbathThreshold))
                         return Role.Bloodbath;
                 }
             }
