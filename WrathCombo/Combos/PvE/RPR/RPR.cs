@@ -418,8 +418,7 @@ internal partial class RPR : Melee
 
             if (CanWeave())
             {
-                if (LevelChecked(ArcaneCircle) &&
-                    (GetCooldownRemainingTime(ArcaneCircle) <= GCD + 0.25 || ActionReady(ArcaneCircle)))
+                if (ActionReady(ArcaneCircle))
                     return ArcaneCircle;
 
                 if (!HasStatusEffect(Buffs.SoulReaver) && !HasStatusEffect(Buffs.Enshrouded) &&
@@ -441,6 +440,15 @@ internal partial class RPR : Melee
                         (Gauge.Soul is 100 || GetCooldownRemainingTime(Gluttony) > GCD * 5)))
                     return GrimSwathe;
 
+                if (HasStatusEffect(Buffs.Enshrouded))
+                {
+                    if (Gauge.LemureShroud is 2 && Gauge.VoidShroud is 1 && HasStatusEffect(Buffs.Oblatio))
+                        return OriginalHook(Gluttony);
+
+                    if (Gauge.VoidShroud >= 2 && LevelChecked(LemuresScythe))
+                        return OriginalHook(GrimSwathe);
+                }
+
                 if (Role.CanSecondWind(25))
                     return Role.SecondWind;
 
@@ -449,8 +457,8 @@ internal partial class RPR : Melee
             }
 
             if (LevelChecked(WhorlOfDeath) &&
-                GetStatusEffectRemainingTime(Debuffs.DeathsDesign, CurrentTarget) < 6 && !HasStatusEffect(Buffs.SoulReaver) &&
-                !HasStatusEffect(Buffs.Executioner))
+                GetStatusEffectRemainingTime(Debuffs.DeathsDesign, CurrentTarget) < 6 &&
+                !HasStatusEffect(Buffs.SoulReaver) && !HasStatusEffect(Buffs.Executioner))
                 return WhorlOfDeath;
 
             if (HasStatusEffect(Buffs.PerfectioParata) && LevelChecked(Perfectio))
@@ -461,29 +469,24 @@ internal partial class RPR : Melee
                 (GetStatusEffectRemainingTime(Buffs.BloodsownCircle) <= 1 || JustUsed(Communio)))
                 return PlentifulHarvest;
 
-            if (!HasStatusEffect(Buffs.Enshrouded) && !HasStatusEffect(Buffs.SoulReaver) && !HasStatusEffect(Buffs.Executioner) &&
-                !HasStatusEffect(Buffs.PerfectioParata) &&
-                ActionReady(SoulScythe) && Gauge.Soul <= 50)
-                return SoulScythe;
+            if (HasStatusEffect(Buffs.SoulReaver) ||
+                HasStatusEffect(Buffs.Executioner) && !HasStatusEffect(Buffs.Enshrouded) && LevelChecked(Guillotine))
+                return OriginalHook(Guillotine);
 
             if (HasStatusEffect(Buffs.Enshrouded))
             {
-                if (Gauge.LemureShroud is 1 && Gauge.VoidShroud is 0 && ActionReady(Communio))
+                if (LevelChecked(Communio) &&
+                    Gauge.LemureShroud is 1 && Gauge.VoidShroud is 0)
                     return Communio;
-
-                if (Gauge.LemureShroud is 2 && Gauge.VoidShroud is 1 && HasStatusEffect(Buffs.Oblatio))
-                    return OriginalHook(Gluttony);
-
-                if (Gauge.VoidShroud >= 2 && LevelChecked(LemuresScythe) && CanWeave())
-                    return OriginalHook(GrimSwathe);
 
                 if (Gauge.LemureShroud > 0)
                     return OriginalHook(Guillotine);
             }
 
-            if (HasStatusEffect(Buffs.SoulReaver) ||
-                HasStatusEffect(Buffs.Executioner) && !HasStatusEffect(Buffs.Enshrouded) && LevelChecked(Guillotine))
-                return OriginalHook(Guillotine);
+            if (!HasStatusEffect(Buffs.Enshrouded) && !HasStatusEffect(Buffs.SoulReaver) && !HasStatusEffect(Buffs.Executioner) &&
+                !HasStatusEffect(Buffs.PerfectioParata) &&
+                ActionReady(SoulScythe) && Gauge.Soul <= 50)
+                return SoulScythe;
 
             return ComboAction == OriginalHook(SpinningScythe) && LevelChecked(NightmareScythe)
                 ? OriginalHook(NightmareScythe)
@@ -516,8 +519,7 @@ internal partial class RPR : Melee
             if (CanWeave())
             {
                 if (IsEnabled(CustomComboPreset.RPR_AoE_ArcaneCircle) &&
-                    LevelChecked(ArcaneCircle) &&
-                    (GetCooldownRemainingTime(ArcaneCircle) <= GCD + 0.25 || ActionReady(ArcaneCircle)))
+                    ActionReady(ArcaneCircle))
                     return ArcaneCircle;
 
                 if (IsEnabled(CustomComboPreset.RPR_AoE_Enshroud) &&
@@ -538,9 +540,21 @@ internal partial class RPR : Melee
                     !HasStatusEffect(Buffs.SoulReaver) && !HasStatusEffect(Buffs.ImmortalSacrifice) &&
                     Gauge.Soul >= 50 &&
                     (!LevelChecked(Gluttony) ||
-                     LevelChecked(Gluttony) && (Gauge.Soul is 100 ||
-                                                GetCooldownRemainingTime(Gluttony) > GCD * 5)))
+                     LevelChecked(Gluttony) &&
+                     (Gauge.Soul is 100 ||
+                      GetCooldownRemainingTime(Gluttony) > GCD * 5)))
                     return GrimSwathe;
+
+                if (HasStatusEffect(Buffs.Enshrouded))
+                {
+                    if (IsEnabled(CustomComboPreset.RPR_AoE_Sacrificium) &&
+                        Gauge.LemureShroud is 2 && Gauge.VoidShroud is 1 && HasStatusEffect(Buffs.Oblatio))
+                        return OriginalHook(Gluttony);
+
+                    if (IsEnabled(CustomComboPreset.RPR_AoE_Lemure) &&
+                        Gauge.VoidShroud >= 2 && LevelChecked(LemuresScythe))
+                        return OriginalHook(GrimSwathe);
+                }
 
                 if (IsEnabled(CustomComboPreset.RPR_AoE_ComboHeals))
                 {
@@ -568,36 +582,28 @@ internal partial class RPR : Melee
                 (GetStatusEffectRemainingTime(Buffs.BloodsownCircle) <= 1 || JustUsed(Communio)))
                 return PlentifulHarvest;
 
-            if (IsEnabled(CustomComboPreset.RPR_AoE_SoulScythe) &&
-                !HasStatusEffect(Buffs.Enshrouded) && !HasStatusEffect(Buffs.SoulReaver) && !HasStatusEffect(Buffs.Executioner) &&
-                !HasStatusEffect(Buffs.PerfectioParata) &&
-                ActionReady(SoulScythe) && Gauge.Soul <= 50)
-                return SoulScythe;
+            if (IsEnabled(CustomComboPreset.RPR_AoE_Guillotine) &&
+                (HasStatusEffect(Buffs.SoulReaver) || HasStatusEffect(Buffs.Executioner)
+                    && !HasStatusEffect(Buffs.Enshrouded) && LevelChecked(Guillotine)))
+                return OriginalHook(Guillotine);
 
             if (HasStatusEffect(Buffs.Enshrouded))
             {
                 if (IsEnabled(CustomComboPreset.RPR_AoE_Communio) &&
-                    Gauge.LemureShroud is 1 && Gauge.VoidShroud is 0 && ActionReady(Communio))
+                    LevelChecked(Communio) &&
+                    Gauge.LemureShroud is 1 && Gauge.VoidShroud is 0)
                     return Communio;
-
-                if (IsEnabled(CustomComboPreset.RPR_AoE_Sacrificium) &&
-                    Gauge.LemureShroud is 2 && Gauge.VoidShroud is 1 && HasStatusEffect(Buffs.Oblatio) &&
-                    CanWeave())
-                    return OriginalHook(Gluttony);
-
-                if (IsEnabled(CustomComboPreset.RPR_AoE_Lemure) &&
-                    Gauge.VoidShroud >= 2 && LevelChecked(LemuresScythe) && CanWeave())
-                    return OriginalHook(GrimSwathe);
 
                 if (IsEnabled(CustomComboPreset.RPR_AoE_Reaping) &&
                     Gauge.LemureShroud > 0)
                     return OriginalHook(Guillotine);
             }
 
-            if (IsEnabled(CustomComboPreset.RPR_AoE_Guillotine) &&
-                (HasStatusEffect(Buffs.SoulReaver) || HasStatusEffect(Buffs.Executioner)
-                    && !HasStatusEffect(Buffs.Enshrouded) && LevelChecked(Guillotine)))
-                return OriginalHook(Guillotine);
+            if (IsEnabled(CustomComboPreset.RPR_AoE_SoulScythe) &&
+                !HasStatusEffect(Buffs.Enshrouded) && !HasStatusEffect(Buffs.SoulReaver) && !HasStatusEffect(Buffs.Executioner) &&
+                !HasStatusEffect(Buffs.PerfectioParata) &&
+                ActionReady(SoulScythe) && Gauge.Soul <= 50)
+                return SoulScythe;
 
             return ComboAction == OriginalHook(SpinningScythe) && LevelChecked(NightmareScythe)
                 ? OriginalHook(NightmareScythe)
