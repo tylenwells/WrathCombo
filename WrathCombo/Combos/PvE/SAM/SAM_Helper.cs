@@ -14,6 +14,10 @@ internal partial class SAM
     internal static SAMGauge Gauge = GetJobGauge<SAMGauge>();
     internal static SAMOpenerMaxLevel1 Opener1 = new();
 
+    internal static bool RefreshFugetsu => GetBuffRemainingTime(Buffs.Fugetsu) < GetBuffRemainingTime(Buffs.Fuka);
+
+    internal static bool RefreshFuka => GetBuffRemainingTime(Buffs.Fuka) < GetBuffRemainingTime(Buffs.Fugetsu);
+
     internal static int SenCount => GetSenCount();
 
     private static int GetSenCount()
@@ -123,7 +127,7 @@ internal partial class SAM
                     }
                 }
             }
-            
+
             if (IsEnabled(CustomComboPreset.SAM_ST_AdvancedMode))
             {
                 if (Config.SAM_ST_CDs_IaijutsuOption[3] &&

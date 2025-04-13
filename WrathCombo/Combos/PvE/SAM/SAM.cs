@@ -108,14 +108,14 @@ internal partial class SAM : MeleeJob
             if (ActionReady(Enpi) &&
                 !InMeleeRange() && HasBattleTarget())
                 return Enpi;
-            
+
             //oGCDs
             if (CanWeave())
             {
                 //Meikyo Features
                 if (UseMeikyo())
                     return MeikyoShisui;
-                
+
                 //Ikishoten Features
                 //TODO Revisit when Raidbuffs are in
                 if (ActionReady(Ikishoten) && !HasEffect(Buffs.ZanshinReady))
@@ -218,22 +218,20 @@ internal partial class SAM : MeleeJob
                         return Yukikaze;
 
                     if (!LevelChecked(Kasha) &&
-                        (GetBuffRemainingTime(Buffs.Fugetsu) < GetBuffRemainingTime(Buffs.Fuka) ||
-                         !HasEffect(Buffs.Fugetsu)) ||
+                        (RefreshFugetsu || !HasEffect(Buffs.Fugetsu)) ||
                         LevelChecked(Kasha) &&
                         (!HasEffect(Buffs.Fugetsu) ||
                          HasEffect(Buffs.Fuka) && !Gauge.HasGetsu ||
-                         SenCount is 3 && GetBuffRemainingTime(Buffs.Fugetsu) < GetBuffRemainingTime(Buffs.Fuka)))
+                         SenCount is 3 && RefreshFugetsu))
                         return Jinpu;
 
                     if (LevelChecked(Shifu) &&
                         (!LevelChecked(Kasha) &&
-                         (GetBuffRemainingTime(Buffs.Fuka) < GetBuffRemainingTime(Buffs.Fugetsu) ||
-                          !HasEffect(Buffs.Fuka)) ||
+                         (RefreshFuka || !HasEffect(Buffs.Fuka)) ||
                          LevelChecked(Kasha) &&
                          (!HasEffect(Buffs.Fuka) ||
                           HasEffect(Buffs.Fugetsu) && !Gauge.HasKa ||
-                          SenCount is 3 && GetBuffRemainingTime(Buffs.Fuka) < GetBuffRemainingTime(Buffs.Fugetsu))))
+                          SenCount is 3 && RefreshFuka)))
                         return Shifu;
                 }
 
@@ -258,7 +256,7 @@ internal partial class SAM : MeleeJob
 
             int kenkiOvercap = Config.SAM_ST_KenkiOvercapAmount;
             int shintenTreshhold = Config.SAM_ST_ExecuteThreshold;
-            
+
             //Meikyo to start before combat
             if (IsEnabled(CustomComboPreset.SAM_ST_CDs) &&
                 IsEnabled(CustomComboPreset.SAM_ST_CDs_MeikyoShisui) &&
@@ -409,29 +407,27 @@ internal partial class SAM : MeleeJob
                 if (ComboAction is Hakaze or Gyofu && LevelChecked(Jinpu))
                 {
                     if (IsEnabled(CustomComboPreset.SAM_ST_Yukikaze) &&
-                        !Gauge.HasSetsu && LevelChecked(Yukikaze) && HasEffect(Buffs.Fugetsu) &&
-                        HasEffect(Buffs.Fuka))
+                        !Gauge.HasSetsu && LevelChecked(Yukikaze) &&
+                        HasEffect(Buffs.Fugetsu) && HasEffect(Buffs.Fuka))
                         return Yukikaze;
 
                     if (IsEnabled(CustomComboPreset.SAM_ST_Gekko) &&
                         !LevelChecked(Kasha) &&
-                        (GetBuffRemainingTime(Buffs.Fugetsu) < GetBuffRemainingTime(Buffs.Fuka) ||
-                         !HasEffect(Buffs.Fugetsu)) ||
+                        (RefreshFugetsu || !HasEffect(Buffs.Fugetsu)) ||
                         LevelChecked(Kasha) &&
                         (!HasEffect(Buffs.Fugetsu) ||
                          HasEffect(Buffs.Fuka) && !Gauge.HasGetsu ||
-                         SenCount is 3 && GetBuffRemainingTime(Buffs.Fugetsu) < GetBuffRemainingTime(Buffs.Fuka)))
+                         SenCount is 3 && RefreshFugetsu))
                         return Jinpu;
 
                     if (IsEnabled(CustomComboPreset.SAM_ST_Kasha) &&
                         LevelChecked(Shifu) &&
                         (!LevelChecked(Kasha) &&
-                         (GetBuffRemainingTime(Buffs.Fuka) < GetBuffRemainingTime(Buffs.Fugetsu) ||
-                          !HasEffect(Buffs.Fuka)) ||
+                         (RefreshFuka || !HasEffect(Buffs.Fuka)) ||
                          LevelChecked(Kasha) &&
                          (!HasEffect(Buffs.Fuka) ||
                           HasEffect(Buffs.Fugetsu) && !Gauge.HasKa ||
-                          SenCount is 3 && GetBuffRemainingTime(Buffs.Fuka) < GetBuffRemainingTime(Buffs.Fugetsu))))
+                          SenCount is 3 && RefreshFuka)))
                         return Shifu;
                 }
 
@@ -456,7 +452,8 @@ internal partial class SAM : MeleeJob
             if (actionID is not Oka)
                 return actionID;
 
-            if (Config.SAM_Oka_KenkiOvercap && Gauge.Kenki >= Config.SAM_Oka_KenkiOvercapAmount &&
+            if (Config.SAM_Oka_KenkiOvercap &&
+                Gauge.Kenki >= Config.SAM_Oka_KenkiOvercapAmount &&
                 LevelChecked(Kyuten) && CanWeave())
                 return Kyuten;
 
@@ -585,13 +582,13 @@ internal partial class SAM : MeleeJob
                 ComboAction is Fuko or Fuga && LevelChecked(Mangetsu))
             {
                 if (!Gauge.HasGetsu ||
-                    GetBuffRemainingTime(Buffs.Fugetsu) < GetBuffRemainingTime(Buffs.Fuka) ||
+                    RefreshFugetsu ||
                     !HasEffect(Buffs.Fugetsu) || !LevelChecked(Oka))
                     return Mangetsu;
 
                 if (LevelChecked(Oka) &&
                     (!Gauge.HasKa ||
-                     GetBuffRemainingTime(Buffs.Fuka) < GetBuffRemainingTime(Buffs.Fugetsu) ||
+                     RefreshFuka ||
                      !HasEffect(Buffs.Fuka)))
                     return Oka;
             }
@@ -711,15 +708,13 @@ internal partial class SAM : MeleeJob
                 ComboAction is Fuko or Fuga && LevelChecked(Mangetsu))
             {
                 if (IsNotEnabled(CustomComboPreset.SAM_AoE_Oka) ||
-                    !Gauge.HasGetsu ||
-                    GetBuffRemainingTime(Buffs.Fugetsu) < GetBuffRemainingTime(Buffs.Fuka) ||
+                    !Gauge.HasGetsu || RefreshFugetsu ||
                     !HasEffect(Buffs.Fugetsu) || !LevelChecked(Oka))
                     return Mangetsu;
 
                 if (IsEnabled(CustomComboPreset.SAM_AoE_Oka) &&
                     LevelChecked(Oka) &&
-                    (!Gauge.HasKa ||
-                     GetBuffRemainingTime(Buffs.Fuka) < GetBuffRemainingTime(Buffs.Fugetsu) ||
+                    (!Gauge.HasKa || RefreshFuka ||
                      !HasEffect(Buffs.Fuka)))
                     return Oka;
             }
