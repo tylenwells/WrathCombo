@@ -58,7 +58,7 @@ internal partial class WHM : HealerJob
 
             #region Variables
 
-            float refreshTimer = Config.WHM_ST_MainCombo_DoT_Adv ? Config.WHM_ST_MainCombo_DoT_Threshold : 3;
+            float refreshTimer = Config.WHM_ST_MainCombo_DoT_Threshold;
             int hpThreshold = Config.WHM_ST_DPS_AeroOptionSubOption == 1 || !InBossEncounter() ? Config.WHM_ST_DPS_AeroOption : 0;
 
             #endregion
