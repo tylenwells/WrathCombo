@@ -118,7 +118,7 @@ internal partial class SAM : MeleeJob
 
                 //Ikishoten Features
                 //TODO Revisit when Raidbuffs are in
-                if (ActionReady(Ikishoten) && !HasEffect(Buffs.ZanshinReady))
+                if (ActionReady(Ikishoten) && !HasStatusEffect(Buffs.ZanshinReady))
                 {
                     switch (Gauge.Kenki)
                     {
@@ -132,7 +132,7 @@ internal partial class SAM : MeleeJob
                 }
 
                 //Senei Features
-                if (HasEffect(Buffs.Fugetsu) && HasEffect(Buffs.Fuka) && Gauge.Kenki >= 25)
+                if (HasStatusEffect(Buffs.Fugetsu) && HasStatusEffect(Buffs.Fuka) && Gauge.Kenki >= 25)
                 {
                     if (ActionReady(Senei) &&
                         (TraitLevelChecked(Traits.EnhancedHissatsu) &&
@@ -149,7 +149,7 @@ internal partial class SAM : MeleeJob
                 //Zanshin Usage
                 if (ActionReady(Zanshin) && Gauge.Kenki >= 50 &&
                     InActionRange(Zanshin) &&
-                    HasEffect(Buffs.ZanshinReady) &&
+                    HasStatusEffect(Buffs.ZanshinReady) &&
                     (JustUsed(Higanbana, 5) ||
                      !TargetIsBoss() ||
                      GetBuffRemainingTime(Buffs.ZanshinReady) <= 6))
@@ -160,7 +160,7 @@ internal partial class SAM : MeleeJob
                     return Shoha;
 
                 if (ActionReady(Shinten) &&
-                    !HasEffect(Buffs.ZanshinReady) &&
+                    !HasStatusEffect(Buffs.ZanshinReady) &&
                     (Gauge.Kenki >= 65 ||
                      GetTargetHPPercent() <= 1 && Gauge.Kenki >= 25))
                     return Shinten;
@@ -178,7 +178,7 @@ internal partial class SAM : MeleeJob
                 //Ogi Namikiri Features
                 if (ActionReady(OgiNamikiri) &&
                     InActionRange(OriginalHook(OgiNamikiri)) &&
-                    HasEffect(Buffs.OgiNamikiriReady) &&
+                    HasStatusEffect(Buffs.OgiNamikiriReady) &&
                     (JustUsed(Higanbana, 5f) ||
                      !TargetIsBoss() ||
                      GetBuffRemainingTime(Buffs.OgiNamikiriReady) <= 8) ||
@@ -196,13 +196,13 @@ internal partial class SAM : MeleeJob
                     return Role.TrueNorth;
 
                 if (LevelChecked(Gekko) &&
-                    (!HasEffect(Buffs.Fugetsu) ||
-                     !Gauge.HasGetsu && HasEffect(Buffs.Fuka)))
+                    (!HasStatusEffect(Buffs.Fugetsu) ||
+                     !Gauge.HasGetsu && HasStatusEffect(Buffs.Fuka)))
                     return Gekko;
 
                 if (LevelChecked(Kasha) &&
-                    (!HasEffect(Buffs.Fuka) ||
-                     !Gauge.HasKa && HasEffect(Buffs.Fugetsu)))
+                    (!HasStatusEffect(Buffs.Fuka) ||
+                     !Gauge.HasKa && HasStatusEffect(Buffs.Fugetsu)))
                     return Kasha;
 
                 if (LevelChecked(Yukikaze) && !Gauge.HasSetsu)
@@ -213,24 +213,24 @@ internal partial class SAM : MeleeJob
             {
                 if (ComboAction is Hakaze or Gyofu && LevelChecked(Jinpu))
                 {
-                    if (!Gauge.HasSetsu && LevelChecked(Yukikaze) && HasEffect(Buffs.Fugetsu) &&
-                        HasEffect(Buffs.Fuka))
+                    if (!Gauge.HasSetsu && LevelChecked(Yukikaze) && HasStatusEffect(Buffs.Fugetsu) &&
+                        HasStatusEffect(Buffs.Fuka))
                         return Yukikaze;
 
                     if (!LevelChecked(Kasha) &&
-                        (RefreshFugetsu || !HasEffect(Buffs.Fugetsu)) ||
+                        (RefreshFugetsu || !HasStatusEffect(Buffs.Fugetsu)) ||
                         LevelChecked(Kasha) &&
-                        (!HasEffect(Buffs.Fugetsu) ||
-                         HasEffect(Buffs.Fuka) && !Gauge.HasGetsu ||
+                        (!HasStatusEffect(Buffs.Fugetsu) ||
+                         HasStatusEffect(Buffs.Fuka) && !Gauge.HasGetsu ||
                          SenCount is 3 && RefreshFugetsu))
                         return Jinpu;
 
                     if (LevelChecked(Shifu) &&
                         (!LevelChecked(Kasha) &&
-                         (RefreshFuka || !HasEffect(Buffs.Fuka)) ||
+                         (RefreshFuka || !HasStatusEffect(Buffs.Fuka)) ||
                          LevelChecked(Kasha) &&
-                         (!HasEffect(Buffs.Fuka) ||
-                          HasEffect(Buffs.Fugetsu) && !Gauge.HasKa ||
+                         (!HasStatusEffect(Buffs.Fuka) ||
+                          HasStatusEffect(Buffs.Fugetsu) && !Gauge.HasKa ||
                           SenCount is 3 && RefreshFuka)))
                         return Shifu;
                 }
@@ -261,7 +261,7 @@ internal partial class SAM : MeleeJob
             if (IsEnabled(CustomComboPreset.SAM_ST_CDs) &&
                 IsEnabled(CustomComboPreset.SAM_ST_CDs_MeikyoShisui) &&
                 ActionReady(MeikyoShisui) &&
-                !HasEffect(Buffs.MeikyoShisui) &&
+                !HasStatusEffect(Buffs.MeikyoShisui) &&
                 !InCombat() && TargetIsHostile())
                 return MeikyoShisui;
 
@@ -293,7 +293,7 @@ internal partial class SAM : MeleeJob
                     //Ikishoten Features
                     //TODO Revisit when Raidbuffs are in
                     if (IsEnabled(CustomComboPreset.SAM_ST_CDs_Ikishoten) &&
-                        ActionReady(Ikishoten) && !HasEffect(Buffs.ZanshinReady))
+                        ActionReady(Ikishoten) && !HasStatusEffect(Buffs.ZanshinReady))
                     {
                         switch (Gauge.Kenki)
                         {
@@ -311,7 +311,7 @@ internal partial class SAM : MeleeJob
                 {
                     //Senei Features
                     if (IsEnabled(CustomComboPreset.SAM_ST_CDs_Senei) &&
-                        HasEffect(Buffs.Fugetsu) && HasEffect(Buffs.Fuka) && Gauge.Kenki >= 25)
+                        HasStatusEffect(Buffs.Fugetsu) && HasStatusEffect(Buffs.Fuka) && Gauge.Kenki >= 25)
                     {
                         if (ActionReady(Senei) &&
                             (TraitLevelChecked(Traits.EnhancedHissatsu) &&
@@ -331,7 +331,7 @@ internal partial class SAM : MeleeJob
                     if (IsEnabled(CustomComboPreset.SAM_ST_CDs_Zanshin) &&
                         ActionReady(Zanshin) && Gauge.Kenki >= 50 &&
                         InActionRange(Zanshin) &&
-                        HasEffect(Buffs.ZanshinReady) &&
+                        HasStatusEffect(Buffs.ZanshinReady) &&
                         (JustUsed(Higanbana, 5) ||
                          Config.SAM_ST_Higanbana_Suboption == 1 && !TargetIsBoss() ||
                          GetBuffRemainingTime(Buffs.ZanshinReady) <= 6))
@@ -343,7 +343,7 @@ internal partial class SAM : MeleeJob
                         return Shoha;
                 }
                 if (IsEnabled(CustomComboPreset.SAM_ST_Shinten) &&
-                    ActionReady(Shinten) && !HasEffect(Buffs.ZanshinReady) &&
+                    ActionReady(Shinten) && !HasStatusEffect(Buffs.ZanshinReady) &&
                     (Gauge.Kenki >= kenkiOvercap || GetTargetHPPercent() <= shintenTreshhold && Gauge.Kenki >= 25))
                     return Shinten;
 
@@ -359,14 +359,14 @@ internal partial class SAM : MeleeJob
             }
 
             if (IsEnabled(CustomComboPreset.SAM_ST_Damage) &&
-                HasEffect(Buffs.Fugetsu) && HasEffect(Buffs.Fuka))
+                HasStatusEffect(Buffs.Fugetsu) && HasStatusEffect(Buffs.Fuka))
             {
                 //Ogi Namikiri Features
                 if (IsEnabled(CustomComboPreset.SAM_ST_CDs_OgiNamikiri) &&
                     (!IsEnabled(CustomComboPreset.SAM_ST_CDs_OgiNamikiri_Movement) ||
                      IsEnabled(CustomComboPreset.SAM_ST_CDs_OgiNamikiri_Movement) && !IsMoving()) &&
                     ActionReady(OgiNamikiri) && InActionRange(OriginalHook(OgiNamikiri)) &&
-                    HasEffect(Buffs.OgiNamikiriReady) &&
+                    HasStatusEffect(Buffs.OgiNamikiriReady) &&
                     (JustUsed(Higanbana, 5f) ||
                      Config.SAM_ST_Higanbana_Suboption == 1 && !TargetIsBoss() ||
                      GetBuffRemainingTime(Buffs.OgiNamikiriReady) <= 8) ||
@@ -387,14 +387,14 @@ internal partial class SAM : MeleeJob
 
                 if (IsEnabled(CustomComboPreset.SAM_ST_Gekko) &&
                     LevelChecked(Gekko) &&
-                    (!HasEffect(Buffs.Fugetsu) ||
-                     !Gauge.HasGetsu && HasEffect(Buffs.Fuka)))
+                    (!HasStatusEffect(Buffs.Fugetsu) ||
+                     !Gauge.HasGetsu && HasStatusEffect(Buffs.Fuka)))
                     return Gekko;
 
                 if (IsEnabled(CustomComboPreset.SAM_ST_Kasha) &&
                     LevelChecked(Kasha) &&
-                    (!HasEffect(Buffs.Fuka) ||
-                     !Gauge.HasKa && HasEffect(Buffs.Fugetsu)))
+                    (!HasStatusEffect(Buffs.Fuka) ||
+                     !Gauge.HasKa && HasStatusEffect(Buffs.Fugetsu)))
                     return Kasha;
 
                 if (IsEnabled(CustomComboPreset.SAM_ST_Yukikaze) &&
@@ -408,25 +408,25 @@ internal partial class SAM : MeleeJob
                 {
                     if (IsEnabled(CustomComboPreset.SAM_ST_Yukikaze) &&
                         !Gauge.HasSetsu && LevelChecked(Yukikaze) &&
-                        HasEffect(Buffs.Fugetsu) && HasEffect(Buffs.Fuka))
+                        HasStatusEffect(Buffs.Fugetsu) && HasStatusEffect(Buffs.Fuka))
                         return Yukikaze;
 
                     if (IsEnabled(CustomComboPreset.SAM_ST_Gekko) &&
                         !LevelChecked(Kasha) &&
-                        (RefreshFugetsu || !HasEffect(Buffs.Fugetsu)) ||
+                        (RefreshFugetsu || !HasStatusEffect(Buffs.Fugetsu)) ||
                         LevelChecked(Kasha) &&
-                        (!HasEffect(Buffs.Fugetsu) ||
-                         HasEffect(Buffs.Fuka) && !Gauge.HasGetsu ||
+                        (!HasStatusEffect(Buffs.Fugetsu) ||
+                         HasStatusEffect(Buffs.Fuka) && !Gauge.HasGetsu ||
                          SenCount is 3 && RefreshFugetsu))
                         return Jinpu;
 
                     if (IsEnabled(CustomComboPreset.SAM_ST_Kasha) &&
                         LevelChecked(Shifu) &&
                         (!LevelChecked(Kasha) &&
-                         (RefreshFuka || !HasEffect(Buffs.Fuka)) ||
+                         (RefreshFuka || !HasStatusEffect(Buffs.Fuka)) ||
                          LevelChecked(Kasha) &&
-                         (!HasEffect(Buffs.Fuka) ||
-                          HasEffect(Buffs.Fugetsu) && !Gauge.HasKa ||
+                         (!HasStatusEffect(Buffs.Fuka) ||
+                          HasStatusEffect(Buffs.Fugetsu) && !Gauge.HasKa ||
                           SenCount is 3 && RefreshFuka)))
                         return Shifu;
                 }
@@ -514,7 +514,7 @@ internal partial class SAM : MeleeJob
                 if (OriginalHook(Iaijutsu) is MidareSetsugekka && LevelChecked(Hagakure))
                     return Hagakure;
 
-                if (ActionReady(Ikishoten) && !HasEffect(Buffs.ZanshinReady))
+                if (ActionReady(Ikishoten) && !HasStatusEffect(Buffs.ZanshinReady))
                 {
                     switch (Gauge.Kenki)
                     {
@@ -527,10 +527,10 @@ internal partial class SAM : MeleeJob
                     }
                 }
 
-                if (ActionReady(MeikyoShisui) && !HasEffect(Buffs.MeikyoShisui))
+                if (ActionReady(MeikyoShisui) && !HasStatusEffect(Buffs.MeikyoShisui))
                     return MeikyoShisui;
 
-                if (ActionReady(Zanshin) && HasEffect(Buffs.ZanshinReady) && Gauge.Kenki >= 50)
+                if (ActionReady(Zanshin) && HasStatusEffect(Buffs.ZanshinReady) && Gauge.Kenki >= 50)
                     return Zanshin;
 
                 if (ActionReady(Guren) && Gauge.Kenki >= 25)
@@ -551,7 +551,7 @@ internal partial class SAM : MeleeJob
             }
 
             if (ActionReady(OgiNamikiri) &&
-                !IsMoving() && (HasEffect(Buffs.OgiNamikiriReady) || Gauge.Kaeshi is Kaeshi.Namikiri))
+                !IsMoving() && (HasStatusEffect(Buffs.OgiNamikiriReady) || Gauge.Kaeshi is Kaeshi.Namikiri))
                 return OriginalHook(OgiNamikiri);
 
             if (LevelChecked(TenkaGoken) && !IsMoving())
@@ -569,12 +569,12 @@ internal partial class SAM : MeleeJob
 
             if (HasStatusEffect(Buffs.MeikyoShisui))
             {
-                if (!Gauge.HasGetsu && HasEffect(Buffs.Fuka) ||
-                    !HasEffect(Buffs.Fugetsu))
+                if (!Gauge.HasGetsu && HasStatusEffect(Buffs.Fuka) ||
+                    !HasStatusEffect(Buffs.Fugetsu))
                     return Mangetsu;
 
-                if (!Gauge.HasKa && HasEffect(Buffs.Fugetsu) ||
-                    !HasEffect(Buffs.Fuka))
+                if (!Gauge.HasKa && HasStatusEffect(Buffs.Fugetsu) ||
+                    !HasStatusEffect(Buffs.Fuka))
                     return Oka;
             }
 
@@ -583,13 +583,13 @@ internal partial class SAM : MeleeJob
             {
                 if (!Gauge.HasGetsu ||
                     RefreshFugetsu ||
-                    !HasEffect(Buffs.Fugetsu) || !LevelChecked(Oka))
+                    !HasStatusEffect(Buffs.Fugetsu) || !LevelChecked(Oka))
                     return Mangetsu;
 
                 if (LevelChecked(Oka) &&
                     (!Gauge.HasKa ||
                      RefreshFuka ||
-                     !HasEffect(Buffs.Fuka)))
+                     !HasStatusEffect(Buffs.Fuka)))
                     return Oka;
             }
 
@@ -624,11 +624,11 @@ internal partial class SAM : MeleeJob
                 if (IsEnabled(CustomComboPreset.SAM_AoE_CDs))
                 {
                     if (IsEnabled(CustomComboPreset.SAM_AoE_MeikyoShisui) &&
-                        ActionReady(MeikyoShisui) && !HasEffect(Buffs.MeikyoShisui))
+                        ActionReady(MeikyoShisui) && !HasStatusEffect(Buffs.MeikyoShisui))
                         return MeikyoShisui;
 
                     if (IsEnabled(CustomComboPreset.SAM_AOE_CDs_Ikishoten) &&
-                        ActionReady(Ikishoten) && !HasEffect(Buffs.ZanshinReady))
+                        ActionReady(Ikishoten) && !HasStatusEffect(Buffs.ZanshinReady))
                     {
                         switch (Gauge.Kenki)
                         {
@@ -645,7 +645,7 @@ internal partial class SAM : MeleeJob
                 if (IsEnabled(CustomComboPreset.SAM_AoE_Damage))
                 {
                     if (IsEnabled(CustomComboPreset.SAM_AoE_Zanshin) &&
-                        ActionReady(Zanshin) && HasEffect(Buffs.ZanshinReady) && Gauge.Kenki >= 50)
+                        ActionReady(Zanshin) && HasStatusEffect(Buffs.ZanshinReady) && Gauge.Kenki >= 50)
                         return Zanshin;
 
                     if (IsEnabled(CustomComboPreset.SAM_AoE_Guren) &&
@@ -666,7 +666,7 @@ internal partial class SAM : MeleeJob
                     if (Role.CanSecondWind(Config.SAM_AoESecondWindThreshold))
                         return Role.SecondWind;
 
-                    if (Role.CanBloodBath(Config.SAM_AoEBloodbathThreshold))
+                    if (CanBloodBath(Config.SAM_AoEBloodbathThreshold))
                         return Role.Bloodbath;
                 }
             }
@@ -675,7 +675,7 @@ internal partial class SAM : MeleeJob
             {
                 if (IsEnabled(CustomComboPreset.SAM_AoE_OgiNamikiri) &&
                     ActionReady(OgiNamikiri) &&
-                    (!IsMoving() && HasEffect(Buffs.OgiNamikiriReady) ||
+                    (!IsMoving() && HasStatusEffect(Buffs.OgiNamikiriReady) ||
                      Gauge.Kaeshi is Kaeshi.Namikiri))
                     return OriginalHook(OgiNamikiri);
 
@@ -683,7 +683,7 @@ internal partial class SAM : MeleeJob
                     LevelChecked(TenkaGoken))
                 {
                     if (LevelChecked(TsubameGaeshi) &&
-                        (HasEffect(Buffs.KaeshiGokenReady) || HasEffect(Buffs.TendoKaeshiGokenReady)))
+                        (HasStatusEffect(Buffs.KaeshiGokenReady) || HasStatusEffect(Buffs.TendoKaeshiGokenReady)))
                         return OriginalHook(TsubameGaeshi);
 
                     if (!IsMoving() && OriginalHook(Iaijutsu) is TenkaGoken)
@@ -696,11 +696,11 @@ internal partial class SAM : MeleeJob
 
             if (HasStatusEffect(Buffs.MeikyoShisui))
             {
-                if (!Gauge.HasGetsu && HasEffect(Buffs.Fuka) || !HasEffect(Buffs.Fugetsu))
+                if (!Gauge.HasGetsu && HasStatusEffect(Buffs.Fuka) || !HasStatusEffect(Buffs.Fugetsu))
                     return Mangetsu;
 
                 if (IsEnabled(CustomComboPreset.SAM_AoE_Oka) &&
-                    (!Gauge.HasKa && HasEffect(Buffs.Fugetsu) || !HasEffect(Buffs.Fuka)))
+                    (!Gauge.HasKa && HasStatusEffect(Buffs.Fugetsu) || !HasStatusEffect(Buffs.Fuka)))
                     return Oka;
             }
 
@@ -709,13 +709,13 @@ internal partial class SAM : MeleeJob
             {
                 if (IsNotEnabled(CustomComboPreset.SAM_AoE_Oka) ||
                     !Gauge.HasGetsu || RefreshFugetsu ||
-                    !HasEffect(Buffs.Fugetsu) || !LevelChecked(Oka))
+                    !HasStatusEffect(Buffs.Fugetsu) || !LevelChecked(Oka))
                     return Mangetsu;
 
                 if (IsEnabled(CustomComboPreset.SAM_AoE_Oka) &&
                     LevelChecked(Oka) &&
                     (!Gauge.HasKa || RefreshFuka ||
-                     !HasEffect(Buffs.Fuka)))
+                     !HasStatusEffect(Buffs.Fuka)))
                     return Oka;
             }
             return actionID;
@@ -731,11 +731,11 @@ internal partial class SAM : MeleeJob
             if (actionID is not MeikyoShisui || !HasStatusEffect(Buffs.MeikyoShisui))
                 return actionID;
 
-            if (!HasEffect(Buffs.Fugetsu) ||
+            if (!HasStatusEffect(Buffs.Fugetsu) ||
                 !Gauge.HasGetsu)
                 return Gekko;
 
-            if (!HasEffect(Buffs.Fuka) ||
+            if (!HasStatusEffect(Buffs.Fuka) ||
                 !Gauge.HasKa)
                 return Kasha;
 
@@ -763,18 +763,18 @@ internal partial class SAM : MeleeJob
                 return Shoha;
 
             if (IsEnabled(CustomComboPreset.SAM_Iaijutsu_OgiNamikiri) &&
-                (ActionReady(OgiNamikiri) && HasEffect(Buffs.OgiNamikiriReady) ||
+                (ActionReady(OgiNamikiri) && HasStatusEffect(Buffs.OgiNamikiriReady) ||
                  Gauge.Kaeshi == Kaeshi.Namikiri))
                 return OriginalHook(OgiNamikiri);
 
             if (IsEnabled(CustomComboPreset.SAM_Iaijutsu_TsubameGaeshi) &&
                 SenCount is not 1 &&
                 (LevelChecked(TsubameGaeshi) &&
-                 (HasEffect(Buffs.TsubameReady) ||
-                  HasEffect(Buffs.KaeshiGokenReady)) ||
+                 (HasStatusEffect(Buffs.TsubameReady) ||
+                  HasStatusEffect(Buffs.KaeshiGokenReady)) ||
                  LevelChecked(TendoKaeshiSetsugekka) &&
-                 (HasEffect(Buffs.TendoKaeshiSetsugekkaReady) ||
-                  HasEffect(Buffs.TendoKaeshiGokenReady))))
+                 (HasStatusEffect(Buffs.TendoKaeshiSetsugekkaReady) ||
+                  HasStatusEffect(Buffs.TendoKaeshiGokenReady))))
                 return OriginalHook(TsubameGaeshi);
 
             if (canAddShoha)
@@ -797,7 +797,7 @@ internal partial class SAM : MeleeJob
                     return Senei;
 
                 if (IsEnabled(CustomComboPreset.SAM_Shinten_Zanshin) &&
-                    HasEffect(Buffs.ZanshinReady))
+                    HasStatusEffect(Buffs.ZanshinReady))
                     return Zanshin;
 
                 if (IsEnabled(CustomComboPreset.SAM_Shinten_Shoha) &&
@@ -822,7 +822,7 @@ internal partial class SAM : MeleeJob
                     return Guren;
 
                 if (IsEnabled(CustomComboPreset.SAM_Kyuten_Zanshin) &&
-                    HasEffect(Buffs.ZanshinReady))
+                    HasStatusEffect(Buffs.ZanshinReady))
                     return Zanshin;
 
                 if (IsEnabled(CustomComboPreset.SAM_Kyuten_Shoha) &&
@@ -849,7 +849,7 @@ internal partial class SAM : MeleeJob
                 return Shoha;
 
             if (IsEnabled(CustomComboPreset.SAM_Ikishoten_Namikiri) &&
-                (ActionReady(OgiNamikiri) && HasEffect(Buffs.OgiNamikiriReady) ||
+                (ActionReady(OgiNamikiri) && HasStatusEffect(Buffs.OgiNamikiriReady) ||
                  Gauge.Kaeshi == Kaeshi.Namikiri))
                 return OriginalHook(OgiNamikiri);
 
@@ -882,7 +882,7 @@ internal partial class SAM : MeleeJob
 
         protected override uint Invoke(uint actionID) =>
             actionID is MeikyoShisui &&
-            HasEffect(Buffs.MeikyoShisui) &&
+            HasStatusEffect(Buffs.MeikyoShisui) &&
             ActionReady(MeikyoShisui)
                 ? All.SavageBlade
                 : actionID;
