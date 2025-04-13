@@ -299,17 +299,18 @@ internal partial class SAM : MeleeJob
                 ActionReady(Enpi) && !InMeleeRange() && HasBattleTarget())
                 return Enpi;
 
-            //Meikyo Features
-            if (IsEnabled(CustomComboPreset.SAM_ST_CDs) &&
-                IsEnabled(CustomComboPreset.SAM_ST_CDs_MeikyoShisui) &&
-                UseMeikyo())
-                return MeikyoShisui;
+
 
             //oGCDs
             if (CanWeave())
             {
                 if (IsEnabled(CustomComboPreset.SAM_ST_CDs))
                 {
+                    //Meikyo Features
+                    if (IsEnabled(CustomComboPreset.SAM_ST_CDs_MeikyoShisui) &&
+                        UseMeikyo())
+                        return MeikyoShisui;
+
                     //Ikishoten Features
                     //TODO Revisit when Raidbuffs are in
                     if (IsEnabled(CustomComboPreset.SAM_ST_CDs_Ikishoten) &&
@@ -325,7 +326,10 @@ internal partial class SAM : MeleeJob
                                 return Ikishoten;
                         }
                     }
+                }
 
+                if (IsEnabled(CustomComboPreset.SAM_ST_Damage))
+                {
                     //Senei Features
                     if (IsEnabled(CustomComboPreset.SAM_ST_CDs_Senei) &&
                         HasEffect(Buffs.Fugetsu) && HasEffect(Buffs.Fuka) && Gauge.Kenki >= 25)
@@ -358,7 +362,6 @@ internal partial class SAM : MeleeJob
                         InActionRange(Shoha))
                         return Shoha;
                 }
-
                 if (IsEnabled(CustomComboPreset.SAM_ST_Shinten) &&
                     ActionReady(Shinten) && !HasEffect(Buffs.ZanshinReady) &&
                     (Gauge.Kenki >= kenkiOvercap || GetTargetHPPercent() <= shintenTreshhold && Gauge.Kenki >= 25))
@@ -375,7 +378,7 @@ internal partial class SAM : MeleeJob
                 }
             }
 
-            if (IsEnabled(CustomComboPreset.SAM_ST_CDs) &&
+            if (IsEnabled(CustomComboPreset.SAM_ST_Damage) &&
                 HasEffect(Buffs.Fugetsu) && HasEffect(Buffs.Fuka))
             {
                 //Ogi Namikiri Features
@@ -427,7 +430,8 @@ internal partial class SAM : MeleeJob
                     Role.CanTrueNorth() && CanDelayedWeave())
                     return Role.TrueNorth;
 
-                if (LevelChecked(Gekko) &&
+                if (IsEnabled(CustomComboPreset.SAM_ST_Gekko) &&
+                    LevelChecked(Gekko) &&
                     (!HasEffect(Buffs.Fugetsu) ||
                      !Gauge.HasGetsu && HasEffect(Buffs.Fuka)))
                     return Gekko;
@@ -452,7 +456,8 @@ internal partial class SAM : MeleeJob
                         HasEffect(Buffs.Fuka))
                         return Yukikaze;
 
-                    if (!LevelChecked(Kasha) &&
+                    if (IsEnabled(CustomComboPreset.SAM_ST_Gekko) &&
+                        !LevelChecked(Kasha) &&
                         (GetBuffRemainingTime(Buffs.Fugetsu) < GetBuffRemainingTime(Buffs.Fuka) ||
                          !HasEffect(Buffs.Fugetsu)) ||
                         LevelChecked(Kasha) &&
@@ -661,35 +666,41 @@ internal partial class SAM : MeleeJob
                     OriginalHook(Iaijutsu) is MidareSetsugekka && LevelChecked(Hagakure))
                     return Hagakure;
 
-                if (IsEnabled(CustomComboPreset.SAM_AOE_CDs_Ikishoten) &&
-                    ActionReady(Ikishoten) && !HasEffect(Buffs.ZanshinReady))
+                if (IsEnabled(CustomComboPreset.SAM_AoE_CDs))
                 {
-                    switch (Gauge.Kenki)
-                    {
-                        //Dumps Kenki in preparation for Ikishoten
-                        case > 50:
-                            return Kyuten;
+                    if (IsEnabled(CustomComboPreset.SAM_AoE_MeikyoShisui) &&
+                        ActionReady(MeikyoShisui) && !HasEffect(Buffs.MeikyoShisui))
+                        return MeikyoShisui;
 
-                        case <= 50:
-                            return Ikishoten;
+                    if (IsEnabled(CustomComboPreset.SAM_AOE_CDs_Ikishoten) &&
+                        ActionReady(Ikishoten) && !HasEffect(Buffs.ZanshinReady))
+                    {
+                        switch (Gauge.Kenki)
+                        {
+                            //Dumps Kenki in preparation for Ikishoten
+                            case > 50:
+                                return Kyuten;
+
+                            case <= 50:
+                                return Ikishoten;
+                        }
                     }
                 }
 
-                if (IsEnabled(CustomComboPreset.SAM_AoE_MeikyoShisui) &&
-                    ActionReady(MeikyoShisui) && !HasEffect(Buffs.MeikyoShisui))
-                    return MeikyoShisui;
+                if (IsEnabled(CustomComboPreset.SAM_AoE_Damage))
+                {
+                    if (IsEnabled(CustomComboPreset.SAM_AoE_Zanshin) &&
+                        ActionReady(Zanshin) && HasEffect(Buffs.ZanshinReady) && Gauge.Kenki >= 50)
+                        return Zanshin;
 
-                if (IsEnabled(CustomComboPreset.SAM_AoE_Zanshin) &&
-                    ActionReady(Zanshin) && HasEffect(Buffs.ZanshinReady) && Gauge.Kenki >= 50)
-                    return Zanshin;
+                    if (IsEnabled(CustomComboPreset.SAM_AoE_Guren) &&
+                        ActionReady(Guren) && Gauge.Kenki >= 25)
+                        return Guren;
 
-                if (IsEnabled(CustomComboPreset.SAM_AoE_Guren) &&
-                    ActionReady(Guren) && Gauge.Kenki >= 25)
-                    return Guren;
-
-                if (IsEnabled(CustomComboPreset.SAM_AoE_Shoha) &&
-                    ActionReady(Shoha) && Gauge.MeditationStacks is 3)
-                    return Shoha;
+                    if (IsEnabled(CustomComboPreset.SAM_AoE_Shoha) &&
+                        ActionReady(Shoha) && Gauge.MeditationStacks is 3)
+                        return Shoha;
+                }
 
                 if (IsEnabled(CustomComboPreset.SAM_AoE_Kyuten) &&
                     ActionReady(Kyuten) && Gauge.Kenki >= kenkiOvercap)
@@ -705,24 +716,27 @@ internal partial class SAM : MeleeJob
                 }
             }
 
-            if (IsEnabled(CustomComboPreset.SAM_AoE_OgiNamikiri) &&
-                ActionReady(OgiNamikiri) &&
-                (!IsMoving() && HasEffect(Buffs.OgiNamikiriReady) ||
-                 Gauge.Kaeshi is Kaeshi.Namikiri))
-                return OriginalHook(OgiNamikiri);
-
-            if (IsEnabled(CustomComboPreset.SAM_AoE_TenkaGoken) &&
-                LevelChecked(TenkaGoken))
+            if (IsEnabled(CustomComboPreset.SAM_AoE_Damage))
             {
-                if (LevelChecked(TsubameGaeshi) &&
-                    (HasEffect(Buffs.KaeshiGokenReady) || HasEffect(Buffs.TendoKaeshiGokenReady)))
-                    return OriginalHook(TsubameGaeshi);
+                if (IsEnabled(CustomComboPreset.SAM_AoE_OgiNamikiri) &&
+                    ActionReady(OgiNamikiri) &&
+                    (!IsMoving() && HasEffect(Buffs.OgiNamikiriReady) ||
+                     Gauge.Kaeshi is Kaeshi.Namikiri))
+                    return OriginalHook(OgiNamikiri);
 
-                if (!IsMoving() && OriginalHook(Iaijutsu) is TenkaGoken)
-                    return OriginalHook(Iaijutsu);
+                if (IsEnabled(CustomComboPreset.SAM_AoE_TenkaGoken) &&
+                    LevelChecked(TenkaGoken))
+                {
+                    if (LevelChecked(TsubameGaeshi) &&
+                        (HasEffect(Buffs.KaeshiGokenReady) || HasEffect(Buffs.TendoKaeshiGokenReady)))
+                        return OriginalHook(TsubameGaeshi);
 
-                if (!IsMoving() && LevelChecked(TendoGoken) && OriginalHook(Iaijutsu) is TendoGoken)
-                    return OriginalHook(Iaijutsu);
+                    if (!IsMoving() && OriginalHook(Iaijutsu) is TenkaGoken)
+                        return OriginalHook(Iaijutsu);
+
+                    if (!IsMoving() && LevelChecked(TendoGoken) && OriginalHook(Iaijutsu) is TendoGoken)
+                        return OriginalHook(Iaijutsu);
+                }
             }
 
             if (HasEffect(Buffs.MeikyoShisui))

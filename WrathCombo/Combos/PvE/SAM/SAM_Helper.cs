@@ -38,7 +38,6 @@ internal partial class SAM
         int meikyoUsed = ActionWatching.CombatActions.Count(x => x == MeikyoShisui);
 
         if (ActionReady(MeikyoShisui) &&
-            (CanWeave() || CanDelayedWeave()) &&
             (WasLastWeaponskill(Gekko) || WasLastWeaponskill(Kasha) || WasLastWeaponskill(Yukikaze)) &&
             (!HasEffect(Buffs.Tendo) || !LevelChecked(TendoSetsugekka)))
         {
@@ -55,9 +54,9 @@ internal partial class SAM
                 switch (gcd)
                 {
                     //Even windows
-                    case >= 2.09f when meikyoUsed % 7 is 2 && SenCount is 3 && GetCooldownRemainingTime(Ikishoten) <= gcd * 4 ||
-                                       meikyoUsed % 7 is 4 && SenCount is 2 && GetCooldownRemainingTime(Ikishoten) <= gcd * 5 ||
-                                       meikyoUsed % 7 is 6 && SenCount is 1 && GetCooldownRemainingTime(Ikishoten) <= gcd * 6:
+                    case >= 2.09f when meikyoUsed % 7 is 2 && SenCount is 3 && (GetCooldownRemainingTime(Ikishoten) <= gcd * 4 || IsOffCooldown(Ikishoten)) ||
+                                       meikyoUsed % 7 is 4 && SenCount is 2 && (GetCooldownRemainingTime(Ikishoten) <= gcd * 5 || IsOffCooldown(Ikishoten)) ||
+                                       meikyoUsed % 7 is 6 && SenCount is 1 && (GetCooldownRemainingTime(Ikishoten) <= gcd * 6 || IsOffCooldown(Ikishoten)):
                     //Odd windows
                     case >= 2.09f when GetCooldownRemainingTime(Ikishoten) is <= 85 and > 40 &&
                                        (meikyoUsed % 7 is 1 && SenCount is 3 ||
