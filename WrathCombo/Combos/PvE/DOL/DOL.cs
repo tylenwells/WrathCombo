@@ -65,9 +65,9 @@ internal partial class DOL
         protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.DOL_Eureka;
         protected override uint Invoke(uint actionID)
         {
-            if (actionID is SolidReason && HasStatusEffect(Buffs.EurekaMoment))
+            if (actionID is SolidReason && HasEffect(Buffs.EurekaMoment))
                 return MinWiseToTheWorld;
-            if (actionID is AgelessWords && HasStatusEffect(Buffs.EurekaMoment))
+            if (actionID is AgelessWords && HasEffect(Buffs.EurekaMoment))
                 return BtnWiseToTheWorld;
             return actionID;
         }
@@ -79,14 +79,14 @@ internal partial class DOL
         protected override uint Invoke(uint actionID)
         {
             //MIN
-            if (actionID is DOL.LayOfTheLand && !HasStatusEffect(Buffs.Prospect))
+            if (actionID is DOL.LayOfTheLand && !HasEffect(Buffs.Prospect))
                 return Prospect;
-            if (actionID is DOL.LayOfTheLand2 && LevelChecked(TruthOfMountains) && !HasStatusEffect(Buffs.TruthOfMountains))
+            if (actionID is DOL.LayOfTheLand2 && LevelChecked(TruthOfMountains) && !HasEffect(Buffs.TruthOfMountains))
                 return TruthOfMountains;
             //BTN
-            if (actionID is DOL.ArborCall && !HasStatusEffect(Buffs.Triangulate))
+            if (actionID is DOL.ArborCall && !HasEffect(Buffs.Triangulate))
                 return Triangulate;
-            if (actionID is DOL.ArborCall2 && LevelChecked(TruthOfForests) && !HasStatusEffect(Buffs.TruthOfForests))
+            if (actionID is DOL.ArborCall2 && LevelChecked(TruthOfForests) && !HasEffect(Buffs.TruthOfForests))
                 return TruthOfForests;
             return actionID;
         }
