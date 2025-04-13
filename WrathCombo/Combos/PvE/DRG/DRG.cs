@@ -103,7 +103,7 @@ internal partial class DRG : Melee
                 //Mirage Feature
                 if (LevelChecked(MirageDive) &&
                     CanDRGWeave(MirageDive) &&
-                    HasEffect(Buffs.DiveReady) &&
+                    HasStatusEffect(Buffs.DiveReady) &&
                     Gauge.IsLOTDActive)
                     return MirageDive;
 
@@ -140,7 +140,7 @@ internal partial class DRG : Melee
                 //StarDiver Feature
                 if (ActionReady(Stardiver) &&
                     CanDRGWeave(Stardiver) &&
-                    !HasEffect(Buffs.StarcrossReady) &&
+                    !HasStatusEffect(Buffs.StarcrossReady) &&
                     Gauge.IsLOTDActive &&
                     TimeMoving.Ticks == 0 && GetTargetDistance() <= 1)
                     return Stardiver;
@@ -280,7 +280,7 @@ internal partial class DRG : Melee
                     if (IsEnabled(CustomComboPreset.DRG_ST_Mirage) &&
                         LevelChecked(MirageDive) &&
                         CanDRGWeave(MirageDive) &&
-                        HasEffect(Buffs.DiveReady) &&
+                        HasStatusEffect(Buffs.DiveReady) &&
                         (IsEnabled(CustomComboPreset.DRG_ST_DoubleMirage) && Gauge.IsLOTDActive ||
                          IsNotEnabled(CustomComboPreset.DRG_ST_DoubleMirage)))
                         return MirageDive;
@@ -296,9 +296,9 @@ internal partial class DRG : Melee
                     if (IsEnabled(CustomComboPreset.DRG_ST_HighJump) &&
                         ActionReady(OriginalHook(Jump)) &&
                         CanDRGWeave(OriginalHook(Jump)) &&
-                        !HasEffect(Buffs.DiveReady) &&
+                        !HasStatusEffect(Buffs.DiveReady) &&
                         (LevelChecked(HighJump) &&
-                         (IsEnabled(CustomComboPreset.DRG_ST_DoubleMirage) && 
+                         (IsEnabled(CustomComboPreset.DRG_ST_DoubleMirage) &&
                           (GetCooldownRemainingTime(Geirskogul) < 15 || Gauge.IsLOTDActive) ||
                           IsNotEnabled(CustomComboPreset.DRG_ST_DoubleMirage)) ||
                          !LevelChecked(HighJump)) &&
