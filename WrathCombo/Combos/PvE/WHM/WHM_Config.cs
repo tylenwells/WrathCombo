@@ -543,7 +543,7 @@ internal partial class WHM
             new("WHM_Cure2_Esuna", 40);
 
         /// <summary>
-        ///     HP threshold to stop using Esuna.
+        ///     HP threshold to stop using Regen.
         /// </summary>
         /// <value>
         ///     <b>Default</b>: 40 <br />
