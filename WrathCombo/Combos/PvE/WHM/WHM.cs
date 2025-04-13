@@ -63,7 +63,6 @@ internal partial class WHM : Healer
 
             #region Variables
 
-            float refreshTimer = Config.WHM_ST_MainCombo_DoT_Threshold;
             var hpThreshold =
                 Config.WHM_ST_DPS_AeroOptionSubOption == 1 || !InBossEncounter()
                     ? Config.WHM_ST_DPS_AeroOption
@@ -100,13 +99,8 @@ internal partial class WHM : Healer
             #region GCDS and Casts
 
             // DoTs
-            if (IsEnabled(CustomComboPreset.WHM_ST_MainCombo_DoT) &&
-                ActionReady(OriginalHook(Aero)) &&
-                HasBattleTarget() &&
-                AeroList.TryGetValue(OriginalHook(Aero),
-                    out var dotDebuffID) &&
-                GetStatusEffectRemainingTime(dotDebuffID) <= refreshTimer &&
-                GetTargetHPPercent() > hpThreshold)
+            if (IsEnabled(CustomComboPreset.WHM_ST_MainCombo_DoT) && 
+                ApplyWhiteDot() && GetTargetHPPercent() > hpThreshold)
                 return OriginalHook(Aero);
 
             // Glare IV
