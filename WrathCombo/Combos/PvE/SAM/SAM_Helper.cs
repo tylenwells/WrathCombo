@@ -43,7 +43,7 @@ internal partial class SAM
 
         if (ActionReady(MeikyoShisui) &&
             (WasLastWeaponskill(Gekko) || WasLastWeaponskill(Kasha) || WasLastWeaponskill(Yukikaze)) &&
-            (!HasEffect(Buffs.Tendo) || !LevelChecked(TendoSetsugekka)))
+            (!HasStatusEffect(Buffs.Tendo) || !LevelChecked(TendoSetsugekka)))
         {
             //if no opener/before lvl 100
             if ((IsNotEnabled(CustomComboPreset.SAM_ST_Opener) ||
@@ -53,7 +53,7 @@ internal partial class SAM
                 return true;
 
             //double meikyo
-            if (TraitLevelChecked(Traits.EnhancedMeikyoShishui) && HasEffect(Buffs.TsubameReady))
+            if (TraitLevelChecked(Traits.EnhancedMeikyoShishui) && HasStatusEffect(Buffs.TsubameReady))
             {
                 switch (gcd)
                 {
@@ -80,7 +80,7 @@ internal partial class SAM
                 return true;
 
             //Pre double meikyo / Overcap protection
-            if (GetRemainingCharges(MeikyoShisui) == GetMaxCharges(MeikyoShisui) && !HasEffect(Buffs.TsubameReady))
+            if (GetRemainingCharges(MeikyoShisui) == GetMaxCharges(MeikyoShisui) && !HasStatusEffect(Buffs.TsubameReady))
                 return true;
         }
 

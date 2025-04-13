@@ -17,7 +17,7 @@ internal partial class SAM : MeleeJob
                 Gauge.Kenki >= Config.SAM_Yukaze_KenkiOvercapAmount && LevelChecked(Shinten))
                 return OriginalHook(Shinten);
 
-            if (HasEffect(Buffs.MeikyoShisui) && LevelChecked(Yukikaze))
+            if (HasStatusEffect(Buffs.MeikyoShisui) && LevelChecked(Yukikaze))
                 return OriginalHook(Yukikaze);
 
             if (ComboTimer > 0 && ComboAction == OriginalHook(Hakaze) && LevelChecked(Yukikaze))
@@ -40,7 +40,7 @@ internal partial class SAM : MeleeJob
                 Gauge.Kenki >= Config.SAM_Kasha_KenkiOvercapAmount && LevelChecked(Shinten))
                 return OriginalHook(Shinten);
 
-            if (HasEffect(Buffs.MeikyoShisui) && LevelChecked(Kasha))
+            if (HasStatusEffect(Buffs.MeikyoShisui) && LevelChecked(Kasha))
                 return OriginalHook(Kasha);
 
             if (ComboTimer > 0)
@@ -69,7 +69,7 @@ internal partial class SAM : MeleeJob
                 Gauge.Kenki >= Config.SAM_Gekko_KenkiOvercapAmount && LevelChecked(Shinten))
                 return OriginalHook(Shinten);
 
-            if (HasEffect(Buffs.MeikyoShisui) && LevelChecked(Gekko))
+            if (HasStatusEffect(Buffs.MeikyoShisui) && LevelChecked(Gekko))
                 return OriginalHook(Gekko);
 
             if (ComboTimer > 0)
@@ -95,7 +95,7 @@ internal partial class SAM : MeleeJob
                 return actionID;
 
             //Meikyo to start before combat
-            if (!HasEffect(Buffs.MeikyoShisui) && ActionReady(MeikyoShisui) &&
+            if (!HasStatusEffect(Buffs.MeikyoShisui) && ActionReady(MeikyoShisui) &&
                 !InCombat() && TargetIsHostile())
                 return MeikyoShisui;
 
@@ -173,7 +173,7 @@ internal partial class SAM : MeleeJob
                     return Role.Bloodbath;
             }
 
-            if (HasEffect(Buffs.Fugetsu) && HasEffect(Buffs.Fuka))
+            if (HasStatusEffect(Buffs.Fugetsu) && HasStatusEffect(Buffs.Fuka))
             {
                 //Ogi Namikiri Features
                 if (ActionReady(OgiNamikiri) &&
@@ -190,7 +190,7 @@ internal partial class SAM : MeleeJob
                     return actionID;
             }
 
-            if (HasEffect(Buffs.MeikyoShisui))
+            if (HasStatusEffect(Buffs.MeikyoShisui))
             {
                 if (Role.CanTrueNorth() && CanDelayedWeave())
                     return Role.TrueNorth;
@@ -379,7 +379,7 @@ internal partial class SAM : MeleeJob
                     return actionID;
             }
 
-            if (HasEffect(Buffs.MeikyoShisui))
+            if (HasStatusEffect(Buffs.MeikyoShisui))
             {
                 if (IsEnabled(CustomComboPreset.SAM_ST_TrueNorth) &&
                     Role.CanTrueNorth() && CanDelayedWeave())
@@ -457,7 +457,7 @@ internal partial class SAM : MeleeJob
                 LevelChecked(Kyuten) && CanWeave())
                 return Kyuten;
 
-            if (HasEffect(Buffs.MeikyoShisui))
+            if (HasStatusEffect(Buffs.MeikyoShisui))
                 return Oka;
 
             if (ComboTimer > 0 && LevelChecked(Oka) &&
@@ -481,7 +481,7 @@ internal partial class SAM : MeleeJob
                 LevelChecked(Kyuten) && CanWeave())
                 return Kyuten;
 
-            if (HasEffect(Buffs.MeikyoShisui))
+            if (HasStatusEffect(Buffs.MeikyoShisui))
                 return Mangetsu;
 
             if (ComboTimer > 0 && LevelChecked(Mangetsu) &&
@@ -557,7 +557,7 @@ internal partial class SAM : MeleeJob
             if (LevelChecked(TenkaGoken) && !IsMoving())
             {
                 if (LevelChecked(TsubameGaeshi) &&
-                    (HasEffect(Buffs.KaeshiGokenReady) || HasEffect(Buffs.TendoKaeshiGokenReady)))
+                    (HasStatusEffect(Buffs.KaeshiGokenReady) || HasStatusEffect(Buffs.TendoKaeshiGokenReady)))
                     return OriginalHook(TsubameGaeshi);
 
                 if (OriginalHook(Iaijutsu) is TenkaGoken)
@@ -567,7 +567,7 @@ internal partial class SAM : MeleeJob
                     return OriginalHook(Iaijutsu);
             }
 
-            if (HasEffect(Buffs.MeikyoShisui))
+            if (HasStatusEffect(Buffs.MeikyoShisui))
             {
                 if (!Gauge.HasGetsu && HasEffect(Buffs.Fuka) ||
                     !HasEffect(Buffs.Fugetsu))
@@ -694,7 +694,7 @@ internal partial class SAM : MeleeJob
                 }
             }
 
-            if (HasEffect(Buffs.MeikyoShisui))
+            if (HasStatusEffect(Buffs.MeikyoShisui))
             {
                 if (!Gauge.HasGetsu && HasEffect(Buffs.Fuka) || !HasEffect(Buffs.Fugetsu))
                     return Mangetsu;
@@ -728,7 +728,7 @@ internal partial class SAM : MeleeJob
 
         protected override uint Invoke(uint actionID)
         {
-            if (actionID is not MeikyoShisui || !HasEffect(Buffs.MeikyoShisui))
+            if (actionID is not MeikyoShisui || !HasStatusEffect(Buffs.MeikyoShisui))
                 return actionID;
 
             if (!HasEffect(Buffs.Fugetsu) ||
@@ -844,7 +844,7 @@ internal partial class SAM : MeleeJob
 
             if (IsEnabled(CustomComboPreset.SAM_Ikishoten_Shoha) &&
                 ActionReady(Shoha) &&
-                HasEffect(Buffs.OgiNamikiriReady) &&
+                HasStatusEffect(Buffs.OgiNamikiriReady) &&
                 Gauge.MeditationStacks is 3)
                 return Shoha;
 
