@@ -236,7 +236,9 @@ internal partial class WHM : HealerJob
                              (!MemberHasEffect(Buffs.Regen, healTarget, false,
                                   out var regen) ||
                               regen?.RemainingTime <= Config.WHM_STHeals_RegenTimer) &&
-                             GetTargetHPPercent(healTarget) >= Config.WHM_STHeals_Regen;
+                             GetTargetHPPercent(healTarget,
+                                 Config.WHM_STHeals_IncludeShields) >=
+                             Config.WHM_STHeals_RegenHP;
 
             #endregion
 
