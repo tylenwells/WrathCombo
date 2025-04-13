@@ -127,6 +127,8 @@ internal partial class WHM
                         reapplyTimeRemainingDescription,
                         itemWidth: little);
                     ImGui.Unindent();
+                    DrawSliderInt(0, 100, WHM_STHeals_Regen,
+                        targetStopUsingAtDescription);
                     break;
 
                 case CustomComboPreset.WHM_STHeals_Benediction:
@@ -539,6 +541,18 @@ internal partial class WHM
         /// <seealso cref="CustomComboPreset.WHM_STHeals_Esuna" />
         internal static UserInt WHM_STHeals_Esuna =
             new("WHM_Cure2_Esuna", 40);
+
+        /// <summary>
+        ///     HP threshold to stop using Esuna.
+        /// </summary>
+        /// <value>
+        ///     <b>Default</b>: 40 <br />
+        ///     <b>Range</b>: 0 - 100 <br />
+        ///     <b>Step</b>: <see cref="SliderIncrements.Ones" />
+        /// </value>
+        /// <seealso cref="CustomComboPreset.WHM_STHeals_Regen" />
+        internal static UserInt WHM_STHeals_Regen =
+            new("WHM_Cure2_Regen", 40);
 
         #endregion
 
