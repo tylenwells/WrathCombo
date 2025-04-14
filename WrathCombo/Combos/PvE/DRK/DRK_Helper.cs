@@ -889,6 +889,11 @@ internal partial class DRK
 
             #endregion
 
+            // Bail if it is right before burst
+            if (GetCooldownRemainingTime(LivingShadow) <
+                Math.Min(6, secondsBeforeBurst))
+                return false;
+
             #region Mana Overcap
 
             if ((flags.HasFlag(Combo.Simple) ||
