@@ -54,7 +54,7 @@ internal partial class MCH : PhysicalRanged
 
                         // Hypercharge
                         if ((Gauge.Heat >= 50 || HasStatusEffect(Buffs.Hypercharged)) &&
-                            !IsComboExpiring(6) && LevelChecked(Hypercharge))
+                            !IsComboExpiring(6) && ActionReady(Hypercharge))
                         {
                             // Ensures Hypercharge is double weaved with WF
                             if (LevelChecked(FullMetalField) && JustUsed(FullMetalField) &&
@@ -118,9 +118,9 @@ internal partial class MCH : PhysicalRanged
             }
 
             // Full Metal Field
-            if (HasStatusEffect(Buffs.FullMetalMachinist, out var fullMetal) && InBossEncounter() &&
+            if (HasStatusEffect(Buffs.FullMetalMachinist) && InBossEncounter() &&
                 (GetCooldownRemainingTime(Wildfire) <= GCD || ActionReady(Wildfire) ||
-                 fullMetal.RemainingTime <= 6) &&
+                 GetStatusEffectRemainingTime(Buffs.FullMetalMachinist) <= 6) &&
                 LevelChecked(FullMetalField))
                 return FullMetalField;
 
@@ -213,8 +213,7 @@ internal partial class MCH : PhysicalRanged
                         // Hypercharge
                         if (IsEnabled(CustomComboPreset.MCH_ST_Adv_Hypercharge) &&
                             (Gauge.Heat >= 50 || HasStatusEffect(Buffs.Hypercharged)) &&
-                            !IsComboExpiring(6) &&
-                            LevelChecked(Hypercharge))
+                            !IsComboExpiring(6) && ActionReady(Hypercharge))
                         {
                             // Ensures Hypercharge is double weaved with WF
                             if (LevelChecked(FullMetalField) && JustUsed(FullMetalField) &&
@@ -291,8 +290,8 @@ internal partial class MCH : PhysicalRanged
             if (IsEnabled(CustomComboPreset.MCH_ST_Adv_Stabilizer_FullMetalField) &&
                 (Config.MCH_ST_Adv_FullMetalMachinist_SubOption == 0 ||
                  Config.MCH_ST_Adv_FullMetalMachinist_SubOption == 1 && InBossEncounter()) &&
-                HasStatusEffect(Buffs.FullMetalMachinist, out var fullMetal) && LevelChecked(FullMetalField) &&
-                (fullMetal.RemainingTime <= 6 ||
+                HasStatusEffect(Buffs.FullMetalMachinist) && LevelChecked(FullMetalField) &&
+                (GetStatusEffectRemainingTime(Buffs.FullMetalMachinist) <= 6 ||
                  GetCooldownRemainingTime(Wildfire) <= GCD ||
                  ActionReady(Wildfire)))
                 return FullMetalField;
@@ -405,7 +404,9 @@ internal partial class MCH : PhysicalRanged
                 if (HasStatusEffect(Buffs.FullMetalMachinist) && LevelChecked(FullMetalField))
                     return FullMetalField;
 
-                if (ActionReady(BioBlaster) && !HasStatusEffect(Debuffs.Bioblaster, CurrentTarget) && !Gauge.IsOverheated && !HasStatusEffect(Buffs.Reassembled))
+                if (ActionReady(BioBlaster) &&
+                    !HasStatusEffect(Debuffs.Bioblaster, CurrentTarget) &&
+                    !Gauge.IsOverheated && !HasStatusEffect(Buffs.Reassembled))
                     return OriginalHook(BioBlaster);
 
                 if (ActionReady(Flamethrower) && !IsMoving())
