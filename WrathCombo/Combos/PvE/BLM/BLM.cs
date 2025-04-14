@@ -46,7 +46,7 @@ internal partial class BLM : Caster
                     return Transpose;
             }
 
-            if (HasMaxPolyglotStacks && Gauge.EnochianTimer < 3000)
+            if (HasMaxPolyglotStacks && Gauge.EnochianTimer <= 5000)
                 return LevelChecked(Xenoglossy)
                     ? Xenoglossy
                     : Foul;
@@ -210,7 +210,7 @@ internal partial class BLM : Caster
             }
 
             if (IsEnabled(CustomComboPreset.BLM_ST_UsePolyglot) &&
-                HasMaxPolyglotStacks && Gauge.EnochianTimer < 3000)
+                HasMaxPolyglotStacks && Gauge.EnochianTimer <= 5000)
                 return LevelChecked(Xenoglossy)
                     ? Xenoglossy
                     : Foul;
