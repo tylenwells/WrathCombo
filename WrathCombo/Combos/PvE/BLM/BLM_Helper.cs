@@ -60,6 +60,8 @@ internal partial class BLM
 
     internal static bool HasPolyglotStacks() => PolyglotStacks > 0;
 
+    internal static bool HasMaxTriplecastCharges() => GetRemainingCharges(Triplecast) == GetMaxCharges(Triplecast);
+
     internal static WrathOpener Opener()
     {
         if (StandardOpener.LevelChecked && Config.BLM_SelectedOpener == 0)

@@ -94,7 +94,7 @@ internal partial class BLM : Caster
                 if (FlarestarReady)
                     return FlareStar;
 
-                if ((LevelChecked(Paradox) && HasStatusEffect(Buffs.Firestarter) || 
+                if ((LevelChecked(Paradox) && HasStatusEffect(Buffs.Firestarter) ||
                      TimeSinceFirestarterBuff >= 2) && Gauge.AstralFireStacks < 3 ||
                     !Fire4.LevelChecked() && TimeSinceFirestarterBuff >= 2 && ActionReady(Fire3))
                     return Fire3;
@@ -106,7 +106,7 @@ internal partial class BLM : Caster
                     return Despair;
 
                 if (ActionReady(Blizzard3) &&
-                    !HasStatusEffect(Role.Buffs.Swiftcast) && 
+                    !HasStatusEffect(Role.Buffs.Swiftcast) &&
                     !HasStatusEffect(Buffs.Triplecast))
                     return Blizzard3;
 
@@ -131,7 +131,7 @@ internal partial class BLM : Caster
                 }
 
                 if (ActionReady(Blizzard3) && Gauge.UmbralIceStacks < 3 &&
-                    (HasStatusEffect(Buffs.Triplecast) || 
+                    (HasStatusEffect(Buffs.Triplecast) ||
                      HasStatusEffect(Role.Buffs.Swiftcast)))
                     return Blizzard3;
 
@@ -192,6 +192,12 @@ internal partial class BLM : Caster
                         ActionReady(Role.Swiftcast) && JustUsed(Despair) &&
                         !ActionReady(Manafont) && !HasStatusEffect(Buffs.Triplecast))
                         return Role.Swiftcast;
+
+                    if (IsEnabled(CustomComboPreset.BLM_ST_Triplecast) &&
+                        ActionReady(Triplecast) && IsOnCooldown(Role.Swiftcast) &&
+                        GetRemainingCharges(Triplecast) >= Config.BLM_ST_Triplecast_UseCharges &&
+                        JustUsed(Despair) && !ActionReady(Manafont) && !HasStatusEffect(Buffs.Triplecast))
+                        return Triplecast;
 
                     if (IsEnabled(CustomComboPreset.BLM_ST_Transpose) &&
                         ActionReady(Transpose) && (HasStatusEffect(Role.Buffs.Swiftcast) || HasStatusEffect(Buffs.Triplecast)))
