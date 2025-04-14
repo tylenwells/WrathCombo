@@ -468,7 +468,7 @@ internal partial class SCH : Healer
 
                 if ((Config.SCH_ST_Heal_AldoquimOpts[0] || !HasStatusEffect(Buffs.Galvanize, healTarget, true)) && //Ignore existing shield check
                     (!Config.SCH_ST_Heal_AldoquimOpts[1] ||
-                     !HasStatusEffect(SGE.Buffs.EukrasianDiagnosis, healTarget, true) && HasStatusEffect(SGE.Buffs.EukrasianDiagnosis, healTarget, true)
+                     !HasStatusEffect(SGE.Buffs.EukrasianDiagnosis, healTarget, true) && !HasStatusEffect(SGE.Buffs.EukrasianPrognosis, healTarget, true)
                     )) //Eukrasia Shield Check
                     return OriginalHook(Adloquium);
             }
