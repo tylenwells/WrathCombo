@@ -23,6 +23,23 @@ namespace WrathCombo.Combos.PvE;
 
 internal partial class WHM
 {
+    internal static bool NeedsDoT()
+    {
+        var dotAction = OriginalHook(Aero);
+        var hpThreshold = Config.WHM_ST_DPS_AeroOptionSubOption ==
+                          (int)Config.BossAvoidance.Off ||
+                          !InBossEncounter()
+            ? Config.WHM_ST_DPS_AeroOption
+            : 0;
+        AeroList.TryGetValue(dotAction, out var dotDebuffID);
+        var dotRemaining = GetStatusEffectRemainingTime(dotDebuffID, CurrentTarget);
+
+        return ActionReady(dotAction) &&
+               HasBattleTarget() &&
+               GetTargetHPPercent() > hpThreshold &&
+               dotRemaining <= Config.WHM_ST_MainCombo_DoT_Threshold;
+    }
+
     #region Heal Priority
 
     public static int GetMatchingConfigST(
@@ -94,7 +111,7 @@ internal partial class WHM
         {
             { Aero, Debuffs.Aero },
             { Aero2, Debuffs.Aero2 },
-            { Dia, Debuffs.Dia }
+            { Dia, Debuffs.Dia },
         };
 
     // Gauge Stuff
