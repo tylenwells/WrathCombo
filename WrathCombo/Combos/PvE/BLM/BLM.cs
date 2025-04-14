@@ -61,7 +61,8 @@ internal partial class BLM : Caster
                     return Triplecast;
 
                 if (ActionReady(Paradox) &&
-                    Gauge.InAstralFire && Gauge.IsParadoxActive)
+                    Gauge.InAstralFire && Gauge.IsParadoxActive &&
+                    !HasStatusEffect(Buffs.Firestarter))
                     return Paradox;
 
                 if (ActionReady(Role.Swiftcast) && !HasStatusEffect(Buffs.Triplecast))
@@ -225,7 +226,8 @@ internal partial class BLM : Caster
 
                 if (Config.BLM_ST_MovementOption[1] &&
                     ActionReady(Paradox) &&
-                    Gauge.InAstralFire && Gauge.IsParadoxActive)
+                    Gauge.InAstralFire && Gauge.IsParadoxActive &&
+                    !HasStatusEffect(Buffs.Firestarter))
                     return Paradox;
 
                 if (Config.BLM_ST_MovementOption[2] &&
