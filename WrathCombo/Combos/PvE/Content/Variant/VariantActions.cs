@@ -58,7 +58,7 @@ internal static partial class Variant
 
     internal static bool CanSpiritDart(CustomComboPreset preset) =>
         IsEnabled(preset) && ActionReady(VariantSpiritDart) &&
-        HasBattleTarget() && GetStatusEffectRemainingTime(Debuffs.SustainedDamage) <= 3;
+        HasBattleTarget() && GetStatusEffectRemainingTime(Debuffs.SustainedDamage, CurrentTarget) <= 3;
 
     internal static bool CanCure(CustomComboPreset preset, int healthpercent) =>
         IsEnabled(preset) && ActionReady(VariantCure) &&
