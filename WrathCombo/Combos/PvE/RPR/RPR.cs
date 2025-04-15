@@ -665,11 +665,13 @@ internal partial class RPR : Melee
                     break;
                 }
 
-                case BloodStalk when IsEnabled(CustomComboPreset.RPR_TrueNorthGluttony) && Role.CanTrueNorth():
-                    return Role.TrueNorth;
 
                 case BloodStalk:
                 {
+                    if (IsEnabled(CustomComboPreset.RPR_TrueNorthGluttony) && Role.CanTrueNorth() &&
+                        (GetStatusEffectStacks(Buffs.SoulReaver) is 2 || HasStatusEffect(Buffs.Executioner)))
+                        return Role.TrueNorth;
+
                     if (IsEnabled(CustomComboPreset.RPR_GluttonyBloodSwathe_OGCD))
                     {
                         if (Gauge.Shroud >= 50 || HasStatusEffect(Buffs.IdealHost))
@@ -798,12 +800,13 @@ internal partial class RPR : Melee
             switch (actionID)
             {
                 case Enshroud when IsEnabled(CustomComboPreset.RPR_TrueNorthEnshroud) &&
-                                   GetStatusEffectStacks(Buffs.SoulReaver) is 2 && Role.CanTrueNorth() && CanDelayedWeave():
+                                   (GetStatusEffectStacks(Buffs.SoulReaver) is 2 || HasStatusEffect(Buffs.Executioner)) &&
+                                   Role.CanTrueNorth() && CanDelayedWeave():
                     return Role.TrueNorth;
 
                 case Enshroud:
                 {
-                    if (HasStatusEffect(Buffs.SoulReaver))
+                    if (HasStatusEffect(Buffs.SoulReaver) || HasStatusEffect(Buffs.Executioner))
                     {
                         if (HasStatusEffect(Buffs.EnhancedGibbet))
                             return OriginalHook(Gibbet);
