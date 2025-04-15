@@ -160,7 +160,7 @@ internal partial class SCH : Healer
             IGameObject? healTarget = GetHealTarget(Config.SCH_DeploymentTactics_Adv && Config.SCH_DeploymentTactics_UIMouseOver);
 
             //Check for the Galvanize shield buff. Start applying if it doesn't exist
-            if (HasStatusEffect(Buffs.Galvanize, healTarget)) 
+            if (!HasStatusEffect(Buffs.Galvanize, healTarget)) 
             {
                 if (IsEnabled(CustomComboPreset.SCH_DeploymentTactics_Recitation) && ActionReady(Recitation))
                     return Recitation;
