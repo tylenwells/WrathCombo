@@ -93,9 +93,9 @@ internal partial class BLM : Caster
                 if (FlarestarReady)
                     return FlareStar;
 
-                if ((LevelChecked(Paradox) && HasStatusEffect(Buffs.Firestarter) ||
-                     TimeSinceFirestarterBuff >= 2) && Gauge.AstralFireStacks < 3 ||
-                    !Fire4.LevelChecked() && TimeSinceFirestarterBuff >= 2 && ActionReady(Fire3))
+                if (((LevelChecked(Paradox) && HasStatusEffect(Buffs.Firestarter) ||
+                     TimeSinceFirestarterBuff >= 2) && Gauge.AstralFireStacks < 3) ||
+                    (!Fire4.LevelChecked() && TimeSinceFirestarterBuff >= 2 && ActionReady(Fire3)))
                     return Fire3;
 
                 if (ActionReady(FireSpam) && (LevelChecked(Despair) && CurMp - MP.FireI >= 800 || !LevelChecked(Despair)))
@@ -262,9 +262,9 @@ internal partial class BLM : Caster
                     FlarestarReady)
                     return FlareStar;
 
-                if ((LevelChecked(Paradox) && HasStatusEffect(Buffs.Firestarter) ||
-                     TimeSinceFirestarterBuff >= 2) && Gauge.AstralFireStacks < 3 ||
-                    !Fire4.LevelChecked() && TimeSinceFirestarterBuff >= 2 && ActionReady(Fire3))
+                if (((LevelChecked(Paradox) && HasStatusEffect(Buffs.Firestarter) ||
+                     TimeSinceFirestarterBuff >= 2) && Gauge.AstralFireStacks < 3) ||
+                    (!Fire4.LevelChecked() && TimeSinceFirestarterBuff >= 2 && ActionReady(Fire3)))
                     return Fire3;
 
                 if (ActionReady(FireSpam) && (LevelChecked(Despair) && CurMp - MP.FireI >= 800 || !LevelChecked(Despair)))
