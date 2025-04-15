@@ -135,10 +135,10 @@ internal partial class SAM : Melee
                 if (HasStatusEffect(Buffs.Fugetsu) && HasStatusEffect(Buffs.Fuka) && Gauge.Kenki >= 25)
                 {
                     if (ActionReady(Senei) &&
-                        (MaxLvL &&
+                        (TraitLevelChecked(Traits.EnhancedHissatsu) &&
                          (JustUsed(KaeshiSetsugekka, 5f) ||
                           JustUsed(TendoSetsugekka, 5f)) ||
-                         !MaxLvL))
+                         !TraitLevelChecked(Traits.EnhancedHissatsu)))
                         return Senei;
 
                     //Guren if no Senei
@@ -314,10 +314,10 @@ internal partial class SAM : Melee
                         HasStatusEffect(Buffs.Fugetsu) && HasStatusEffect(Buffs.Fuka) && Gauge.Kenki >= 25)
                     {
                         if (ActionReady(Senei) &&
-                            (MaxLvL &&
+                            (TraitLevelChecked(Traits.EnhancedHissatsu) &&
                              (JustUsed(KaeshiSetsugekka, 5f) ||
                               JustUsed(TendoSetsugekka, 5f)) ||
-                             !MaxLvL))
+                             !TraitLevelChecked(Traits.EnhancedHissatsu)))
                             return Senei;
 
                         //Guren if no Senei
