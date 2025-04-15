@@ -18,6 +18,10 @@ internal partial class SAM
 
     internal static bool RefreshFuka => GetStatusEffectRemainingTime(Buffs.Fuka) < GetStatusEffectRemainingTime(Buffs.Fugetsu);
 
+    internal static bool MaxLvL => TraitLevelChecked(Traits.EnhancedHissatsu);
+
+    internal static bool DoubleMeikyo => TraitLevelChecked(Traits.EnhancedMeikyoShishui);
+
     internal static int SenCount => GetSenCount();
 
     private static int GetSenCount()
@@ -41,46 +45,52 @@ internal partial class SAM
         float gcd = ActionManager.GetAdjustedRecastTime(ActionType.Action, Hakaze) / 100f;
         int meikyoUsed = ActionWatching.CombatActions.Count(x => x == MeikyoShisui);
 
-        if (ActionReady(MeikyoShisui) &&
-            (WasLastWeaponskill(Gekko) || WasLastWeaponskill(Kasha) || WasLastWeaponskill(Yukikaze)) &&
-            (!HasStatusEffect(Buffs.Tendo) || !LevelChecked(TendoSetsugekka)))
+        if (ActionReady(MeikyoShisui) && !HasStatusEffect(Buffs.Tendo) &&
+            (WasLastWeaponskill(Gekko) || WasLastWeaponskill(Kasha) || WasLastWeaponskill(Yukikaze)))
         {
             //if no opener/before lvl 100
-            if ((IsNotEnabled(CustomComboPreset.SAM_ST_Opener) ||
-                 !LevelChecked(TendoSetsugekka) ||
+            if ((IsNotEnabled(CustomComboPreset.SAM_ST_Opener) || !LevelChecked(TendoSetsugekka) ||
                  IsEnabled(CustomComboPreset.SAM_ST_Opener) && Config.SAM_Balance_Content == 1 && !InBossEncounter()) &&
                 meikyoUsed < 2 && !HasStatusEffect(Buffs.MeikyoShisui) && !HasStatusEffect(Buffs.TsubameReady))
                 return true;
 
             //double meikyo
-            if (TraitLevelChecked(Traits.EnhancedMeikyoShishui) && HasStatusEffect(Buffs.TsubameReady))
+            if (DoubleMeikyo)
             {
-                switch (gcd)
+                if (HasStatusEffect(Buffs.TsubameReady))
                 {
                     //Even windows
-                    case >= 2.09f when meikyoUsed % 7 is 2 && SenCount is 3 && (GetCooldownRemainingTime(Ikishoten) <= gcd * 4 || IsOffCooldown(Ikishoten)) ||
-                                       meikyoUsed % 7 is 4 && SenCount is 2 && (GetCooldownRemainingTime(Ikishoten) <= gcd * 5 || IsOffCooldown(Ikishoten)) ||
-                                       meikyoUsed % 7 is 6 && SenCount is 1 && (GetCooldownRemainingTime(Ikishoten) <= gcd * 6 || IsOffCooldown(Ikishoten)):
-                    //Odd windows
-                    case >= 2.09f when GetCooldownRemainingTime(Ikishoten) is <= 85 and > 40 &&
-                                       (meikyoUsed % 7 is 1 && SenCount is 3 ||
-                                        meikyoUsed % 7 is 3 && SenCount is 2 ||
-                                        meikyoUsed % 7 is 5 && SenCount is 1):
-                    //Even windows
-                    case <= 2.08f when GetCooldownRemainingTime(Ikishoten) <= gcd * 4 && SenCount is 3:
+                    if (gcd > 2.08f && GetCooldownRemainingTime(Senei) <= 5 &&
+                        (meikyoUsed % 7 is 2 && SenCount is 3 ||
+                         meikyoUsed % 7 is 4 && SenCount is 2 ||
+                         meikyoUsed % 7 is 6 && SenCount is 1))
+                        return true;
 
                     //Odd windows
-                    case <= 2.08f when GetCooldownRemainingTime(Ikishoten) is <= 65 and > 50 && SenCount is 3:
+                    if (gcd > 2.08f &&
+                        (!MaxLvL && GetCooldownRemainingTime(Senei) is <= 85 and > 30 ||
+                         MaxLvL && GetCooldownRemainingTime(Senei) <= 5) &&
+                        (meikyoUsed % 7 is 1 && SenCount is 3 ||
+                         meikyoUsed % 7 is 3 && SenCount is 2 ||
+                         meikyoUsed % 7 is 5 && SenCount is 1))
+                        return true;
+
+                    //Even windows
+                    if (gcd <= 2.08f && GetCooldownRemainingTime(Ikishoten) <= gcd * 4 && SenCount is 3)
+                        return true;
+
+                    //Odd windows
+                    if (gcd <= 2.08f && GetCooldownRemainingTime(Ikishoten) is <= 75 and > 50 && SenCount is 3)
                         return true;
                 }
+
+                // reset meikyo
+                if (gcd > 2.08f && meikyoUsed % 7 is 0 && !HasStatusEffect(Buffs.MeikyoShisui) && WasLastWeaponskill(Yukikaze))
+                    return true;
             }
 
-            // reset meikyo
-            if (gcd >= 2.09f && meikyoUsed % 7 is 0 && !HasStatusEffect(Buffs.MeikyoShisui) && WasLastWeaponskill(Yukikaze))
-                return true;
-
-            //Pre double meikyo / Overcap protection
-            if (GetRemainingCharges(MeikyoShisui) == GetMaxCharges(MeikyoShisui) && !HasStatusEffect(Buffs.TsubameReady))
+            //Pre double meikyo
+            if (!DoubleMeikyo && GetRemainingCharges(MeikyoShisui) == GetMaxCharges(MeikyoShisui) && !HasStatusEffect(Buffs.TsubameReady))
                 return true;
         }
 
@@ -96,9 +106,9 @@ internal partial class SAM
         {
             if (IsEnabled(CustomComboPreset.SAM_ST_SimpleMode))
             {
-                if (LevelChecked(TsubameGaeshi) && HasStatusEffect(Buffs.TsubameReady) &&
-                    (TraitLevelChecked(Traits.EnhancedHissatsu) && GetCooldownRemainingTime(Senei) > 33 || SenCount is 3) ||
-                    LevelChecked(TendoKaeshiSetsugekka) && HasStatusEffect(Buffs.TendoKaeshiSetsugekkaReady))
+                if (HasStatusEffect(Buffs.TsubameReady) &&
+                    (GetCooldownRemainingTime(Senei) > 33 || SenCount is 3) ||
+                    HasStatusEffect(Buffs.TendoKaeshiSetsugekkaReady))
                 {
                     actionID = OriginalHook(TsubameGaeshi);
                     return true;
@@ -107,7 +117,7 @@ internal partial class SAM
                 if (!IsMoving())
                 {
                     if (SenCount is 1 && GetTargetHPPercent() > 1 && TargetIsBoss() &&
-                        (GetStatusEffectRemainingTime(Debuffs.Higanbana, CurrentTarget) <= 10 && JustUsed(Gekko) && JustUsed(MeikyoShisui, 15f) ||
+                        (GetStatusEffectRemainingTime(Debuffs.Higanbana, CurrentTarget) <= 10 && JustUsed(MeikyoShisui, 15f) ||
                          !HasStatusEffect(Debuffs.Higanbana, CurrentTarget)))
                     {
                         actionID = OriginalHook(Iaijutsu);
@@ -146,7 +156,7 @@ internal partial class SAM
                         SenCount is 1 && GetTargetHPPercent() > higanbanaThreshold &&
                         (Config.SAM_ST_Higanbana_Suboption == 0 ||
                          Config.SAM_ST_Higanbana_Suboption == 1 && TargetIsBoss()) &&
-                        (GetStatusEffectRemainingTime(Debuffs.Higanbana, CurrentTarget) <= 10 && JustUsed(Gekko) && JustUsed(MeikyoShisui, 15f) ||
+                        (GetStatusEffectRemainingTime(Debuffs.Higanbana, CurrentTarget) <= 10 && JustUsed(MeikyoShisui, 15f) ||
                          !HasStatusEffect(Debuffs.Higanbana, CurrentTarget)))
                     {
                         actionID = OriginalHook(Iaijutsu);
