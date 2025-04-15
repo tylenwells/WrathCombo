@@ -59,7 +59,6 @@ internal partial class BLM
     internal static bool HasMaxUmbralHeartStacks => !TraitLevelChecked(Traits.UmbralHeart) || Gauge.UmbralHearts == 3; //Returns true before you can have Umbral Hearts out of design
 
     internal static bool HasPolyglotStacks() => PolyglotStacks > 0;
-    
 
     #region Openers
 
