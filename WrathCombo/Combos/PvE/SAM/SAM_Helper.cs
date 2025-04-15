@@ -76,11 +76,13 @@ internal partial class SAM
                         return true;
 
                     //Even windows
-                    if (gcd <= 2.08f && GetCooldownRemainingTime(Ikishoten) <= gcd * 4 && SenCount is 3)
+                    if (gcd <= 2.08f && GetCooldownRemainingTime(Senei) <= 5 && SenCount is 3)
                         return true;
 
                     //Odd windows
-                    if (gcd <= 2.08f && GetCooldownRemainingTime(Ikishoten) is <= 75 and > 50 && SenCount is 3)
+                    if (gcd <= 2.08f &&
+                        (!MaxLvL && GetCooldownRemainingTime(Senei) is <= 85 and > 30 ||
+                         MaxLvL && GetCooldownRemainingTime(Senei) <= 5) && SenCount is 3)
                         return true;
                 }
 

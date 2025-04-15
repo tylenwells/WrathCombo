@@ -132,13 +132,11 @@ internal partial class SAM : Melee
                 }
 
                 //Senei Features
-                if (HasStatusEffect(Buffs.Fugetsu) && HasStatusEffect(Buffs.Fuka) && Gauge.Kenki >= 25)
+                if (Gauge.Kenki >= 25)
                 {
                     if (ActionReady(Senei) &&
-                        (MaxLvL &&
-                         (JustUsed(KaeshiSetsugekka, 5f) ||
-                          JustUsed(TendoSetsugekka, 5f)) ||
-                         !MaxLvL))
+                        (JustUsed(KaeshiSetsugekka, 5f) ||
+                         JustUsed(TendoSetsugekka, 5f)))
                         return Senei;
 
                     //Guren if no Senei
@@ -310,14 +308,12 @@ internal partial class SAM : Melee
                 if (IsEnabled(CustomComboPreset.SAM_ST_Damage))
                 {
                     //Senei Features
-                    if (IsEnabled(CustomComboPreset.SAM_ST_CDs_Senei) &&
-                        HasStatusEffect(Buffs.Fugetsu) && HasStatusEffect(Buffs.Fuka) && Gauge.Kenki >= 25)
+                    if (IsEnabled(CustomComboPreset.SAM_ST_CDs_Senei)
+                        && Gauge.Kenki >= 25)
                     {
                         if (ActionReady(Senei) &&
-                            (MaxLvL &&
-                             (JustUsed(KaeshiSetsugekka, 5f) ||
-                              JustUsed(TendoSetsugekka, 5f)) ||
-                             !MaxLvL))
+                            (JustUsed(KaeshiSetsugekka) ||
+                             JustUsed(TendoSetsugekka)))
                             return Senei;
 
                         //Guren if no Senei
