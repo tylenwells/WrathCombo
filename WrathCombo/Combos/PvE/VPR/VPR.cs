@@ -774,28 +774,20 @@ internal partial class VPR : Melee
         {
             switch (actionID)
             {
-                // Death Rattle
-                case SerpentsTail when LevelChecked(SerpentsTail) && OriginalHook(SerpentsTail) is not SerpentsTail:
+                // Death Rattle / Legacy Weaves
+                case SerpentsTail when LevelChecked(SerpentsTail) &&
+                                       OriginalHook(SerpentsTail) is not SerpentsTail:
                     return OriginalHook(SerpentsTail);
 
-                // Legacy Weaves
-                //    case SerpentsTail when HasStatusEffect(Buffs.PoisedForTwinfang):
-                //      return OriginalHook(Twinfang);
+                case SerpentsTail when HasStatusEffect(Buffs.PoisedForTwinfang) ||
+                                       HasStatusEffect(Buffs.HuntersVenom) ||
+                                       HasStatusEffect(Buffs.FellhuntersVenom):
+                    return OriginalHook(Twinfang);
 
-                // case SerpentsTail when HasStatusEffect(Buffs.PoisedForTwinblood):
-                //   return OriginalHook(Twinblood);
-
-                //  case SerpentsTail when HasStatusEffect(Buffs.HuntersVenom):
-                //     return OriginalHook(Twinfang);
-
-                // case SerpentsTail when HasStatusEffect(Buffs.SwiftskinsVenom):
-                //    return OriginalHook(Twinblood);
-
-                // case SerpentsTail when HasStatusEffect(Buffs.FellhuntersVenom):
-                //    return OriginalHook(Twinfang);
-
-                //   case SerpentsTail when HasStatusEffect(Buffs.FellskinsVenom):
-                //     return OriginalHook(Twinblood);
+                case SerpentsTail when HasStatusEffect(Buffs.PoisedForTwinblood) ||
+                                       HasStatusEffect(Buffs.SwiftskinsVenom) ||
+                                       HasStatusEffect(Buffs.FellskinsVenom):
+                    return OriginalHook(Twinblood);
 
                 default:
                     return actionID;
@@ -838,7 +830,7 @@ internal partial class VPR : Melee
                     OriginalHook(SerpentsTail) is DeathRattle &&
                     (JustUsed(FlankstingStrike) || JustUsed(FlanksbaneFang) ||
                      JustUsed(HindstingStrike) || JustUsed(HindsbaneFang)):
-                    
+
                 case SteelMaw or ReavingMaw when
                     OriginalHook(SerpentsTail) is LastLash &&
                     (JustUsed(JaggedMaw) || JustUsed(BloodiedMaw)):
