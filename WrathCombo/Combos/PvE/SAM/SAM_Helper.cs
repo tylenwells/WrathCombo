@@ -59,31 +59,32 @@ internal partial class SAM
             {
                 if (HasStatusEffect(Buffs.TsubameReady))
                 {
-                    //Even windows
-                    if (gcd > 2.08f && GetCooldownRemainingTime(Senei) <= 5 &&
-                        (meikyoUsed % 7 is 2 && SenCount is 3 ||
-                         meikyoUsed % 7 is 4 && SenCount is 2 ||
-                         meikyoUsed % 7 is 6 && SenCount is 1))
-                        return true;
+                    switch (gcd)
+                    {
+                        //Even windows
+                        case > 2.08f when GetCooldownRemainingTime(Senei) <= 5 &&
+                                          (meikyoUsed % 7 is 2 && SenCount is 3 ||
+                                           meikyoUsed % 7 is 4 && SenCount is 2 ||
+                                           meikyoUsed % 7 is 6 && SenCount is 1):
 
-                    //Odd windows
-                    if (gcd > 2.08f &&
-                        (!MaxLvL && GetCooldownRemainingTime(Senei) is <= 85 and > 30 ||
-                         MaxLvL && GetCooldownRemainingTime(Senei) <= 5) &&
-                        (meikyoUsed % 7 is 1 && SenCount is 3 ||
-                         meikyoUsed % 7 is 3 && SenCount is 2 ||
-                         meikyoUsed % 7 is 5 && SenCount is 1))
-                        return true;
+                        //Odd windows
+                        case > 2.08f when
+                            (!MaxLvL && GetCooldownRemainingTime(Senei) is <= 85 and > 30 ||
+                             MaxLvL && GetCooldownRemainingTime(Senei) <= 5) &&
+                            (meikyoUsed % 7 is 1 && SenCount is 3 ||
+                             meikyoUsed % 7 is 3 && SenCount is 2 ||
+                             meikyoUsed % 7 is 5 && SenCount is 1):
 
-                    //Even windows
-                    if (gcd <= 2.08f && GetCooldownRemainingTime(Senei) <= 5 && SenCount is 3)
-                        return true;
+                        //Even windows
+                        case <= 2.08f when GetCooldownRemainingTime(Senei) <= 5 && SenCount is 3:
 
-                    //Odd windows
-                    if (gcd <= 2.08f &&
-                        (!MaxLvL && GetCooldownRemainingTime(Senei) is <= 85 and > 30 ||
-                         MaxLvL && GetCooldownRemainingTime(Senei) <= 5) && SenCount is 3)
-                        return true;
+                        //Odd windows
+                        case <= 2.08f when
+                            (!MaxLvL && GetCooldownRemainingTime(Senei) is <= 85 and > 30 ||
+                             MaxLvL && GetCooldownRemainingTime(Senei) <= 5) && SenCount is 3:
+
+                            return true;
+                    }
                 }
 
                 // reset meikyo
@@ -144,8 +145,8 @@ internal partial class SAM
             {
                 if (Config.SAM_ST_CDs_IaijutsuOption[3] &&
                     (LevelChecked(TsubameGaeshi) && HasStatusEffect(Buffs.TsubameReady) &&
-                     (TraitLevelChecked(Traits.EnhancedHissatsu) && GetCooldownRemainingTime(Senei) > 33 || SenCount is 3) ||
-                     LevelChecked(TendoKaeshiSetsugekka) && HasStatusEffect(Buffs.TendoKaeshiSetsugekkaReady)))
+                     (GetCooldownRemainingTime(Senei) > 33 || SenCount is 3) ||
+                     HasStatusEffect(Buffs.TendoKaeshiSetsugekkaReady)))
                 {
                     actionID = OriginalHook(TsubameGaeshi);
                     return true;
