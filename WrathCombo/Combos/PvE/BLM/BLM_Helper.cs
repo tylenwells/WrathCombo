@@ -59,20 +59,7 @@ internal partial class BLM
     internal static bool HasMaxUmbralHeartStacks => !TraitLevelChecked(Traits.UmbralHeart) || Gauge.UmbralHearts == 3; //Returns true before you can have Umbral Hearts out of design
 
     internal static bool HasPolyglotStacks() => PolyglotStacks > 0;
-
-    internal static bool HasMaxTriplecastCharges() => GetRemainingCharges(Triplecast) == GetMaxCharges(Triplecast);
-
-    internal static WrathOpener Opener()
-    {
-        if (StandardOpener.LevelChecked && Config.BLM_SelectedOpener == 0)
-            return StandardOpener;
-
-        if (FlareOpener.LevelChecked && Config.BLM_SelectedOpener == 1)
-            return FlareOpener;
-
-        return WrathOpener.Dummy;
-    }
-
+    
     internal static bool DoubleBlizz()
     {
         List<uint> spells = ActionWatching.CombatActions.Where(x =>
@@ -112,6 +99,17 @@ internal partial class BLM
     }
 
     #region Openers
+
+    internal static WrathOpener Opener()
+    {
+        if (StandardOpener.LevelChecked && Config.BLM_SelectedOpener == 0)
+            return StandardOpener;
+
+        if (FlareOpener.LevelChecked && Config.BLM_SelectedOpener == 1)
+            return FlareOpener;
+
+        return WrathOpener.Dummy;
+    }
 
     internal class BLMStandardOpener : WrathOpener
     {
