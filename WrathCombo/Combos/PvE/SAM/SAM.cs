@@ -135,8 +135,9 @@ internal partial class SAM : Melee
                 if (Gauge.Kenki >= 25)
                 {
                     if (ActionReady(Senei) &&
-                        (JustUsed(KaeshiSetsugekka, 5f) ||
-                         JustUsed(TendoSetsugekka, 5f)))
+                        (JustUsed(MidareSetsugekka) ||
+                         JustUsed(KaeshiSetsugekka) ||
+                         JustUsed(TendoSetsugekka)))
                         return Senei;
 
                     //Guren if no Senei
@@ -312,7 +313,8 @@ internal partial class SAM : Melee
                         && Gauge.Kenki >= 25)
                     {
                         if (ActionReady(Senei) &&
-                            (JustUsed(KaeshiSetsugekka) ||
+                            (JustUsed(MidareSetsugekka) ||
+                             JustUsed(KaeshiSetsugekka) ||
                              JustUsed(TendoSetsugekka)))
                             return Senei;
 
