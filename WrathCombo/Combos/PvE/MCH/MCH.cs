@@ -1,3 +1,4 @@
+using Dalamud.Game.ClientState.Statuses;
 using WrathCombo.CustomComboNS;
 using WrathCombo.Data;
 using WrathCombo.Extensions;
@@ -118,10 +119,9 @@ internal partial class MCH : PhysicalRanged
             }
 
             // Full Metal Field
-            if (HasStatusEffect(Buffs.FullMetalMachinist) && InBossEncounter() &&
+            if (HasStatusEffect(Buffs.FullMetalMachinist, out Status? fullMetal) && InBossEncounter() &&
                 (GetCooldownRemainingTime(Wildfire) <= GCD || ActionReady(Wildfire) ||
-                 GetStatusEffectRemainingTime(Buffs.FullMetalMachinist) <= 6) &&
-                LevelChecked(FullMetalField))
+                 fullMetal.RemainingTime <= 6) && LevelChecked(FullMetalField))
                 return FullMetalField;
 
             // Heatblast
@@ -290,8 +290,9 @@ internal partial class MCH : PhysicalRanged
             if (IsEnabled(CustomComboPreset.MCH_ST_Adv_Stabilizer_FullMetalField) &&
                 (Config.MCH_ST_Adv_FullMetalMachinist_SubOption == 0 ||
                  Config.MCH_ST_Adv_FullMetalMachinist_SubOption == 1 && InBossEncounter()) &&
-                HasStatusEffect(Buffs.FullMetalMachinist) && LevelChecked(FullMetalField) &&
-                (GetStatusEffectRemainingTime(Buffs.FullMetalMachinist) <= 6 ||
+                HasStatusEffect(Buffs.FullMetalMachinist, out Status? fullMetal) && 
+                LevelChecked(FullMetalField) && 
+                (fullMetal.RemainingTime <= 6 ||
                  GetCooldownRemainingTime(Wildfire) <= GCD ||
                  ActionReady(Wildfire)))
                 return FullMetalField;
