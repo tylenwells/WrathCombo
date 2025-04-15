@@ -160,7 +160,7 @@ internal partial class SCH : Healer
             IGameObject? healTarget = GetHealTarget(Config.SCH_DeploymentTactics_Adv && Config.SCH_DeploymentTactics_UIMouseOver);
 
             //Check for the Galvanize shield buff. Start applying if it doesn't exist
-            if (HasStatusEffect(Buffs.Galvanize, healTarget)) 
+            if (!HasStatusEffect(Buffs.Galvanize, healTarget)) 
             {
                 if (IsEnabled(CustomComboPreset.SCH_DeploymentTactics_Recitation) && ActionReady(Recitation))
                     return Recitation;
@@ -468,7 +468,7 @@ internal partial class SCH : Healer
 
                 if ((Config.SCH_ST_Heal_AldoquimOpts[0] || !HasStatusEffect(Buffs.Galvanize, healTarget, true)) && //Ignore existing shield check
                     (!Config.SCH_ST_Heal_AldoquimOpts[1] ||
-                     !HasStatusEffect(SGE.Buffs.EukrasianDiagnosis, healTarget, true) && HasStatusEffect(SGE.Buffs.EukrasianDiagnosis, healTarget, true)
+                     !HasStatusEffect(SGE.Buffs.EukrasianDiagnosis, healTarget, true) && !HasStatusEffect(SGE.Buffs.EukrasianPrognosis, healTarget, true)
                     )) //Eukrasia Shield Check
                     return OriginalHook(Adloquium);
             }
