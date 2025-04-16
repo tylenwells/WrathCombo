@@ -906,7 +906,8 @@ internal partial class DRK
 
             // Bail if it is right before burst
             if (GetCooldownRemainingTime(LivingShadow) <
-                Math.Min(6, secondsBeforeBurst))
+                Math.Min(6, secondsBeforeBurst) &&
+                CombatEngageDuration().TotalSeconds > 20)
                 return false;
 
             #region Mana Overcap
@@ -925,9 +926,6 @@ internal partial class DRK
 
             #endregion
 
-            // Bail if it is too early into the fight
-            if (CombatEngageDuration().TotalSeconds <= 10) return false;
-
             #region Burst Phase Spending
 
             if ((flags.HasFlag(Combo.Simple) ||
@@ -940,6 +938,9 @@ internal partial class DRK
                     return (action = OriginalHook(FloodOfDarkness)) != 0;
 
             #endregion
+
+            // Bail if it is too early into the fight
+            if (CombatEngageDuration().TotalSeconds <= 10) return false;
 
             #region Mana Dark Arts Drop Prevention
 
