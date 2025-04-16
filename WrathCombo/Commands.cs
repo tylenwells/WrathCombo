@@ -579,6 +579,13 @@ public partial class WrathCombo
         // Toggle the window state
         ConfigWindow.IsOpen = !ConfigWindow.IsOpen;
 
+        // Handle option to always open to the PvE tab
+        if (ConfigWindow.IsOpen && Service.Configuration.OpenToPvE)
+        {
+            ConfigWindow.OpenWindow = OpenWindow.PvE;
+            return;
+        }
+
         // Force open (UI buttons)
         if (forceOpen is not null)
             ConfigWindow.IsOpen = forceOpen.Value;
