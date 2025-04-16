@@ -378,7 +378,8 @@ internal partial class BRD : PhysicalRanged
             if (HasStatusEffect(Buffs.Barrage))
                 return OriginalHook(WideVolley);
 
-            if (IsEnabled(CustomComboPreset.BRD_Adv_BuffsEncore) && HasStatusEffect(Buffs.RadiantEncoreReady) && RadiantFinaleDuration < 16)
+            if (IsEnabled(CustomComboPreset.BRD_AoE_BuffsEncore) && HasStatusEffect(Buffs.RadiantEncoreReady) && RadiantFinaleDuration < 16 &&
+               (HasStatusEffect(Buffs.RagingStrikes) || !ragingEnabled))
                 return OriginalHook(RadiantEncore);
 
             if (IsEnabled(CustomComboPreset.BRD_AoE_ApexArrow))
@@ -390,7 +391,7 @@ internal partial class BRD : PhysicalRanged
                     return ApexArrow;
             }
 
-            if (IsEnabled(CustomComboPreset.BRD_Adv_BuffsResonant))
+            if (IsEnabled(CustomComboPreset.BRD_AoE_BuffsResonant))
             {
                 if (HasStatusEffect(Buffs.ResonantArrowReady))
                     return ResonantArrow;
@@ -578,7 +579,8 @@ internal partial class BRD : PhysicalRanged
             if (HasStatusEffect(Buffs.Barrage))
                 return OriginalHook(StraightShot);
 
-            if (IsEnabled(CustomComboPreset.BRD_Adv_BuffsEncore) && HasStatusEffect(Buffs.RadiantEncoreReady) && RadiantFinaleDuration < 16)
+            if (IsEnabled(CustomComboPreset.BRD_Adv_BuffsEncore) && HasStatusEffect(Buffs.RadiantEncoreReady) && RadiantFinaleDuration < 16 && 
+               (HasStatusEffect(Buffs.RagingStrikes) || !ragingEnabled))
                 return OriginalHook(RadiantEncore);
 
             if (IsEnabled(CustomComboPreset.BRD_ST_ApexArrow))
@@ -730,7 +732,7 @@ internal partial class BRD : PhysicalRanged
             if (HasStatusEffect(Buffs.ResonantArrowReady))
                 return ResonantArrow;
 
-            if (HasStatusEffect(Buffs.RadiantEncoreReady) && RadiantFinaleDuration < 16)
+            if (HasStatusEffect(Buffs.RadiantEncoreReady) && RadiantFinaleDuration < 16 && HasStatusEffect(Buffs.RagingStrikes))
                 return OriginalHook(RadiantEncore);
 
             if (HasStatusEffect(Buffs.HawksEye))
@@ -880,7 +882,7 @@ internal partial class BRD : PhysicalRanged
             if (HasStatusEffect(Buffs.ResonantArrowReady))
                 return ResonantArrow;
 
-            if (HasStatusEffect(Buffs.RadiantEncoreReady) && RadiantFinaleDuration < 16)
+            if (HasStatusEffect(Buffs.RadiantEncoreReady) && RadiantFinaleDuration < 16 && HasStatusEffect(Buffs.RagingStrikes))
                 return OriginalHook(RadiantEncore);
 
             if (HasStatusEffect(Buffs.HawksEye))
