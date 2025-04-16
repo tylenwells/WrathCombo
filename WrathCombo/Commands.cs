@@ -663,6 +663,7 @@ public partial class WrathCombo
         }
 
         ConfigWindow.IsOpen = true;
+        ConfigWindow.OpenWindow = OpenWindow.PvE;
         PvEFeatures.OpenJob = jobName;
     }
 }
