@@ -889,6 +889,21 @@ internal partial class DRK
 
             #endregion
 
+            #region Darkside Maintenance
+
+            if ((flags.HasFlag(Combo.Simple) ||
+                 ((flags.HasFlag(Combo.ST) &&
+                   IsEnabled(Preset.DRK_ST_Sp_EdgeDarkside)) ||
+                  flags.HasFlag(Combo.AoE) &&
+                  IsEnabled(Preset.DRK_AoE_Sp_Flood))) &&
+                darksideDropping)
+                if (flags.HasFlag(Combo.ST) && LevelChecked(EdgeOfDarkness))
+                    return (action = OriginalHook(EdgeOfDarkness)) != 0;
+                else
+                    return (action = OriginalHook(FloodOfDarkness)) != 0;
+
+            #endregion
+
             // Bail if it is right before burst
             if (GetCooldownRemainingTime(LivingShadow) <
                 Math.Min(6, secondsBeforeBurst))
@@ -903,21 +918,6 @@ internal partial class DRK
                   IsEnabled(Preset.DRK_AoE_Sp_ManaOvercap))) &&
                 mana >= 8500 &&
                 !evenBurstSoon)
-                if (flags.HasFlag(Combo.ST) && LevelChecked(EdgeOfDarkness))
-                    return (action = OriginalHook(EdgeOfDarkness)) != 0;
-                else
-                    return (action = OriginalHook(FloodOfDarkness)) != 0;
-
-            #endregion
-
-            #region Darkside Maintenance
-
-            if ((flags.HasFlag(Combo.Simple) ||
-                 ((flags.HasFlag(Combo.ST) &&
-                   IsEnabled(Preset.DRK_ST_Sp_EdgeDarkside)) ||
-                  flags.HasFlag(Combo.AoE) &&
-                  IsEnabled(Preset.DRK_AoE_Sp_Flood))) &&
-                darksideDropping)
                 if (flags.HasFlag(Combo.ST) && LevelChecked(EdgeOfDarkness))
                     return (action = OriginalHook(EdgeOfDarkness)) != 0;
                 else
