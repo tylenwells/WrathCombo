@@ -46,7 +46,7 @@ internal partial class SAM
         int meikyoUsed = ActionWatching.CombatActions.Count(x => x == MeikyoShisui);
 
         if (ActionReady(MeikyoShisui) && !HasStatusEffect(Buffs.Tendo) &&
-            (WasLastWeaponskill(Gekko) || WasLastWeaponskill(Kasha) || WasLastWeaponskill(Yukikaze)))
+            (JustUsed(Gekko) || JustUsed(Kasha) || JustUsed(Yukikaze)))
         {
             //if no opener/before lvl 100
             if ((IsNotEnabled(CustomComboPreset.SAM_ST_Opener) || !LevelChecked(TendoSetsugekka) ||
@@ -59,37 +59,38 @@ internal partial class SAM
             {
                 if (HasStatusEffect(Buffs.TsubameReady))
                 {
-                    //Even windows
-                    if (gcd >= 2.09f &&
-                        GetCooldownRemainingTime(Senei) <= 10 &&
-                        (meikyoUsed % 7 is 2 && SenCount is 3 && IsOffCooldown(Ikishoten) ||
-                         meikyoUsed % 7 is 4 && SenCount is 2 ||
-                         meikyoUsed % 7 is 6 && SenCount is 1))
-                        return true;
+                    switch (gcd)
+                    {
+                        //Even windows
+                        case >= 2.09f when
+                            GetCooldownRemainingTime(Senei) <= 10 &&
+                            (meikyoUsed % 7 is 2 && SenCount is 3 && IsOffCooldown(Ikishoten) ||
+                             meikyoUsed % 7 is 4 && SenCount is 2 ||
+                             meikyoUsed % 7 is 6 && SenCount is 1):
 
-                    //Odd windows
-                    if (gcd >= 2.09f &&
-                        (MaxLvL && GetCooldownRemainingTime(Senei) <= 10 ||
-                         !MaxLvL && GetCooldownRemainingTime(Senei) is > 45 and <= 85) &&
-                        (meikyoUsed % 7 is 1 && SenCount is 3 ||
-                         meikyoUsed % 7 is 3 && SenCount is 2 ||
-                         meikyoUsed % 7 is 5 && SenCount is 1))
-                        return true;
+                        //Odd windows
+                        case >= 2.09f when
+                            (MaxLvL && GetCooldownRemainingTime(Senei) <= 10 ||
+                             !MaxLvL && GetCooldownRemainingTime(Senei) is > 45 and <= 85) &&
+                            (meikyoUsed % 7 is 1 && SenCount is 3 ||
+                             meikyoUsed % 7 is 3 && SenCount is 2 ||
+                             meikyoUsed % 7 is 5 && SenCount is 1):
 
-                    //Even windows
-                    if (gcd <= 2.08f &&
-                        GetCooldownRemainingTime(Senei) <= 5 && SenCount is 3)
-                        return true;
+                        //Even windows
+                        case <= 2.08f when
+                            GetCooldownRemainingTime(Senei) <= 5 && SenCount is 3:
 
-                    //Odd windows
-                    if (gcd <= 2.08f &&
-                        !MaxLvL && GetCooldownRemainingTime(Senei) is > 45 and <= 85 ||
-                        MaxLvL && GetCooldownRemainingTime(Senei) <= gcd * 3)
-                        return true;
+                        //Odd windows
+                        case <= 2.08f when
+                            (!MaxLvL && GetCooldownRemainingTime(Senei) is > 45 and <= 85 ||
+                             MaxLvL && GetCooldownRemainingTime(Senei) <= 5) && SenCount is 3:
+
+                            return true;
+                    }
                 }
 
                 // reset meikyo
-                if (gcd > 2.08f && meikyoUsed % 7 is 0 && !HasStatusEffect(Buffs.MeikyoShisui) && WasLastWeaponskill(Yukikaze))
+                if (gcd >= 2.09f && meikyoUsed % 7 is 0 && !HasStatusEffect(Buffs.MeikyoShisui) && WasLastWeaponskill(Yukikaze))
                     return true;
             }
 
