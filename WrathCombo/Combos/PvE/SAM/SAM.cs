@@ -127,7 +127,8 @@ internal partial class SAM : Melee
                         case >= 50:
                             return Shinten;
 
-                        case < 50 when SenCount is 1 || JustUsed(Higanbana, 5):
+                        case < 50 when JustUsed(Higanbana) ||
+                                       !TargetIsBoss() && SenCount is 1:
                             return Ikishoten;
                     }
                 }
@@ -150,7 +151,8 @@ internal partial class SAM : Melee
                 if (ActionReady(Zanshin) && Gauge.Kenki >= 50 &&
                     InActionRange(Zanshin) &&
                     HasStatusEffect(Buffs.ZanshinReady) &&
-                    (JustUsed(Higanbana, 5) ||
+                    (JustUsed(Higanbana) ||
+                     JustUsed(OriginalHook(OgiNamikiri)) ||
                      !TargetIsBoss() ||
                      GetStatusEffectRemainingTime(Buffs.ZanshinReady) <= 8))
                     return Zanshin;
@@ -298,7 +300,8 @@ internal partial class SAM : Melee
                             case >= 50:
                                 return Shinten;
 
-                            case < 50 when SenCount is 1 || JustUsed(Higanbana, 5):
+                            case < 50 when JustUsed(Higanbana) ||
+                                           Config.SAM_ST_Higanbana_Suboption == 1 && !TargetIsBoss() && SenCount is 1:
                                 return Ikishoten;
                         }
                     }
@@ -328,7 +331,8 @@ internal partial class SAM : Melee
                         ActionReady(Zanshin) && Gauge.Kenki >= 50 &&
                         InActionRange(Zanshin) &&
                         HasStatusEffect(Buffs.ZanshinReady) &&
-                        (JustUsed(Higanbana, 5) ||
+                        (JustUsed(Higanbana) ||
+                         JustUsed(OriginalHook(OgiNamikiri)) ||
                          Config.SAM_ST_Higanbana_Suboption == 1 && !TargetIsBoss() ||
                          GetStatusEffectRemainingTime(Buffs.ZanshinReady) <= 8))
                         return Zanshin;
