@@ -63,6 +63,7 @@ internal partial class SAM
                     {
                         //Even windows
                         case > 2.08f when GetCooldownRemainingTime(Senei) <= 5 &&
+                                          IsOffCooldown(Ikishoten) &&
                                           (meikyoUsed % 7 is 2 && SenCount is 3 ||
                                            meikyoUsed % 7 is 4 && SenCount is 2 ||
                                            meikyoUsed % 7 is 6 && SenCount is 1):
