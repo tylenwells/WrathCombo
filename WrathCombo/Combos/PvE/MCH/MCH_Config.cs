@@ -49,7 +49,7 @@ internal partial class MCH
 
                     DrawHorizontalRadioButton(MCH_ST_Adv_Wildfire_SubOption,
                         "Boss encounters Only",
-                        $"Only uses {Wildfire.ActionName()} when in Boss encounters.", 1);
+                        $"Only uses {Wildfire.ActionName()} when the targeted enemy is a boss.", 1);
 
                     break;
 

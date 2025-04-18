@@ -43,7 +43,7 @@ internal partial class MCH : PhysicalRanged
                     if (JustUsed(Hypercharge) &&
                         ActionReady(Wildfire) &&
                         !HasStatusEffect(Buffs.Wildfire) &&
-                        InBossEncounter())
+                        TargetIsBoss())
                         return Wildfire;
 
                     if (!Gauge.IsOverheated)
@@ -191,7 +191,7 @@ internal partial class MCH : PhysicalRanged
                     // Wildfire
                     if (IsEnabled(CustomComboPreset.MCH_ST_Adv_WildFire) &&
                         (Config.MCH_ST_Adv_Wildfire_SubOption == 0 ||
-                         Config.MCH_ST_Adv_Wildfire_SubOption == 1 && InBossEncounter()) &&
+                         Config.MCH_ST_Adv_Wildfire_SubOption == 1 && TargetIsBoss()) &&
                         JustUsed(Hypercharge) && ActionReady(Wildfire) && !HasStatusEffect(Buffs.Wildfire))
                         return Wildfire;
 
