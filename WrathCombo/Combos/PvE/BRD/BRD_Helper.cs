@@ -134,7 +134,7 @@ internal partial class BRD
         //Raging jaws option dot refresh for snapshot
         internal static bool RagingJawsRefresh()
         {
-            if (HasStatusEffect(Buffs.RagingStrikes) && PurpleRemaining < 35 && BlueRemaining < 35)
+            if (ActionReady(IronJaws) && HasStatusEffect(Buffs.RagingStrikes) && PurpleRemaining < 35 && BlueRemaining < 35)
                 return true;
             return false;
         }
