@@ -4,29 +4,35 @@ namespace WrathCombo.Combos.PvE;
 
 internal partial class SAM : Melee
 {
-    internal class SAM_ST_YukikazeCombo : CustomCombo
+    internal class SAM_ST_GeckoCombo : CustomCombo
     {
-        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.SAM_ST_YukikazeCombo;
+        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.SAM_ST_GekkoCombo;
 
         protected override uint Invoke(uint actionID)
         {
-            if (actionID is not Yukikaze)
+            if (actionID is not Gekko)
                 return actionID;
 
-            if (Config.SAM_Yukaze_KenkiOvercap && CanWeave() &&
-                Gauge.Kenki >= Config.SAM_Yukaze_KenkiOvercapAmount && LevelChecked(Shinten))
+            if (Config.SAM_Gekko_KenkiOvercap && CanWeave() &&
+                Gauge.Kenki >= Config.SAM_Gekko_KenkiOvercapAmount && LevelChecked(Shinten))
                 return OriginalHook(Shinten);
 
-            if (HasStatusEffect(Buffs.MeikyoShisui) && LevelChecked(Yukikaze))
-                return OriginalHook(Yukikaze);
+            if (HasStatusEffect(Buffs.MeikyoShisui) && LevelChecked(Gekko))
+                return OriginalHook(Gekko);
 
-            if (ComboTimer > 0 && ComboAction == OriginalHook(Hakaze) && LevelChecked(Yukikaze))
-                return OriginalHook(Yukikaze);
+            if (ComboTimer > 0)
+            {
+                if (ComboAction == OriginalHook(Hakaze) && LevelChecked(Jinpu))
+                    return OriginalHook(Jinpu);
+
+                if (ComboAction is Jinpu && LevelChecked(Gekko))
+                    return OriginalHook(Gekko);
+            }
 
             return OriginalHook(Hakaze);
         }
     }
-
+    
     internal class SAM_ST_KashaCombo : CustomCombo
     {
         protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.SAM_ST_KashaCombo;
@@ -56,30 +62,24 @@ internal partial class SAM : Melee
         }
     }
 
-    internal class SAM_ST_GeckoCombo : CustomCombo
+    internal class SAM_ST_YukikazeCombo : CustomCombo
     {
-        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.SAM_ST_GekkoCombo;
+        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.SAM_ST_YukikazeCombo;
 
         protected override uint Invoke(uint actionID)
         {
-            if (actionID is not Gekko)
+            if (actionID is not Yukikaze)
                 return actionID;
 
-            if (Config.SAM_Gekko_KenkiOvercap && CanWeave() &&
-                Gauge.Kenki >= Config.SAM_Gekko_KenkiOvercapAmount && LevelChecked(Shinten))
+            if (Config.SAM_Yukaze_KenkiOvercap && CanWeave() &&
+                Gauge.Kenki >= Config.SAM_Yukaze_KenkiOvercapAmount && LevelChecked(Shinten))
                 return OriginalHook(Shinten);
 
-            if (HasStatusEffect(Buffs.MeikyoShisui) && LevelChecked(Gekko))
-                return OriginalHook(Gekko);
+            if (HasStatusEffect(Buffs.MeikyoShisui) && LevelChecked(Yukikaze))
+                return OriginalHook(Yukikaze);
 
-            if (ComboTimer > 0)
-            {
-                if (ComboAction == OriginalHook(Hakaze) && LevelChecked(Jinpu))
-                    return OriginalHook(Jinpu);
-
-                if (ComboAction is Jinpu && LevelChecked(Gekko))
-                    return OriginalHook(Gekko);
-            }
+            if (ComboTimer > 0 && ComboAction == OriginalHook(Hakaze) && LevelChecked(Yukikaze))
+                return OriginalHook(Yukikaze);
 
             return OriginalHook(Hakaze);
         }
@@ -457,10 +457,8 @@ internal partial class SAM : Melee
                 LevelChecked(Kyuten) && CanWeave())
                 return Kyuten;
 
-            if (HasStatusEffect(Buffs.MeikyoShisui))
-                return Oka;
-
-            if (ComboTimer > 0 && LevelChecked(Oka) &&
+            if (HasStatusEffect(Buffs.MeikyoShisui) || 
+                ComboTimer > 0 && LevelChecked(Oka) &&
                 ComboAction == OriginalHook(Fuko))
                 return Oka;
 
@@ -481,10 +479,8 @@ internal partial class SAM : Melee
                 LevelChecked(Kyuten) && CanWeave())
                 return Kyuten;
 
-            if (HasStatusEffect(Buffs.MeikyoShisui))
-                return Mangetsu;
-
-            if (ComboTimer > 0 && LevelChecked(Mangetsu) &&
+            if (HasStatusEffect(Buffs.MeikyoShisui) ||
+                ComboTimer > 0 && LevelChecked(Mangetsu) &&
                 ComboAction == OriginalHook(Fuko))
                 return Mangetsu;
 
