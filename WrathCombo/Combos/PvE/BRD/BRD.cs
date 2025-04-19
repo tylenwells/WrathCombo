@@ -397,7 +397,7 @@ internal partial class BRD : PhysicalRanged
                     return ResonantArrow;
             }
 
-            if (HasStatusEffect(Buffs.HawksEye))
+            if (HasStatusEffect(Buffs.HawksEye) && ActionReady(WideVolley))
                 return OriginalHook(WideVolley);
 
             #endregion
@@ -735,7 +735,7 @@ internal partial class BRD : PhysicalRanged
             if (HasStatusEffect(Buffs.RadiantEncoreReady) && RadiantFinaleDuration < 16 && HasStatusEffect(Buffs.RagingStrikes))
                 return OriginalHook(RadiantEncore);
 
-            if (HasStatusEffect(Buffs.HawksEye))
+            if (HasStatusEffect(Buffs.HawksEye) && ActionReady(WideVolley))
                 return OriginalHook(WideVolley);
 
             #endregion
