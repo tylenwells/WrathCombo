@@ -35,9 +35,9 @@ internal partial class NIN : Melee
             int bhavaPool = Config.Ninki_BhavaPooling;
             int bunshinPool = Config.Ninki_BunshinPoolingST;
             int burnKazematoi = Config.BurnKazematoi;
-            int SecondWindThreshold = Config.SecondWindThresholdST;
-            int ShadeShiftThreshold = Config.ShadeShiftThresholdST;
-            int BloodbathThreshold = Config.BloodbathThresholdST;
+            int secondWindThreshold = Config.SecondWindThresholdST;
+            int shadeShiftThreshold = Config.ShadeShiftThresholdST;
+            int bloodbathThreshold = Config.BloodbathThresholdST;
             double playerHP = PlayerHealthPercentageHp();
             bool phantomUptime = IsEnabled(CustomComboPreset.NIN_ST_AdvancedMode_Phantom_Uptime);
             var comboLength = GetCooldown(GustSlash).CooldownTotal * 3;
@@ -165,13 +165,13 @@ internal partial class NIN : Melee
                     return OriginalHook(Kassatsu);
 
                 //healing - please move if not appropriate priority
-                if (IsEnabled(CustomComboPreset.NIN_ST_AdvancedMode_SecondWind) && Role.CanSecondWind(SecondWindThreshold))
+                if (IsEnabled(CustomComboPreset.NIN_ST_AdvancedMode_SecondWind) && Role.CanSecondWind(secondWindThreshold))
                     return Role.SecondWind;
 
-                if (IsEnabled(CustomComboPreset.NIN_ST_AdvancedMode_ShadeShift) && ShadeShift.LevelChecked() && playerHP <= ShadeShiftThreshold && IsOffCooldown(ShadeShift))
+                if (IsEnabled(CustomComboPreset.NIN_ST_AdvancedMode_ShadeShift) && ShadeShift.LevelChecked() && playerHP <= shadeShiftThreshold && IsOffCooldown(ShadeShift))
                     return ShadeShift;
 
-                if (IsEnabled(CustomComboPreset.NIN_ST_AdvancedMode_Bloodbath) && Role.CanBloodBath(BloodbathThreshold))
+                if (IsEnabled(CustomComboPreset.NIN_ST_AdvancedMode_Bloodbath) && Role.CanBloodBath(bloodbathThreshold))
                     return Role.Bloodbath;
 
                 if (IsEnabled(CustomComboPreset.NIN_ST_AdvancedMode_Bhavacakra) &&
@@ -210,13 +210,13 @@ internal partial class NIN : Melee
                         return OriginalHook(TenChiJin);
                 }
 
-                if (IsEnabled(CustomComboPreset.NIN_ST_AdvancedMode_SecondWind) && Role.CanSecondWind(SecondWindThreshold))
+                if (IsEnabled(CustomComboPreset.NIN_ST_AdvancedMode_SecondWind) && Role.CanSecondWind(secondWindThreshold))
                     return Role.SecondWind;
 
-                if (IsEnabled(CustomComboPreset.NIN_ST_AdvancedMode_ShadeShift) && ShadeShift.LevelChecked() && playerHP <= ShadeShiftThreshold && IsOffCooldown(ShadeShift))
+                if (IsEnabled(CustomComboPreset.NIN_ST_AdvancedMode_ShadeShift) && ShadeShift.LevelChecked() && playerHP <= shadeShiftThreshold && IsOffCooldown(ShadeShift))
                     return ShadeShift;
 
-                if (IsEnabled(CustomComboPreset.NIN_ST_AdvancedMode_Bloodbath) && Role.CanBloodBath(BloodbathThreshold))
+                if (IsEnabled(CustomComboPreset.NIN_ST_AdvancedMode_Bloodbath) && Role.CanBloodBath(bloodbathThreshold))
                     return Role.Bloodbath;
             }
 

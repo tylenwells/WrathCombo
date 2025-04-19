@@ -1,5 +1,4 @@
 ﻿using Dalamud.Game.ClientState.JobGauge.Types;
-using Dalamud.Game.ClientState.Statuses;
 using System.Linq;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
@@ -42,7 +41,7 @@ internal partial class PLD : Tank
             bool isAtonementExpiring = (HasStatusEffect(Buffs.AtonementReady) && GetStatusEffectRemainingTime(Buffs.AtonementReady) < 6) ||
                                        (HasStatusEffect(Buffs.SupplicationReady) && GetStatusEffectRemainingTime(Buffs.SupplicationReady) < 6) ||
                                        (HasStatusEffect(Buffs.SepulchreReady) && GetStatusEffectRemainingTime(Buffs.SepulchreReady) < 6);
-            bool justMitted = JustUsed(OriginalHook(Sheltron), 3f) ||
+            bool justMitted = JustUsed(OriginalHook(Sheltron)) ||
                              JustUsed(OriginalHook(Sentinel), 4f) ||
                              JustUsed(DivineVeil, 4f) ||
                              JustUsed(Role.Rampart, 4f) ||
@@ -229,7 +228,7 @@ internal partial class PLD : Tank
             bool hasDivineMight = HasStatusEffect(Buffs.DivineMight);
             bool hasDivineMagicMP = playerMP >= GetResourceCost(HolySpirit);
             bool hasRequiescatMP = playerMP >= GetResourceCost(HolySpirit) * 3.6;
-            bool justMitted = JustUsed(OriginalHook(Sheltron), 3f) ||
+            bool justMitted = JustUsed(OriginalHook(Sheltron)) ||
                              JustUsed(OriginalHook(Sentinel), 4f) ||
                              JustUsed(DivineVeil, 4f) ||
                              JustUsed(Role.Rampart, 4f) ||
@@ -366,7 +365,7 @@ internal partial class PLD : Tank
             bool hasDivineMight = HasStatusEffect(Buffs.DivineMight);
             bool hasFightOrFlight = HasStatusEffect(Buffs.FightOrFlight);
             bool hasDivineMagicMP = playerMP >= GetResourceCost(HolySpirit);
-            bool hasJustUsedMitigation = JustUsed(OriginalHook(Sheltron), 3f) || JustUsed(OriginalHook(Sentinel), 5f) ||
+            bool hasJustUsedMitigation = JustUsed(OriginalHook(Sheltron)) || JustUsed(OriginalHook(Sentinel), 5f) ||
                                          JustUsed(Role.Rampart, 5f) || JustUsed(HallowedGround, 9f);
             bool hasRequiescatMP = (IsNotEnabled(CustomComboPreset.PLD_ST_AdvancedMode_MP_Reserve) && playerMP >= GetResourceCost(HolySpirit) * 3.6) ||
                                    (IsEnabled(CustomComboPreset.PLD_ST_AdvancedMode_MP_Reserve) && playerMP >= (GetResourceCost(HolySpirit) * 3.6) + Config.PLD_ST_MP_Reserve);
@@ -572,7 +571,7 @@ internal partial class PLD : Tank
             bool hasRequiescat = HasStatusEffect(Buffs.Requiescat);
             bool hasDivineMight = HasStatusEffect(Buffs.DivineMight);
             bool hasDivineMagicMP = playerMP >= GetResourceCost(HolySpirit);
-            bool hasJustUsedMitigation = JustUsed(OriginalHook(Sheltron), 3f) || JustUsed(OriginalHook(Sentinel), 5f) ||
+            bool hasJustUsedMitigation = JustUsed(OriginalHook(Sheltron)) || JustUsed(OriginalHook(Sentinel), 5f) ||
                                          JustUsed(Role.Rampart, 5f) || JustUsed(HallowedGround, 9f);
             bool hasRequiescatMP = (IsNotEnabled(CustomComboPreset.PLD_AoE_AdvancedMode_MP_Reserve) && playerMP >= GetResourceCost(HolySpirit) * 3.6) ||
                                    (IsEnabled(CustomComboPreset.PLD_AoE_AdvancedMode_MP_Reserve) && playerMP >= (GetResourceCost(HolySpirit) * 3.6) + Config.PLD_AoE_MP_Reserve);

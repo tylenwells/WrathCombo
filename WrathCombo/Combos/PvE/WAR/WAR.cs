@@ -1,5 +1,4 @@
 using Dalamud.Game.ClientState.JobGauge.Types;
-using Dalamud.Game.ClientState.Statuses;
 using System.Linq;
 using WrathCombo.CustomComboNS;
 using WrathCombo.Data;

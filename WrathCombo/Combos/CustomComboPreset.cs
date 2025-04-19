@@ -2777,6 +2777,14 @@ public enum CustomComboPreset
     #endregion
 
     #region MACHINIST
+    
+    #region Basic combo
+
+    [ReplaceSkill(MCH.CleanShot, MCH.HeatedCleanShot)]
+    [CustomComboInfo("Basic Combo", "Replace Clean Shot with its combo chain.", MCH.JobID)]
+    MCH_ST_BasicCombo = 8117,
+    
+    #endregion
 
     #region Simple Mode
 
@@ -2949,8 +2957,8 @@ public enum CustomComboPreset
     #endregion
 
     [ReplaceSkill(MCH.Dismantle)]
-    [CustomComboInfo("Physical Ranged DPS: Double Dismantle Protection", "Prevents the use of Dismantle when target already has the effect by replacing it with Savage Blade.", MCH.JobID)]
-    All_PRanged_Dismantle = 8042,
+    [CustomComboInfo("Double Dismantle Protection", "Prevents the use of Dismantle when target already has the effect by replacing it with Savage Blade.", MCH.JobID)]
+    MCH_DismantleProtection = 8042,
 
     [ReplaceSkill(MCH.Dismantle)]
     [CustomComboInfo("Dismantle - Tactician", "Swap dismantle with tactician when dismantle is on cooldown.", MCH.JobID)]
@@ -3004,7 +3012,7 @@ public enum CustomComboPreset
     [CustomComboInfo("Gauss Round / Ricochet \nDouble Check / Checkmate Feature", "Replace Gauss Round and Ricochet or Double Check and Checkmate with one or the other depending on which has more charges.", MCH.JobID)]
     MCH_GaussRoundRicochet = 8003,
 
-    // Last value ST = 8116
+    // Last value ST = 8117
     // Last value AoE = 8313
     // Last value Misc = 8058
 
