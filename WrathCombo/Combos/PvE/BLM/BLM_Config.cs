@@ -43,7 +43,7 @@ internal partial class BLM
                     break;
 
                 case CustomComboPreset.BLM_ST_Triplecast:
-                    DrawSliderInt(0, 2, BLM_ST_Triplecast_UseCharges, $"How many charges of {Triplecast.ActionName()} to use?");
+                    DrawSliderInt(1, 2, BLM_ST_Triplecast_UseCharges, $"How many charges of {Triplecast.ActionName()} to use?");
                     break;
 
                 case CustomComboPreset.BLM_ST_Movement:
