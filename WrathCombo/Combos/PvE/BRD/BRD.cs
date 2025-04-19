@@ -346,14 +346,14 @@ internal partial class BRD : PhysicalRanged
                     (IsEnabled(CustomComboPreset.BRD_AoE_Pooling) && UsePooledSidewinder() || !IsEnabled(CustomComboPreset.BRD_AoE_Pooling)))
                     return Sidewinder;
             
-                if (Role.CanHeadGraze(CustomComboPreset.BRD_AoE_Adv_Interrupt) && CanWeaveDelayed)
+                if (Role.CanHeadGraze(CustomComboPreset.BRD_AoE_Adv_Interrupt) && UseInterrupt)
                     return Role.HeadGraze;
 
                 if (ActionReady(RainOfDeath) &&
                     (IsEnabled(CustomComboPreset.BRD_AoE_Pooling) && UsePooledBloodRain() || !IsEnabled(CustomComboPreset.BRD_AoE_Pooling)))
                     return OriginalHook(RainOfDeath);
 
-                if (!LevelChecked(RainOfDeath) && !(WasLastAction(Bloodletter) && BloodletterCharges > 0))
+                if (!LevelChecked(RainOfDeath) && !WasLastAction(Bloodletter) && BloodletterCharges > 0)
                     return OriginalHook(Bloodletter);
             }
 
@@ -527,7 +527,7 @@ internal partial class BRD : PhysicalRanged
                     (IsEnabled(CustomComboPreset.BRD_Adv_Pooling) && UsePooledSidewinder() || !IsEnabled(CustomComboPreset.BRD_Adv_Pooling)))
                     return Sidewinder;
 
-                if (Role.CanHeadGraze(CustomComboPreset.BRD_Adv_Interrupt) && CanWeaveDelayed)
+                if (Role.CanHeadGraze(CustomComboPreset.BRD_Adv_Interrupt) && UseInterrupt)
                     return Role.HeadGraze;
 
                 if (ActionReady(Bloodletter) &&
@@ -700,7 +700,7 @@ internal partial class BRD : PhysicalRanged
                 if (ActionReady(Sidewinder) && UsePooledSidewinder())
                     return Sidewinder;
 
-                if (Role.CanHeadGraze(CustomComboPreset.BRD_AoE_SimpleMode) && CanWeaveDelayed)
+                if (UseInterrupt)
                     return Role.HeadGraze;
 
                 if (ActionReady(RainOfDeath) && UsePooledBloodRain())
@@ -836,7 +836,7 @@ internal partial class BRD : PhysicalRanged
                 if (ActionReady(Sidewinder) && UsePooledSidewinder())
                     return Sidewinder;            
                
-                if (Role.CanHeadGraze(CustomComboPreset.BRD_ST_SimpleMode) && CanWeaveDelayed)
+                if (UseInterrupt)
                     return Role.HeadGraze;
 
                 if (ActionReady(Bloodletter) && UsePooledBloodRain())
