@@ -1001,6 +1001,14 @@ public enum CustomComboPreset
         "\nThis behavior is recommended by The Balance but can introduce drift, so it may not be what is best for your group.", DNC.JobID)]
     DNC_ST_BlockFinishes = 4000,
 
+    #region Basic combo
+
+    [ReplaceSkill(DNC.Fountain)]
+    [CustomComboInfo("Basic Combo", "Replace Fountain with its combo chain.", DNC.JobID)]
+    DNC_ST_BasicCombo = 4003,
+
+    #endregion
+
     #region Simple Mode
 
     [AutoAction(false, false)]
