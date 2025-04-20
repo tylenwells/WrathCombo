@@ -5873,6 +5873,15 @@ SMN.JobID)]
 
     #region VIPER
 
+     #region Basic combo
+
+    [ReplaceSkill(VPR.ReavingFangs)]
+    [ConflictingCombos(VPR_ReawakenLegacy, VPR_Legacies, VPR_SerpentsTail)]
+    [CustomComboInfo("Basic Combo", "Replace Reaving Fangs with its combo chain.", VPR.JobID)]
+    VPR_ST_BasicCombo = 30015,
+
+    #endregion
+
     #region Simple Mode
 
     [AutoAction(false, false)]
@@ -6062,7 +6071,7 @@ SMN.JobID)]
     VPR_UncoiledTwins = 30202,
 
     [ReplaceSkill(VPR.Reawaken, VPR.ReavingFangs)]
-    [ConflictingCombos(VPR_Legacies)]
+    [ConflictingCombos(VPR_Legacies, VPR_ST_BasicCombo)]
     [CustomComboInfo("Reawaken - Generation", "Replaces Option with the Generations.", VPR.JobID)]
     VPR_ReawakenLegacy = 30203,
 
@@ -6084,18 +6093,18 @@ SMN.JobID)]
     VPR_VicepitDens_oGCDs = 30207,
 
     [ReplaceSkill(VPR.SteelFangs, VPR.ReavingFangs, VPR.HuntersCoil, VPR.SwiftskinsCoil)]
-    [ConflictingCombos(VPR_ST_SimpleMode, VPR_ST_AdvancedMode, VPR_SerpentsTail, VPR_ReawakenLegacy)]
+    [ConflictingCombos(VPR_ST_SimpleMode, VPR_ST_AdvancedMode, VPR_SerpentsTail, VPR_ReawakenLegacy, VPR_ST_BasicCombo)]
     [CustomComboInfo("Legacy Buttons", "Replaces Generations with the Legacys.", VPR.JobID)]
     VPR_Legacies = 30209,
 
     [ReplaceSkill(VPR.SteelFangs, VPR.ReavingFangs, VPR.SteelMaw, VPR.ReavingMaw)]
-    [ConflictingCombos(VPR_ST_SimpleMode, VPR_AoE_SimpleMode, VPR_ST_AdvancedMode, VPR_AoE_AdvancedMode, VPR_Legacies)]
+    [ConflictingCombos(VPR_ST_SimpleMode, VPR_AoE_SimpleMode, VPR_ST_AdvancedMode, VPR_AoE_AdvancedMode, VPR_Legacies, VPR_ST_BasicCombo)]
     [CustomComboInfo("Serpents Tail", "Replaces basic combo with Death Rattle or Last Lash when applicable.", VPR.JobID)]
     VPR_SerpentsTail = 30210,
     
     #endregion
     
-    //ST 30014
+    //ST 30015
     //AoE 30115
     //Misc 30210
 
