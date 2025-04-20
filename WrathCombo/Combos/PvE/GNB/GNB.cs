@@ -9,6 +9,28 @@ namespace WrathCombo.Combos.PvE;
 
 internal partial class GNB : Tank
 {
+    internal class GNB_ST_BasicCombo : CustomCombo
+    {
+        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.GNB_ST_BasicCombo;
+
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not SolidBarrel)
+                return actionID;
+
+            if (ComboTimer > 0)
+            {
+                if (ComboAction is KeenEdge && LevelChecked(BrutalShell))
+                    return OriginalHook(BrutalShell);
+
+                if (ComboAction is BrutalShell && LevelChecked(SolidBarrel))
+                    return OriginalHook(SolidBarrel);
+            }
+
+            return KeenEdge;
+        }
+    }
+    
     #region Simple Mode - Single Target
     internal class GNB_ST_Simple : CustomCombo
     {

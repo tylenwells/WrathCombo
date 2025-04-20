@@ -2167,6 +2167,14 @@ public enum CustomComboPreset
 
     #region GUNBREAKER
 
+     #region Basic combo
+
+    [ReplaceSkill(DRK.Souleater)]
+    [CustomComboInfo("Basic Combo", "Replace Solid Barrel with its combo chain.", DRK.JobID)]
+    GNB_ST_BasicCombo = 5003,
+
+    #endregion
+
     #region Simple Mode
 
     [AutoAction(false, false)]
