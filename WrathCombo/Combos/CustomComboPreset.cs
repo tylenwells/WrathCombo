@@ -3867,8 +3867,8 @@ public enum CustomComboPreset
 
     #region Basic combo
 
-    [ReplaceSkill(MCH.CleanShot, MCH.HeatedCleanShot)]
-    [CustomComboInfo("Basic Combo", "Replace Clean Shot with its combo chain.", MCH.JobID)]
+    [ReplaceSkill(PLD.RageOfHalone)]
+    [CustomComboInfo("Basic Combo", "Replace Rage Of Halone with its combo chain.", PLD.JobID)]
     PLD_ST_BasicCombo = 11061,
 
     #endregion
@@ -4204,6 +4204,14 @@ public enum CustomComboPreset
 
     #region REAPER
 
+    #region Basic combo
+
+    [ReplaceSkill(RPR.InfernalSlice)]
+    [CustomComboInfo("Basic Combo", "Replace Infernal Slice with its combo chain.", RPR.JobID)]
+    RPR_ST_BasicCombo = 12021,
+
+    #endregion
+
     #region Simple Mode
 
     [AutoAction(false, false)]
@@ -4308,7 +4316,7 @@ public enum CustomComboPreset
     [CustomComboInfo("Combo Heals Option", "Adds Bloodbath and Second Wind to the combo, using them when below the HP Percentage threshold.", RPR.JobID)]
     RPR_ST_ComboHeals = 12097,
 
-    //last value = 12020
+    //last value = 12021
 
     #endregion
 
