@@ -32,7 +32,7 @@ internal partial class SAM : Melee
             return OriginalHook(Hakaze);
         }
     }
-    
+
     internal class SAM_ST_KashaCombo : CustomCombo
     {
         protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.SAM_ST_KashaCombo;
@@ -164,6 +164,7 @@ internal partial class SAM : Melee
 
                 if (ActionReady(Shinten) &&
                     !HasStatusEffect(Buffs.ZanshinReady) &&
+                    (!ActionReady(Senei) || !ActionReady(Guren)) &&
                     (Gauge.Kenki >= 65 || GetTargetHPPercent() <= 1 && Gauge.Kenki >= 25))
                     return Shinten;
 
@@ -344,6 +345,7 @@ internal partial class SAM : Melee
                 }
                 if (IsEnabled(CustomComboPreset.SAM_ST_Shinten) &&
                     ActionReady(Shinten) && !HasStatusEffect(Buffs.ZanshinReady) &&
+                    (!ActionReady(Senei) || !ActionReady(Guren)) &&
                     (Gauge.Kenki >= kenkiOvercap || GetTargetHPPercent() <= shintenTreshhold && Gauge.Kenki >= 25))
                     return Shinten;
 
@@ -457,7 +459,7 @@ internal partial class SAM : Melee
                 LevelChecked(Kyuten) && CanWeave())
                 return Kyuten;
 
-            if (HasStatusEffect(Buffs.MeikyoShisui) || 
+            if (HasStatusEffect(Buffs.MeikyoShisui) ||
                 ComboTimer > 0 && LevelChecked(Oka) &&
                 ComboAction == OriginalHook(Fuko))
                 return Oka;
@@ -535,7 +537,8 @@ internal partial class SAM : Melee
                 if (ActionReady(Shoha) && Gauge.MeditationStacks is 3)
                     return Shoha;
 
-                if (ActionReady(Kyuten) && Gauge.Kenki >= 50)
+                if (ActionReady(Kyuten) && Gauge.Kenki >= 50 &&
+                    !ActionReady(Guren))
                     return Kyuten;
 
                 // healing
@@ -654,7 +657,8 @@ internal partial class SAM : Melee
                 }
 
                 if (IsEnabled(CustomComboPreset.SAM_AoE_Kyuten) &&
-                    ActionReady(Kyuten) && Gauge.Kenki >= kenkiOvercap)
+                    ActionReady(Kyuten) && Gauge.Kenki >= kenkiOvercap &&
+                    !ActionReady(Guren))
                     return Kyuten;
 
                 if (IsEnabled(CustomComboPreset.SAM_AoE_ComboHeals))
