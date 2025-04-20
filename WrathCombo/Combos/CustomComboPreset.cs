@@ -1899,6 +1899,18 @@ public enum CustomComboPreset
     #endregion
 
     #region DRAGOON
+    
+    #region Basic Combo
+
+    [ReplaceSkill(DRG.FullThrust, DRG.HeavensThrust)]
+    [CustomComboInfo("FullThrust Combo", "Replace Full Thrust/Heavens' Thrust with its combo chain.", DRG.JobID)]
+    DRG_ST_FullThrustCombo = 6304,
+
+    [ReplaceSkill(DRG.ChaosThrust, DRG.ChaoticSpring)]
+    [CustomComboInfo("Chaotic Combo", "Replace Chaos Thrust /Chaotic Spring with its combo chain.", DRG.JobID)]
+    DRG_ST_ChaoticCombo = 6305,
+    
+    #endregion
 
     #region Simple Mode
 
@@ -2146,15 +2158,7 @@ public enum CustomComboPreset
     DRG_Variant_Rampart = 6303,
 
     #endregion
-
-    [ReplaceSkill(DRG.FullThrust, DRG.HeavensThrust)]
-    [CustomComboInfo("FullThrust Combo", "Replace Full Thrust/Heavens' Thrust with its combo chain.", DRG.JobID)]
-    DRG_ST_FullThrustCombo = 6304,
-
-    [ReplaceSkill(DRG.ChaosThrust, DRG.ChaoticSpring)]
-    [CustomComboInfo("Chaotic Combo", "Replace Chaos Thrust /Chaotic Spring with its combo chain.", DRG.JobID)]
-    DRG_ST_ChaoticCombo = 6305,
-
+    
     [ReplaceSkill(DRG.LanceCharge)]
     [CustomComboInfo("Lance Charge to Battle Litany Feature",
         "Turns Lance Charge into Battle Litany when the former is on cooldown.", DRG.JobID)]
@@ -3044,6 +3048,29 @@ public enum CustomComboPreset
 
     #region MONK
 
+    #region Basic Combo
+
+    [ConflictingCombos(MNK_ST_AdvancedMode, MNK_ST_SimpleMode)]
+    [CustomComboInfo("Beast Chakra Handlers", "Merge single target GCDs which share the same beast chakra", MNK.JobID)]
+    MNK_ST_BeastChakras = 9019,
+
+    [ReplaceSkill(MNK.Bootshine)]
+    [CustomComboInfo("Opo-opo Option", "Replace Bootshine/Leaping Opo with Dragon Kick.", MNK.JobID)]
+    [ParentCombo(MNK_ST_BeastChakras)]
+    MNK_BC_OPOOPO = 9020,
+
+    [ReplaceSkill(MNK.TrueStrike)]
+    [CustomComboInfo("Raptor Option", "Replace True Strike/Rising Raptor with Twin Snakes.", MNK.JobID)]
+    [ParentCombo(MNK_ST_BeastChakras)]
+    MNK_BC_RAPTOR = 9021,
+
+    [ReplaceSkill(MNK.SnapPunch)]
+    [CustomComboInfo("Coeurl Option", "Replace Snap Punch/Pouncing Coeurl with Demolish.", MNK.JobID)]
+    [ParentCombo(MNK_ST_BeastChakras)]
+    MNK_BC_COEURL = 9022,
+
+    #endregion
+
     #region Simple Mode
 
     [AutoAction(false, false)]
@@ -3181,29 +3208,6 @@ public enum CustomComboPreset
     [ParentCombo(MNK_AOE_AdvancedMode)]
     [CustomComboInfo("Combo Heals Option", "Adds Bloodbath and Second Wind to the rotation.", MNK.JobID)]
     MNK_AoE_ComboHeals = 9037,
-
-    #endregion
-
-    #region Monk Beast Chakras
-
-    [ConflictingCombos(MNK_ST_AdvancedMode, MNK_ST_SimpleMode)]
-    [CustomComboInfo("Beast Chakra Handlers", "Merge single target GCDs which share the same beast chakra", MNK.JobID)]
-    MNK_ST_BeastChakras = 9019,
-
-    [ReplaceSkill(MNK.Bootshine)]
-    [CustomComboInfo("Opo-opo Option", "Replace Bootshine/Leaping Opo with Dragon Kick.", MNK.JobID)]
-    [ParentCombo(MNK_ST_BeastChakras)]
-    MNK_BC_OPOOPO = 9020,
-
-    [ReplaceSkill(MNK.TrueStrike)]
-    [CustomComboInfo("Raptor Option", "Replace True Strike/Rising Raptor with Twin Snakes.", MNK.JobID)]
-    [ParentCombo(MNK_ST_BeastChakras)]
-    MNK_BC_RAPTOR = 9021,
-
-    [ReplaceSkill(MNK.SnapPunch)]
-    [CustomComboInfo("Coeurl Option", "Replace Snap Punch/Pouncing Coeurl with Demolish.", MNK.JobID)]
-    [ParentCombo(MNK_ST_BeastChakras)]
-    MNK_BC_COEURL = 9022,
 
     #endregion
 
@@ -5006,6 +5010,22 @@ public enum CustomComboPreset
 
     #region SAMURAI
 
+    #region Basic Combo
+
+    [ReplaceSkill(SAM.Yukikaze)]
+    [CustomComboInfo("Yukikaze Combo", "Replace Yukikaze with its combo chain.", SAM.JobID)]
+    SAM_ST_YukikazeCombo = 15000,
+
+    [ReplaceSkill(SAM.Kasha)]
+    [CustomComboInfo("Kasha Combo", "Replace Kasha with its combo chain.", SAM.JobID)]
+    SAM_ST_KashaCombo = 15001,
+
+    [ReplaceSkill(SAM.Gekko)]
+    [CustomComboInfo("Gekko Combo", "Replace Gekko with its combo chain.", SAM.JobID)]
+    SAM_ST_GekkoCombo = 15010,
+
+    #endregion
+
     #region Simple Mode
 
     [AutoAction(false, false)]
@@ -5189,23 +5209,7 @@ public enum CustomComboPreset
     SAM_AoE_ComboHeals = 15199,
 
     #endregion
-
-    #region Yukikaze/Kasha/Gekko Combos
-
-    [ReplaceSkill(SAM.Yukikaze)]
-    [CustomComboInfo("Yukikaze Combo", "Replace Yukikaze with its combo chain.", SAM.JobID)]
-    SAM_ST_YukikazeCombo = 15000,
-
-    [ReplaceSkill(SAM.Kasha)]
-    [CustomComboInfo("Kasha Combo", "Replace Kasha with its combo chain.", SAM.JobID)]
-    SAM_ST_KashaCombo = 15001,
-
-    [ReplaceSkill(SAM.Gekko)]
-    [CustomComboInfo("Gekko Combo", "Replace Gekko with its combo chain.", SAM.JobID)]
-    SAM_ST_GekkoCombo = 15010,
-
-    #endregion
-
+    
     #region AoE Oka Combo
 
     [ReplaceSkill(SAM.Oka)]

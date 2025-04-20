@@ -26,7 +26,7 @@ internal partial class NIN : Melee
                     return AeolianEdge;
             }
 
-            return GustSlash;
+            return SpinningEdge;
         }
     }
 
@@ -48,7 +48,7 @@ internal partial class NIN : Melee
                     return ArmorCrush;
             }
 
-            return GustSlash;
+            return SpinningEdge;
         }
     }
 

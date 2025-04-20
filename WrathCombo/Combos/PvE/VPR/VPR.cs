@@ -47,7 +47,7 @@ internal partial class VPR : Melee
             if (LevelChecked(ReavingFangs) && (HasStatusEffect(Buffs.HonedReavers) ||
                                                !HasStatusEffect(Buffs.HonedReavers) && !HasStatusEffect(Buffs.HonedSteel)))
                 return OriginalHook(ReavingFangs);
-            return SteelFangs;
+            return actionID;
         }
     }
 
