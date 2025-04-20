@@ -6116,6 +6116,18 @@ SMN.JobID)]
 
     #region WARRIOR
 
+     #region Basic Combo
+
+    [ReplaceSkill(WAR.StormsPath)]
+    [CustomComboInfo("Storm's Path Combo", "Replace Storm's Path with its combo chain.", WAR.JobID)]
+    WAR_ST_StormsPathCombo = 18069,
+
+    [ReplaceSkill(WAR.StormsEye)]
+    [CustomComboInfo("Storm's Eye Combo", "Replace Storm's Eye with its combo chain.", WAR.JobID)]
+    WAR_ST_StormsEyeCombo = 18070,
+
+    #endregion
+
     #region Simple Mode
 
     [AutoAction(false, false)]
@@ -6435,7 +6447,7 @@ SMN.JobID)]
 
     #endregion
 
-    // Last value = 18068
+    // Last value = 18070
 
     #endregion
 
