@@ -17,13 +17,13 @@ internal partial class MCH : PhysicalRanged
 
             if (ComboTimer > 0)
             {
-                if (ComboAction == OriginalHook(SplitShot) && LevelChecked(SlugShot))
+                if (ComboAction is SplitShot && LevelChecked(SlugShot))
                     return OriginalHook(SlugShot);
 
-                if (ComboAction == OriginalHook(SlugShot) && LevelChecked(CleanShot))
+                if (ComboAction is SlugShot && LevelChecked(CleanShot))
                     return OriginalHook(CleanShot);
             }
-            
+
             return OriginalHook(SplitShot);
         }
     }
@@ -160,7 +160,7 @@ internal partial class MCH : PhysicalRanged
                 if (ComboAction is SplitShot && LevelChecked(SlugShot))
                     return OriginalHook(SlugShot);
 
-                if (ComboAction == OriginalHook(SlugShot) &&
+                if (ComboAction is SlugShot &&
                     !LevelChecked(Drill) && !HasStatusEffect(Buffs.Reassembled) && ActionReady(Reassemble))
                     return Reassemble;
 
@@ -335,7 +335,7 @@ internal partial class MCH : PhysicalRanged
                     return OriginalHook(SlugShot);
 
                 if (IsEnabled(CustomComboPreset.MCH_ST_Adv_Reassemble) && Config.MCH_ST_Reassembled[4] &&
-                    ComboAction == OriginalHook(SlugShot) &&
+                    ComboAction is SlugShot &&
                     !LevelChecked(Drill) && !HasStatusEffect(Buffs.Reassembled) && ActionReady(Reassemble))
                     return Reassemble;
 
