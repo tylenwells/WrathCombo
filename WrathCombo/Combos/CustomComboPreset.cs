@@ -1436,6 +1436,14 @@ public enum CustomComboPreset
 
     #region DARK KNIGHT
 
+     #region Basic combo
+
+    [ReplaceSkill(DRK.Souleater)]
+    [CustomComboInfo("Basic Combo", "Replace Souleater with its combo chain.", DRK.JobID)]
+    DRK_ST_BasicCombo = 5003,
+
+    #endregion
+
     #region Simple Mode
 
     [AutoAction(false, false)]
@@ -1452,7 +1460,7 @@ public enum CustomComboPreset
     DRK_AoE_Simple = 5002,
 
     #endregion
-    // Last value = 5002
+    // Last value = 5003
 
     #region Advanced Single Target Combo
 

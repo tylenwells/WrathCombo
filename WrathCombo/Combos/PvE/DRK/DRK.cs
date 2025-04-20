@@ -16,6 +16,28 @@ namespace WrathCombo.Combos.PvE;
 
 internal partial class DRK : Tank
 {
+    internal class DRK_ST_BasicCombo : CustomCombo
+    {
+        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.DRK_ST_BasicCombo;
+
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not Souleater)
+                return actionID;
+
+            if (ComboTimer > 0)
+            {
+                if (ComboAction is HardSlash && LevelChecked(SyphonStrike))
+                    return OriginalHook(SyphonStrike);
+
+                if (ComboAction is SyphonStrike && LevelChecked(Souleater))
+                    return OriginalHook(Souleater);
+            }
+
+            return HardSlash;
+        }
+    }
+    
     internal class DRK_ST_Advanced : CustomCombo
     {
         protected internal override CustomComboPreset Preset { get; } =
