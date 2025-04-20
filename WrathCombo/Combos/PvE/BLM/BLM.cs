@@ -87,7 +87,7 @@ internal partial class BLM : Caster
 
                 if (Gauge.IsParadoxActive && !HasStatusEffect(Buffs.Firestarter) &&
                     (Gauge.AstralFireStacks < 3 ||
-                     JustUsed(FlareStar) ||
+                     JustUsed(FlareStar, 5) ||
                      !LevelChecked(FlareStar) && ActionReady(Despair)))
                     return Paradox;
 
@@ -263,7 +263,7 @@ internal partial class BLM : Caster
 
                 if (Gauge.IsParadoxActive && !HasStatusEffect(Buffs.Firestarter) &&
                     (Gauge.AstralFireStacks < 3 ||
-                     JustUsed(FlareStar) ||
+                     JustUsed(FlareStar, 5) ||
                      !LevelChecked(FlareStar) && ActionReady(Despair)))
                     return Paradox;
 
