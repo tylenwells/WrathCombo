@@ -3245,6 +3245,18 @@ public enum CustomComboPreset
 
     #region NINJA
 
+    #region Basic Combo
+    
+    [ReplaceSkill(NIN.AeolianEdge)]
+    [CustomComboInfo("Aeolian Edge Combo", "Replace Aeolian Edge with its combo chain.", NIN.JobID)]
+    NIN_ST_AeolianEdgeCombo = 10074,
+
+    [ReplaceSkill(NIN.ArmorCrush)]
+    [CustomComboInfo("Armor Crush Combo", "Replace Armor Crush with its combo chain.", NIN.JobID)]
+    NIN_ST_ArmorCrushCombo = 10075,
+    
+    #endregion
+    
     #region Simple Mode
 
     [AutoAction(false, false)]
@@ -3537,7 +3549,7 @@ public enum CustomComboPreset
     [CustomComboInfo("Rampart Option", "Use Variant Rampart on cooldown.", NIN.JobID)]
     NIN_Variant_Rampart = 10070,
 
-    // Last value = 10070
+    // Last value = 10075
 
     #endregion
 
