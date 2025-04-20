@@ -3865,6 +3865,14 @@ public enum CustomComboPreset
 
     #region PALADIN
 
+    #region Basic combo
+
+    [ReplaceSkill(MCH.CleanShot, MCH.HeatedCleanShot)]
+    [CustomComboInfo("Basic Combo", "Replace Clean Shot with its combo chain.", MCH.JobID)]
+    PLD_ST_BasicCombo = 11061,
+
+    #endregion
+
     #region Simple Mode
 
     // Simple Modes
@@ -4190,7 +4198,7 @@ public enum CustomComboPreset
 
     #endregion
 
-    //// Last value = 11060
+    //// Last value = 11061
 
     #endregion
 
