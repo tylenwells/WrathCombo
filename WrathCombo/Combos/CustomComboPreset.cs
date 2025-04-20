@@ -1436,7 +1436,7 @@ public enum CustomComboPreset
 
     #region DARK KNIGHT
 
-     #region Basic combo
+    #region Basic combo
 
     [ReplaceSkill(DRK.Souleater)]
     [CustomComboInfo("Basic Combo", "Replace Souleater with its combo chain.", DRK.JobID)]
@@ -2169,9 +2169,9 @@ public enum CustomComboPreset
 
      #region Basic combo
 
-    [ReplaceSkill(DRK.Souleater)]
-    [CustomComboInfo("Basic Combo", "Replace Solid Barrel with its combo chain.", DRK.JobID)]
-    GNB_ST_BasicCombo = 5003,
+    [ReplaceSkill(GNB.SolidBarrel)]
+    [CustomComboInfo("Basic Combo", "Replace Solid Barrel with its combo chain.", GNB.JobID)]
+    GNB_ST_BasicCombo = 7100,
 
     #endregion
 
