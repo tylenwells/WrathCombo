@@ -24,25 +24,24 @@ namespace WrathCombo.CustomComboNS.Functions
 {
     internal abstract partial class CustomComboFunctions
     {
-        private static Dictionary<uint, bool> NPCPositionals = new Dictionary<uint, bool>();
+        private static readonly Dictionary<uint, bool> NPCPositionals = new();
+
         /// <summary> Gets the current target or null. </summary>
         public static IGameObject? CurrentTarget => Svc.Targets.Target;
 
         /// <summary> Find if the player has a target. </summary>
-        /// <returns> A value indicating whether the player has a target. </returns>
         public static bool HasTarget() => CurrentTarget is not null;
 
         /// <summary> Gets the distance from the target. </summary>
-        /// <returns> Double representing the distance from the target. </returns>
         public static float GetTargetDistance(IGameObject? optionalTarget = null, IGameObject? source = null)
         {
             if (LocalPlayer is null)
                 return 0;
 
-            IGameObject? chara = optionalTarget != null ? optionalTarget : CurrentTarget != null ? CurrentTarget : null;
+            IGameObject? chara = optionalTarget ?? CurrentTarget;
             if (chara is null) return 0;
 
-            IGameObject? sourceChara = source != null ? source : LocalPlayer;
+            IGameObject? sourceChara = source ?? LocalPlayer;
 
             if (chara.GameObjectId == sourceChara.GameObjectId)
                 return 0;
@@ -58,19 +57,18 @@ namespace WrathCombo.CustomComboNS.Functions
             if (LocalPlayer is null)
                 return 0;
 
-            IGameObject? chara = target != null ? target : CurrentTarget != null ? CurrentTarget : null;
+            IGameObject? chara = target ?? CurrentTarget;
             if (chara is null) return 0;
 
-            IGameObject? sourceChara = source != null ? source : LocalPlayer;
+            IGameObject? sourceChara = source ?? LocalPlayer;
 
             if (chara.GameObjectId == sourceChara.GameObjectId)
                 return 0;
 
-            return Math.Max(0, Math.Abs(chara.Position.Y - sourceChara.Position.Y));
+            return Math.Abs(chara.Position.Y - sourceChara.Position.Y);
         }
 
         /// <summary> Gets a value indicating whether you are in melee range from the current target. </summary>
-        /// <returns> Bool indicating whether you are in melee range. </returns>
         public static bool InMeleeRange()
         {
             if (Svc.Targets.Target == null)
@@ -78,103 +76,78 @@ namespace WrathCombo.CustomComboNS.Functions
 
             float distance = GetTargetDistance();
 
-            if (distance == 0)
-                return true;
-
-            if (distance > 3.0 + Service.Configuration.MeleeOffset)
-                return false;
-
-            return true;
+            return distance <= 3.0 + Service.Configuration.MeleeOffset;
         }
 
         /// <summary> Gets a value indicating target's HP Percent. CurrentTarget is default unless specified </summary>
-        /// <returns> Double indicating percentage. </returns>
         public static float GetTargetHPPercent(IGameObject? OurTarget = null, bool includeShield = false)
         {
-            if (OurTarget is null)
-            {
-                OurTarget = CurrentTarget; // Fallback to CurrentTarget
-                if (OurTarget is null)
-                    return 0;
-            }
+            OurTarget ??= CurrentTarget;
+            if (OurTarget is not IBattleChara chara)
+                return 0;
 
-            if (OurTarget is IBattleChara chara)
-            {
-                float percent = (float)chara.CurrentHp / chara.MaxHp * 100f;
-                if (includeShield) percent += chara.ShieldPercentage;
-                return Math.Clamp(percent, 0f, 100f);
-            }
-            else return 0;
+            float percent = (float)chara.CurrentHp / chara.MaxHp * 100f;
+            if (includeShield) percent += chara.ShieldPercentage;
+            return Math.Clamp(percent, 0f, 100f);
         }
 
-        public static float EnemyHealthMaxHp()
-        {
-            if (CurrentTarget is null)
-                return 0;
-            if (CurrentTarget is not IBattleChara chara)
-                return 0;
+        public static float EnemyHealthMaxHp() => CurrentTarget is IBattleChara chara ? chara.MaxHp : 0;
 
-            return chara.MaxHp;
-        }
+        public static float EnemyHealthCurrentHp() => CurrentTarget is IBattleChara chara ? chara.CurrentHp : 0;
 
-        public static float EnemyHealthCurrentHp()
-        {
-            if (CurrentTarget is null)
-                return 0;
-            if (CurrentTarget is not IBattleChara chara)
-                return 0;
-
-            return chara.CurrentHp;
-        }
-
-        public static float PlayerHealthPercentageHp() => (float)LocalPlayer.CurrentHp / LocalPlayer.MaxHp * 100;
+        public static float PlayerHealthPercentageHp() => LocalPlayer is not null ? (float)LocalPlayer.CurrentHp / LocalPlayer.MaxHp * 100 : 0;
 
         public static bool HasBattleTarget() => CurrentTarget is not null && CurrentTarget.IsHostile();
 
         /// <summary> Checks if the player is being targeted by a hostile target. </summary>
-        public static bool IsPlayerTargeted() => Svc.Objects.Any(x => x.IsHostile() && x.IsTargetable && x.TargetObjectId == LocalPlayer.GameObjectId);
+        public static bool IsPlayerTargeted() => Svc.Objects.Any(x => x.IsHostile() && x.IsTargetable && x.TargetObjectId == LocalPlayer?.GameObjectId);
 
         public static bool HasFriendlyTarget(IGameObject? OurTarget = null)
         {
+            OurTarget ??= CurrentTarget;
             if (OurTarget is null)
-            {
-                //Fallback to CurrentTarget
-                OurTarget = CurrentTarget;
-                if (OurTarget is null)
-                    return false;
-            }
+                return false;
 
-            //Humans and Trusts
-            if (OurTarget.ObjectKind is ObjectKind.Player)
-                return true;
-            //AI
-            if (OurTarget is IBattleNpc) return (OurTarget as IBattleNpc).BattleNpcKind is not BattleNpcSubKind.Enemy and not (BattleNpcSubKind)1;
-            return false;
+            return OurTarget.ObjectKind switch
+            {
+                ObjectKind.Player => true,
+                _ when OurTarget is IBattleNpc npc => npc.BattleNpcKind is not BattleNpcSubKind.Enemy and not (BattleNpcSubKind)1,
+                _ => false
+            };
         }
 
-        
         /// <summary>
         /// Grabs the Mouse Over Target from Party List.
         /// Returns Null if nothing found
         /// </summary>
-        /// <returns>IGameObject of the MouseOver target or null</returns>
         public static unsafe IGameObject? GetMouseOverHealTarget()
         {
-            GameObject* uiTargetPtr = Framework.Instance()->GetUIModule()->GetPronounModule()->UiMouseOverTarget;
-            if (uiTargetPtr != null && uiTargetPtr->GetGameObjectId().ObjectId != 0)
+            try
             {
-                IGameObject? uiTarget = Svc.Objects.FirstOrDefault(x => x.GameObjectId == uiTargetPtr->GetGameObjectId().ObjectId);
-                if (uiTarget != null && HasFriendlyTarget(uiTarget))
-                    return uiTarget;
+                GameObject* uiTargetPtr = Framework.Instance()->GetUIModule()->GetPronounModule()->UiMouseOverTarget;
+                if (uiTargetPtr != null)
+                {
+                    var gameObjectId = uiTargetPtr->GetGameObjectId();
+                    if (gameObjectId.ObjectId != 0)
+                    {
+                        IGameObject? uiTarget = Svc.Objects.FirstOrDefault(x => x.GameObjectId == gameObjectId.ObjectId);
+                        if (uiTarget != null && HasFriendlyTarget(uiTarget))
+                        {
+                            return uiTarget;
+                        }
+                    }
+                }
             }
+            catch (Exception ex)
+            {
+                ex.Log();
+            }
+
             return null;
         }
 
-        
         /// <summary> Grabs healable target. 
         /// Party UI Mouseover (optional) -> Soft Target -> Hard Target -> Player
-        /// <param name="checkMOPartyUI">Checks for a mouseover target.</param>
-        /// <returns> IGameObject of a player target. </returns>
         /// </summary>
         public static IGameObject GetHealTarget(bool checkMOPartyUI = false)
         {
