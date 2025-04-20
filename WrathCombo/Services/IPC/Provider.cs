@@ -368,6 +368,7 @@ public partial class Provider : IDisposable
     public bool IsCurrentJobAutoRotationReady()
     {
         if (File.GetLastWriteTime(P.IPCSearch.ConfigFilePath) <= _lastJobReadyCheck &&
+            (Leasing.CombosUpdated ?? DateTime.MinValue) <= _lastJobReadyCheck &&
             (DateTime.Now - _lastJobReadyCheck).TotalSeconds <= 45)
             return _lastJobReady;
 
