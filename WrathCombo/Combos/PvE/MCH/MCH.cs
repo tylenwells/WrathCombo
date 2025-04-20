@@ -187,9 +187,10 @@ internal partial class MCH : PhysicalRanged
                 return Variant.Rampart;
 
             // Opener
-            if (IsEnabled(CustomComboPreset.MCH_ST_Adv_Opener) && TargetIsHostile())
-                if (Opener().FullOpener(ref actionID))
-                    return actionID;
+            if (IsEnabled(CustomComboPreset.MCH_ST_Adv_Opener) &&
+                TargetIsHostile() && 
+                Opener().FullOpener(ref actionID))
+                return actionID;
 
             //Reassemble to start before combat
             if (IsEnabled(CustomComboPreset.MCH_ST_Adv_Reassemble) &&

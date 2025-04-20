@@ -87,7 +87,8 @@ internal partial class NIN : Melee
             bool trueNorthEdge = IsEnabled(CustomComboPreset.NIN_ST_AdvancedMode_TrueNorth) && Role.CanTrueNorth() && !OnTargetsRear() && canDelayedWeave;
             bool dynamic = Config.Advanced_TrueNorth == 0;
 
-            if (IsEnabled(CustomComboPreset.NIN_ST_AdvancedMode_BalanceOpener) && Opener().FullOpener(ref actionID))
+            if (IsEnabled(CustomComboPreset.NIN_ST_AdvancedMode_BalanceOpener) && 
+                Opener().FullOpener(ref actionID))
                 return actionID;
 
             if (IsNotEnabled(CustomComboPreset.NIN_ST_AdvancedMode_Ninjitsus) || ActionWatching.TimeSinceLastAction.TotalSeconds >= 5 && !InCombat())

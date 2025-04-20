@@ -340,11 +340,8 @@ internal partial class WAR : Tank
                 return Tomahawk;
 
             if (IsEnabled(CustomComboPreset.WAR_ST_Advanced_BalanceOpener) &&
-                ContentCheck.IsInConfiguredContent(Config.WAR_BalanceOpener_Content, ContentCheck.ListSet.BossOnly))
-            {
-                if (Opener().FullOpener(ref actionID))
-                    return actionID;
-            }
+                Opener().FullOpener(ref actionID))
+                return actionID;
 
             if (CanWeave()) //in weave window
             {

@@ -232,9 +232,9 @@ internal partial class VPR : Melee
                 return Variant.Rampart;
 
             // Opener for VPR
-            if (IsEnabled(CustomComboPreset.VPR_ST_Opener))
-                if (Opener().FullOpener(ref actionID))
-                    return actionID;
+            if (IsEnabled(CustomComboPreset.VPR_ST_Opener) && 
+                Opener().FullOpener(ref actionID))
+                return actionID;
 
             //oGCDs
             if (CanWeave())

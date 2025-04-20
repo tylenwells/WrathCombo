@@ -226,9 +226,9 @@ internal partial class RPR : Melee
                 return Variant.Rampart;
 
             //RPR Opener
-            if (IsEnabled(CustomComboPreset.RPR_ST_Opener))
-                if (Opener().FullOpener(ref actionID))
-                    return actionID;
+            if (IsEnabled(CustomComboPreset.RPR_ST_Opener) && 
+                Opener().FullOpener(ref actionID))
+                return actionID;
 
             //All Weaves
             if (CanWeave())

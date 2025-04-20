@@ -272,9 +272,9 @@ internal partial class SAM : Melee
                 return Variant.Rampart;
 
             // Opener for SAM
-            if (IsEnabled(CustomComboPreset.SAM_ST_Opener))
-                if (Opener().FullOpener(ref actionID))
-                    return actionID;
+            if (IsEnabled(CustomComboPreset.SAM_ST_Opener) && 
+                Opener().FullOpener(ref actionID))
+                return actionID;
 
             if (IsEnabled(CustomComboPreset.SAM_ST_RangedUptime) &&
                 ActionReady(Enpi) && !InMeleeRange() && HasBattleTarget())
