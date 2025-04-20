@@ -28,10 +28,10 @@ internal partial class DRK : Tank
             if (ComboTimer > 0)
             {
                 if (ComboAction is HardSlash && LevelChecked(SyphonStrike))
-                    return OriginalHook(SyphonStrike);
+                    return SyphonStrike;
 
                 if (ComboAction is SyphonStrike && LevelChecked(Souleater))
-                    return OriginalHook(Souleater);
+                    return Souleater;
             }
 
             return HardSlash;

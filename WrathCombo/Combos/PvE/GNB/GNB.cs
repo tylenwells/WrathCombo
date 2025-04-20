@@ -21,10 +21,10 @@ internal partial class GNB : Tank
             if (ComboTimer > 0)
             {
                 if (ComboAction is KeenEdge && LevelChecked(BrutalShell))
-                    return OriginalHook(BrutalShell);
+                    return BrutalShell;
 
                 if (ComboAction is BrutalShell && LevelChecked(SolidBarrel))
-                    return OriginalHook(SolidBarrel);
+                    return SolidBarrel;
             }
 
             return KeenEdge;
