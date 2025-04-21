@@ -164,7 +164,7 @@ internal partial class SAM : Melee
 
                 if (ActionReady(Shinten) &&
                     !HasStatusEffect(Buffs.ZanshinReady) &&
-                    (!ActionReady(Senei) || !ActionReady(Guren)) &&
+                    !ActionReady(Senei) &&
                     (Gauge.Kenki >= 65 || GetTargetHPPercent() <= 1 && Gauge.Kenki >= 25))
                     return Shinten;
 
@@ -346,7 +346,7 @@ internal partial class SAM : Melee
                 if (IsEnabled(CustomComboPreset.SAM_ST_Shinten) &&
                     ActionReady(Shinten) && !HasStatusEffect(Buffs.ZanshinReady) &&
                     (IsEnabled(CustomComboPreset.SAM_ST_CDs_Senei) && !ActionReady(Senei) ||
-                     IsEnabled(CustomComboPreset.SAM_ST_CDs_Guren) && !ActionReady(Guren)) &&
+                     IsNotEnabled(CustomComboPreset.SAM_ST_CDs_Senei)) &&
                     (Gauge.Kenki >= kenkiOvercap || GetTargetHPPercent() <= shintenTreshhold && Gauge.Kenki >= 25))
                     return Shinten;
 
