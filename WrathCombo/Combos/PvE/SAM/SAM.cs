@@ -163,8 +163,7 @@ internal partial class SAM : Melee
                     return Shoha;
 
                 if (ActionReady(Shinten) &&
-                    !HasStatusEffect(Buffs.ZanshinReady) &&
-                    !ActionReady(Senei) &&
+                    !HasStatusEffect(Buffs.ZanshinReady) && !ActionReady(Senei) &&
                     (Gauge.Kenki >= 65 || GetTargetHPPercent() <= 1 && Gauge.Kenki >= 25))
                     return Shinten;
 
