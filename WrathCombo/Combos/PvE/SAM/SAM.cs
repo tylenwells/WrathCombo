@@ -272,9 +272,9 @@ internal partial class SAM : Melee
                 return Variant.Rampart;
 
             // Opener for SAM
-            if (IsEnabled(CustomComboPreset.SAM_ST_Opener))
-                if (Opener().FullOpener(ref actionID))
-                    return actionID;
+            if (IsEnabled(CustomComboPreset.SAM_ST_Opener) &&
+                Opener().FullOpener(ref actionID))
+                return actionID;
 
             if (IsEnabled(CustomComboPreset.SAM_ST_RangedUptime) &&
                 ActionReady(Enpi) && !InMeleeRange() && HasBattleTarget())
@@ -345,7 +345,8 @@ internal partial class SAM : Melee
                 }
                 if (IsEnabled(CustomComboPreset.SAM_ST_Shinten) &&
                     ActionReady(Shinten) && !HasStatusEffect(Buffs.ZanshinReady) &&
-                    (!ActionReady(Senei) || !ActionReady(Guren)) &&
+                    (IsEnabled(CustomComboPreset.SAM_ST_CDs_Senei) && !ActionReady(Senei) ||
+                     IsEnabled(CustomComboPreset.SAM_ST_CDs_Guren) && !ActionReady(Guren)) &&
                     (Gauge.Kenki >= kenkiOvercap || GetTargetHPPercent() <= shintenTreshhold && Gauge.Kenki >= 25))
                     return Shinten;
 
