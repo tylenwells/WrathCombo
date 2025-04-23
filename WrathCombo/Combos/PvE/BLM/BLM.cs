@@ -57,7 +57,8 @@ internal partial class BLM : Caster
 
             if (IsMoving() && InCombat())
             {
-                if (ActionReady(Triplecast) && !HasStatusEffect(Buffs.Triplecast) && !HasStatusEffect(Role.Buffs.Swiftcast))
+                if (ActionReady(Triplecast) && !HasStatusEffect(Buffs.Triplecast) && 
+                    !HasStatusEffect(Role.Buffs.Swiftcast) && !HasStatusEffect(Buffs.LeyLines))
                     return Triplecast;
 
                 if (ActionReady(Paradox) &&
@@ -196,7 +197,8 @@ internal partial class BLM : Caster
                     if (IsEnabled(CustomComboPreset.BLM_ST_Triplecast) &&
                         ActionReady(Triplecast) && IsOnCooldown(Role.Swiftcast) &&
                         GetRemainingCharges(Triplecast) >= Config.BLM_ST_Triplecast_UseCharges &&
-                        JustUsed(Despair) && !ActionReady(Manafont) && !HasStatusEffect(Buffs.Triplecast))
+                        JustUsed(Despair) && !ActionReady(Manafont) &&
+                        !HasStatusEffect(Buffs.Triplecast) && !HasStatusEffect(Buffs.LeyLines))
                         return Triplecast;
 
                     if (IsEnabled(CustomComboPreset.BLM_ST_Transpose) &&
@@ -228,7 +230,8 @@ internal partial class BLM : Caster
                 if (Config.BLM_ST_MovementOption[0] &&
                     ActionReady(Triplecast) &&
                     !HasStatusEffect(Buffs.Triplecast) &&
-                    !HasStatusEffect(Role.Buffs.Swiftcast))
+                    !HasStatusEffect(Role.Buffs.Swiftcast) && 
+                    !HasStatusEffect(Buffs.LeyLines))
                     return Triplecast;
 
                 if (Config.BLM_ST_MovementOption[1] &&
