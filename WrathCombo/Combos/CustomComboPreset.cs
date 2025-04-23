@@ -1001,14 +1001,6 @@ public enum CustomComboPreset
         "\nThis behavior is recommended by The Balance but can introduce drift, so it may not be what is best for your group.", DNC.JobID)]
     DNC_ST_BlockFinishes = 4000,
 
-    #region Basic combo
-
-    [ReplaceSkill(DNC.Fountain)]
-    [CustomComboInfo("Basic Combo", "Replace Fountain with its combo chain.", DNC.JobID)]
-    DNC_ST_BasicCombo = 4003,
-
-    #endregion
-
     #region Simple Mode
 
     [AutoAction(false, false)]
@@ -1246,6 +1238,14 @@ public enum CustomComboPreset
     #endregion
     // Last value = 4057
 
+     #region Basic combo
+
+    [ReplaceSkill(DNC.Fountain)]
+    [CustomComboInfo("Basic Combo", "Replace Fountain with its combo chain.", DNC.JobID)]
+    DNC_ST_BasicCombo = 4003,
+
+    #endregion
+
     #region Multibutton Features
 
     #region Single Target Multibutton
@@ -1435,14 +1435,6 @@ public enum CustomComboPreset
     #endregion
 
     #region DARK KNIGHT
-
-    #region Basic combo
-
-    [ReplaceSkill(DRK.Souleater)]
-    [CustomComboInfo("Basic Combo", "Replace Souleater with its combo chain.", DRK.JobID)]
-    DRK_ST_BasicCombo = 5003,
-
-    #endregion
 
     #region Simple Mode
 
@@ -1784,6 +1776,14 @@ public enum CustomComboPreset
     #endregion
     // Last value = 5074
 
+    #region Basic combo
+
+    [ReplaceSkill(DRK.Souleater)]
+    [CustomComboInfo("Basic Combo", "Replace Souleater with its combo chain.", DRK.JobID)]
+    DRK_ST_BasicCombo = 5003,
+
+    #endregion
+
     #region Multibutton Features
 
     #region One-Button Mitigation
@@ -1900,18 +1900,6 @@ public enum CustomComboPreset
 
     #region DRAGOON
     
-    #region Basic Combo
-
-    [ReplaceSkill(DRG.FullThrust, DRG.HeavensThrust)]
-    [CustomComboInfo("FullThrust Combo", "Replace Full Thrust/Heavens' Thrust with its combo chain.", DRG.JobID)]
-    DRG_ST_FullThrustCombo = 6304,
-
-    [ReplaceSkill(DRG.ChaosThrust, DRG.ChaoticSpring)]
-    [CustomComboInfo("Chaotic Combo", "Replace Chaos Thrust /Chaotic Spring with its combo chain.", DRG.JobID)]
-    DRG_ST_ChaoticCombo = 6305,
-    
-    #endregion
-
     #region Simple Mode
 
     [AutoAction(false, false)]
@@ -2144,6 +2132,18 @@ public enum CustomComboPreset
     DRG_AoE_ComboHeals = 6299,
 
     #endregion
+    
+    #region Basic Combo
+
+    [ReplaceSkill(DRG.FullThrust, DRG.HeavensThrust)]
+    [CustomComboInfo("FullThrust Combo", "Replace Full Thrust/Heavens' Thrust with its combo chain.", DRG.JobID)]
+    DRG_ST_FullThrustCombo = 6304,
+
+    [ReplaceSkill(DRG.ChaosThrust, DRG.ChaoticSpring)]
+    [CustomComboInfo("Chaotic Combo", "Replace Chaos Thrust /Chaotic Spring with its combo chain.", DRG.JobID)]
+    DRG_ST_ChaoticCombo = 6305,
+
+    #endregion
 
     #region Variant
 
@@ -2170,15 +2170,7 @@ public enum CustomComboPreset
     #endregion
 
     #region GUNBREAKER
-
-     #region Basic combo
-
-    [ReplaceSkill(GNB.SolidBarrel)]
-    [CustomComboInfo("Basic Combo", "Replace Solid Barrel with its combo chain.", GNB.JobID)]
-    GNB_ST_BasicCombo = 7100,
-
-    #endregion
-
+    
     #region Simple Mode
 
     [AutoAction(false, false)]
@@ -2438,6 +2430,14 @@ public enum CustomComboPreset
     GNB_AoE_ArmsLength = 7221,
 
     #endregion
+
+    #endregion
+
+    #region Basic combo
+
+    [ReplaceSkill(GNB.SolidBarrel)]
+    [CustomComboInfo("Basic Combo", "Replace Solid Barrel with its combo chain.", GNB.JobID)]
+    GNB_ST_BasicCombo = 7100,
 
     #endregion
 
@@ -2806,14 +2806,6 @@ public enum CustomComboPreset
 
     #region MACHINIST
     
-    #region Basic combo
-
-    [ReplaceSkill(MCH.CleanShot, MCH.HeatedCleanShot)]
-    [CustomComboInfo("Basic Combo", "Replace Clean Shot with its combo chain.", MCH.JobID)]
-    MCH_ST_BasicCombo = 8117,
-    
-    #endregion
-
     #region Simple Mode
 
     [AutoAction(false, false)]
@@ -2970,6 +2962,14 @@ public enum CustomComboPreset
 
     #endregion
 
+    #region Basic combo
+
+    [ReplaceSkill(MCH.CleanShot, MCH.HeatedCleanShot)]
+    [CustomComboInfo("Basic Combo", "Replace Clean Shot with its combo chain.", MCH.JobID)]
+    MCH_ST_BasicCombo = 8117,
+
+    #endregion
+
     #region Variant
 
     [Variant]
@@ -3047,30 +3047,7 @@ public enum CustomComboPreset
     #endregion
 
     #region MONK
-
-    #region Basic Combo
-
-    [ConflictingCombos(MNK_ST_AdvancedMode, MNK_ST_SimpleMode)]
-    [CustomComboInfo("Beast Chakra Handlers", "Merge single target GCDs which share the same beast chakra", MNK.JobID)]
-    MNK_ST_BeastChakras = 9019,
-
-    [ReplaceSkill(MNK.Bootshine)]
-    [CustomComboInfo("Opo-opo Option", "Replace Bootshine/Leaping Opo with Dragon Kick.", MNK.JobID)]
-    [ParentCombo(MNK_ST_BeastChakras)]
-    MNK_BC_OPOOPO = 9020,
-
-    [ReplaceSkill(MNK.TrueStrike)]
-    [CustomComboInfo("Raptor Option", "Replace True Strike/Rising Raptor with Twin Snakes.", MNK.JobID)]
-    [ParentCombo(MNK_ST_BeastChakras)]
-    MNK_BC_RAPTOR = 9021,
-
-    [ReplaceSkill(MNK.SnapPunch)]
-    [CustomComboInfo("Coeurl Option", "Replace Snap Punch/Pouncing Coeurl with Demolish.", MNK.JobID)]
-    [ParentCombo(MNK_ST_BeastChakras)]
-    MNK_BC_COEURL = 9022,
-
-    #endregion
-
+    
     #region Simple Mode
 
     [AutoAction(false, false)]
@@ -3211,6 +3188,29 @@ public enum CustomComboPreset
 
     #endregion
 
+    #region Basic Combo
+
+    [ConflictingCombos(MNK_ST_AdvancedMode, MNK_ST_SimpleMode)]
+    [CustomComboInfo("Beast Chakra Handlers", "Merge single target GCDs which share the same beast chakra", MNK.JobID)]
+    MNK_ST_BeastChakras = 9019,
+
+    [ReplaceSkill(MNK.Bootshine)]
+    [CustomComboInfo("Opo-opo Option", "Replace Bootshine/Leaping Opo with Dragon Kick.", MNK.JobID)]
+    [ParentCombo(MNK_ST_BeastChakras)]
+    MNK_BC_OPOOPO = 9020,
+
+    [ReplaceSkill(MNK.TrueStrike)]
+    [CustomComboInfo("Raptor Option", "Replace True Strike/Rising Raptor with Twin Snakes.", MNK.JobID)]
+    [ParentCombo(MNK_ST_BeastChakras)]
+    MNK_BC_RAPTOR = 9021,
+
+    [ReplaceSkill(MNK.SnapPunch)]
+    [CustomComboInfo("Coeurl Option", "Replace Snap Punch/Pouncing Coeurl with Demolish.", MNK.JobID)]
+    [ParentCombo(MNK_ST_BeastChakras)]
+    MNK_BC_COEURL = 9022,
+
+    #endregion
+
     #region Variant
 
     [Variant]
@@ -3248,18 +3248,6 @@ public enum CustomComboPreset
     #endregion
 
     #region NINJA
-
-    #region Basic Combo
-    
-    [ReplaceSkill(NIN.AeolianEdge)]
-    [CustomComboInfo("Aeolian Edge Combo", "Replace Aeolian Edge with its combo chain.", NIN.JobID)]
-    NIN_ST_AeolianEdgeCombo = 10074,
-
-    [ReplaceSkill(NIN.ArmorCrush)]
-    [CustomComboInfo("Armor Crush Combo", "Replace Armor Crush with its combo chain.", NIN.JobID)]
-    NIN_ST_ArmorCrushCombo = 10075,
-    
-    #endregion
     
     #region Simple Mode
 
@@ -3495,6 +3483,18 @@ public enum CustomComboPreset
     [ParentCombo(NIN_AoE_AdvancedMode)]
     [CustomComboInfo("Bloodbath Option", "Adds Bloodbath to Advanced Mode.", NIN.JobID)]
     NIN_AoE_AdvancedMode_Bloodbath = 10052,
+        
+    #region Basic Combo
+
+    [ReplaceSkill(NIN.AeolianEdge)]
+    [CustomComboInfo("Aeolian Edge Combo", "Replace Aeolian Edge with its combo chain.", NIN.JobID)]
+    NIN_ST_AeolianEdgeCombo = 10074,
+
+    [ReplaceSkill(NIN.ArmorCrush)]
+    [CustomComboInfo("Armor Crush Combo", "Replace Armor Crush with its combo chain.", NIN.JobID)]
+    NIN_ST_ArmorCrushCombo = 10075,
+
+    #endregion
 
     [ReplaceSkill(NIN.ArmorCrush)]
     [CustomComboInfo("Armor Crush Combo Feature", "Replace Armor Crush with its combo chain.", NIN.JobID)]
@@ -3868,15 +3868,7 @@ public enum CustomComboPreset
     #endregion
 
     #region PALADIN
-
-    #region Basic combo
-
-    [ReplaceSkill(PLD.RageOfHalone)]
-    [CustomComboInfo("Basic Combo", "Replace Rage Of Halone with its combo chain.", PLD.JobID)]
-    PLD_ST_BasicCombo = 11061,
-
-    #endregion
-
+    
     #region Simple Mode
 
     // Simple Modes
@@ -4112,6 +4104,14 @@ public enum CustomComboPreset
     PLD_AoE_AdvancedMode_HallowedGround = 11045,
 
     #endregion
+    
+    #region Basic combo
+
+    [ReplaceSkill(PLD.RageOfHalone)]
+    [CustomComboInfo("Basic Combo", "Replace Rage Of Halone with its combo chain.", PLD.JobID)]
+    PLD_ST_BasicCombo = 11061,
+
+    #endregion
 
     #region One-Button Mitigation
     [ReplaceSkill(PLD.Bulwark)]
@@ -4207,15 +4207,7 @@ public enum CustomComboPreset
     #endregion
 
     #region REAPER
-
-    #region Basic combo
-
-    [ReplaceSkill(RPR.InfernalSlice)]
-    [CustomComboInfo("Basic Combo", "Replace Infernal Slice with its combo chain.", RPR.JobID)]
-    RPR_ST_BasicCombo = 12021,
-
-    #endregion
-
+    
     #region Simple Mode
 
     [AutoAction(false, false)]
@@ -4393,6 +4385,14 @@ public enum CustomComboPreset
     RPR_AoE_ComboHeals = 12116,
 
     // Last value = 12117
+
+    #endregion
+    
+    #region Basic combo
+
+    [ReplaceSkill(RPR.InfernalSlice)]
+    [CustomComboInfo("Basic Combo", "Replace Infernal Slice with its combo chain.", RPR.JobID)]
+    RPR_ST_BasicCombo = 12021,
 
     #endregion
 
@@ -5009,23 +5009,7 @@ public enum CustomComboPreset
     #endregion
 
     #region SAMURAI
-
-    #region Basic Combo
-
-    [ReplaceSkill(SAM.Yukikaze)]
-    [CustomComboInfo("Yukikaze Combo", "Replace Yukikaze with its combo chain.", SAM.JobID)]
-    SAM_ST_YukikazeCombo = 15000,
-
-    [ReplaceSkill(SAM.Kasha)]
-    [CustomComboInfo("Kasha Combo", "Replace Kasha with its combo chain.", SAM.JobID)]
-    SAM_ST_KashaCombo = 15001,
-
-    [ReplaceSkill(SAM.Gekko)]
-    [CustomComboInfo("Gekko Combo", "Replace Gekko with its combo chain.", SAM.JobID)]
-    SAM_ST_GekkoCombo = 15010,
-
-    #endregion
-
+    
     #region Simple Mode
 
     [AutoAction(false, false)]
@@ -5210,7 +5194,19 @@ public enum CustomComboPreset
 
     #endregion
     
-    #region AoE Oka Combo
+    #region Basic Combo
+
+    [ReplaceSkill(SAM.Yukikaze)]
+    [CustomComboInfo("Yukikaze Combo", "Replace Yukikaze with its combo chain.", SAM.JobID)]
+    SAM_ST_YukikazeCombo = 15000,
+
+    [ReplaceSkill(SAM.Kasha)]
+    [CustomComboInfo("Kasha Combo", "Replace Kasha with its combo chain.", SAM.JobID)]
+    SAM_ST_KashaCombo = 15001,
+
+    [ReplaceSkill(SAM.Gekko)]
+    [CustomComboInfo("Gekko Combo", "Replace Gekko with its combo chain.", SAM.JobID)]
+    SAM_ST_GekkoCombo = 15010,
 
     [ReplaceSkill(SAM.Oka)]
     [CustomComboInfo("Oka Combo", "Replace Oka with its combo chain.", SAM.JobID)]
@@ -5221,7 +5217,7 @@ public enum CustomComboPreset
     SAM_AoE_MangetsuCombo = 15101,
 
     #endregion
-
+    
     #region Meikyo Features
 
     [ReplaceSkill(SAM.MeikyoShisui)]
@@ -5877,15 +5873,6 @@ SMN.JobID)]
 
     #region VIPER
 
-     #region Basic combo
-
-    [ReplaceSkill(VPR.ReavingFangs)]
-    [ConflictingCombos(VPR_ReawakenLegacy, VPR_Legacies, VPR_SerpentsTail)]
-    [CustomComboInfo("Basic Combo", "Replace Reaving Fangs with its combo chain.", VPR.JobID)]
-    VPR_ST_BasicCombo = 30015,
-
-    #endregion
-
     #region Simple Mode
 
     [AutoAction(false, false)]
@@ -6044,6 +6031,15 @@ SMN.JobID)]
     VPR_AoE_ComboHeals = 30199,
 
     #endregion
+    
+    #region Basic combo
+
+    [ReplaceSkill(VPR.ReavingFangs)]
+    [ConflictingCombos(VPR_ReawakenLegacy, VPR_Legacies, VPR_SerpentsTail)]
+    [CustomComboInfo("Basic Combo", "Replace Reaving Fangs with its combo chain.", VPR.JobID)]
+    VPR_ST_BasicCombo = 30015,
+
+    #endregion
 
     #region Variant
 
@@ -6115,19 +6111,7 @@ SMN.JobID)]
     #endregion
 
     #region WARRIOR
-
-     #region Basic Combo
-
-    [ReplaceSkill(WAR.StormsPath)]
-    [CustomComboInfo("Storm's Path Combo", "Replace Storm's Path with its combo chain.", WAR.JobID)]
-    WAR_ST_StormsPathCombo = 18069,
-
-    [ReplaceSkill(WAR.StormsEye)]
-    [CustomComboInfo("Storm's Eye Combo", "Replace Storm's Eye with its combo chain.", WAR.JobID)]
-    WAR_ST_StormsEyeCombo = 18070,
-
-    #endregion
-
+    
     #region Simple Mode
 
     [AutoAction(false, false)]
@@ -6345,6 +6329,18 @@ SMN.JobID)]
     WAR_AoE_Advanced_ArmsLength = 18064,
 
     #endregion
+
+    #endregion
+    
+    #region Basic Combo
+
+    [ReplaceSkill(WAR.StormsPath)]
+    [CustomComboInfo("Storm's Path Combo", "Replace Storm's Path with its combo chain.", WAR.JobID)]
+    WAR_ST_StormsPathCombo = 18069,
+
+    [ReplaceSkill(WAR.StormsEye)]
+    [CustomComboInfo("Storm's Eye Combo", "Replace Storm's Eye with its combo chain.", WAR.JobID)]
+    WAR_ST_StormsEyeCombo = 18070,
 
     #endregion
 
