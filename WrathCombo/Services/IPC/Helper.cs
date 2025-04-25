@@ -6,7 +6,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
 using ECommons;
-using ECommons.DalamudServices;
 using ECommons.ExcelServices;
 using ECommons.EzIpcManager;
 using ECommons.GameHelpers;
@@ -14,6 +13,8 @@ using ECommons.Logging;
 using WrathCombo.Combos;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Extensions;
+using EZ = ECommons.Throttlers.EzThrottler;
+using TS = System.TimeSpan;
 
 #endregion
 
@@ -348,16 +349,8 @@ public partial class Helper(ref Leasing leasing)
     /// <summary>
     ///     The cached backing field for the IPC status.
     /// </summary>
-    /// <seealso cref="_ipcStatusLastUpdated" />
     /// <seealso cref="IPCEnabled" />
     private bool? _ipcEnabled;
-
-    /// <summary>
-    ///     The time the IPC status was last checked.
-    /// </summary>
-    /// <seealso cref="_ipcEnabled" />
-    /// <seealso cref="IPCEnabled" />
-    private DateTime? _ipcStatusLastUpdated;
 
     /// <summary>
     ///     The lightly-cached live IPC status.<br />
@@ -365,7 +358,6 @@ public partial class Helper(ref Leasing leasing)
     /// </summary>
     /// <seealso cref="IPCStatusEndpoint" />
     /// <seealso cref="_ipcEnabled" />
-    /// <seealso cref="_ipcStatusLastUpdated" />
     public bool IPCEnabled
     {
         get
@@ -373,11 +365,11 @@ public partial class Helper(ref Leasing leasing)
             // If the IPC status was checked within the last 5 minutes:
             // return the cached value
             if (_ipcEnabled is not null &&
-                DateTime.Now - _ipcStatusLastUpdated < TimeSpan.FromMinutes(5))
+                !EZ.Throttle("ipcLastStatusChecked", TS.FromMinutes(5)))
                 return _ipcEnabled!.Value;
 
             // Otherwise, check the status and cache the result
-            var data = string.Empty;
+            string data;
             // Check the status
             try
             {
@@ -400,7 +392,6 @@ public partial class Helper(ref Leasing leasing)
             var ipcStatus = data.StartsWith("enabled");
             // Cache the status
             _ipcEnabled = ipcStatus;
-            _ipcStatusLastUpdated = DateTime.Now;
 
             // Handle suspended status
             if (!ipcStatus)
