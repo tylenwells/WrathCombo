@@ -757,6 +757,7 @@ public partial class Leasing
         var now = DateTime.Now;
 
         // ReSharper disable once NotAccessedVariable
+        // ReSharper disable once RedundantAssignment
         var durationForBan = TimeSpan.FromMinutes(2);
 #if DEBUG
         durationForBan = TimeSpan.FromSeconds(15);
