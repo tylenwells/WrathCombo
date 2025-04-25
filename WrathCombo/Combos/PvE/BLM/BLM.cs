@@ -486,7 +486,7 @@ internal partial class BLM : Caster
                 if (FlarestarReady)
                     return FlareStar;
 
-                if (ActionReady(Fire2) &&
+                if (!LevelChecked(Flare) && ActionReady(Fire2) &&
                     !TraitLevelChecked(Traits.EnhancedAstralFire) &&
                     (TraitLevelChecked(Traits.UmbralHeart) && Gauge.UmbralHearts > 1 || !TraitLevelChecked(Traits.UmbralHeart)))
                     return OriginalHook(Fire2);
@@ -500,7 +500,7 @@ internal partial class BLM : Caster
                 if (ActionReady(Flare))
                     return Flare;
 
-                if (ActionReady(Blizzard2) && TraitLevelChecked(Traits.AspectMasteryIII))
+                if (IsNotEnabled(CustomComboPreset.BLM_AoE_Transpose) && ActionReady(Blizzard2) && TraitLevelChecked(Traits.AspectMasteryIII))
                     return OriginalHook(Blizzard2);
 
                 if (IsEnabled(CustomComboPreset.BLM_AoE_Transpose) &&
@@ -512,7 +512,7 @@ internal partial class BLM : Caster
             {
                 if ((CurMp == MP.MaxMP || TraitLevelChecked(Traits.EnhancedAstralFire)) && HasMaxUmbralHeartStacks)
                 {
-                    if (ActionReady(Fire2) && TraitLevelChecked(Traits.AspectMasteryIII))
+                    if (IsNotEnabled(CustomComboPreset.BLM_AoE_Transpose) && ActionReady(Fire2) && TraitLevelChecked(Traits.AspectMasteryIII))
                         return OriginalHook(Fire2);
 
                     if (IsEnabled(CustomComboPreset.BLM_AoE_Transpose) &&
