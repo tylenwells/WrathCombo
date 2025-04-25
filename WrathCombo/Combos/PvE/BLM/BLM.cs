@@ -486,7 +486,7 @@ internal partial class BLM : Caster
                 if (FlarestarReady)
                     return FlareStar;
 
-                if (!LevelChecked(Flare) && ActionReady(Fire2) &&
+                if (ActionReady(Fire2) &&
                     !TraitLevelChecked(Traits.EnhancedAstralFire) &&
                     (TraitLevelChecked(Traits.UmbralHeart) && Gauge.UmbralHearts > 1 || !TraitLevelChecked(Traits.UmbralHeart)))
                     return OriginalHook(Fire2);
