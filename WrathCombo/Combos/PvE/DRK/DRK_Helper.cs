@@ -966,8 +966,7 @@ internal partial class DRK
                    IsEnabled(Preset.DRK_ST_Sp_EdgeDarkside)) ||
                   (flags.HasFlag(Combo.AoE) &&
                   IsEnabled(Preset.DRK_AoE_Sp_Flood))) &&
-                mana >= 9400 &&
-                !evenBurstSoon)
+                darksideDropping)
                 if (flags.HasFlag(Combo.ST) && LevelChecked(EdgeOfDarkness))
                     return (action = OriginalHook(EdgeOfDarkness)) != 0;
                 else
@@ -988,7 +987,8 @@ internal partial class DRK
                    IsEnabled(Preset.DRK_ST_Sp_ManaOvercap)) ||
                   (flags.HasFlag(Combo.AoE) &&
                   IsEnabled(Preset.DRK_AoE_Sp_ManaOvercap))) &&
-                darksideDropping)
+                mana >= 9400 &&
+                !evenBurstSoon)
                 if (flags.HasFlag(Combo.ST) && LevelChecked(EdgeOfDarkness))
                     return (action = OriginalHook(EdgeOfDarkness)) != 0;
                 else
