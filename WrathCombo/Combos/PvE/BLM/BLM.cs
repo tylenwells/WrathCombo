@@ -19,7 +19,7 @@ internal partial class BLM : Caster
             if (Variant.CanRampart(CustomComboPreset.BLM_Variant_Rampart))
                 return Variant.Rampart;
 
-            if (CanSpellWeave())
+            if (CanWeave())
             {
                 if (ActionReady(Amplifier) && Gauge.EnochianTimer >= 20000 &&
                     !HasMaxPolyglotStacks)
@@ -41,9 +41,22 @@ internal partial class BLM : Caster
                         return Transpose;
                 }
 
-                if (Gauge.InUmbralIce &&
-                    JustUsed(Paradox) && CurMp is MP.MaxMP)
-                    return Transpose;
+                if (Gauge.InUmbralIce)
+                {
+                    if (JustUsed(Paradox) && CurMp is MP.MaxMP)
+                        return Transpose;
+
+                    if (ActionReady(Blizzard3) && Gauge.UmbralIceStacks < 3)
+                    {
+                        if (ActionReady(Role.Swiftcast) && !HasStatusEffect(Buffs.Triplecast))
+                            return Role.Swiftcast;
+
+                        if (ActionReady(Triplecast) &&
+                            !HasStatusEffect(Buffs.Triplecast) &&
+                            !HasStatusEffect(Role.Buffs.Swiftcast))
+                            return Triplecast;
+                    }
+                }
             }
 
             if (HasMaxPolyglotStacks && Gauge.EnochianTimer <= 5000)
@@ -57,7 +70,7 @@ internal partial class BLM : Caster
 
             if (IsMoving() && InCombat())
             {
-                if (ActionReady(Triplecast) && !HasStatusEffect(Buffs.Triplecast) && 
+                if (ActionReady(Triplecast) && !HasStatusEffect(Buffs.Triplecast) &&
                     !HasStatusEffect(Role.Buffs.Swiftcast) && !HasStatusEffect(Buffs.LeyLines))
                     return Triplecast;
 
@@ -135,20 +148,12 @@ internal partial class BLM : Caster
                 {
                     if (HasStatusEffect(Buffs.Triplecast) || HasStatusEffect(Role.Buffs.Swiftcast))
                         return Blizzard3;
-                    
-                    if (CanWeave() && ActionReady(Role.Swiftcast) && !HasStatusEffect(Buffs.Triplecast))
-                        return Role.Swiftcast;
 
-                    if (CanWeave() && ActionReady(Triplecast) &&
-                        !HasStatusEffect(Buffs.Triplecast) &&
-                        !HasStatusEffect(Role.Buffs.Swiftcast))
-                        return Triplecast;
-                    
                     if (HasPolyglotStacks())
                         return LevelChecked(Xenoglossy)
                             ? Xenoglossy
                             : Foul;
-                    
+
                     if (Gauge.IsParadoxActive)
                         return Paradox;
                 }
@@ -188,7 +193,7 @@ internal partial class BLM : Caster
                 if (Opener().FullOpener(ref actionID))
                     return actionID;
 
-            if (CanSpellWeave())
+            if (CanWeave())
             {
                 if (IsEnabled(CustomComboPreset.BLM_ST_Amplifier) &&
                     ActionReady(Amplifier) && Gauge.EnochianTimer >= 20000 &&
@@ -223,9 +228,25 @@ internal partial class BLM : Caster
                         return Transpose;
                 }
 
-                if (IsEnabled(CustomComboPreset.BLM_ST_Transpose) &&
-                    Gauge.InUmbralIce && JustUsed(Paradox) && CurMp is MP.MaxMP)
-                    return Transpose;
+                if (Gauge.InUmbralIce)
+                {
+                    if (IsEnabled(CustomComboPreset.BLM_ST_Transpose) &&
+                        JustUsed(Paradox) && CurMp is MP.MaxMP)
+                        return Transpose;
+
+                    if (ActionReady(Blizzard3) && Gauge.UmbralIceStacks < 3)
+                    {
+                        if (IsEnabled(CustomComboPreset.BLM_ST_Swiftcast) &&
+                            ActionReady(Role.Swiftcast) && !HasStatusEffect(Buffs.Triplecast))
+                            return Role.Swiftcast;
+
+                        if (IsEnabled(CustomComboPreset.BLM_ST_Triplecast) &&
+                            ActionReady(Triplecast) &&
+                            !HasStatusEffect(Buffs.Triplecast) &&
+                            !HasStatusEffect(Role.Buffs.Swiftcast))
+                            return Triplecast;
+                    }
+                }
             }
 
             if (IsEnabled(CustomComboPreset.BLM_ST_UsePolyglot) &&
@@ -247,7 +268,7 @@ internal partial class BLM : Caster
                 if (Config.BLM_ST_MovementOption[0] &&
                     ActionReady(Triplecast) &&
                     !HasStatusEffect(Buffs.Triplecast) &&
-                    !HasStatusEffect(Role.Buffs.Swiftcast) && 
+                    !HasStatusEffect(Role.Buffs.Swiftcast) &&
                     !HasStatusEffect(Buffs.LeyLines))
                     return Triplecast;
 
@@ -333,23 +354,13 @@ internal partial class BLM : Caster
                 {
                     if (HasStatusEffect(Buffs.Triplecast) || HasStatusEffect(Role.Buffs.Swiftcast))
                         return Blizzard3;
-                    
-                    if (CanWeave() && IsEnabled(CustomComboPreset.BLM_ST_Swiftcast) &&
-                        ActionReady(Role.Swiftcast) && !HasStatusEffect(Buffs.Triplecast))
-                        return Role.Swiftcast;
 
-                    if (CanWeave() && IsEnabled(CustomComboPreset.BLM_ST_Triplecast) && 
-                        ActionReady(Triplecast) &&
-                        !HasStatusEffect(Buffs.Triplecast) &&
-                        !HasStatusEffect(Role.Buffs.Swiftcast))
-                        return Triplecast;
-                    
                     if (IsEnabled(CustomComboPreset.BLM_ST_UsePolyglot) &&
                         HasPolyglotStacks())
                         return LevelChecked(Xenoglossy)
                             ? Xenoglossy
                             : Foul;
-                    
+
                     if (Gauge.IsParadoxActive)
                         return Paradox;
                 }
