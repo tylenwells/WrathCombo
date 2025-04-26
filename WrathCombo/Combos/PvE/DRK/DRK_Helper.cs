@@ -487,7 +487,10 @@ internal partial class DRK
             if (flags.HasFlag(Combo.ST) &&
                 (flags.HasFlag(Combo.Simple) ||
                  IsEnabled(Preset.DRK_ST_CD_Spit)) &&
-                ActionReady(CarveAndSpit))
+                ActionReady(CarveAndSpit) &&
+                (int)LocalPlayer.CurrentMp <= 9400 &&
+                (!LevelChecked(LivingShadow) ||
+                 GetCooldownRemainingTime(LivingShadow) > 20))
                 return (action = CarveAndSpit) != 0;
 
             #endregion
