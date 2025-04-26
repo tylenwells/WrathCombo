@@ -120,15 +120,23 @@ internal partial class DRK
             if ((DateTime.Now - lastBurstCheck).TotalSeconds < 0.8)
                 return field;
 
+            var burstAbility = LivingShadow;
+            var burstAbilityCDWindow = 90;
+            if (!LevelChecked(LivingShadow))
+            {
+                burstAbilityCDWindow = 40;
+                burstAbility = LevelChecked(Delirium) ? Delirium : BloodWeapon;
+            }
+
             // Fallback resetting of burst
-            if (GetCooldownRemainingTime(LivingShadow) < 2 || !InCombat())
+            if (GetCooldownRemainingTime(burstAbility) < 2 || !InCombat())
             {
                 burstStartTime = 0;
                 burstEndTime = 0;
                 field = false;
             }
 
-            if (GetCooldownRemainingTime(LivingShadow) >= 90)
+            if (GetCooldownRemainingTime(burstAbility) >= burstAbilityCDWindow)
             {
                 // If the buff is active, start burst in 4s
                 if (burstStartTime == 0)
@@ -1009,6 +1017,7 @@ internal partial class DRK
             // Bail if it is right before burst
             if (GetCooldownRemainingTime(LivingShadow) <
                 Math.Min(6, secondsBeforeBurst) &&
+                LevelChecked(LivingShadow) &&
                 CombatEngageDuration().TotalSeconds > 20)
                 return false;
 
