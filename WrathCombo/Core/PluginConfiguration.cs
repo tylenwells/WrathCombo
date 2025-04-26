@@ -68,6 +68,8 @@ namespace WrathCombo.Core
 
         public bool OpenToPvE = false;
 
+        public bool OpenToPvP = false;
+
         public bool OpenToCurrentJob = false;
 
         public bool OpenToCurrentJobOnSwitch = false;

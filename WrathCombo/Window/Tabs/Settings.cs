@@ -115,6 +115,20 @@ namespace WrathCombo.Window.Tabs
 
                 #endregion
 
+                #region Open to PvP
+
+                if (ImGui.Checkbox("Open Wrath to the PvP Features tab in PvP areas", ref
+                        Service.Configuration.OpenToPvP))
+                    Service.Configuration.Save();
+
+                ImGuiComponents.HelpMarker("Same as above, when you open Wrath with `/wrath`, it will open to the PvP Features tab, instead of the last tab you were on, when in a PvP area." +
+                                           "\nSimilar to using the `/wrath pvp` command to open Wrath.");
+
+                ImGui.SameLine();
+                ImGui.TextColored(ImGuiColors.DalamudGrey, $"(Will override the option above)");
+
+                #endregion
+
                 #region Open to Current Job
 
                 if (ImGui.Checkbox("Open PvE Features UI to Current Job on Opening", ref Service.Configuration.OpenToCurrentJob))
