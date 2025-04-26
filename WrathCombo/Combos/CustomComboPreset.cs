@@ -1557,7 +1557,7 @@ public enum CustomComboPreset
 
     [ParentCombo(DRK_ST_Spenders)]
     [CustomComboInfo("Blood Gauge Overcap Option",
-        "Adds Bloodspiller to the rotation after Syphon Strike when the blood gauge is above the chosen threshold.", DRK.JobID)]
+        "Adds Bloodspiller to the rotation before Syphon Strike when the blood gauge is above the chosen threshold.", DRK.JobID)]
     DRK_ST_Sp_BloodOvercap = 5026,
 
     #endregion
@@ -1569,7 +1569,7 @@ public enum CustomComboPreset
     DRK_ST_Sp_Edge = 5027,
 
     [ParentCombo(DRK_ST_Spenders)]
-    [CustomComboInfo("Dark Arts Drop Prevention", "Will spend Dark Arts if your own The Blackest Night shield is active on you.", DRK.JobID)]
+    [CustomComboInfo("Dark Arts Drop Prevention", "Will spend Dark Arts if your own The Blackest Night shield is active on you, except when saving for burst.", DRK.JobID)]
     DRK_ST_Sp_DarkArts = 5028,
 
     [ParentCombo(DRK_ST_Spenders)]
@@ -1577,7 +1577,7 @@ public enum CustomComboPreset
     DRK_ST_Sp_EdgeDarkside = 5029,
 
     [ParentCombo(DRK_ST_Spenders)]
-    [CustomComboInfo("Mana Overcap Option", "Uses Edge of Darkness if you are at or above 9,400 mana.", DRK.JobID)]
+    [CustomComboInfo("Mana Overcap Option", "Uses Edge of Darkness if you are at or above 9,400 mana, except when saving for burst.", DRK.JobID)]
     DRK_ST_Sp_ManaOvercap = 5030,
 
     #endregion
@@ -1752,7 +1752,7 @@ public enum CustomComboPreset
     DRK_AoE_Mit_Rampart = 5071,
 
     [ParentCombo(DRK_AoE_Mitigation)]
-    [CustomComboInfo("Arm's Length Option", "Adds Arm's Length to the rotation.", DRK.JobID)]
+    [CustomComboInfo("Arm's Length Option", "Adds Arm's Length to the rotation, when the set number of enemies are within range of you.", DRK.JobID)]
     DRK_AoE_Mit_ArmsLength = 5072,
 
     [ParentCombo(DRK_AoE_Mitigation)]

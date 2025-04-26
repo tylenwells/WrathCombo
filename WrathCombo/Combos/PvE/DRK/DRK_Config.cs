@@ -109,7 +109,7 @@ internal partial class DRK
 
                 case CustomComboPreset.DRK_ST_Sp_Edge:
                     UserConfig.DrawSliderInt(0, 3000, DRK_ST_ManaSpenderPooling,
-                        "Mana to save for TBN (0 = Use All)",
+                        "Mana to always save for TBN (0 = Use All)",
                         itemWidth: biggest,
                         sliderIncrement: SliderIncrements.Thousands);
                     UserConfig.DrawDifficultyMultiChoice(
