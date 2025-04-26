@@ -166,15 +166,38 @@ public partial class Helper(ref Leasing leasing)
         P.IPCSearch.CurrentJobComboStatesCategorized.TryGetValue(job,
             out var comboStates);
 
+        Logging.Log($"comboStates is null: {comboStates is null}, comboStates.Count is 0: {comboStates?.Count == 0}");
+
         if (comboStates is null || comboStates.Count == 0)
             return null;
 
         comboStates[mode]
             .TryGetValue(ComboSimplicityLevelKeys.Simple, out var simpleResults);
-        var simple =
-            simpleResults?.FirstOrDefault().Value;
-        var advanced =
-            comboStates[mode][ComboSimplicityLevelKeys.Advanced].First().Value;
+
+        var simpleHigher = simpleResults?.FirstOrDefault();
+        #region Override the Values with any IPC-control
+        CustomComboPreset? simpleComboPreset = simpleHigher is null ? null : (CustomComboPreset)
+            Enum.Parse(typeof(CustomComboPreset), simpleHigher.Value.Key, true);
+        var simple = simpleHigher?.Value;
+        if (simpleComboPreset is not null)
+        {
+            simple[ComboStateKeys.AutoMode] =
+                P.IPCSearch.AutoActions[(CustomComboPreset)simpleComboPreset];
+            simple[ComboStateKeys.Enabled] =
+                P.IPCSearch.EnabledActions.Contains(
+                    (CustomComboPreset)simpleComboPreset);
+        }
+        #endregion
+
+        var (advancedKey, advancedValue) = comboStates[mode][ComboSimplicityLevelKeys.Advanced].First();
+        #region Override the Values with any IPC-control
+        var advancedComboPreset = (CustomComboPreset)
+            Enum.Parse(typeof(CustomComboPreset), advancedKey, true);
+        advancedValue[ComboStateKeys.AutoMode] =
+            P.IPCSearch.AutoActions[advancedComboPreset];
+        advancedValue[ComboStateKeys.Enabled] =
+            P.IPCSearch.EnabledActions.Contains(advancedComboPreset);
+        #endregion
 
         // If the simplicity level is set, check that specifically instead of either
         if (previousMatch is not null)
@@ -182,14 +205,14 @@ public partial class Helper(ref Leasing leasing)
             if (previousMatch == ComboSimplicityLevelKeys.Simple &&
                 simple is not null && simple[enabledStateToCheck])
                 return ComboSimplicityLevelKeys.Simple;
-            return advanced[enabledStateToCheck]
+            return advancedValue[enabledStateToCheck]
                 ? ComboSimplicityLevelKeys.Advanced
                 : null;
         }
 
         return simple is not null && simple[enabledStateToCheck]
             ? ComboSimplicityLevelKeys.Simple
-            : advanced[enabledStateToCheck]
+            : advancedValue[enabledStateToCheck]
                 ? ComboSimplicityLevelKeys.Advanced
                 : null;
     }
