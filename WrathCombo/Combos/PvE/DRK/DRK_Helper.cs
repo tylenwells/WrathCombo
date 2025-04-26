@@ -63,6 +63,44 @@ internal partial class DRK
     /// When the current burst phase is set to end.
     private static long burstEndTime;
 
+    /// The last time other jobs' buffs were checked for.
+    private static DateTime lastBuffCheck = DateTime.MinValue;
+
+    /// <summary>
+    ///     Whether the player is being affected by other jobs' buffs.
+    /// </summary>
+    private static bool HasOtherJobsBuffs
+    {
+        get
+        {
+            // Only run every 1 seconds at most
+            if ((DateTime.Now - lastBuffCheck).TotalSeconds < 1)
+                return field;
+
+            field = TargetBuffRemainingTime(SCH.Debuffs.ChainStratagem) > 0 ||
+                    BuffRemainingTime(AST.Buffs.Divination) > 0 ||
+                    BuffRemainingTime(DRG.Buffs.BattleLitany) > 0 ||
+                    TargetBuffRemainingTime(NIN.Debuffs.Mug) > 0 ||
+                    TargetBuffRemainingTime(NIN.Debuffs.Dokumori) > 0 ||
+                    BuffRemainingTime(MNK.Buffs.Brotherhood) > 0 ||
+                    BuffRemainingTime(RPR.Buffs.ArcaneCircle) > 0 ||
+                    BuffRemainingTime(BRD.Buffs.BattleVoice) > 0 ||
+                    BuffRemainingTime(DNC.Buffs.TechnicalFinish) > 0 ||
+                    BuffRemainingTime(SMN.Buffs.SearingLight) > 0 ||
+                    BuffRemainingTime(RDM.Buffs.Embolden) > 0 ||
+                    BuffRemainingTime(RDM.Buffs.EmboldenOthers) > 0 ||
+                    BuffRemainingTime(PCT.Buffs.StarryMuse) > 0;
+            lastBuffCheck = DateTime.Now;
+            return field;
+
+            // Just a shorter name for the methods
+            double TargetBuffRemainingTime(ushort buff) =>
+                GetStatusEffectRemainingTime(buff, CurrentTarget, anyOwner:true);
+            double BuffRemainingTime(ushort buff) =>
+                GetStatusEffectRemainingTime(buff, anyOwner:true);
+        }
+    }
+
     /// The last time burst phase was checked for.
     private static DateTime lastBurstCheck = DateTime.MinValue;
 
@@ -76,22 +114,6 @@ internal partial class DRK
             // Only run every .8 seconds at most
             if ((DateTime.Now - lastBurstCheck).TotalSeconds < 0.8)
                 return field;
-
-            // Other jobs' buffs to skip the 4s delay to burst
-            var HasOtherJobsBuffs =
-                TargetBuffRemainingTime(SCH.Debuffs.ChainStratagem) > 0 ||
-                BuffRemainingTime(AST.Buffs.Divination) > 0 ||
-                BuffRemainingTime(DRG.Buffs.BattleLitany) > 0 ||
-                TargetBuffRemainingTime(NIN.Debuffs.Mug) > 0 ||
-                TargetBuffRemainingTime(NIN.Debuffs.Dokumori) > 0 ||
-                BuffRemainingTime(MNK.Buffs.Brotherhood) > 0 ||
-                BuffRemainingTime(RPR.Buffs.ArcaneCircle) > 0 ||
-                BuffRemainingTime(BRD.Buffs.BattleVoice) > 0 ||
-                BuffRemainingTime(DNC.Buffs.TechnicalFinish) > 0 ||
-                BuffRemainingTime(SMN.Buffs.SearingLight) > 0 ||
-                BuffRemainingTime(RDM.Buffs.Embolden) > 0 ||
-                BuffRemainingTime(RDM.Buffs.EmboldenOthers) > 0 ||
-                BuffRemainingTime(PCT.Buffs.StarryMuse) > 0;
 
             // Fallback resetting of burst
             if (GetCooldownRemainingTime(LivingShadow) < 2 || !InCombat())
@@ -129,12 +151,6 @@ internal partial class DRK
 
             lastBurstCheck = DateTime.Now;
             return field;
-
-            // Just a shorter name for the methods
-            double TargetBuffRemainingTime(ushort buff) =>
-                GetStatusEffectRemainingTime(buff, CurrentTarget, anyOwner:true);
-            double BuffRemainingTime(ushort buff) =>
-                GetStatusEffectRemainingTime(buff, anyOwner:true);
         }
     }
 
