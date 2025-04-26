@@ -131,10 +131,27 @@ internal partial class BLM : Caster
                         return Transpose; //Levels 4-34
                 }
 
-                if (ActionReady(Blizzard3) && Gauge.UmbralIceStacks < 3 &&
-                    (HasStatusEffect(Buffs.Triplecast) ||
-                     HasStatusEffect(Role.Buffs.Swiftcast)))
-                    return Blizzard3;
+                if (ActionReady(Blizzard3) && Gauge.UmbralIceStacks < 3)
+                {
+                    if (HasStatusEffect(Buffs.Triplecast) || HasStatusEffect(Role.Buffs.Swiftcast))
+                        return Blizzard3;
+                    
+                    if (CanWeave() && ActionReady(Role.Swiftcast) && !HasStatusEffect(Buffs.Triplecast))
+                        return Role.Swiftcast;
+
+                    if (CanWeave() && ActionReady(Triplecast) &&
+                        !HasStatusEffect(Buffs.Triplecast) &&
+                        !HasStatusEffect(Role.Buffs.Swiftcast))
+                        return Triplecast;
+                    
+                    if (HasPolyglotStacks())
+                        return LevelChecked(Xenoglossy)
+                            ? Xenoglossy
+                            : Foul;
+                    
+                    if (Gauge.IsParadoxActive)
+                        return Paradox;
+                }
 
                 if (ActionReady(BlizzardSpam))
                     return BlizzardSpam;
@@ -312,9 +329,30 @@ internal partial class BLM : Caster
                         return Transpose; //Levels 4-34
                 }
 
-                if (ActionReady(Blizzard3) && Gauge.UmbralIceStacks < 3 &&
-                    (HasStatusEffect(Buffs.Triplecast) || HasStatusEffect(Role.Buffs.Swiftcast)))
-                    return Blizzard3;
+                if (ActionReady(Blizzard3) && Gauge.UmbralIceStacks < 3)
+                {
+                    if (HasStatusEffect(Buffs.Triplecast) || HasStatusEffect(Role.Buffs.Swiftcast))
+                        return Blizzard3;
+                    
+                    if (CanWeave() && IsEnabled(CustomComboPreset.BLM_ST_Swiftcast) &&
+                        ActionReady(Role.Swiftcast) && !HasStatusEffect(Buffs.Triplecast))
+                        return Role.Swiftcast;
+
+                    if (CanWeave() && IsEnabled(CustomComboPreset.BLM_ST_Triplecast) && 
+                        ActionReady(Triplecast) &&
+                        !HasStatusEffect(Buffs.Triplecast) &&
+                        !HasStatusEffect(Role.Buffs.Swiftcast))
+                        return Triplecast;
+                    
+                    if (IsEnabled(CustomComboPreset.BLM_ST_UsePolyglot) &&
+                        HasPolyglotStacks())
+                        return LevelChecked(Xenoglossy)
+                            ? Xenoglossy
+                            : Foul;
+                    
+                    if (Gauge.IsParadoxActive)
+                        return Paradox;
+                }
 
                 if (ActionReady(BlizzardSpam))
                     return BlizzardSpam;
@@ -500,7 +538,7 @@ internal partial class BLM : Caster
                 if (ActionReady(Flare))
                     return Flare;
 
-                if (ActionReady(Blizzard2) && TraitLevelChecked(Traits.AspectMasteryIII))
+                if (IsNotEnabled(CustomComboPreset.BLM_AoE_Transpose) && ActionReady(Blizzard2) && TraitLevelChecked(Traits.AspectMasteryIII))
                     return OriginalHook(Blizzard2);
 
                 if (IsEnabled(CustomComboPreset.BLM_AoE_Transpose) &&
@@ -512,7 +550,7 @@ internal partial class BLM : Caster
             {
                 if ((CurMp == MP.MaxMP || TraitLevelChecked(Traits.EnhancedAstralFire)) && HasMaxUmbralHeartStacks)
                 {
-                    if (ActionReady(Fire2) && TraitLevelChecked(Traits.AspectMasteryIII))
+                    if (IsNotEnabled(CustomComboPreset.BLM_AoE_Transpose) && ActionReady(Fire2) && TraitLevelChecked(Traits.AspectMasteryIII))
                         return OriginalHook(Fire2);
 
                     if (IsEnabled(CustomComboPreset.BLM_AoE_Transpose) &&
