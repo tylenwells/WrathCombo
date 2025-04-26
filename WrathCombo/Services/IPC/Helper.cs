@@ -163,22 +163,22 @@ public partial class Helper(ref Leasing leasing)
         // Convert current job/class to a job, if it is a class
         var job = (Job)CustomComboFunctions.JobIDs.ClassToJob((uint)Player.Job);
 
+        // Get the user's settings for this job
         P.IPCSearch.CurrentJobComboStatesCategorized.TryGetValue(job,
             out var comboStates);
 
-        Logging.Log($"comboStates is null: {comboStates is null}, comboStates.Count is 0: {comboStates?.Count == 0}");
-
+        // Bail if there are no combos found for this job
         if (comboStates is null || comboStates.Count == 0)
             return null;
 
+        // Try to get the Simple Mode settings
         comboStates[mode]
             .TryGetValue(ComboSimplicityLevelKeys.Simple, out var simpleResults);
-
         var simpleHigher = simpleResults?.FirstOrDefault();
+        var simple = simpleHigher?.Value;
         #region Override the Values with any IPC-control
         CustomComboPreset? simpleComboPreset = simpleHigher is null ? null : (CustomComboPreset)
             Enum.Parse(typeof(CustomComboPreset), simpleHigher.Value.Key, true);
-        var simple = simpleHigher?.Value;
         if (simpleComboPreset is not null)
         {
             simple[ComboStateKeys.AutoMode] =
@@ -189,6 +189,7 @@ public partial class Helper(ref Leasing leasing)
         }
         #endregion
 
+        // Get the Advanced Mode settings
         var (advancedKey, advancedValue) = comboStates[mode][ComboSimplicityLevelKeys.Advanced].First();
         #region Override the Values with any IPC-control
         var advancedComboPreset = (CustomComboPreset)
@@ -210,6 +211,7 @@ public partial class Helper(ref Leasing leasing)
                 : null;
         }
 
+        // Check for either Simple or Advanced being ready
         return simple is not null && simple[enabledStateToCheck]
             ? ComboSimplicityLevelKeys.Simple
             : advancedValue[enabledStateToCheck]
