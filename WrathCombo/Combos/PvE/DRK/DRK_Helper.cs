@@ -57,6 +57,8 @@ internal partial class DRK
 
     #region Burst Phase
 
+    #region Variables
+
     /// When the current burst phase is set to truly start.
     private static long burstStartTime;
 
@@ -73,7 +75,7 @@ internal partial class DRK
     {
         get
         {
-            // Only run every 1 seconds at most
+            // Only run every 1 seconds at most (should be every other burst check)
             if ((DateTime.Now - lastBuffCheck).TotalSeconds < 1)
                 return field;
 
@@ -90,6 +92,7 @@ internal partial class DRK
                     BuffRemainingTime(RDM.Buffs.Embolden) > 0 ||
                     BuffRemainingTime(RDM.Buffs.EmboldenOthers) > 0 ||
                     BuffRemainingTime(PCT.Buffs.StarryMuse) > 0;
+
             lastBuffCheck = DateTime.Now;
             return field;
 
@@ -103,6 +106,8 @@ internal partial class DRK
 
     /// The last time burst phase was checked for.
     private static DateTime lastBurstCheck = DateTime.MinValue;
+
+    #endregion
 
     /// <summary>
     /// Whether the DRK is in an even-minute Burst phase.
