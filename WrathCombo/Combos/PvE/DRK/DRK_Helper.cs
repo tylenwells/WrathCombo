@@ -859,11 +859,13 @@ internal partial class DRK
         {
             if (ComboTimer > 0 && ComboTimer < GCD * 2) return false;
 
-            #region Variables
+            #region Variables and readiness bails
 
             var bloodGCDReady =
                 LevelChecked(Bloodspiller) &&
                 GetCooldownRemainingTime(Bloodspiller) < GCD;
+
+            if (!bloodGCDReady) return false;
 
             #endregion
 
@@ -874,8 +876,7 @@ internal partial class DRK
                    IsEnabled(Preset.DRK_ST_Sp_ScarletChain)) ||
                   (flags.HasFlag(Combo.AoE) &&
                   IsEnabled(Preset.DRK_AoE_Sp_ImpalementChain))) &&
-                HasStatusEffect(Buffs.EnhancedDelirium) &&
-                bloodGCDReady)
+                HasStatusEffect(Buffs.EnhancedDelirium))
                 if (flags.HasFlag(Combo.ST))
                     return (action = OriginalHook(Bloodspiller)) != 0;
                 else if (flags.HasFlag(Combo.AoE))
@@ -890,8 +891,7 @@ internal partial class DRK
                   IsEnabled(Preset.DRK_AoE_Sp_Quietus)) ||
                  (flags.HasFlag(Combo.ST) &&
                   IsEnabled(Preset.DRK_ST_Sp_Bloodspiller))) &&
-                GetStatusEffectStacks(Buffs.Delirium) > 0 &&
-                bloodGCDReady)
+                GetStatusEffectStacks(Buffs.Delirium) > 0)
                 if (flags.HasFlag(Combo.ST))
                     return (action = OriginalHook(Bloodspiller)) != 0;
                 else if (flags.HasFlag(Combo.AoE))
@@ -907,8 +907,7 @@ internal partial class DRK
                   IsEnabled(Preset.DRK_ST_CD_Delirium))) &&
                 LevelChecked(Delirium) &&
                 Gauge.Blood >= 70 &&
-                Cooldown.ShouldDeliriumNext &&
-                bloodGCDReady)
+                Cooldown.ShouldDeliriumNext)
                 return (action = Bloodspiller) != 0;
 
             #endregion
@@ -921,8 +920,7 @@ internal partial class DRK
                  (flags.HasFlag(Combo.ST) &&
                   IsEnabled(Preset.DRK_ST_Sp_Bloodspiller))) &&
                 Gauge.Blood >= 50 &&
-                (GetCooldownRemainingTime(Delirium) > 37 || IsBursting) &&
-                bloodGCDReady)
+                (GetCooldownRemainingTime(Delirium) > 37 || IsBursting))
                 if (flags.HasFlag(Combo.ST))
                     return (action = Bloodspiller) != 0;
                 else if (flags.HasFlag(Combo.AoE) && LevelChecked(Quietus))
@@ -951,7 +949,6 @@ internal partial class DRK
                   (flags.HasFlag(Combo.AoE) &&
                   IsEnabled(Preset.DRK_AoE_Sp_BloodOvercap))) &&
                 Gauge.Blood >= overcapThreshold &&
-                bloodGCDReady &&
                 beforeSouleater)
                 if (flags.HasFlag(Combo.ST))
                     return (action = Bloodspiller) != 0;
