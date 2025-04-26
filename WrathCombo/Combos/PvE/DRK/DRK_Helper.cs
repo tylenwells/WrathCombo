@@ -131,10 +131,10 @@ internal partial class DRK
             return field;
 
             // Just a shorter name for the methods
-            double TargetBuffRemainingTime(ushort statusId) =>
-                GetStatusEffectRemainingTime(statusId, CurrentTarget, anyOwner:true);
-            double BuffRemainingTime(ushort statusId) =>
-                GetStatusEffectRemainingTime(statusId, anyOwner:true);
+            double TargetBuffRemainingTime(ushort buff) =>
+                GetStatusEffectRemainingTime(buff, CurrentTarget, anyOwner:true);
+            double BuffRemainingTime(ushort buff) =>
+                GetStatusEffectRemainingTime(buff, anyOwner:true);
         }
     }
 
