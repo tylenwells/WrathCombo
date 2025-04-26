@@ -79,14 +79,14 @@ internal partial class DRK
 
             // Other jobs' buffs to skip the 4s delay to burst
             var HasOtherJobsBuffs =
-                GetBuffRemainingTime(MNK.Buffs.Brotherhood, false) > 0 ||
-                GetBuffRemainingTime(RPR.Buffs.ArcaneCircle, false) > 0 ||
-                GetBuffRemainingTime(BRD.Buffs.BattleVoice, false) > 0 ||
-                GetBuffRemainingTime(DNC.Buffs.TechnicalFinish, false) > 0 ||
-                GetBuffRemainingTime(SMN.Buffs.SearingLight, false) > 0 ||
-                GetBuffRemainingTime(RDM.Buffs.Embolden, false) > 0 ||
-                GetBuffRemainingTime(RDM.Buffs.EmboldenOthers, false) > 0 ||
-                GetBuffRemainingTime(PCT.Buffs.StarryMuse, false) > 0;
+                BuffRemainingTime(MNK.Buffs.Brotherhood) > 0 ||
+                BuffRemainingTime(RPR.Buffs.ArcaneCircle) > 0 ||
+                BuffRemainingTime(BRD.Buffs.BattleVoice) > 0 ||
+                BuffRemainingTime(DNC.Buffs.TechnicalFinish) > 0 ||
+                BuffRemainingTime(SMN.Buffs.SearingLight) > 0 ||
+                BuffRemainingTime(RDM.Buffs.Embolden) > 0 ||
+                BuffRemainingTime(RDM.Buffs.EmboldenOthers) > 0 ||
+                BuffRemainingTime(PCT.Buffs.StarryMuse) > 0;
 
             // Fallback resetting of burst
             if (GetCooldownRemainingTime(LivingShadow) < 2 || !InCombat())
@@ -124,6 +124,10 @@ internal partial class DRK
 
             lastBurstCheck = DateTime.Now;
             return field;
+
+            // Just a shorter name for the method
+            double BuffRemainingTime(ushort statusId) =>
+                GetStatusEffectRemainingTime(statusId, anyOwner:true);
         }
     }
 
