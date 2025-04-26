@@ -79,6 +79,11 @@ internal partial class DRK
 
             // Other jobs' buffs to skip the 4s delay to burst
             var HasOtherJobsBuffs =
+                TargetBuffRemainingTime(SCH.Debuffs.ChainStratagem) > 0 ||
+                BuffRemainingTime(AST.Buffs.Divination) > 0 ||
+                BuffRemainingTime(DRG.Buffs.BattleLitany) > 0 ||
+                TargetBuffRemainingTime(NIN.Debuffs.Mug) > 0 ||
+                TargetBuffRemainingTime(NIN.Debuffs.Dokumori) > 0 ||
                 BuffRemainingTime(MNK.Buffs.Brotherhood) > 0 ||
                 BuffRemainingTime(RPR.Buffs.ArcaneCircle) > 0 ||
                 BuffRemainingTime(BRD.Buffs.BattleVoice) > 0 ||
@@ -125,7 +130,9 @@ internal partial class DRK
             lastBurstCheck = DateTime.Now;
             return field;
 
-            // Just a shorter name for the method
+            // Just a shorter name for the methods
+            double TargetBuffRemainingTime(ushort statusId) =>
+                GetStatusEffectRemainingTime(statusId, CurrentTarget, anyOwner:true);
             double BuffRemainingTime(ushort statusId) =>
                 GetStatusEffectRemainingTime(statusId, anyOwner:true);
         }
