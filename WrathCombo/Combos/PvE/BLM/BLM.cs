@@ -222,7 +222,8 @@ internal partial class BLM : Caster
 
                     if (IsEnabled(CustomComboPreset.BLM_ST_Triplecast) &&
                         ActionReady(Triplecast) && IsOnCooldown(Role.Swiftcast) &&
-                        GetRemainingCharges(Triplecast) > Config.BLM_ST_Triplecast_UseCharges &&
+                        (GetRemainingCharges(Triplecast) is 2 && Config.BLM_ST_Triplecast_UseCharges == 1 ||
+                         HasCharges(Triplecast) && Config.BLM_ST_Triplecast_UseCharges == 2) &&
                         JustUsed(Despair) && !ActionReady(Manafont) &&
                         !HasStatusEffect(Buffs.Triplecast) && !HasStatusEffect(Buffs.LeyLines))
                         return Triplecast;

@@ -28,10 +28,12 @@ internal partial class BLM
             switch (preset)
             {
                 case CustomComboPreset.BLM_ST_Opener:
-                    DrawHorizontalRadioButton(BLM_SelectedOpener, "Standard opener", "Uses Standard opener",
+                    DrawHorizontalRadioButton(BLM_SelectedOpener,
+                        "Standard opener", "Uses Standard opener",
                         0);
 
-                    DrawHorizontalRadioButton(BLM_SelectedOpener, $"{Flare.ActionName()} opener", $"Uses {Flare.ActionName()} opener",
+                    DrawHorizontalRadioButton(BLM_SelectedOpener, 
+                        $"{Flare.ActionName()} opener", $"Uses {Flare.ActionName()} opener",
                         1);
 
                     DrawBossOnlyChoice(BLM_Balance_Content);
@@ -44,7 +46,8 @@ internal partial class BLM
                     break;
 
                 case CustomComboPreset.BLM_ST_Triplecast:
-                    DrawSliderInt(1, 2, BLM_ST_Triplecast_UseCharges, $"How many charges of {Triplecast.ActionName()} to use?");
+                    DrawSliderInt(1, 2, BLM_ST_Triplecast_UseCharges,
+                        $"How many charges of {Triplecast.ActionName()} to use?");
                     break;
 
                 case CustomComboPreset.BLM_ST_Movement:
@@ -74,7 +77,8 @@ internal partial class BLM
                     break;
 
                 case CustomComboPreset.BLM_AoE_Triplecast:
-                    DrawSliderInt(0, 1, BLM_AoE_Triplecast_HoldCharges, $"How many charges of {Triplecast.ActionName()} to keep ready? (0 = Use all)");
+                    DrawSliderInt(0, 1, BLM_AoE_Triplecast_HoldCharges, 
+                        $"How many charges of {Triplecast.ActionName()} to keep ready? (0 = Use all)");
                     break;
 
                 case CustomComboPreset.BLM_AoE_Thunder:
@@ -84,12 +88,14 @@ internal partial class BLM
                     break;
 
                 case CustomComboPreset.BLM_Variant_Cure:
-                    DrawSliderInt(1, 100, BLM_VariantCure, "HP% to be at or under", 200);
+                    DrawSliderInt(1, 100, BLM_VariantCure,
+                        "HP% to be at or under", 200);
 
                     break;
 
                 case CustomComboPreset.BLM_Variant_Rampart:
-                    DrawSliderInt(1, 100, BLM_VariantRampart, "HP% to be at or under", 200);
+                    DrawSliderInt(1, 100, BLM_VariantRampart,
+                        "HP% to be at or under", 200);
 
                     break;
             }
