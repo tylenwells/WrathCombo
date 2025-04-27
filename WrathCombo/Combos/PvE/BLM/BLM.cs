@@ -76,7 +76,9 @@ internal partial class BLM : Caster
 
                 if (ActionReady(Paradox) &&
                     Gauge.InAstralFire && Gauge.IsParadoxActive &&
-                    !HasStatusEffect(Buffs.Firestarter))
+                    !HasStatusEffect(Buffs.Firestarter) &&
+                    !HasStatusEffect(Buffs.Triplecast) &&
+                    !HasStatusEffect(Role.Buffs.Swiftcast))
                     return Paradox;
 
                 if (ActionReady(Role.Swiftcast) && !HasStatusEffect(Buffs.Triplecast))
@@ -100,6 +102,7 @@ internal partial class BLM : Caster
                 //        : Foul;
 
                 if (Gauge.IsParadoxActive && !HasStatusEffect(Buffs.Firestarter) &&
+                    !HasStatusEffect(Buffs.Triplecast) && !HasStatusEffect(Role.Buffs.Swiftcast) &&
                     (Gauge.AstralFireStacks < 3 ||
                      JustUsed(FlareStar, 5) ||
                      !LevelChecked(FlareStar) && ActionReady(Despair)))
@@ -110,7 +113,8 @@ internal partial class BLM : Caster
 
                 if ((LevelChecked(Paradox) && HasStatusEffect(Buffs.Firestarter) ||
                      TimeSinceFirestarterBuff >= 2) && Gauge.AstralFireStacks < 3 ||
-                    !Fire4.LevelChecked() && TimeSinceFirestarterBuff >= 2 && ActionReady(Fire3))
+                    !Fire4.LevelChecked() && TimeSinceFirestarterBuff >= 2 && ActionReady(Fire3) &&
+                    !HasStatusEffect(Buffs.Triplecast) && !HasStatusEffect(Role.Buffs.Swiftcast))
                     return Fire3;
 
                 if (ActionReady(FireSpam) && (LevelChecked(Despair) && CurMp - MP.FireI >= 800 || !LevelChecked(Despair)))
@@ -218,7 +222,7 @@ internal partial class BLM : Caster
 
                     if (IsEnabled(CustomComboPreset.BLM_ST_Triplecast) &&
                         ActionReady(Triplecast) && IsOnCooldown(Role.Swiftcast) &&
-                        GetRemainingCharges(Triplecast) >= Config.BLM_ST_Triplecast_UseCharges &&
+                        GetRemainingCharges(Triplecast) > Config.BLM_ST_Triplecast_UseCharges &&
                         JustUsed(Despair) && !ActionReady(Manafont) &&
                         !HasStatusEffect(Buffs.Triplecast) && !HasStatusEffect(Buffs.LeyLines))
                         return Triplecast;
@@ -275,7 +279,9 @@ internal partial class BLM : Caster
                 if (Config.BLM_ST_MovementOption[1] &&
                     ActionReady(Paradox) &&
                     Gauge.InAstralFire && Gauge.IsParadoxActive &&
-                    !HasStatusEffect(Buffs.Firestarter))
+                    !HasStatusEffect(Buffs.Firestarter) &&
+                    !HasStatusEffect(Buffs.Triplecast) &&
+                    !HasStatusEffect(Role.Buffs.Swiftcast))
                     return Paradox;
 
                 if (Config.BLM_ST_MovementOption[2] &&
@@ -303,6 +309,8 @@ internal partial class BLM : Caster
                 //        : Foul;
 
                 if (Gauge.IsParadoxActive && !HasStatusEffect(Buffs.Firestarter) &&
+                    !HasStatusEffect(Buffs.Triplecast) &&
+                    !HasStatusEffect(Role.Buffs.Swiftcast) &&
                     (Gauge.AstralFireStacks < 3 ||
                      JustUsed(FlareStar, 5) ||
                      !LevelChecked(FlareStar) && ActionReady(Despair)))
@@ -314,7 +322,8 @@ internal partial class BLM : Caster
 
                 if ((LevelChecked(Paradox) && HasStatusEffect(Buffs.Firestarter) ||
                      TimeSinceFirestarterBuff >= 2) && Gauge.AstralFireStacks < 3 ||
-                    !Fire4.LevelChecked() && TimeSinceFirestarterBuff >= 2 && ActionReady(Fire3))
+                    !Fire4.LevelChecked() && TimeSinceFirestarterBuff >= 2 && ActionReady(Fire3) &&
+                    !HasStatusEffect(Buffs.Triplecast) && !HasStatusEffect(Role.Buffs.Swiftcast))
                     return Fire3;
 
                 if (ActionReady(FireSpam) && (LevelChecked(Despair) && CurMp - MP.FireI >= 800 || !LevelChecked(Despair)))
