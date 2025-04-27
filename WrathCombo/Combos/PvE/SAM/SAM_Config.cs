@@ -45,7 +45,8 @@ internal partial class SAM
                 case CustomComboPreset.SAM_ST_Opener:
                     DrawBossOnlyChoice(SAM_Balance_Content);
                     ImGui.NewLine();
-                    DrawSliderInt(0, 13, SAM_Opener_PrePullDelay, $"Delay from first {MeikyoShisui.ActionName()} to next step. (seconds)\nDelay is enforced by replacing your button with Savage Blade.");
+                    DrawSliderInt(0, 13, SAM_Opener_PrePullDelay,
+                        $"Delay from first {MeikyoShisui.ActionName()} to next step. (seconds)\nDelay is enforced by replacing your button with Savage Blade.");
                     break;
 
                 case CustomComboPreset.SAM_ST_CDs_Iaijutsu:
@@ -61,12 +62,10 @@ internal partial class SAM
 
                         ImGui.Indent();
                         DrawHorizontalRadioButton(SAM_ST_Higanbana_Suboption,
-                            "All Enemies",
-                            $"Uses {Higanbana.ActionName()} regardless of targeted enemy type.", 0);
+                            "All Enemies", $"Uses {Higanbana.ActionName()} regardless of targeted enemy type.", 0);
 
                         DrawHorizontalRadioButton(SAM_ST_Higanbana_Suboption,
-                            "Bosses Only",
-                            $"Only uses {Higanbana.ActionName()} when the targeted enemy is a boss.", 1);
+                            "Bosses Only", $"Only uses {Higanbana.ActionName()} when the targeted enemy is a boss.", 1);
                         ImGui.Unindent();
                     }
 
@@ -93,7 +92,9 @@ internal partial class SAM
                 case CustomComboPreset.SAM_ST_Shinten:
                     DrawSliderInt(25, 85, SAM_ST_KenkiOvercapAmount,
                         "Set the Kenki overcap amount for ST combos.");
-                    DrawSliderInt(0, 100, SAM_ST_ExecuteThreshold, "HP percent threshold to not save Kenki");
+                    
+                    DrawSliderInt(0, 100, SAM_ST_ExecuteThreshold, 
+                        "HP percent threshold to not save Kenki");
 
                     break;
 
@@ -104,66 +105,67 @@ internal partial class SAM
                     break;
 
                 case CustomComboPreset.SAM_Variant_Cure:
-                    DrawSliderInt(1, 100, SAM_VariantCure, "HP% to be at or under", 200);
+                    DrawSliderInt(1, 100, SAM_VariantCure, 
+                        "HP% to be at or under", 200);
 
                     break;
 
                 case CustomComboPreset.SAM_ST_GekkoCombo:
                 {
-                    DrawAdditionalBoolChoice(SAM_Gekko_KenkiOvercap, "Kenki Overcap Protection",
-                        "Spends Kenki when at the set value or above.");
+                    DrawAdditionalBoolChoice(SAM_Gekko_KenkiOvercap,
+                        "Kenki Overcap Protection", "Spends Kenki when at the set value or above.");
 
                     if (SAM_Gekko_KenkiOvercap)
-                        DrawSliderInt(25, 100, SAM_Gekko_KenkiOvercapAmount, "Kenki Amount",
-                            sliderIncrement: SliderIncrements.Fives);
+                        DrawSliderInt(25, 100, SAM_Gekko_KenkiOvercapAmount,
+                            "Kenki Amount", sliderIncrement: SliderIncrements.Fives);
 
                     break;
                 }
 
                 case CustomComboPreset.SAM_ST_KashaCombo:
                 {
-                    DrawAdditionalBoolChoice(SAM_Kasha_KenkiOvercap, "Kenki Overcap Protection",
-                        "Spends Kenki when at the set value or above.");
+                    DrawAdditionalBoolChoice(SAM_Kasha_KenkiOvercap,
+                        "Kenki Overcap Protection", "Spends Kenki when at the set value or above.");
 
                     if (SAM_Kasha_KenkiOvercap)
-                        DrawSliderInt(25, 100, SAM_Kasha_KenkiOvercapAmount, "Kenki Amount",
-                            sliderIncrement: SliderIncrements.Fives);
+                        DrawSliderInt(25, 100, SAM_Kasha_KenkiOvercapAmount,
+                            "Kenki Amount", sliderIncrement: SliderIncrements.Fives);
 
                     break;
                 }
 
                 case CustomComboPreset.SAM_ST_YukikazeCombo:
                 {
-                    DrawAdditionalBoolChoice(SAM_Yukaze_KenkiOvercap, "Kenki Overcap Protection",
-                        "Spends Kenki when at the set value or above.");
+                    DrawAdditionalBoolChoice(SAM_Yukaze_KenkiOvercap,
+                        "Kenki Overcap Protection", "Spends Kenki when at the set value or above.");
 
                     if (SAM_Yukaze_KenkiOvercap)
-                        DrawSliderInt(25, 100, SAM_Yukaze_KenkiOvercapAmount, "Kenki Amount",
-                            sliderIncrement: SliderIncrements.Fives);
+                        DrawSliderInt(25, 100, SAM_Yukaze_KenkiOvercapAmount,
+                            "Kenki Amount", sliderIncrement: SliderIncrements.Fives);
 
                     break;
                 }
 
                 case CustomComboPreset.SAM_AoE_OkaCombo:
                 {
-                    DrawAdditionalBoolChoice(SAM_Oka_KenkiOvercap, "Kenki Overcap Protection",
-                        "Spends Kenki when at the set value or above.");
+                    DrawAdditionalBoolChoice(SAM_Oka_KenkiOvercap,
+                        "Kenki Overcap Protection", "Spends Kenki when at the set value or above.");
 
                     if (SAM_Oka_KenkiOvercap)
-                        DrawSliderInt(25, 100, SAM_Oka_KenkiOvercapAmount, "Kenki Amount",
-                            sliderIncrement: SliderIncrements.Fives);
+                        DrawSliderInt(25, 100, SAM_Oka_KenkiOvercapAmount,
+                            "Kenki Amount", sliderIncrement: SliderIncrements.Fives);
 
                     break;
                 }
 
                 case CustomComboPreset.SAM_AoE_MangetsuCombo:
                 {
-                    DrawAdditionalBoolChoice(SAM_Mangetsu_KenkiOvercap, "Kenki Overcap Protection",
-                        "Spends Kenki when at the set value or above.");
+                    DrawAdditionalBoolChoice(SAM_Mangetsu_KenkiOvercap, 
+                        "Kenki Overcap Protection", "Spends Kenki when at the set value or above.");
 
                     if (SAM_Mangetsu_KenkiOvercap)
-                        DrawSliderInt(25, 100, SAM_Mangetsu_KenkiOvercapAmount, "Kenki Amount",
-                            sliderIncrement: SliderIncrements.Fives);
+                        DrawSliderInt(25, 100, SAM_Mangetsu_KenkiOvercapAmount, 
+                            "Kenki Amount", sliderIncrement: SliderIncrements.Fives);
 
                     break;
                 }
