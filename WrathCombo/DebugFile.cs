@@ -496,6 +496,7 @@ public static class DebugFile
         AddLine("END REDUNDANT IDS");
     }
 
+    /// Get the debug code by itself.
     public static string GetDebugCode()
     {
         var bytes = Encoding.UTF8.GetBytes(
