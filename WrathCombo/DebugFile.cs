@@ -95,8 +95,7 @@ public static class DebugFile
             job = Svc.ClientState.LocalPlayer.ClassJob.Value;
         }
 
-        using (_file = new StreamWriter(
-                   GetDebugFilePath(), append: false))
+        using (_file = new StreamWriter(GetDebugFilePath(), append: false))
         {
             AddLine("START DEBUG LOG");
             AddLine();
