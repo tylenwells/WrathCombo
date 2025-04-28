@@ -56,7 +56,13 @@ public static class DebugFile
     /// <summary>
     /// List of many things the user has done in the current session (Toggles, config changes etc.)
     /// </summary>
-    internal static List<string> DebugLog = new();
+    internal static List<string> DebugLog = [];
+
+    /// Get the path to the debug file.
+    public static string GetDebugFilePath() {
+        var separator = DesktopPath?.Contains('\\') == true ? "\\" : "/";
+        return $"{DesktopPath}{separator}WrathDebug.txt";
+    }
 
     /// <summary>
     ///     Makes a debug file on the desktop.
@@ -90,7 +96,7 @@ public static class DebugFile
         }
 
         using (_file = new StreamWriter(
-                   $"{DesktopPath}/WrathDebug.txt", append: false))
+                   GetDebugFilePath(), append: false))
         {
             AddLine("START DEBUG LOG");
             AddLine();
@@ -125,7 +131,8 @@ public static class DebugFile
             DuoLog.Information(
                 "WrathDebug.txt created on your desktop, for " +
                 (job is null ? "all jobs" : job.Value.Abbreviation.ToString()) +
-                ". Upload this file where requested.");
+                ". Upload this file where requested." +
+                "If you're unsure of where the file was created, use /wrath debug path");
         }
     }
 
@@ -489,12 +496,17 @@ public static class DebugFile
         AddLine("END REDUNDANT IDS");
     }
 
+    public static string GetDebugCode()
+    {
+        var bytes = Encoding.UTF8.GetBytes(
+            JsonConvert.SerializeObject(Service.Configuration));
+        return Convert.ToBase64String(bytes);
+    }
+
     private static void AddDebugCode()
     {
         AddLine("START DEBUG CODE");
-        var b64 = Encoding.UTF8
-            .GetBytes(JsonConvert.SerializeObject(Service.Configuration));
-        AddLine(Convert.ToBase64String(b64));
+        AddLine(GetDebugCode());
         AddLine("END DEBUG CODE");
     }
 
