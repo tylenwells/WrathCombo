@@ -61,7 +61,7 @@ internal partial class AST : Healer
             if (InCombat())
             {
                 //Variant stuff
-                if (Variant.CanSpiritDart(CustomComboPreset.AST_Variant_Rampart))
+                if (Variant.CanRampart(CustomComboPreset.AST_Variant_Rampart))
                     return Variant.Rampart;
 
                 if (Variant.CanSpiritDart(CustomComboPreset.AST_Variant_SpiritDart) && HasBattleTarget())
