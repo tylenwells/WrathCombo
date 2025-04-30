@@ -50,17 +50,18 @@ internal partial class DRK : Tank
 
             const Combo comboFlags = Combo.ST | Combo.Adv;
             var newAction = HardSlash;
+            _ = IsBursting;
 
             // Unmend Option
-            if (IsEnabled(CustomComboPreset.DRK_ST_RangedUptime)
-                && LevelChecked(Unmend)
-                && !InMeleeRange()
-                && HasBattleTarget())
+            if (IsEnabled(CustomComboPreset.DRK_ST_RangedUptime) &&
+                ActionReady(Unmend) &&
+                !InMeleeRange() &&
+                HasBattleTarget())
                 return Unmend;
 
             // Opener
-            if (IsEnabled(CustomComboPreset.DRK_ST_BalanceOpener)
-                && Opener().FullOpener(ref actionID))
+            if (IsEnabled(CustomComboPreset.DRK_ST_BalanceOpener) &&
+                Opener().FullOpener(ref actionID))
             {
                 handleEdgeCasts(Opener().CurrentOpenerAction, ref actionID,
                 [
@@ -78,20 +79,12 @@ internal partial class DRK : Tank
             if (TryGetAction<VariantAction>(comboFlags, ref newAction))
                 return newAction;
 
-            var cdBossRequirement =
-                (int)Config.DRK_ST_CDsBossRequirement ==
-                (int)Config.BossRequirement.On;
-            if (IsEnabled(CustomComboPreset.DRK_ST_CDs) &&
-                ((cdBossRequirement && InBossEncounter()) ||
-                 !cdBossRequirement) &&
-                TryGetAction<Cooldown>(comboFlags, ref newAction))
-                return newAction;
-
             var inMitigationContent =
                 ContentCheck.IsInConfiguredContent(
                     Config.DRK_ST_MitDifficulty,
                     Config.DRK_ST_MitDifficultyListSet
                 );
+
             if (IsEnabled(CustomComboPreset.DRK_ST_Mitigation) &&
                 inMitigationContent &&
                 TryGetAction<Mitigation>(comboFlags, ref newAction))
@@ -99,6 +92,15 @@ internal partial class DRK : Tank
 
             if (IsEnabled(CustomComboPreset.DRK_ST_Spenders) &&
                 TryGetAction<Spender>(comboFlags, ref newAction))
+                return newAction;
+
+            var cdBossRequirement =
+                (int)Config.DRK_ST_CDsBossRequirement ==
+                (int)Config.BossRequirement.On;
+            if (IsEnabled(CustomComboPreset.DRK_ST_CDs) &&
+                ((cdBossRequirement && InBossEncounter()) ||
+                 !cdBossRequirement) &&
+                TryGetAction<Cooldown>(comboFlags, ref newAction))
                 return newAction;
 
             if (TryGetAction<Core>(comboFlags, ref newAction))
@@ -120,6 +122,7 @@ internal partial class DRK : Tank
 
             const Combo comboFlags = Combo.ST | Combo.Simple;
             var newAction = HardSlash;
+            _ = IsBursting;
 
             // Unmend Option
             if (ActionReady(Unmend) &&
@@ -133,13 +136,13 @@ internal partial class DRK : Tank
             if (TryGetAction<VariantAction>(comboFlags, ref newAction))
                 return newAction;
 
-            if (TryGetAction<Cooldown>(comboFlags, ref newAction))
-                return newAction;
-
             if (TryGetAction<Mitigation>(comboFlags, ref newAction))
                 return newAction;
 
             if (TryGetAction<Spender>(comboFlags, ref newAction))
+                return newAction;
+
+            if (TryGetAction<Cooldown>(comboFlags, ref newAction))
                 return newAction;
 
             if (TryGetAction<Core>(comboFlags, ref newAction))

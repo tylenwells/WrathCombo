@@ -188,9 +188,18 @@ public enum CustomComboPreset
         AST.JobID)]
     AST_DPS_AutoPlay = 1037,
 
+    [ParentCombo(AST_DPS_AutoPlay)]
+    [CustomComboInfo("Card Play Pooling Option", "Pools your dps cards for the Divination window",
+        AST.JobID)]
+    AST_DPS_CardPool = 1055,
+
     [ParentCombo(AST_ST_DPS)]
     [CustomComboInfo("Lord of Crowns Weave Option", "Adds Lord Of Crowns", AST.JobID)]
     AST_DPS_LazyLord = 1014,
+
+    [ParentCombo(AST_DPS_LazyLord)]
+    [CustomComboInfo("Lord of Crowns Pooling Option", "Holds Lord of Crowns for the Divination window", AST.JobID)]
+    AST_DPS_LordPool = 1056,
 
     [ParentCombo(AST_ST_DPS)]
     [CustomComboInfo("Oracle Option", "Adds Oracle after Divination", AST.JobID)]
@@ -232,9 +241,18 @@ public enum CustomComboPreset
         AST.JobID)]
     AST_AOE_AutoPlay = 1045,
 
+    [ParentCombo(AST_AOE_AutoPlay)]
+    [CustomComboInfo("Card Play Pooling Option", "Pools your dps cards for the Divination window",
+        AST.JobID)]
+    AST_AOE_CardPool = 1057,
+
     [ParentCombo(AST_AOE_DPS)]
     [CustomComboInfo("Lord of Crowns Weave Option", "Adds Lord Of Crowns", AST.JobID)]
     AST_AOE_LazyLord = 1046,
+
+    [ParentCombo(AST_AOE_LazyLord)]
+    [CustomComboInfo("Lord of Crowns Pooling Option", "Holds Lord of Crowns for the Divination window", AST.JobID)]
+    AST_AOE_LordPool = 1058,
 
     [ParentCombo(AST_AOE_DPS)]
     [CustomComboInfo("Oracle Option", "Adds Oracle after Divination", AST.JobID)]
@@ -357,7 +375,7 @@ public enum CustomComboPreset
 
     #endregion
 
-    // Last value = 1054
+    // Last value = 1058
 
     #endregion
 
@@ -422,6 +440,10 @@ public enum CustomComboPreset
     [ParentCombo(BLM_ST_AdvancedMode)]
     [CustomComboInfo("Swiftcast Option", "Add Swiftcast to the rotation.", BLM.JobID)]
     BLM_ST_Swiftcast = 2106,
+
+    [ParentCombo(BLM_ST_AdvancedMode)]
+    [CustomComboInfo("Triplecast Option", "Add Triplecast to the rotation.\nWill only be used if Swiftcast is on cooldown.", BLM.JobID)]
+    BLM_ST_Triplecast = 2115,
     
     [ParentCombo(BLM_ST_AdvancedMode)]
     [CustomComboInfo("Foul/Xenoglossy Option", "Add Foul/Xenoglossy to the rotation.", BLM.JobID)]
@@ -430,7 +452,7 @@ public enum CustomComboPreset
     [ParentCombo(BLM_ST_AdvancedMode)]
     [CustomComboInfo("Movement Option", "Add chosen options for movement.", BLM.JobID)]
     BLM_ST_Movement = 2113,
-    
+
     #endregion
 
     #region AoE - Advanced
@@ -468,7 +490,7 @@ public enum CustomComboPreset
     [ParentCombo(BLM_AoE_AdvancedMode)]
     [CustomComboInfo("(High) Thunder II Option", "Add (High) Thunder II to the rotation.", BLM.JobID)]
     BLM_AoE_Thunder = 2209,
-    
+
     [ParentCombo(BLM_AoE_AdvancedMode)]
     [CustomComboInfo("Foul Option", "Add Foul to the rotation.", BLM.JobID)]
     BLM_AoE_UsePolyglot = 2203,
@@ -476,7 +498,7 @@ public enum CustomComboPreset
     [ParentCombo(BLM_AoE_AdvancedMode)]
     [CustomComboInfo("Blizzard IV on 2 Targets Option", "Substitutes Freeze for Blizzard 4 whenever it would hit 2 targets.", BLM.JobID)]
     BLM_AoE_Blizzard4Sub = 2211,
-    
+
     #endregion
 
     #region Variant
@@ -546,7 +568,7 @@ public enum CustomComboPreset
 
     #endregion
 
-    // Last value ST = 2114
+    // Last value ST = 2115
     //Last Value AoE = 2212
     //Last Value misc = 2060
 
@@ -876,6 +898,14 @@ public enum CustomComboPreset
     [ParentCombo(BRD_AoE_AdvMode)]
     [CustomComboInfo("Interrupt Option", "Uses interrupt during the rotation if applicable.", BRD.JobID)]
     BRD_AoE_Adv_Interrupt = 3043,
+
+    [ParentCombo(BRD_AoE_AdvMode)]
+    [CustomComboInfo("Encore Option", "Adds Radiant Encore to the Rotation after Finale.", BRD.JobID)]
+    BRD_AoE_BuffsEncore = 3062,
+
+    [ParentCombo(BRD_AoE_AdvMode)]
+    [CustomComboInfo("Resonant Option", "Adds Resonant Arrow to the Rotation after Barrage.", BRD.JobID)]
+    BRD_AoE_BuffsResonant = 3061,
 
     [ParentCombo(BRD_AoE_AdvMode)]
     [CustomComboInfo("Apex Arrow Option", "Adds Apex Arrow and Blast shot", BRD.JobID)]
@@ -1565,7 +1595,7 @@ public enum CustomComboPreset
 
     [ParentCombo(DRK_ST_Spenders)]
     [CustomComboInfo("Blood Gauge Overcap Option",
-        "Adds Bloodspiller to the rotation after Syphon Strike when the blood gauge is above the chosen threshold.", DRK.JobID)]
+        "Adds Bloodspiller to the rotation before Syphon Strike when the blood gauge is above the chosen threshold.", DRK.JobID)]
     DRK_ST_Sp_BloodOvercap = 5026,
 
     #endregion
@@ -1573,19 +1603,19 @@ public enum CustomComboPreset
     #region Mana
 
     [ParentCombo(DRK_ST_Spenders)]
-    [CustomComboInfo("Edge of Darkness Option", "Uses Edge of Darkness in burst windows, and outside of that will spend to chosen MP limit.", DRK.JobID)]
+    [CustomComboInfo("Edge of Darkness Option", "Uses Edge of Darkness in burst windows.", DRK.JobID)]
     DRK_ST_Sp_Edge = 5027,
 
     [ParentCombo(DRK_ST_Spenders)]
-    [CustomComboInfo("Dark Arts Drop Prevention", "Will spend Dark Arts if your own The Blackest Night shield is active on you.", DRK.JobID)]
+    [CustomComboInfo("Dark Arts Drop Prevention", "Will spend Dark Arts if your own The Blackest Night shield is active on you, except when saving for burst.", DRK.JobID)]
     DRK_ST_Sp_DarkArts = 5028,
 
     [ParentCombo(DRK_ST_Spenders)]
-    [CustomComboInfo("Darkside Maintenance Option", "Uses Edge of Darkness if Darkside is about to expire (<10s).", DRK.JobID)]
+    [CustomComboInfo("Darkside Maintenance Option", "Uses Edge of Darkness if Darkside is about to expire (<30s).", DRK.JobID)]
     DRK_ST_Sp_EdgeDarkside = 5029,
 
     [ParentCombo(DRK_ST_Spenders)]
-    [CustomComboInfo("Mana Overcap Option", "Uses Edge of Darkness if you are above 8,500 mana.", DRK.JobID)]
+    [CustomComboInfo("Mana Overcap Option", "Uses Edge of Darkness if you are at or above 9,400 mana, except when saving for burst.", DRK.JobID)]
     DRK_ST_Sp_ManaOvercap = 5030,
 
     #endregion
@@ -1730,7 +1760,7 @@ public enum CustomComboPreset
     DRK_AoE_Sp_Flood = 5065,
 
     [ParentCombo(DRK_AoE_Spenders)]
-    [CustomComboInfo("Mana Overcap Option", "Uses Flood of Shadow if you are above 8,500 mana.", DRK.JobID)]
+    [CustomComboInfo("Mana Overcap Option", "Uses Flood of Shadow if you are above 9,400 mana.", DRK.JobID)]
     DRK_AoE_Sp_ManaOvercap = 5066,
 
     #endregion
@@ -1760,7 +1790,7 @@ public enum CustomComboPreset
     DRK_AoE_Mit_Rampart = 5071,
 
     [ParentCombo(DRK_AoE_Mitigation)]
-    [CustomComboInfo("Arm's Length Option", "Adds Arm's Length to the rotation.", DRK.JobID)]
+    [CustomComboInfo("Arm's Length Option", "Adds Arm's Length to the rotation, when the set number of enemies are within range of you.", DRK.JobID)]
     DRK_AoE_Mit_ArmsLength = 5072,
 
     [ParentCombo(DRK_AoE_Mitigation)]
@@ -6101,7 +6131,7 @@ SMN.JobID)]
     [ConflictingCombos(VPR_ST_SimpleMode, VPR_AoE_SimpleMode, VPR_ST_AdvancedMode, VPR_AoE_AdvancedMode, VPR_Legacies, VPR_ST_BasicCombo)]
     [CustomComboInfo("Serpents Tail", "Replaces basic combo with Death Rattle or Last Lash when applicable.", VPR.JobID)]
     VPR_SerpentsTail = 30210,
-    
+
     #endregion
     
     //ST 30015
