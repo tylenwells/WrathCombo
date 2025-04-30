@@ -322,7 +322,7 @@ namespace WrathCombo.Window.Tabs
                     if (Player.Available)
                         DebugFile.MakeDebugFile();
                     else
-                        DebugFile.MakeDebugFile(allJobs:true);
+                        DebugFile.MakeDebugFile(allJobs: true);
                 }
 
                 ImGuiComponents.HelpMarker("Will generate a debug file on your desktop.\nUseful to give developers to help troubleshoot issues.\nThe same as using the following command: /wrath debug");

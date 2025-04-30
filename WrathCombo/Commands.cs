@@ -519,6 +519,23 @@ public partial class WrathCombo
             // Handle an entered job abbreviation
             if (argument.Length > 1)
             {
+                if (argument[1] == "path")
+                {
+                    DuoLog.Information(
+                        $"WrathDebug.txt should have been created at:\n" +
+                        $"{DebugFile.GetDebugFilePath()}");
+                    return;
+                }
+
+                if (argument[1] == "string")
+                {
+                    GenericHelpers.Copy(
+                        "```\n" + DebugFile.GetDebugCode() + "\n```");
+                    DuoLog.Information(
+                        "Debug string copied to clipboard. Paste this where requested.");
+                    return;
+                }
+
                 if (argument[1].Length != 3)
                 {
                     DuoLog.Error("Invalid job abbreviation");
