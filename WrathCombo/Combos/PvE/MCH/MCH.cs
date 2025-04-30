@@ -6,6 +6,28 @@ namespace WrathCombo.Combos.PvE;
 
 internal partial class MCH : PhysicalRanged
 {
+    internal class MCH_ST_BasicCombo : CustomCombo
+    {
+        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.MCH_ST_BasicCombo;
+
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not (CleanShot or HeatedCleanShot))
+                return actionID;
+
+            if (ComboTimer > 0)
+            {
+                if (ComboAction is SplitShot && LevelChecked(SlugShot))
+                    return OriginalHook(SlugShot);
+
+                if (ComboAction is SlugShot && LevelChecked(CleanShot))
+                    return OriginalHook(CleanShot);
+            }
+
+            return OriginalHook(SplitShot);
+        }
+    }
+
     internal class MCH_ST_SimpleMode : CustomCombo
     {
         protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.MCH_ST_SimpleMode;
@@ -130,14 +152,14 @@ internal partial class MCH : PhysicalRanged
             // 1-2-3 Combo
             if (ComboTimer > 0)
             {
-                if (ComboAction is SplitShot && LevelChecked(OriginalHook(SlugShot)))
+                if (ComboAction is SplitShot && LevelChecked(SlugShot))
                     return OriginalHook(SlugShot);
 
-                if (ComboAction == OriginalHook(SlugShot) &&
+                if (ComboAction is SlugShot &&
                     !LevelChecked(Drill) && !HasStatusEffect(Buffs.Reassembled) && ActionReady(Reassemble))
                     return Reassemble;
 
-                if (ComboAction is SlugShot && LevelChecked(OriginalHook(CleanShot)))
+                if (ComboAction is SlugShot && LevelChecked(CleanShot))
                     return OriginalHook(CleanShot);
             }
             return actionID;
@@ -160,9 +182,10 @@ internal partial class MCH : PhysicalRanged
                 return Variant.Rampart;
 
             // Opener
-            if (IsEnabled(CustomComboPreset.MCH_ST_Adv_Opener) && TargetIsHostile())
-                if (Opener().FullOpener(ref actionID))
-                    return actionID;
+            if (IsEnabled(CustomComboPreset.MCH_ST_Adv_Opener) &&
+                TargetIsHostile() && 
+                Opener().FullOpener(ref actionID))
+                return actionID;
 
             //Reassemble to start before combat
             if (IsEnabled(CustomComboPreset.MCH_ST_Adv_Reassemble) &&
@@ -299,15 +322,15 @@ internal partial class MCH : PhysicalRanged
             // 1-2-3 Combo
             if (ComboTimer > 0)
             {
-                if (ComboAction is SplitShot && LevelChecked(OriginalHook(SlugShot)))
+                if (ComboAction is SplitShot && LevelChecked(SlugShot))
                     return OriginalHook(SlugShot);
 
                 if (IsEnabled(CustomComboPreset.MCH_ST_Adv_Reassemble) && Config.MCH_ST_Reassembled[4] &&
-                    ComboAction == OriginalHook(SlugShot) &&
+                    ComboAction is SlugShot &&
                     !LevelChecked(Drill) && !HasStatusEffect(Buffs.Reassembled) && ActionReady(Reassemble))
                     return Reassemble;
 
-                if (ComboAction is SlugShot && LevelChecked(OriginalHook(CleanShot)))
+                if (ComboAction is SlugShot && LevelChecked(CleanShot))
                     return OriginalHook(CleanShot);
             }
             return actionID;
@@ -716,9 +739,9 @@ internal partial class MCH : PhysicalRanged
                 : actionID;
     }
 
-    internal class All_PRanged_Dismantle : CustomCombo
+    internal class MCH_DismantleProtection : CustomCombo
     {
-        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.All_PRanged_Dismantle;
+        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.MCH_DismantleProtection;
 
         protected override uint Invoke(uint actionID) =>
             actionID is Dismantle && HasStatusEffect(Debuffs.Dismantled, CurrentTarget, true) && IsOffCooldown(Dismantle)
