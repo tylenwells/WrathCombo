@@ -3,6 +3,28 @@ namespace WrathCombo.Combos.PvE;
 
 internal partial class RPR : Melee
 {
+    internal class RPR_ST_BasicCombo : CustomCombo
+    {
+        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.RPR_ST_BasicCombo;
+
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not InfernalSlice)
+                return actionID;
+
+            if (ComboTimer > 0)
+            {
+                if (ComboAction is Slice && LevelChecked(WaxingSlice))
+                    return WaxingSlice;
+
+                if (ComboAction is WaxingSlice && LevelChecked(InfernalSlice))
+                    return InfernalSlice;
+            }
+
+            return Slice;
+        }
+    }
+    
     internal class RPR_ST_SimpleMode : CustomCombo
     {
         protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.RPR_ST_SimpleMode;
@@ -204,9 +226,9 @@ internal partial class RPR : Melee
                 return Variant.Rampart;
 
             //RPR Opener
-            if (IsEnabled(CustomComboPreset.RPR_ST_Opener))
-                if (Opener().FullOpener(ref actionID))
-                    return actionID;
+            if (IsEnabled(CustomComboPreset.RPR_ST_Opener) && 
+                Opener().FullOpener(ref actionID))
+                return actionID;
 
             //All Weaves
             if (CanWeave())

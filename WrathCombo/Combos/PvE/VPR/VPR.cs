@@ -3,6 +3,54 @@ namespace WrathCombo.Combos.PvE;
 
 internal partial class VPR : Melee
 {
+    internal class VPR_ST_BasicCombo : CustomCombo
+    {
+        protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.VPR_ST_BasicCombo;
+
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not ReavingFangs)
+                return actionID;
+
+            if (ComboTimer > 0 && !HasStatusEffect(Buffs.Reawakened))
+            {
+                if (ComboAction is ReavingFangs or SteelFangs)
+                {
+                    if (LevelChecked(HuntersSting) &&
+                        (HasStatusEffect(Buffs.FlankstungVenom) || HasStatusEffect(Buffs.FlanksbaneVenom)))
+                        return OriginalHook(SteelFangs);
+
+                    if (LevelChecked(SwiftskinsSting) &&
+                        (HasStatusEffect(Buffs.HindstungVenom) || HasStatusEffect(Buffs.HindsbaneVenom) ||
+                         !HasStatusEffect(Buffs.Swiftscaled) && !HasStatusEffect(Buffs.HuntersInstinct)))
+                        return OriginalHook(ReavingFangs);
+                }
+
+                if (ComboAction is HuntersSting or SwiftskinsSting)
+                {
+                    if ((HasStatusEffect(Buffs.FlankstungVenom) || HasStatusEffect(Buffs.HindstungVenom)) &&
+                        LevelChecked(FlanksbaneFang))
+                        return OriginalHook(SteelFangs);
+
+                    if ((HasStatusEffect(Buffs.FlanksbaneVenom) || HasStatusEffect(Buffs.HindsbaneVenom)) &&
+                        LevelChecked(HindstingStrike))
+                        return OriginalHook(ReavingFangs);
+                }
+
+                if (ComboAction is HindstingStrike or HindsbaneFang or FlankstingStrike or FlanksbaneFang)
+                    return LevelChecked(ReavingFangs) && HasStatusEffect(Buffs.HonedReavers)
+                        ? OriginalHook(ReavingFangs)
+                        : OriginalHook(SteelFangs);
+            }
+
+            //LowLevels
+            if (LevelChecked(ReavingFangs) && (HasStatusEffect(Buffs.HonedReavers) ||
+                                               !HasStatusEffect(Buffs.HonedReavers) && !HasStatusEffect(Buffs.HonedSteel)))
+                return OriginalHook(ReavingFangs);
+            return actionID;
+        }
+    }
+
     internal class VPR_ST_SimpleMode : CustomCombo
     {
         protected internal override CustomComboPreset Preset { get; } = CustomComboPreset.VPR_ST_SimpleMode;
@@ -184,9 +232,9 @@ internal partial class VPR : Melee
                 return Variant.Rampart;
 
             // Opener for VPR
-            if (IsEnabled(CustomComboPreset.VPR_ST_Opener))
-                if (Opener().FullOpener(ref actionID))
-                    return actionID;
+            if (IsEnabled(CustomComboPreset.VPR_ST_Opener) && 
+                Opener().FullOpener(ref actionID))
+                return actionID;
 
             //oGCDs
             if (CanWeave())

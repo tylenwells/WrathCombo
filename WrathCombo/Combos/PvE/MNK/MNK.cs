@@ -136,15 +136,13 @@ internal partial class MNK : Melee
                 !HasStatusEffect(Buffs.OpoOpoForm) && !HasStatusEffect(Buffs.RaptorForm) && !HasStatusEffect(Buffs.CoeurlForm))
                 return FormShift;
 
-            if (IsEnabled(CustomComboPreset.MNK_STUseOpener))
-                if (Opener().FullOpener(ref actionID))
-                {
-                    if (Opener().OpenerStep >= 9 &&
-                        CanWeave() && Gauge.Chakra >= 5)
-                        return TheForbiddenChakra;
+            if (IsEnabled(CustomComboPreset.MNK_STUseOpener) &&
+                Opener().FullOpener(ref actionID))
+                return Opener().OpenerStep >= 9 &&
+                       CanWeave() && Gauge.Chakra >= 5
+                    ? TheForbiddenChakra
+                    : actionID;
 
-                    return actionID;
-                }
 
             if (IsEnabled(CustomComboPreset.MNK_STUseBuffs) &&
                 IsEnabled(CustomComboPreset.MNK_STUseROF) &&

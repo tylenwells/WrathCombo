@@ -193,9 +193,9 @@ internal partial class BLM : Caster
                 return Variant.Rampart;
 
             // Opener
-            if (IsEnabled(CustomComboPreset.BLM_ST_Opener))
-                if (Opener().FullOpener(ref actionID))
-                    return actionID;
+            if (IsEnabled(CustomComboPreset.BLM_ST_Opener) &&
+                Opener().FullOpener(ref actionID))
+                return actionID;
 
             if (CanWeave())
             {

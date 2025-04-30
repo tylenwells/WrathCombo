@@ -186,9 +186,9 @@ internal partial class SGE : Healer
                 return Kardia;
 
             // Opener for SGE
-            if (IsEnabled(CustomComboPreset.SGE_ST_DPS_Opener))
-                if (Opener().FullOpener(ref actionID))
-                    return actionID;
+            if (IsEnabled(CustomComboPreset.SGE_ST_DPS_Opener) && 
+                Opener().FullOpener(ref actionID))
+                return actionID;
 
             // Lucid Dreaming
             if (IsEnabled(CustomComboPreset.SGE_ST_DPS_Lucid) && Role.CanLucidDream(Config.SGE_ST_DPS_Lucid))
