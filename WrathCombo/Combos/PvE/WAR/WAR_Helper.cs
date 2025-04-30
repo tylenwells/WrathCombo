@@ -11,7 +11,7 @@ internal partial class WAR
 {
     internal static WAROpenerMaxLevel1 Opener1 = new();
     internal static WARGauge Gauge = GetJobGauge<WARGauge>(); //WAR gauge
-    internal static int Beastgauge = Gauge.BeastGauge;
+    internal static int Beastgauge => Gauge.BeastGauge;
 
     #region Mitigation Priority
 
