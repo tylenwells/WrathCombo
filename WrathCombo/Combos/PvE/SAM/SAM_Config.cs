@@ -14,24 +14,24 @@ internal partial class SAM
             SAM_Opener_PrePullDelay = new("SAM_Opener_PrePullDelay", 13),
             SAM_ST_KenkiOvercapAmount = new(nameof(SAM_ST_KenkiOvercapAmount), 65),
             SAM_ST_Higanbana_Suboption = new("SAM_ST_Higanbana_Suboption", 1),
-            SAM_ST_Higanbana_Threshold = new("SAM_ST_Higanbana_Threshold", 1),
+            SAM_ST_Higanbana_Threshold = new("SAM_ST_Higanbana_Threshold", 0),
             SAM_ST_ExecuteThreshold = new("SAM_ST_ExecuteThreshold", 1),
             SAM_STSecondWindThreshold = new("SAM_STSecondWindThreshold", 25),
             SAM_STBloodbathThreshold = new("SAM_STBloodbathThreshold", 40),
             SAM_AoE_KenkiOvercapAmount = new(nameof(SAM_AoE_KenkiOvercapAmount), 50),
             SAM_AoESecondWindThreshold = new("SAM_AoESecondWindThreshold", 25),
             SAM_AoEBloodbathThreshold = new("SAM_AoEBloodbathThreshold", 40),
-            SAM_Kasha_KenkiOvercapAmount = new(nameof(SAM_Kasha_KenkiOvercapAmount), 50),
-            SAM_Yukaze_KenkiOvercapAmount = new(nameof(SAM_Yukaze_KenkiOvercapAmount), 50),
-            SAM_Gekko_KenkiOvercapAmount = new(nameof(SAM_Gekko_KenkiOvercapAmount), 50),
+            SAM_Gekko_KenkiOvercapAmount = new(nameof(SAM_Gekko_KenkiOvercapAmount), 65),
+            SAM_Kasha_KenkiOvercapAmount = new(nameof(SAM_Kasha_KenkiOvercapAmount), 65),
+            SAM_Yukaze_KenkiOvercapAmount = new(nameof(SAM_Yukaze_KenkiOvercapAmount), 65),
             SAM_Oka_KenkiOvercapAmount = new(nameof(SAM_Oka_KenkiOvercapAmount), 50),
             SAM_Mangetsu_KenkiOvercapAmount = new(nameof(SAM_Mangetsu_KenkiOvercapAmount), 50),
             SAM_VariantCure = new("SAM_VariantCure");
 
         public static UserBool
+            SAM_Gekko_KenkiOvercap = new(nameof(SAM_Gekko_KenkiOvercap)),
             SAM_Kasha_KenkiOvercap = new(nameof(SAM_Kasha_KenkiOvercap)),
             SAM_Yukaze_KenkiOvercap = new(nameof(SAM_Yukaze_KenkiOvercap)),
-            SAM_Gekko_KenkiOvercap = new(nameof(SAM_Gekko_KenkiOvercap)),
             SAM_Oka_KenkiOvercap = new(nameof(SAM_Oka_KenkiOvercap)),
             SAM_Mangetsu_KenkiOvercap = new(nameof(SAM_Mangetsu_KenkiOvercap));
 
@@ -45,7 +45,7 @@ internal partial class SAM
                 case CustomComboPreset.SAM_ST_Opener:
                     DrawBossOnlyChoice(SAM_Balance_Content);
                     ImGui.NewLine();
-                    DrawSliderInt(0, 13, SAM_Opener_PrePullDelay, 
+                    DrawSliderInt(0, 13, SAM_Opener_PrePullDelay,
                         $"Delay from first {MeikyoShisui.ActionName()} to next step. (seconds)\nDelay is enforced by replacing your button with Savage Blade.");
                     break;
 
@@ -93,7 +93,7 @@ internal partial class SAM
                     DrawSliderInt(25, 85, SAM_ST_KenkiOvercapAmount,
                         "Set the Kenki overcap amount for ST combos.");
                     
-                    DrawSliderInt(0, 100, SAM_ST_ExecuteThreshold,
+                    DrawSliderInt(0, 100, SAM_ST_ExecuteThreshold, 
                         "HP percent threshold to not save Kenki");
 
                     break;
@@ -105,10 +105,22 @@ internal partial class SAM
                     break;
 
                 case CustomComboPreset.SAM_Variant_Cure:
-                    DrawSliderInt(1, 100, SAM_VariantCure,
+                    DrawSliderInt(1, 100, SAM_VariantCure, 
                         "HP% to be at or under", 200);
 
                     break;
+
+                case CustomComboPreset.SAM_ST_GekkoCombo:
+                {
+                    DrawAdditionalBoolChoice(SAM_Gekko_KenkiOvercap,
+                        "Kenki Overcap Protection", "Spends Kenki when at the set value or above.");
+
+                    if (SAM_Gekko_KenkiOvercap)
+                        DrawSliderInt(25, 100, SAM_Gekko_KenkiOvercapAmount,
+                            "Kenki Amount", sliderIncrement: SliderIncrements.Fives);
+
+                    break;
+                }
 
                 case CustomComboPreset.SAM_ST_KashaCombo:
                 {
@@ -128,19 +140,7 @@ internal partial class SAM
                         "Kenki Overcap Protection", "Spends Kenki when at the set value or above.");
 
                     if (SAM_Yukaze_KenkiOvercap)
-                        DrawSliderInt(25, 100, SAM_Yukaze_KenkiOvercapAmount, 
-                            "Kenki Amount", sliderIncrement: SliderIncrements.Fives);
-
-                    break;
-                }
-
-                case CustomComboPreset.SAM_ST_GekkoCombo:
-                {
-                    DrawAdditionalBoolChoice(SAM_Gekko_KenkiOvercap, 
-                        "Kenki Overcap Protection", "Spends Kenki when at the set value or above.");
-
-                    if (SAM_Gekko_KenkiOvercap)
-                        DrawSliderInt(25, 100, SAM_Gekko_KenkiOvercapAmount,
+                        DrawSliderInt(25, 100, SAM_Yukaze_KenkiOvercapAmount,
                             "Kenki Amount", sliderIncrement: SliderIncrements.Fives);
 
                     break;
@@ -148,7 +148,7 @@ internal partial class SAM
 
                 case CustomComboPreset.SAM_AoE_OkaCombo:
                 {
-                    DrawAdditionalBoolChoice(SAM_Oka_KenkiOvercap, 
+                    DrawAdditionalBoolChoice(SAM_Oka_KenkiOvercap,
                         "Kenki Overcap Protection", "Spends Kenki when at the set value or above.");
 
                     if (SAM_Oka_KenkiOvercap)
@@ -160,11 +160,11 @@ internal partial class SAM
 
                 case CustomComboPreset.SAM_AoE_MangetsuCombo:
                 {
-                    DrawAdditionalBoolChoice(SAM_Mangetsu_KenkiOvercap,
+                    DrawAdditionalBoolChoice(SAM_Mangetsu_KenkiOvercap, 
                         "Kenki Overcap Protection", "Spends Kenki when at the set value or above.");
 
                     if (SAM_Mangetsu_KenkiOvercap)
-                        DrawSliderInt(25, 100, SAM_Mangetsu_KenkiOvercapAmount,
+                        DrawSliderInt(25, 100, SAM_Mangetsu_KenkiOvercapAmount, 
                             "Kenki Amount", sliderIncrement: SliderIncrements.Fives);
 
                     break;
