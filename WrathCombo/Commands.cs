@@ -11,6 +11,7 @@ using Lumina.Excel.Sheets;
 using WrathCombo.Combos;
 using WrathCombo.Core;
 using WrathCombo.CustomComboNS.Functions;
+using WrathCombo.Data;
 using WrathCombo.Extensions;
 using WrathCombo.Services;
 using WrathCombo.Window;
@@ -633,6 +634,15 @@ public partial class WrathCombo
         if (forceOpen is not null)
             ConfigWindow.IsOpen = forceOpen.Value;
 
+        // Handle option to always open to the PvE tab
+        var openingToPvP =
+            ContentCheck.IsInPVPContent() && Service.Configuration.OpenToPvP;
+        if (ConfigWindow.IsOpen)
+            if (openingToPvP)
+                ConfigWindow.OpenWindow = OpenWindow.PvP;
+            else if (Service.Configuration.OpenToPvE)
+                ConfigWindow.OpenWindow = OpenWindow.PvE;
+
         // Open to specific tab
         if (tab is not null)
         {
@@ -644,7 +654,7 @@ public partial class WrathCombo
         if (argument[0].Length <= 0)
         {
             // Handle the "Open to current job" setting
-            if (ConfigWindow.IsOpen)
+            if (ConfigWindow.IsOpen && !openingToPvP)
                 PvEFeatures.OpenToCurrentJob(false);
 
             // Skip trying to process arguments
