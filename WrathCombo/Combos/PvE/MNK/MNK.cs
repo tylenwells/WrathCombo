@@ -74,12 +74,10 @@ internal partial class MNK : Melee
             // Masterful Blitz
             if (LevelChecked(MasterfulBlitz) &&
                 !HasStatusEffect(Buffs.PerfectBalance) &&
-                InMasterfulRange() &&
-                !IsOriginal(MasterfulBlitz))
+                InMasterfulRange() && !IsOriginal(MasterfulBlitz))
                 return OriginalHook(MasterfulBlitz);
 
             if (HasStatusEffect(Buffs.FiresRumination) &&
-                LevelChecked(FiresReply) &&
                 !HasStatusEffect(Buffs.FormlessFist) &&
                 !HasStatusEffect(Buffs.PerfectBalance) &&
                 !JustUsed(RiddleOfFire, 4) &&
@@ -90,7 +88,6 @@ internal partial class MNK : Melee
                 return FiresReply;
 
             if (HasStatusEffect(Buffs.WindsRumination) &&
-                LevelChecked(WindsReply) &&
                 (!InMeleeRange() || !HasStatusEffect(Buffs.PerfectBalance)))
                 return WindsReply;
 
@@ -209,7 +206,6 @@ internal partial class MNK : Melee
             {
                 if (IsEnabled(CustomComboPreset.MNK_STUseFiresReply) &&
                     HasStatusEffect(Buffs.FiresRumination) &&
-                    LevelChecked(FiresReply) &&
                     !HasStatusEffect(Buffs.FormlessFist) &&
                     !HasStatusEffect(Buffs.PerfectBalance) &&
                     !JustUsed(RiddleOfFire, 4) &&
@@ -221,7 +217,6 @@ internal partial class MNK : Melee
 
                 if (IsEnabled(CustomComboPreset.MNK_STUseWindsReply) &&
                     HasStatusEffect(Buffs.WindsRumination) &&
-                    LevelChecked(WindsReply) &&
                     (!InMeleeRange() || !HasStatusEffect(Buffs.PerfectBalance)))
                     return WindsReply;
             }
@@ -304,14 +299,12 @@ internal partial class MNK : Melee
                 return OriginalHook(MasterfulBlitz);
 
             if (HasStatusEffect(Buffs.FiresRumination) &&
-                LevelChecked(FiresReply) &&
                 !HasStatusEffect(Buffs.PerfectBalance) &&
                 !HasStatusEffect(Buffs.FormlessFist) &&
                 !JustUsed(RiddleOfFire, 4))
                 return FiresReply;
 
             if (HasStatusEffect(Buffs.WindsRumination) &&
-                LevelChecked(WindsReply) &&
                 HasStatusEffect(Buffs.RiddleOfWind) &&
                 !HasStatusEffect(Buffs.PerfectBalance))
                 return WindsReply;
@@ -429,7 +422,6 @@ internal partial class MNK : Melee
             {
                 if (IsEnabled(CustomComboPreset.MNK_AoEUseFiresReply) &&
                     HasStatusEffect(Buffs.FiresRumination) &&
-                    LevelChecked(FiresReply) &&
                     !HasStatusEffect(Buffs.FormlessFist) &&
                     !HasStatusEffect(Buffs.PerfectBalance) &&
                     !JustUsed(RiddleOfFire, 4))
@@ -437,7 +429,6 @@ internal partial class MNK : Melee
 
                 if (IsEnabled(CustomComboPreset.MNK_AoEUseWindsReply) &&
                     HasStatusEffect(Buffs.WindsRumination) &&
-                    LevelChecked(WindsReply) &&
                     HasStatusEffect(Buffs.RiddleOfWind) &&
                     !HasStatusEffect(Buffs.PerfectBalance))
                     return WindsReply;
