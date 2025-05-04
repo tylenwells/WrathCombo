@@ -1374,14 +1374,14 @@ internal partial class DNC : PhysicalRanged
 
     #region Dance Features
 
-    internal class DNC_DanceStepCombo : CustomCombo
+    internal class DNC_StandardStepCombo : CustomCombo
     {
         protected internal override CustomComboPreset Preset =>
-            CustomComboPreset.DNC_DanceStepCombo;
+            CustomComboPreset.DNC_StandardStepCombo;
 
         protected override uint Invoke(uint actionID)
         {
-            if (actionID is not (StandardStep or TechnicalStep)) return actionID;
+            if (actionID is not StandardStep) return actionID;
 
             // Standard Step
             if (actionID is StandardStep && Gauge.IsDancing &&
@@ -1389,6 +1389,19 @@ internal partial class DNC : PhysicalRanged
                 return Gauge.CompletedSteps < 2
                     ? Gauge.NextStep
                     : FinishOrHold(StandardFinish2);
+
+            return actionID;
+        }
+    }
+
+    internal class DNC_TechnicalStepCombo : CustomCombo
+    {
+        protected internal override CustomComboPreset Preset =>
+            CustomComboPreset.DNC_TechnicalStepCombo;
+
+        protected override uint Invoke(uint actionID)
+        {
+            if (actionID is not TechnicalStep) return actionID;
 
             // Technical Step
             if (actionID is TechnicalStep && Gauge.IsDancing &&
