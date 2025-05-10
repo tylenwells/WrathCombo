@@ -1071,6 +1071,10 @@ public enum CustomComboPreset
         "\n(REQUIRES a countdown)", DNC.JobID)]
     DNC_ST_BalanceOpener = 4011,
 
+    [ParentCombo(DNC_ST_BalanceOpener)]
+    [CustomComboInfo("Wait for Countdown Options", "When not in combat will change to Savage Blade to wait for a countdown to appear.\nMostly here to allow for targeting the boss before the exact countdown window your opener selection is waiting for.\nONLY designed to be something you turn on while doing back-to-back pulls of content, NOT suitable to leave on all the time.", DNC.JobID)]
+    DNC_ST_Opener_BlockEarly = 4031,
+
     [ParentCombo(DNC_ST_AdvancedMode)]
     [CustomComboInfo("Dance Partner Reminder Option", "Includes Closed Position when out of combat and no dance partner is found.", DNC.JobID)]
     DNC_ST_Adv_Partner = 4012,

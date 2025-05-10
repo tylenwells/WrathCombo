@@ -1,5 +1,6 @@
 ﻿#region
 using WrathCombo.CustomComboNS;
+using WrathCombo.Data;
 
 // ReSharper disable UnusedType.Global
 // ReSharper disable ClassNeverInstantiated.Global
@@ -128,6 +129,12 @@ internal partial class DNC : PhysicalRanged
             #endregion
 
             #region Pre-pull
+
+            if (!InCombat() && ContentCheck.IsInConfiguredContent(
+                    Config.DNC_ST_OpenerDifficulty, ContentCheck.ListSet.BossOnly) &&
+                IsEnabled(CustomComboPreset.DNC_ST_BalanceOpener) &&
+                IsEnabled(CustomComboPreset.DNC_ST_Opener_BlockEarly))
+                return All.SavageBlade;
 
             if (!InCombat() && TargetIsHostile())
             {
