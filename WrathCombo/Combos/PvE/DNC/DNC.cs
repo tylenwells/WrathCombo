@@ -182,7 +182,7 @@ internal partial class DNC : PhysicalRanged
             if (IsEnabled(CustomComboPreset.DNC_ST_Adv_Devilment) &&
                 CanWeave() &&
                 LevelChecked(Devilment) &&
-                GetCooldownRemainingTime(Devilment) < 0.05 &&
+                GetCooldownRemainingTime(Devilment) < GCD/2 &&
                 (HasStatusEffect(Buffs.TechnicalFinish) ||
                  WasLastAction(TechnicalFinish4) ||
                  !LevelChecked(TechnicalStep)))
