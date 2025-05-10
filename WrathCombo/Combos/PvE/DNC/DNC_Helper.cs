@@ -524,7 +524,7 @@ internal partial class DNC
         } =
         [
             ([4], () => 7),
-            ([5], () => 5),
+            ([5], () => (!Config.DNC_ST_OpenerOption_Peloton ? 12 : 5)),
         ];
 
         public override List<(int[], uint, Func<bool>)> SubstitutionSteps
@@ -544,6 +544,15 @@ internal partial class DNC
             ([21, 22, 23], LastDance, () => HasStatusEffect(Buffs.LastDanceReady)),
             ([21, 22, 23], Fountainfall, () =>
                 HasStatusEffect(Buffs.SilkenFlow) || HasStatusEffect(Buffs.FlourishingFlow)),
+        ];
+
+        public override List<(int[] Steps, Func<bool> Condition)> SkipSteps
+        {
+            get;
+            set;
+        } =
+        [
+            ([4], () => !Config.DNC_ST_OpenerOption_Peloton),
         ];
 
         internal override UserData? ContentCheckConfig =>
@@ -615,7 +624,7 @@ internal partial class DNC
         } =
         [
             ([4], () => 2),
-            ([5], () => 2),
+            ([5], () => (!Config.DNC_ST_OpenerOption_Peloton ? 4 : 2)),
         ];
 
         public override List<(int[], uint, Func<bool>)> SubstitutionSteps
@@ -635,6 +644,15 @@ internal partial class DNC
             ([20, 21, 23], LastDance, () => HasStatusEffect(Buffs.LastDanceReady)),
             ([20, 21, 23], Fountainfall, () =>
                 HasStatusEffect(Buffs.SilkenFlow) || HasStatusEffect(Buffs.FlourishingFlow)),
+        ];
+
+        public override List<(int[] Steps, Func<bool> Condition)> SkipSteps
+        {
+            get;
+            set;
+        } =
+        [
+            ([4], () => !Config.DNC_ST_OpenerOption_Peloton),
         ];
 
         internal override UserData? ContentCheckConfig =>
@@ -710,7 +728,7 @@ internal partial class DNC
         } =
         [
             ([5], () => 1),
-            ([6], () => 6),
+            ([6], () => (!Config.DNC_ST_OpenerOption_Peloton ? 7 : 6)),
         ];
 
         public override List<(int[], uint, Func<bool>)> SubstitutionSteps
@@ -730,6 +748,15 @@ internal partial class DNC
             ([21, 22, 23], LastDance, () => HasStatusEffect(Buffs.LastDanceReady)),
             ([21, 22, 23], Fountainfall, () =>
                 HasStatusEffect(Buffs.SilkenFlow) || HasStatusEffect(Buffs.FlourishingFlow)),
+        ];
+
+        public override List<(int[] Steps, Func<bool> Condition)> SkipSteps
+        {
+            get;
+            set;
+        } =
+        [
+            ([5], () => !Config.DNC_ST_OpenerOption_Peloton),
         ];
 
         internal override UserData? ContentCheckConfig =>
@@ -897,6 +924,15 @@ internal partial class DNC
             ([16, 17, 18], LastDance, () => HasStatusEffect(Buffs.LastDanceReady)),
             ([16, 17, 18], Fountainfall, () =>
                 HasStatusEffect(Buffs.SilkenFlow) || HasStatusEffect(Buffs.FlourishingFlow)),
+        ];
+
+        public override List<(int[] Steps, Func<bool> Condition)> SkipSteps
+        {
+            get;
+            set;
+        } =
+        [
+            ([6], () => !Config.DNC_ST_OpenerOption_Peloton),
         ];
 
         internal override UserData? ContentCheckConfig =>
