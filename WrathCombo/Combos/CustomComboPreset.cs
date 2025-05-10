@@ -1352,53 +1352,43 @@ public enum CustomComboPreset
 
     #region Dance Features
 
-    //[ReplaceSkill(DNC.StandardStep, DNC.TechnicalStep)]
-    //[ConflictingCombos(DNC_StandardStep_LastDance, DNC_TechnicalStep_Devilment)]
-    //[CustomComboInfo("Dance Step Combo Feature",
-    //    "Change Standard Step and Technical Step into each dance step, while dancing." +
-    //    "\nWorks with Advanced Mode DNC.", DNC.JobID)]
-    //DNC_DanceStepCombo = 4110,
+    [CustomComboInfo("Custom Dance Step Feature",
+        "Change custom actions into dance steps while dancing." +
+        "\nLets you still dance with combos on, without using Step Combo Features above.", DNC.JobID)]
+    DNC_CustomDanceSteps = 4115,
 
-    [CustomComboInfo("Dance Features", "Modifies default dance behaviors.", DNC.JobID)]
-    DNC_DanceFeatures = 4110,
+    [ParentCombo(DNC_CustomDanceSteps)]
+    [CustomComboInfo("Override Smaller Features", "If enabled, will let you choose actions that are replaced by the smaller features listed below here, and they will return the Step that you have set them to when dancing.", DNC.JobID)]
+    DNC_CustomDanceSteps_Conflicts = 4116,
+
+    [CustomComboInfo("Dance Features", "Small Features for Standard and Technical Step", DNC.JobID)]
+    DNC_DanceFeatures = 4111,
 
     [ParentCombo(DNC_DanceFeatures)]
     [ReplaceSkill(DNC.StandardStep)]
     [CustomComboInfo("Standard Step Combo Feature",
-        "Change Standard Step into each dance step, while dancing." +
-        "\nWorks with Advanced Mode DNC.", DNC.JobID)]
-    DNC_StandardStepCombo = 4111,
-
-    [ParentCombo(DNC_DanceFeatures)]
-    [ReplaceSkill(DNC.TechnicalStep)]
-    [CustomComboInfo("Technical Step Combo Feature",
-        "Change Technical Step into each dance step, while dancing." +
-        "\nWorks with Advanced Mode DNC.", DNC.JobID)]
-    DNC_TechnicalStepCombo = 4112,
+        "Change Standard Step into each dance step, while dancing.", DNC.JobID)]
+    DNC_StandardStepCombo = 4110,
 
     // StandardStep(or Finishing Move) --> Last Dance
-    [ParentCombo(DNC_StandardStepCombo)]
+    [ParentCombo(DNC_DanceFeatures)]
     [ReplaceSkill(DNC.StandardStep, DNC.FinishingMove)]
     [CustomComboInfo("Standard Step to Last Dance Feature",
         "Change Standard Step or Finishing Move to Last Dance when available.", DNC.JobID)]
     DNC_StandardStep_LastDance = 4155,
 
+    [ParentCombo(DNC_DanceFeatures)]
+    [ReplaceSkill(DNC.TechnicalStep)]
+    [CustomComboInfo("Technical Step Combo Feature",
+        "Change Technical Step into each dance step, while dancing.", DNC.JobID)]
+    DNC_TechnicalStepCombo = 4112,
+
     // Technical Step --> Devilment
-    [ParentCombo(DNC_TechnicalStepCombo)]
+    [ParentCombo(DNC_DanceFeatures)]
     [ReplaceSkill(DNC.TechnicalStep)]
     [CustomComboInfo("Technical Step to Devilment Feature", "Change Technical Step to Devilment as soon as possible.",
         DNC.JobID)]
     DNC_TechnicalStep_Devilment = 4160,
-
-    [CustomComboInfo("Custom Dance Step Feature",
-        "Change custom actions into dance steps while dancing." +
-        "\nLets you still dance with combos on, without using Dance Step Combo Feature.", DNC.JobID)]
-    DNC_CustomDanceSteps = 4115,
-
-    [ParentCombo(DNC_CustomDanceSteps)]
-    [ReplaceSkill(DNC.Devilment)]
-    [CustomComboInfo("Override Smaller Features", "If enabled, will let you choose actions that are replaced by the smaller features listed below here, and they will return the Step that you have set them to when dancing.", DNC.JobID)]
-    DNC_CustomDanceSteps_Conflicts = 4116,
 
     #endregion
     // Last value = 4116
@@ -1462,7 +1452,7 @@ public enum CustomComboPreset
     // Last value = 4170
 
     #endregion
-    // Last value = 4170
+    // Last value = 4177
 
     #region Variant
 

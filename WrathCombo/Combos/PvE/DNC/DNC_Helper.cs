@@ -413,7 +413,7 @@ internal partial class DNC
     /// <summary>
     ///     Saved custom dance steps.
     /// </summary>
-    /// <seealso cref="DNC_DanceComboReplacer.Invoke">DanceComboReplacer</seealso>
+    /// <seealso cref="DNC_CustomDanceSteps.Invoke">CustomDanceSteps</seealso>
     private static uint[] CustomDanceStepActions =>
         Service.Configuration.DancerDanceCompatActionIDs;
 
