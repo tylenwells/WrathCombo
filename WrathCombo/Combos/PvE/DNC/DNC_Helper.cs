@@ -13,10 +13,8 @@ using WrathCombo.Extensions;
 using WrathCombo.Services;
 using static WrathCombo.CustomComboNS.Functions.CustomComboFunctions;
 using Options = WrathCombo.Combos.CustomComboPreset;
-
-#endregion
-
-namespace WrathCombo.Combos.PvE;
+using EZ = ECommons.Throttlers.EzThrottler;
+using TS = System.TimeSpan;
 
 // ReSharper disable ReturnTypeCanBeNotNullable
 // ReSharper disable UnusedType.Global
@@ -25,6 +23,11 @@ namespace WrathCombo.Combos.PvE;
 // ReSharper disable CheckNamespace
 // ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable MemberHidesStaticFromOuterClass
+
+#endregion
+
+namespace WrathCombo.Combos.PvE;
+
 internal partial class DNC
 {
     /// <summary>
@@ -173,14 +176,34 @@ internal partial class DNC
 
     #region Dance Partner
 
-    internal static ulong? CurrentDancePartner =>
-        GetPartyMembers()
-            .Where(HasMyPartner)
-            .Select(x => (ulong?)x.GameObjectId)
-            .FirstOrDefault();
+    internal static ulong? CurrentDancePartner
+    {
+        get
+        {
+            if (!EZ.Throttle("dncPartnerCurrentCheck", TS.FromSeconds(1.9)))
+                return field;
 
-    internal static ulong? DesiredDancePartner =>
-        TryGetDancePartner(out var partner) ? partner.GameObjectId : null;
+            field = GetPartyMembers()
+                .Where(HasMyPartner)
+                .Select(x => (ulong?)x.GameObjectId)
+                .FirstOrDefault();
+            return field;
+        }
+    }
+
+    internal static ulong? DesiredDancePartner
+    {
+        get
+        {
+            if (!EZ.Throttle("dncPartnerDesiredCheck", TS.FromSeconds(2)))
+                return field;
+
+            field = TryGetDancePartner(out var partner)
+                ? partner.GameObjectId
+                : null;
+            return field;
+        }
+    }
 
     private static bool TryGetDancePartner
         (out IGameObject? partner, bool? callingFromFeature = null)
